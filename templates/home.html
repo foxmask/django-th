@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Triggers" %} - {{ username }} - {{ current_site.name }}{% endblock %}
+{% block content %}			    	
+    <div class="span12" id="trigger-happy-content">
+{% if data %}    	        
+    {% for trigger in datas %}
+    	<div class="row">
+	    <div class="trigger-happy-record span11">
+		<article>
+		    <div class="span2">
+		        <p class="trigger-happy-record-user"><a href="{% url 'profiles_profile_detail' histo.user.username %}" title="{% trans 'View the profile'%}">{{ histo.user.username }}</a></p>
+		    </div>
+		    <div class="span6">
+				<span class="trigger-happy-text">{{ trigger.name|safe|escape }}</span>
+		    </div>
+		    <footer><i class="icon-calendar"></i> {{ trigger.date_created }}</footer>
+		</article>
+    	    </div>
+    	 </div>
+    {% endfor %}
+{% else %}
+		<div class="row trigger-happy-record">
+		    {% trans 'No trigger yet' %}
+		</div>    		
+{% endif %}
+    </div>		    	                
+{% endblock %}

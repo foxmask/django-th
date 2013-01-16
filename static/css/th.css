@@ -1,0 +1,88 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+h1 {
+	background-image: url('/static/images/glyphicons_061_keynote.png');
+	background-repeat: no-repeat;
+	background-position:left bottom;
+	text-indent: 30px;
+	height: 30px;
+}
+
+/****
+ * shared propery : trigger-happy-record-* & profile-*
+ */
+
+.trigger-happy-record, .profile-identity, .profile-stats  {
+	border: 1px solid #DDDDDD;
+    background-color: white;
+    border-radius: 5px 5px 5px 5px;
+    color: #6B6B6B;
+    font-size: 1.1em;
+    margin: 0.2em;
+    padding: 1em;
+}
+
+.trigger-happy-record-user, .profile-identity-head {
+	background-image: url('/static/images/glyphicons_003_user.png');
+}
+
+.trigger-happy-record-user {
+	text-indent: 25px;
+	background-repeat: no-repeat;	
+} 
+
+/****
+ * History
+ */
+.trigger-happy-record article footer {
+	font-size: small;
+	text-align:right;
+}
+.trigger-happy-record .trigger-happy-text {
+    word-wrap: break-word;
+}
+
+.charWarning {
+    color:#600;
+}
+
+.charExceeded {
+    color:#e00;
+}
+
+#histo_text {
+	width: 90%;
+}
+
+/****
+ * Profile
+ */
+.profile-head {
+	background-position:left bottom;
+	background-repeat: no-repeat;	
+	text-indent: 30px;
+	height: 30px;
+}
+
+.profile-stats-head {
+	background-image: url('/static/images/glyphicons_040_stats.png');
+}
+
+/****
+ * Menu 
+ */
+
+/***
+ * put the icon in the "grey" light as they went white on white
+ */
+.nav-tabs > .active > a,
+.nav-tabs > .active > a:hover {
+  color: #555555;
+  cursor: default;
+  background-color: #eeeeee;
+  border: 1px solid #ddd;
+  border-bottom-color: transparent;
+}

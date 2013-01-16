@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load url from future %}
+{% comment %}
+**registration/login.html**
+
+It's your responsibility to provide the login form in a template called
+registration/login.html by default. This template gets passed four
+template context variables:
+
+``form``
+    A Form object representing the login form. See the forms
+    documentation for more on Form objects.
+
+``next``
+    The URL to redirect to after successful login. This may contain a
+    query string, too.
+
+``site``
+    The current Site, according to the SITE_ID setting. If you don't
+    have the site framework installed, this will be set to an instance
+    of RequestSite, which derives the site name and domain from the
+    current HttpRequest.
+
+``site_name``
+    An alias for site.name. If you don't have the site framework
+    installed, this will be set to the value of
+    request.META['SERVER_NAME']. For more on sites, see The
+    "sites" framework.
+{% endcomment %}
+
+{% block title %}{% trans "Log in" %} - {{ current_site.name }}{% endblock %}
+{% block content %}
+<div class="span12">
+	<h1 class="page-header">{% trans "Log in" %}</h1>
+	{% if form.errors %}
+	<div class="alert alert-error">
+		<p>{{ form.errors }}</p>
+	</div>
+	{% endif %}
+	
+	<form method="post" class="form-horizontal" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+		<div class="control-group">		
+		    <label class="control-label" for="id_username">{% trans 'Username' %}</label>
+		    <div class="controls">
+	    	{{ form.username }}
+	    	</div>
+		</div>
+		<div class="control-group">		
+	    	<label class="control-label" for="id_password">{% trans 'Password' %}</label>
+	    	<div class="controls">
+	    	{{ form.password }}
+	    	</div>
+	    </div>
+		<div class="form-actions">
+			<input type="submit" class="btn btn-primary"  value="{% trans "Log in" %}" />
+			<input type="hidden" name="next" value="{{ next }}" />
+		</div>
+	</form>
+</div>
+{% endblock %}

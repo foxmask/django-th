@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% load url from future %}
+{% load i18n %}
+{% comment %}
+**registration/registration_form.html**
+Used to show the form users will fill out to register. By default, has
+the following context:
+
+``form``
+    The registration form. This will be an instance of some subclass
+    of ``django.forms.Form``; consult `Django's forms documentation
+    http://docs.djangoproject.com/en/dev/topics/forms/`_ for
+    information on how to display this in a template.
+{% endcomment %}
+{% block title %}{% trans "Registration" %} - {{ current_site.name }}{% endblock %}
+{% block content %}
+<div class="span12">
+	<h1 class="page-header">{% trans "Registration" %}</h1>
+	{% if form.errors %}
+	<div class="alert alert-error">
+		<p>{{ form.errors }}</p>
+	</div>
+	{% endif %}	
+	<form method="post" class="form-horizontal" action="">
+		{% csrf_token %}
+		<div class="control-group">		
+		    <label class="control-label" for="id_username">{% trans 'Username' %}</label>
+		    <div class="controls">
+	    	{{ form.username }}
+	    	</div>
+		</div>		
+		<div class="control-group">		
+		    <label class="control-label" for="id_username">{% trans 'E-mail' %}</label>
+		    <div class="controls">
+	    	{{ form.email }}
+	    	</div>
+		</div>
+		<div class="control-group">		
+	    	<label class="control-label" for="id_password1">{% trans 'Password' %}</label>
+	    	<div class="controls">
+	    	{{ form.password1 }}
+	    	</div>
+	    </div>
+		<div class="control-group">		
+	    	<label class="control-label" for="id_password2">{% trans 'Password (again)' %}</label>
+	    	<div class="controls">
+	    	{{ form.password2 }}
+	    	</div>
+	    </div>		
+		<div class="form-actions">
+			<input type="submit" class="btn btn-info" value="{% trans "Register" %}" />
+			<input type="hidden" name="next" value="{{ next }}" />
+		</div>
+	</form>	
+</div>
+{% endblock %}

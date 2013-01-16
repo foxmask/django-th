@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+{% load static %}
+{% load staticfiles %}
+{% load i18n %}
+{% load url from future %}
+{% load django_th_extras %}    
+<head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
+    <title>{% block title %}{% trans "Home" %} - {{ current_site.name }}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "css/th.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.css" %}" type="text/css" media="screen" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="FoxMaSk">
+<!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+    <script type="text/javascript" src="{% static "jquery/jquery.js" %}" ></script>    
+    <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.min.js" %}" ></script>
+</head>
+<body>
+    {% block navbar %}
+    <div class="navbar navbar-fixed-top">        
+        <div class="navbar-inner">
+            <div class="container">
+                <a class="btn btn-navbar collapsed" data-target=".nav-collapse" data-toggle="collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>        	
+                <a class="brand" href="{% url 'base' %}" title="{% trans "Home" %}">Django Trigger Happy</a>
+                <div class="nav-collapse collapse">
+                        {% if user.is_authenticated %}
+                    <ul class="nav">
+                        {% url 'base' as 'home'%}
+                        <li><a href="{{ home }}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>		                            
+                        {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
+                        <li><a href="{{ profiles_profile_detail }}" title="{% trans "My profile" %}"><i class="icon-user"></i></a></li>
+                        <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><i class="icon-off"></i></a></li>
+                    </ul>		    
+                        {% endif %}    
+                </div><!--/.nav-collapse -->
+            </div><!--/.container-fluid -->
+        </div><!--/.navbar-inner -->
+    </div><!--/.navbar -->
+    {% endblock navbar %}
+    <div class="container">
+        <div class="row">
+        {% block content %}    
+            <div class="hero-unit">
+                <p>
+                    <strong>Trigger Happy</strong> is up !             	             	
+                </p>
+                <p>Let's register !</p>
+                <p>Have Fun</p>
+                <a class="btn btn-info" href="{% url 'registration_register' %}">{% trans "Register" %}</a>		            
+                <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>		
+            </div>
+        {% endblock %}
+        {% block sidebar %}
+        {% endblock sidebar %}		   	 	          
+        </div>
+    </div><!--/.container-->
+    <hr/>		
+    <footer class="footer">
+        {% block footer %}
+        <div class="container">
+            <p>2013 - Django Trigger Happy</p>            
+        </div>            
+        {% endblock footer %}         
+    </footer>
+</body>
+</html>

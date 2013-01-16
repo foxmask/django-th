@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% load i18n %} 
+{% block title %}{{ user.username }} - {% trans "My profile information" %} - {{ current_site.name }}{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <div class="span9" id="profile-content">  
+		<h1>{{ user }}</h1>
+		<form action="" method="post" class="form-horizontal">
+			<legend>{% trans "Modification of my informations" %}</legend>
+			{% csrf_token %}
+		    {% for hidden in form.hidden_fields %}
+		    {{ hidden }}
+		    {% endfor %}	
+		    {{ form.non_field_errors }}
+		    <div class="control-group">
+		    	<div class="input-prepend">
+		        {{ form.first_name.errors }}
+			        <label class="control-label" for="id_first_name"> {% trans 'First name' %} </label>
+			        <div class="controls">
+			        	<span class="add-on"><i class="icon-user"></i></span>
+			        	{{ form.first_name }}
+			        </div>
+		        </div>
+		    </div>
+		    <div class="control-group">
+		    	<div class="input-prepend">
+		        {{ form.last_name.errors }}
+			        <label class="control-label" for="id_last_name">{% trans 'Last name' %}</label>
+			        <div class="controls">
+			        	<span class="add-on"><i class="icon-user"></i></span>
+			        	{{ form.last_name }}
+			        </div>
+		        </div>
+		    </div>
+		    <div class="control-group">
+				<div class="input-prepend">
+				{{ form.email.errors }}		
+			        <label class="control-label" for="id_email">{% trans 'Email' %}</label>
+		    	    <div class="controls">		
+						<span class="add-on"><i class="icon-envelope"></i></span>		
+			        	{{ form.email }}
+			        </div>	        	      
+		    	</div>
+		    	<div class="controls">    		
+					{{ form.email.help_text|safe }}
+				</div>	    
+		    </div>
+		    <div class="form-actions">
+		    		<button class="btn btn-primary" type="submit">{% trans "Update" %}</button>
+		    </div>
+		</form>
+	</div>
+{% endblock content %} 
