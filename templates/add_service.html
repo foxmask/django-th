@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Services" %} - {{ username }} - {{ current_site.name }}{% endblock %}
+{% block content %}
+    <div class="span12" id="trigger-content">
+        <h3>{% trans 'Creation of a new service' %}</h3>
+    <form method="post" class="form-horizontal"  action="{% url 'save_service' %}">
+    {% csrf_token %}
+        <div class="control-group">     
+            <label class="control-label" for="id_username">{% trans 'Provider' %}</label>
+            <div class="controls">
+            {{ form.provider }}
+            </div>
+        </div>
+        <div class="control-group">     
+            <label class="control-label" for="id_password">{% trans 'Consummer' %}</label>
+            <div class="controls">
+            {{ form.consummer }}
+            </div>
+        </div>
+        <div class="control-group">     
+            <label class="control-label" for="id_password">{% trans 'Description' %}</label>
+            <div class="controls">
+            {{ form.description }}
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <input type="hidden" name="next" value="{{ next }}" />
+            <button class="btn" data-dismiss="modal" aria-hidden="true">{% trans "Close" %}</button>
+            <button class="btn btn-primary">{% trans "Add" %}</button>
+        </div>
+    </form>
+    </div>    
+{% endblock %}

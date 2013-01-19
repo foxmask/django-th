@@ -34,7 +34,8 @@
                         {% if user.is_authenticated %}
                     <ul class="nav">
                         {% url 'base' as 'home'%}
-                        <li><a href="{{ home }}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>		                            
+                        <li><a href="{{ home }}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>
+                        <li><a href="{% url 'add_service' %}" title="{% trans "Create a new service" %}"><i class="icon-pencil"></i></a></li>		                            
                         {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                         <li><a href="{{ profiles_profile_detail }}" title="{% trans "My profile" %}"><i class="icon-user"></i></a></li>
                         <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><i class="icon-off"></i></a></li>

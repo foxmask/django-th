@@ -1,20 +1,49 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.forms import TextInput, PasswordInput, Textarea
-from django_th.models import User, TriggerHappy, UserProfile
+from django.forms.widgets import Select
 from django.utils.translation import ugettext as _
+from .models import User, TriggerService, TriggerType, UserProfile
 
 
-class TriggerHappyForm(forms.Form):
+class TriggerServiceForm(forms.ModelForm):
     """
-    Trigger Form
+        Trigger Form
     """
-    pass
+    class Meta:
+        """
+            meta to add/override anything we need
+        """
+        model = TriggerService
+        widgets = {
+            'description':\
+            TextInput(attrs={'placeholder':\
+                             _('Set a description for your new service')}),
+        }
+
+    TRIGGER_TYPE = (
+                    (u'RSS', u'RSS'),
+                    (u'Evernote', u'Evernote')
+                    )
+
+    description = forms.EmailField(label=_("Description"),
+                    help_text=_('Put the descprition of your new service'))
+
+    TRIGGER_TYPE = [(data.code, data.name) for data in TriggerType.objects.all()]
+    provider = forms.ChoiceField(label=_('Provider'),
+                             widget=forms.Select, choices=TRIGGER_TYPE,
+                             help_text=_('Select the service from which you want to grad your datas'))
+    consummer = forms.ChoiceField(label=_('Consummer'),
+                              widget=forms.Select, choices=TRIGGER_TYPE,
+                              help_text=_('Select the service to which you want to put your datas'))
+
+#    def __init__(self, *args, **kwargs):
+#        super(TriggerServiceForm, self).__init__(*args, **kwargs)
 
 
 class LoginForm(forms.ModelForm):
     """
-    Form to manage the login page
+        Form to manage the login page
     """
     class Meta:
         model = User
@@ -26,7 +55,7 @@ class LoginForm(forms.ModelForm):
 
 class ProfileForm(forms.ModelForm):
     """
-    Form to manage the User profile
+        Form to manage the User profile
     """
     class Meta:
         """
@@ -53,7 +82,7 @@ class ProfileForm(forms.ModelForm):
 
     def save(self, commit=True):
         """
-        Update the primary email address on the related User object as well.
+            Update the primary email address on the related User object as well.
         """
         usr = self.instance.user
         usr.email = self.cleaned_data['email']
@@ -66,7 +95,7 @@ class ProfileForm(forms.ModelForm):
 
 class UserProfileForm(forms.ModelForm):
     """
-    Form to deal with the fields of the User Model
+        Form to deal with the fields of the User Model
     """
     first_name = forms.CharField(label=_('Last Name'), max_length=30)
     last_name = forms.CharField(label=_('First Name'), max_length=30)
@@ -75,11 +104,7 @@ class UserProfileForm(forms.ModelForm):
         super(UserProfileForm, self).__init__(*args, **kw)
         self.fields['first_name'].initial = self.instance.user.first_name
         self.fields['last_name'].initial = self.instance.user.last_name
-
-        self.fields.keyOrder = [
-            'first_name',
-            'last_name',
-            ]
+        self.fields.keyOrder = ['first_name', 'last_name', ]
 
     def save(self, *args, **kw):
         super(UserProfileForm, self).save(*args, **kw)
@@ -89,6 +114,6 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         """
-        meta to override anything about UserProfile
+            meta to override anything about UserProfile
         """
         model = UserProfile

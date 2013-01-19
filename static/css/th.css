@@ -12,10 +12,10 @@ h1 {
 }
 
 /****
- * shared propery : trigger-happy-record-* & profile-*
+ * shared propery : trigger-record-* & profile-*
  */
 
-.trigger-happy-record, .profile-identity, .profile-stats  {
+.trigger-record, .profile-identity, .profile-stats  {
 	border: 1px solid #DDDDDD;
     background-color: white;
     border-radius: 5px 5px 5px 5px;
@@ -25,11 +25,11 @@ h1 {
     padding: 1em;
 }
 
-.trigger-happy-record-user, .profile-identity-head {
+.trigger-record-user, .profile-identity-head {
 	background-image: url('/static/images/glyphicons_003_user.png');
 }
 
-.trigger-happy-record-user {
+.trigger-record-user {
 	text-indent: 25px;
 	background-repeat: no-repeat;	
 } 
@@ -37,11 +37,11 @@ h1 {
 /****
  * History
  */
-.trigger-happy-record article footer {
+.trigger-record article footer {
 	font-size: small;
 	text-align:right;
 }
-.trigger-happy-record .trigger-happy-text {
+.trigger-record .trigger-text {
     word-wrap: break-word;
 }
 

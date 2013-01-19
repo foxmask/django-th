@@ -3,7 +3,7 @@ from django.conf.urls import patterns, include, url
 # from django.contrib import admin
 # admin.autodiscover()
 
-from django_th.forms import ProfileForm
+from .forms import ProfileForm
 from registration.forms import RegistrationFormUniqueEmail
 
 urlpatterns = patterns('',
@@ -61,14 +61,9 @@ urlpatterns = patterns('',
     # trigger happy module
     # ****************************************
     url(r'^$', 'django_th.views.base', name='base'),
-    url(r'^th/$', 'django_th.views.home', name='home'),
-    url(r'^th/add/$', 'django_th.views.add_trigger', name='add_trigger'),
-    url(r'^th/save/$', 'django_th.views.save_trigger', name='save_trigger'),
-    url(r'^th/edit/(?P<trigger_id>/\d+)/$', 'django_th.views.edit_trigger', name='edit_trigger'),
-    url(r'^th/delete/(?P<trigger_id>/\d+)/$', 'django_th.views.delete_trigger', name='delete_trigger'),
-
-
-
+    url(r'^trigger/$', 'django_th.views.home', name='home'),
+    url(r'^trigger/add/$', 'django_th.views.add_service', name='add_service'),
+    url(r'^trigger/save/$', 'django_th.views.save_service', name='save_service'),
+    url(r'^trigger/edit/(?P<trigger_id>/\d+)/$', 'django_th.views.edit_service', name='edit_trigger'),
+    url(r'^trigger/delete/(?P<trigger_id>/\d+)/$', 'django_th.views.delete_service', name='delete_trigger'),
 )
-
-

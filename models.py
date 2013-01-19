@@ -1,24 +1,27 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-
-from django.contrib.auth.models import User
 from django.db.models.signals import post_save, pre_save
+from django.contrib.auth.models import User
+# from .lib import *
 
 
-class TriggerHappyType(models.Model):
+class TriggerType(models.Model):
     """
-        TriggerHappyType
+        TriggerType
+
+        the code is the name of the provider/consumer located in dir .lib/
     """
+    code = models.CharField(max_length=80)
     name = models.CharField(max_length=140)
 
 
-
-class TriggerHappy(models.Model):
+class TriggerService(models.Model):
     """
-        TriggerHappy
+        TriggerService
     """
-    name = models.CharField(max_length=140)
-    trigger_type = models.ForeignKey(TriggerHappyType)
+    provider = models.ForeignKey(TriggerType, related_name='+', blank=True)
+    consummer = models.ForeignKey(TriggerType, related_name='+', blank=True)
+    description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     date_created = models.DateField()
 
@@ -38,4 +41,3 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 post_save.connect(create_user_profile, sender=User)
-
