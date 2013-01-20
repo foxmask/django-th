@@ -14,6 +14,13 @@ class TriggerType(models.Model):
     code = models.CharField(max_length=80)
     name = models.CharField(max_length=140)
 
+    def __unicode__(self):
+        """
+            required to build the drop down list
+            otherwise will dislpay <TriggerType object>
+        """
+        return "%s" % (self.name)
+
 
 class TriggerService(models.Model):
     """
@@ -23,7 +30,7 @@ class TriggerService(models.Model):
     consummer = models.ForeignKey(TriggerType, related_name='+', blank=True)
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
-    date_created = models.DateField()
+    date_created = models.DateField(auto_now_add=True)
 
 
 class UserProfile(models.Model):

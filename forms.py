@@ -18,27 +18,13 @@ class TriggerServiceForm(forms.ModelForm):
         widgets = {
             'description':\
             TextInput(attrs={'placeholder':\
-                             _('Set a description for your new service')}),
+                             _('A description for your new service')}),
         }
+        exclude = ('user',
+                   'date_created')
 
-    TRIGGER_TYPE = (
-                    (u'RSS', u'RSS'),
-                    (u'Evernote', u'Evernote')
-                    )
-
-    description = forms.EmailField(label=_("Description"),
-                    help_text=_('Put the descprition of your new service'))
-
-    TRIGGER_TYPE = [(data.code, data.name) for data in TriggerType.objects.all()]
-    provider = forms.ChoiceField(label=_('Provider'),
-                             widget=forms.Select, choices=TRIGGER_TYPE,
-                             help_text=_('Select the service from which you want to grad your datas'))
-    consummer = forms.ChoiceField(label=_('Consummer'),
-                              widget=forms.Select, choices=TRIGGER_TYPE,
-                              help_text=_('Select the service to which you want to put your datas'))
-
-#    def __init__(self, *args, **kwargs):
-#        super(TriggerServiceForm, self).__init__(*args, **kwargs)
+    provider = forms.ModelChoiceField(queryset=TriggerType.objects.all())
+    consummer = forms.ModelChoiceField(queryset=TriggerType.objects.all())
 
 
 class LoginForm(forms.ModelForm):

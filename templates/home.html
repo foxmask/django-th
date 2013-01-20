@@ -3,19 +3,20 @@
 {% load url from future %}
 {% load i18n %}
 {% load django_th_extras %}
-{% block title %}{% trans "My Services" %} - {{ username }} - {{ current_site.name }}{% endblock %}
+{% block title %}{% trans "My Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
     <div class="span12" id="trigger-content">
-{% if data %}
+{% if datas %}
     {% for service in datas %}
         <div class="row">
         <div class="trigger-record span11">
             <article>
-            <div class="span2">
-                <p class="trigger-record-user"><a href="{% url 'profiles_profile_detail' histo.user.username %}" title="{% trans 'View the profile'%}">{{ histo.user.username }}</a></p>
+            <div class="span6">
+                <span class="trigger-text"><a href="{% url 'edit_service' service.id %}">{{ service.provider|safe|escape }}</a></span>
+                <span class="trigger-text">{{ service.consummer|safe|escape }}</span>
             </div>
             <div class="span6">
-                <span class="trigger-text">{{ service.name|safe|escape }}</span>
+                <span class="trigger-text">{{ service.description|safe|escape }}</span>
             </div>
             <footer><i class="icon-calendar"></i> {{ service.date_created }}</footer>
             </article>

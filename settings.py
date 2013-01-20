@@ -127,6 +127,13 @@ INSTALLED_APPS = (
     'profiles',
 )
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.contrib.auth.context_processors.auth',
+    # get the Site information anywhere arround the page
+    'django_th.context_processors.current_site',
+    'django.core.context_processors.request'
+)
+
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
 # the site admins on every HTTP 500 error when DEBUG=False.
