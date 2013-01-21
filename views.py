@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import get_object_or_404, render_to_response, redirect
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -70,17 +70,18 @@ def add_service(request):
                               context_instance=RequestContext(request))
 
 
-#  @login_required
-def edit_service(request):
+@login_required
+def edit_service(request, trigger_id):
     """
         edit a service
     """
-    print request.id
-    # service = TriggerService(user_id=request.user.id)
+    # TODO check the trigger_id content
     template_name = 'add_service.html'
-    form = TriggerServiceForm(request.id)
+    service = get_object_or_404(TriggerService, pk=trigger_id)
+    form = TriggerServiceForm(instance=service)
     # 4) keep the data put in the form
     context = {'form': form,
+               'trigger_id': trigger_id,
                'user': request.user,
                'action': 'edit_service'}
     context.update(csrf(request))
@@ -96,7 +97,10 @@ def save_service(request):
         save a service
     """
     if request.method == 'POST':  # If the form has been submitted...
-        service = TriggerService(user_id=request.user.id)
+        if request.POST['trigger_id'] != '':
+            service = TriggerService.objects.get(pk=request.POST['trigger_id'])
+        else:
+            service = TriggerService(user_id=request.user.id)
         form = TriggerServiceForm(request.POST, instance=service)
         # 1) valid the form
         if form.is_valid():  # All validation rules pass
@@ -129,11 +133,63 @@ def save_service(request):
 
 
 @login_required
-def delete_service(request):
+def delete_service(request, trigger_id):
     """
         delete a service
     """
-    pass
+    # TODO check the trigger_id content
+    template_name = 'delete_service.html'
+    service = get_object_or_404(TriggerService, pk=trigger_id)
+    form = TriggerServiceForm(instance=service)
+    context = {'form': form,
+               'service': service,
+               'trigger_id': trigger_id,
+               'user': request.user, }
+    context.update(csrf(request))
+    return render_to_response(template_name,
+                              context,
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def deleted_service(request):
+    """
+        delete a service
+    """
+    if request.method == 'POST':  # If the form has been submitted...
+        if request.POST['trigger_id'] != '':
+            service = TriggerService.objects.get(pk=request.POST['trigger_id'])
+
+        form = TriggerServiceForm(request.POST, instance=service)
+        # 1) valid the form
+        if form.is_valid():  # All validation rules pass
+            # logging
+            logger.debug("'deleted_service' form is valid")
+            form.delete()
+            logger.debug("'deleted_service' form deleted")
+            # 2) redirect user
+            return HttpResponseRedirect('/trigger/deleted')
+            # return redirect('home')
+        # 3) if not valid
+        else:
+            logger.error("'deleted_service' failed with method %s "\
+                         % request.POST)
+            template_name = 'delete_service.html'
+            # 4) keep the data put in the form
+            context = {'form': form,
+               'trigger_id': request.POST['trigger_id'],
+               'user': request.user, }
+            context.update(csrf(request))
+            # 5) go back to the form and display the values + errors
+            return render_to_response(template_name,
+                                      context,
+                                      context_instance=RequestContext(request))
+    # attempt to acces to save_service by another method than POST
+    else:
+        # unbound form (if any)
+        form = TriggerServiceForm()
+    # redirect to home of the existing enabled services
+    return redirect('home')
 
 
 @login_required

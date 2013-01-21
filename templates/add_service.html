@@ -9,7 +9,7 @@
         {% if action = 'add_service' %}
         <h3>{% trans 'Creation of a new service' %}</h3>
         {% else %}
-        <h3>{% trans 'Edition of a new service' %}</h3>
+        <h3>{% trans 'Edition of your service' %}</h3>
         {% endif %}
         <form method="post" class="form-horizontal" action="{% url 'save_service' %}">
         {% csrf_token %}
@@ -37,6 +37,7 @@
         </div>
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
+            <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
             {% if action = 'add_service' %}
             <button class="btn btn-primary">{% trans "Create it" %}</button>
             {% else %}
