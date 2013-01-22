@@ -13,8 +13,8 @@
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
             <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
-            <button class="btn btn-primary">{% trans "Yes" %}</button>
-            <button class="btn btn-primary">{% trans "No" %}</button>
+            <input class="btn btn-danger" name="ok" type="submit" value="{% trans "Yes" %}" />
+            <input class="btn btn-primary" name="ko"  type="submit" value="{% trans "No" %}" />
         </div>
         </form>
     </div> 

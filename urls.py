@@ -76,4 +76,7 @@ urlpatterns = patterns('',
         name='deleted_service'),
     url(r'^trigger/added$', 'django_th.views.added_service',
         name='added_service'),
+    url(r'^trigger/edited$', 'django_th.views.edited_service',
+        name='edited_service'),
+    url(r'^trigger/hasbeendeleted', 'django_th.views.hasbeendeleted_service',)
 )

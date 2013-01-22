@@ -10,7 +10,7 @@ from django.conf import settings
 
 # trigger_happy
 from .models import TriggerService
-from .forms import TriggerServiceForm, LoginForm
+from .forms import TriggerServiceForm, LoginForm, TriggerServiceDeleteForm
 
 import logging
 # Get an instance of a logger
@@ -99,8 +99,10 @@ def save_service(request):
     if request.method == 'POST':  # If the form has been submitted...
         if request.POST['trigger_id'] != '':
             service = TriggerService.objects.get(pk=request.POST['trigger_id'])
+            next_action = '/trigger/edited'
         else:
             service = TriggerService(user_id=request.user.id)
+            next_action = '/trigger/added'
         form = TriggerServiceForm(request.POST, instance=service)
         # 1) valid the form
         if form.is_valid():  # All validation rules pass
@@ -109,7 +111,7 @@ def save_service(request):
             form.save()
             logger.debug("'save_service' form saved")
             # 2) redirect user
-            return HttpResponseRedirect('/trigger/added')
+            return HttpResponseRedirect(next_action)
             # return redirect('home')
         # 3) if not valid
         else:
@@ -140,7 +142,7 @@ def delete_service(request, trigger_id):
     # TODO check the trigger_id content
     template_name = 'delete_service.html'
     service = get_object_or_404(TriggerService, pk=trigger_id)
-    form = TriggerServiceForm(instance=service)
+    form = TriggerServiceDeleteForm(instance=service)
     context = {'form': form,
                'service': service,
                'trigger_id': trigger_id,
@@ -156,19 +158,23 @@ def deleted_service(request):
     """
         delete a service
     """
-    if request.method == 'POST':  # If the form has been submitted...
-        if request.POST['trigger_id'] != '':
-            service = TriggerService.objects.get(pk=request.POST['trigger_id'])
-
-        form = TriggerServiceForm(request.POST, instance=service)
+    print request.POST
+    if 'ok' in request.POST:
+        print request.POST['ok']
+    if request.method == 'POST' and\
+        'ok' in request.POST and\
+        request.POST['trigger_id'] != '':  # If the form has been submitted...
+        service = TriggerService.objects.get(pk=request.POST['trigger_id'])
+        form = TriggerServiceDeleteForm(request.POST, instance=service)
+        print form
         # 1) valid the form
         if form.is_valid():  # All validation rules pass
             # logging
             logger.debug("'deleted_service' form is valid")
-            form.delete()
+            service.delete()
             logger.debug("'deleted_service' form deleted")
             # 2) redirect user
-            return HttpResponseRedirect('/trigger/deleted')
+            return HttpResponseRedirect('/trigger/hasbeendeleted')
             # return redirect('home')
         # 3) if not valid
         else:
@@ -197,7 +203,27 @@ def added_service(request):
     """
         display the added service page
     """
-    return render_to_response('added_service.html')
+
+    context = {'sentance': 'Your service has been successfully created'}
+    return render_to_response('thanks_service.html', context)
+
+
+@login_required
+def edited_service(request):
+    """
+        display the added service page
+    """
+
+    context = {'sentance': 'Your service has been successfully modified'}
+    return render_to_response('thanks_service.html', context)
+
+
+def hasbeendeleted_service(request):
+    """
+        display the deleted service page
+    """
+    context = {'sentance': 'Your service has been successfully deleted'}
+    return render_to_response('thanks_service.html', context)
 
 
 from django.contrib.auth import logout

@@ -27,6 +27,19 @@ class TriggerServiceForm(forms.ModelForm):
     consummer = forms.ModelChoiceField(queryset=TriggerType.objects.all())
 
 
+class TriggerServiceDeleteForm(forms.ModelForm):
+    class Meta:
+        """
+            meta to remove everything we dont need to just delete the Form
+        """
+        model = TriggerService
+        exclude = ('user',
+                   'date_created',
+                   'provider',
+                   'consummer',
+                   'description')
+
+
 class LoginForm(forms.ModelForm):
     """
         Form to manage the login page

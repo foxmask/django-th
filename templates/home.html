@@ -11,14 +11,16 @@
         <div class="row">
         <div class="trigger-record span11">
             <article>
-            <div class="span6">
-                <span class="trigger-text"><a href="{% url 'edit_service' service.id %}">{{ service.provider|safe|escape }}</a></span>
-                <span class="trigger-text">{{ service.consummer|safe|escape }}</span>
-            </div>
-            <div class="span6">
-                <span class="trigger-text">{{ service.description|safe|escape }}</span>
-            </div>
-            <footer><i class="icon-calendar"></i> {{ service.date_created }}</footer>
+                <div class="span5">
+                    <a href="{% url 'edit_service' service.id %}"><span class="trigger-from">{{ service.provider|safe|escape }}</span> =>
+                    <span class="trigger-to">{{ service.consummer|safe|escape }}</span></a>
+                </div>
+                <div class="span5">
+                    <a href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash"></i></a><span class="trigger-text">{{ service.description|safe|escape }}</span>
+                </div>
+                <div class="span10">
+                    <footer><i class="icon-calendar"></i> {{ service.date_created }}</footer>
+                </div>
             </article>
             </div>
          </div>
