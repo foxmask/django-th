@@ -125,6 +125,9 @@ INSTALLED_APPS = (
     'django_th',
     'registration',
     'profiles',
+    'oauth-flow',
+    'oauth2',
+    'linked_accounts',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -173,6 +176,48 @@ AUTH_PROFILE_MODULE = 'django_th.UserProfile'
 from django.core.urlresolvers import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('base')
 
+# ************************************
+# LINKED ACCOUNT MODULE :
+# doc here
+# https://github.com/zen4ever/django-linked-accounts/blob/master/docs/gettingstarted.rst
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'linked_accounts.backends.LinkedAccountsBackend',
+)
+
+OAUTH_FLOW_SETTINGS = {
+    'facebook': {
+        'KEY': '',
+        'SECRET': '',
+        'SCOPE': ['email'],
+    },
+    'twitter': {
+        'KEY': '',
+        'SECRET': '',
+    },
+    'google': {
+        'KEY': '',
+        'SECRET': '',
+        'SCOPE': ['https://www.googleapis.com/auth/userinfo.profile']
+    },
+    'yahoo': {
+        'KEY': '',
+        'SECRET': '',
+    }
+}
+# Set this to False to prohibit auth.User creation after OAuth login.
+# This is useful if you want to only allow your users to link third-party
+# accounts to their existing auth.User account, but not allow sign up
+# via third-party service.
+LINKED_ACCOUNTS_ALLOW_REGISTRATION = False
+
+
+# Set this to False to prohibit users from logging in via OAuth. This is useful
+# if you want to only retrieve data from a third-party service that requires
+# OAuth authentication.
+LINKED_ACCOUNTS_ALLOW_LOGIN = False
+
+# local settings management
 try:
     from local_settings import *
 except ImportError:

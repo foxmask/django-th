@@ -74,10 +74,8 @@ class ProfileForm(forms.ModelForm):
 
     email = forms.EmailField(label=_("Email"),
                              help_text=_('Your email will be used only in the following case and nothing more <ul><li>to send your activation mail</li><li>to send recovery password when you forgot yours</li><li>to send notifications</li></ul>'))
-    last_name = forms.CharField(label=_('Last Name'),
-                                help_text='')
-    first_name = forms.CharField(label=_('First Name'),
-                                 help_text='')
+    last_name = forms.CharField(label=_('Last Name'))
+    first_name = forms.CharField(label=_('First Name'))
 
     def save(self, commit=True):
         """
