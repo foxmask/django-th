@@ -125,9 +125,8 @@ INSTALLED_APPS = (
     'django_th',
     'registration',
     'profiles',
-    'oauth-flow',
     'oauth2',
-    'linked_accounts',
+    'evernote',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

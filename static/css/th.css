@@ -41,8 +41,12 @@ h1 {
 	font-size: small;
 	text-align:right;
 }
-.trigger-record .trigger-text {
+.trigger-record .service-text {
     word-wrap: break-word;
+}
+
+.service-text{
+      vertical-align: text-bottom;
 }
 
 .charWarning {
@@ -70,6 +74,38 @@ h1 {
 .profile-stats-head {
 	background-image: url('/static/images/glyphicons_040_stats.png');
 }
+
+/****
+ * icon services
+ */
+.icon-evernote {
+    background-image: url('/static/images/glyphicons_371_evernote.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;
+}
+
+.icon-twitter {
+    background-image: url('/static/images/glyphicons_392_twitter.png');
+}
+
+.icon-rss {
+    background-image: url('/static/images/glyphicons_397_rss.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;    
+}
+
+.icon-from-to {
+    background-image: url('/static/images/glyphicons_223_thin_right_arrow.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;    
+}
+
 
 /****
  * Menu 

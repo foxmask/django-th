@@ -82,5 +82,5 @@ urlpatterns = patterns('',
     # *********************************************
     #  Linked Account
     # *********************************************
-    url(r"^linked_accounts/", include("linked_accounts.urls"))
+    # url(r"^linked_accounts/", include("linked_accounts.urls"))
 )
