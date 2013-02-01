@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rss PUBLIC "-//Netscape Communications//DTD RSS 0.91//EN" "http://my.netscape.com/publish/formats/rss-0.91.dtd">
+<rss version="0.91">
+ <channel>
+  <title>PyPI Newest Packages</title>
+  <link>http://pypi.python.org/pypi</link>
+  <description>Newest packages registered at the Python Package Index</description>
+  <language>en</language>
+
+  <item>
+    <title>diacs added to PyPI</title>
+    <link>http://pypi.python.org/pypi/diacs</link>
+    <guid>http://pypi.python.org/pypi/diacs</guid>
+    <description>Gnip normalized Disqus JSON activity to csv parser.</description>
+    <pubDate>17 Jan 2013 20:48:37 GMT</pubDate>
+   </item>
+  <item>
+    <title>ceiclient added to PyPI</title>
+    <link>http://pypi.python.org/pypi/ceiclient</link>
+    <guid>http://pypi.python.org/pypi/ceiclient</guid>
+    <description>Client tools for the OOI Common Execution Infrastructure</description>
+    <pubDate>17 Jan 2013 20:43:21 GMT</pubDate>
+   </item>
+  <item>
+    <title>instantauth added to PyPI</title>
+    <link>http://pypi.python.org/pypi/instantauth</link>
+    <guid>http://pypi.python.org/pypi/instantauth</guid>
+    <description>Not very credential authentication model.</description>
+    <pubDate>17 Jan 2013 20:16:22 GMT</pubDate>
+   </item>
+  <item>
+    <title>urledit added to PyPI</title>
+    <link>http://pypi.python.org/pypi/urledit</link>
+    <guid>http://pypi.python.org/pypi/urledit</guid>
+    <description>Url parsing and editing</description>
+    <pubDate>17 Jan 2013 20:14:38 GMT</pubDate>
+   </item>
+  <item>
+    <title>FullContact.py added to PyPI</title>
+    <link>http://pypi.python.org/pypi/FullContact.py</link>
+    <guid>http://pypi.python.org/pypi/FullContact.py</guid>
+    <description>Simple Python interface for FullContact, using Requests</description>
+    <pubDate>17 Jan 2013 20:14:17 GMT</pubDate>
+   </item>
+  <item>
+    <title>Flask-Squll added to PyPI</title>
+    <link>http://pypi.python.org/pypi/Flask-Squll</link>
+    <guid>http://pypi.python.org/pypi/Flask-Squll</guid>
+    <description>flask + sqlalchemy integration</description>
+    <pubDate>17 Jan 2013 20:08:57 GMT</pubDate>
+   </item>
+  <item>
+    <title>tempmonitor added to PyPI</title>
+    <link>http://pypi.python.org/pypi/tempmonitor</link>
+    <guid>http://pypi.python.org/pypi/tempmonitor</guid>
+    <description>Python wrapper for tempmonitor, command-line version of Temperature Monitor (Mac OS)</description>
+    <pubDate>17 Jan 2013 19:32:13 GMT</pubDate>
+   </item>
+  <item>
+    <title>django-hyperadmin added to PyPI</title>
+    <link>http://pypi.python.org/pypi/django-hyperadmin</link>
+    <guid>http://pypi.python.org/pypi/django-hyperadmin</guid>
+    <description>UNKNOWN</description>
+    <pubDate>17 Jan 2013 19:25:56 GMT</pubDate>
+   </item>
+  <item>
+    <title>fbterminal added to PyPI</title>
+    <link>http://pypi.python.org/pypi/fbterminal</link>
+    <guid>http://pypi.python.org/pypi/fbterminal</guid>
+    <description>UNKNOWN</description>
+    <pubDate>17 Jan 2013 19:12:10 GMT</pubDate>
+   </item>
+  <item>
+    <title>opengeode added to PyPI</title>
+    <link>http://pypi.python.org/pypi/opengeode</link>
+    <guid>http://pypi.python.org/pypi/opengeode</guid>
+    <description>A tiny, free SDL editor for TASTE</description>
+    <pubDate>17 Jan 2013 19:08:50 GMT</pubDate>
+   </item>
+  <item>
+    <title>django-languages added to PyPI</title>
+    <link>http://pypi.python.org/pypi/django-languages</link>
+    <guid>http://pypi.python.org/pypi/django-languages</guid>
+    <description>Provides a language field for Django models.</description>
+    <pubDate>17 Jan 2013 18:15:09 GMT</pubDate>
+   </item>
+  <item>
+    <title>SoftLayer added to PyPI</title>
+    <link>http://pypi.python.org/pypi/SoftLayer</link>
+    <guid>http://pypi.python.org/pypi/SoftLayer</guid>
+    <description>A library to contact SoftLayer's backend services</description>
+    <pubDate>17 Jan 2013 17:39:49 GMT</pubDate>
+   </item>
+  <item>
+    <title>python-mpns added to PyPI</title>
+    <link>http://pypi.python.org/pypi/python-mpns</link>
+    <guid>http://pypi.python.org/pypi/python-mpns</guid>
+    <description>Python module for Microsoft Push Notification Service (MPNS) for Windows Phone</description>
+    <pubDate>17 Jan 2013 16:28:41 GMT</pubDate>
+   </item>
+  <item>
+    <title>repeat added to PyPI</title>
+    <link>http://pypi.python.org/pypi/repeat</link>
+    <guid>http://pypi.python.org/pypi/repeat</guid>
+    <description>Repeat command N times every S seconds.</description>
+    <pubDate>17 Jan 2013 15:44:19 GMT</pubDate>
+   </item>
+  <item>
+    <title>pywhmcs added to PyPI</title>
+    <link>http://pypi.python.org/pypi/pywhmcs</link>
+    <guid>http://pypi.python.org/pypi/pywhmcs</guid>
+    <description>WHMCS Client Library</description>
+    <pubDate>17 Jan 2013 15:13:57 GMT</pubDate>
+   </item>
+  <item>
+    <title>triangle_plot added to PyPI</title>
+    <link>http://pypi.python.org/pypi/triangle_plot</link>
+    <guid>http://pypi.python.org/pypi/triangle_plot</guid>
+    <description>Make some beautiful corner plots of samples.</description>
+    <pubDate>17 Jan 2013 15:08:41 GMT</pubDate>
+   </item>
+  <item>
+    <title>junit-xml added to PyPI</title>
+    <link>http://pypi.python.org/pypi/junit-xml</link>
+    <guid>http://pypi.python.org/pypi/junit-xml</guid>
+    <description>Creates JUnit XML test result documents that can be read by tools such as Jenkins</description>
+    <pubDate>17 Jan 2013 14:53:18 GMT</pubDate>
+   </item>
+  <item>
+    <title>basitapi added to PyPI</title>
+    <link>http://pypi.python.org/pypi/basitapi</link>
+    <guid>http://pypi.python.org/pypi/basitapi</guid>
+    <description>UNKNOWN</description>
+    <pubDate>17 Jan 2013 14:47:04 GMT</pubDate>
+   </item>
+  <item>
+    <title>PersonalMovieManager added to PyPI</title>
+    <link>http://pypi.python.org/pypi/PersonalMovieManager</link>
+    <guid>http://pypi.python.org/pypi/PersonalMovieManager</guid>
+    <description>A simple movie manager</description>
+    <pubDate>17 Jan 2013 14:35:59 GMT</pubDate>
+   </item>
+  <item>
+    <title>cubicweb-seo added to PyPI</title>
+    <link>http://pypi.python.org/pypi/cubicweb-seo</link>
+    <guid>http://pypi.python.org/pypi/cubicweb-seo</guid>
+    <description>search engine optimisation with robotstxt and sitemaps</description>
+    <pubDate>17 Jan 2013 13:07:14 GMT</pubDate>
+   </item>
+  <item>
+    <title>collective.wpadmin added to PyPI</title>
+    <link>http://pypi.python.org/pypi/collective.wpadmin</link>
+    <guid>http://pypi.python.org/pypi/collective.wpadmin</guid>
+    <description>Wordpress like admin page</description>
+    <pubDate>17 Jan 2013 12:41:59 GMT</pubDate>
+   </item>
+  <item>
+    <title>cirb.blog added to PyPI</title>
+    <link>http://pypi.python.org/pypi/cirb.blog</link>
+    <guid>http://pypi.python.org/pypi/cirb.blog</guid>
+    <description>Blog project for CIRB</description>
+    <pubDate>17 Jan 2013 12:40:58 GMT</pubDate>
+   </item>
+  <item>
+    <title>simple-virtuoso-migrate added to PyPI</title>
+    <link>http://pypi.python.org/pypi/simple-virtuoso-migrate</link>
+    <guid>http://pypi.python.org/pypi/simple-virtuoso-migrate</guid>
+    <description>simple-virtuoso-migrate is a Virtuoso database migration tool inspired on simple-db-migrate.</description>
+    <pubDate>17 Jan 2013 12:01:31 GMT</pubDate>
+   </item>
+  <item>
+    <title>koansys.recipe.elasticsearch added to PyPI</title>
+    <link>http://pypi.python.org/pypi/koansys.recipe.elasticsearch</link>
+    <guid>http://pypi.python.org/pypi/koansys.recipe.elasticsearch</guid>
+    <description>ZC Buildout recipe for setting up elasticsearch.</description>
+    <pubDate>17 Jan 2013 11:52:05 GMT</pubDate>
+   </item>
+  <item>
+    <title>catfeed added to PyPI</title>
+    <link>http://pypi.python.org/pypi/catfeed</link>
+    <guid>http://pypi.python.org/pypi/catfeed</guid>
+    <description>Command-line tool for concatenating Atom and RSS feeds</description>
+    <pubDate>17 Jan 2013 11:36:17 GMT</pubDate>
+   </item>
+  <item>
+    <title>xhostplus.blog added to PyPI</title>
+    <link>http://pypi.python.org/pypi/xhostplus.blog</link>
+    <guid>http://pypi.python.org/pypi/xhostplus.blog</guid>
+    <description>XHOSTPLUS Blog Product for Plone 4</description>
+    <pubDate>17 Jan 2013 10:52:10 GMT</pubDate>
+   </item>
+  <item>
+    <title>cpopen added to PyPI</title>
+    <link>http://pypi.python.org/pypi/cpopen</link>
+    <guid>http://pypi.python.org/pypi/cpopen</guid>
+    <description>Creates a subprocess in simpler safer manner</description>
+    <pubDate>17 Jan 2013 09:32:27 GMT</pubDate>
+   </item>
+  <item>
+    <title>renren added to PyPI</title>
+    <link>http://pypi.python.org/pypi/renren</link>
+    <guid>http://pypi.python.org/pypi/renren</guid>
+    <description>renren python sdk</description>
+    <pubDate>17 Jan 2013 09:24:30 GMT</pubDate>
+   </item>
+  <item>
+    <title>EasyPost added to PyPI</title>
+    <link>http://pypi.python.org/pypi/EasyPost</link>
+    <guid>http://pypi.python.org/pypi/EasyPost</guid>
+    <description>EasyPost Python Bindings</description>
+    <pubDate>17 Jan 2013 09:15:41 GMT</pubDate>
+   </item>
+  <item>
+    <title>ucloudbiz added to PyPI</title>
+    <link>http://pypi.python.org/pypi/ucloudbiz</link>
+    <guid>http://pypi.python.org/pypi/ucloudbiz</guid>
+    <description>ucloudbiz openapi python library.</description>
+    <pubDate>17 Jan 2013 09:05:56 GMT</pubDate>
+   </item>
+  <item>
+    <title>postgression added to PyPI</title>
+    <link>http://pypi.python.org/pypi/postgression</link>
+    <guid>http://pypi.python.org/pypi/postgression</guid>
+    <description>A python client for the postgression API.</description>
+    <pubDate>17 Jan 2013 07:51:08 GMT</pubDate>
+   </item>
+  <item>
+    <title>jenkins_report added to PyPI</title>
+    <link>http://pypi.python.org/pypi/jenkins_report</link>
+    <guid>http://pypi.python.org/pypi/jenkins_report</guid>
+    <description>Tools for reporting Jenkins job information</description>
+    <pubDate>17 Jan 2013 07:38:23 GMT</pubDate>
+   </item>
+  <item>
+    <title>graphdat added to PyPI</title>
+    <link>http://pypi.python.org/pypi/graphdat</link>
+    <guid>http://pypi.python.org/pypi/graphdat</guid>
+    <description>Graphdat instrumentation module</description>
+    <pubDate>17 Jan 2013 07:00:42 GMT</pubDate>
+   </item>
+  <item>
+    <title>ponderosity added to PyPI</title>
+    <link>http://pypi.python.org/pypi/ponderosity</link>
+    <guid>http://pypi.python.org/pypi/ponderosity</guid>
+    <description></description>
+    <pubDate>17 Jan 2013 06:00:18 GMT</pubDate>
+   </item>
+  <item>
+    <title>django-postleware added to PyPI</title>
+    <link>http://pypi.python.org/pypi/django-postleware</link>
+    <guid>http://pypi.python.org/pypi/django-postleware</guid>
+    <description>A simple django middleware that ensures POSTs aren't cached by clients.</description>
+    <pubDate>17 Jan 2013 02:11:47 GMT</pubDate>
+   </item>
+  <item>
+    <title>simplemongo added to PyPI</title>
+    <link>http://pypi.python.org/pypi/simplemongo</link>
+    <guid>http://pypi.python.org/pypi/simplemongo</guid>
+    <description>Super simple ORM wrapper for MongoDB</description>
+    <pubDate>16 Jan 2013 23:10:40 GMT</pubDate>
+   </item>
+  <item>
+    <title>ganna added to PyPI</title>
+    <link>http://pypi.python.org/pypi/ganna</link>
+    <guid>http://pypi.python.org/pypi/ganna</guid>
+    <description>Python_course</description>
+    <pubDate>16 Jan 2013 22:38:24 GMT</pubDate>
+   </item>
+  <item>
+    <title>pmr2.z3cform added to PyPI</title>
+    <link>http://pypi.python.org/pypi/pmr2.z3cform</link>
+    <guid>http://pypi.python.org/pypi/pmr2.z3cform</guid>
+    <description>Customized z3c.form and plone.z3cform library for PMR2</description>
+    <pubDate>16 Jan 2013 22:26:28 GMT</pubDate>
+   </item>
+  <item>
+    <title>ganna_app added to PyPI</title>
+    <link>http://pypi.python.org/pypi/ganna_app</link>
+    <guid>http://pypi.python.org/pypi/ganna_app</guid>
+    <description>python</description>
+    <pubDate>16 Jan 2013 21:59:29 GMT</pubDate>
+   </item>
+  <item>
+    <title>pyramid_rawes added to PyPI</title>
+    <link>http://pypi.python.org/pypi/pyramid_rawes</link>
+    <guid>http://pypi.python.org/pypi/pyramid_rawes</guid>
+    <description>RawES binding for pyramid</description>
+    <pubDate>16 Jan 2013 21:27:31 GMT</pubDate>
+   </item>
+  </channel>
+</rss>
