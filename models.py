@@ -52,7 +52,6 @@ class TriggerService(models.Model):
         >>> service1.show()
         'My Service Flux RSS Note Evernote My First Service foxmask 2013-01-23'
 
-
     """
     provider = models.ForeignKey(TriggerType, related_name='+', blank=True)
     consummer = models.ForeignKey(TriggerType, related_name='+', blank=True)
