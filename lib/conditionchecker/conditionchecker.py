@@ -1,62 +1,55 @@
 # -*- coding: utf-8 -*-
-import re
+
 __all__ = ['Condition']
 
 
 class Condition(object):
+	'''
+		class Condition permits to reduce the size of the data to return by applying a rule of filtering
+	'''
+	def __init__(self, **kwargs):
+		'''
+			set the 2 filters type : match and does_not_match
+		'''
+		if 'does_not_match' in kwargs:
+			self.does_not_match = kwargs['does_not_match']
 
-    def __init__(self, **kwargs):
-        if 'does_not_match' in kwargs:
-            self.does_not_match = kwargs['does_not_match']
-            print self.does_not_match
-
-        if 'match' in kwargs:
-            self.match = kwargs['match']
-            print self.match
-
-    def check(self, datas):
-    # want too read all the feed with no filter
-        if self.match == "" and self.does_not_match == '':
-            for entry in datas.entries:
-                yield entry
-        # need to filter something
-        else:
-            if self.match != '':
-                pattern = self.match
-                prog = re.compile(pattern)
-
-            if self.does_not_match != '':
-                pattern2 = self.does_not_match
-                prog2 = re.compile(pattern2)
-
-            for entry in datas.entries:
-
-                cond1 = False
-                if self.match != '':
-                    match = prog.match(entry['title'])
-                if match:
-                    cond1 = True
-                if not cond1:
-                    match = prog.match(entry['description'])
-                if match:
-                    cond1 = True
-
-                cond2 = False
-                if self.does_not_match != '':
-                    match2 = prog2.match(entry['title'])
-                if match2:
-                    cond2 = True
-                if not cond2:
-                    match2 = prog2.match(entry['description'])
-                if match2:
-                    cond2 = True
-
-                # found the does_not_match
-                if cond2 and match2:
-                    continue
-                # if not
-                elif cond1 and match:
-                    yield entry
-                # otherwise pass, dont need them too
-                else:
-                    pass
+		if 'match' in kwargs:
+			self.match = kwargs['match']
+	
+	def check(self, datas, *filers):
+		'''
+			this method permits to reduce the quantity of information to read by applying some filtering
+			
+			here '*filers' can receive a list of properties to be filtered
+		'''
+		# special case : no filter : want to read all the feed		
+		if self.match == "" and self.does_not_match == '':
+			yield datas
+		# let's filtering : 
+		else:
+			condition1 = False
+			condition2 = False
+			#arg contain the property from which we want to check the 'data'
+			for property in filers:
+				#check if my datas contains my property
+				if property in datas:
+					#filter to find only this data
+					if self.match != '' and condition1 == False:
+						condition1 = self.filter_that(self.match, datas[property])
+					# filter to exclude this data, when found, continue to the next entry
+					if self.does_not_match != '' and condition2 == False:
+						condition2 = self.filter_that(self.does_not_match, datas[property])
+						if condition2 == True:
+							continue
+			if condition1 and condition2 == False:
+				yield datas
+			
+	def filter_that(self, criteria, data):
+		'''
+			this method just use the module 're' to check if the data contain the string to find
+		'''
+		import re
+		prog = re.compile(criteria)	
+		
+		return True if prog.match(data) else False		
