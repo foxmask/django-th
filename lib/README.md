@@ -1,8 +1,8 @@
 Django Trigger Happy : HOWTO Services 
-=========================
+=====================================
 
 Read a complete RSS file :
-----------------------------------------
+--------------------------
 
 Suppose you want to read a complete RSS file , then you will reach your goal with the following piece of code :
 
@@ -18,20 +18,22 @@ for feeds in Feeds(url_to_parse=url).datas():
 ```
 
 Read a filtered RSS file :
--------------------------------------
+--------------------------
 
 Now suppose you want to read a RSS file but filtered with 2 criterias :
 
-first one : You want all feeds that contain a given word
-second one : You dont want the feeds that contain a given word
+* first one : You want all feeds that contain a given word
+* second one : You dont want the feeds that contain a given word
 
 For example : 
-You want feeds that speak about django but dont want the same feeds that contain the word 'UNKNOW'
-Yes this happens very often on pipy :)
+
+You want feeds that speak about django but dont want the same feeds that contain the word 'UNKNOWN'
+
+Yes this happens very often on pypi :)
 
 
 Here is a piece of code that handles both services :
----------------------------------------------------------------------------------
+----------------------------------------------------
 
 ```python
 from django_th.lib.feedsservice import Feeds
