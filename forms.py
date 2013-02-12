@@ -54,13 +54,12 @@ class UserServiceForm(forms.ModelForm):
         model = UserService
         exclude = ('user',)
 
-    my_services = forms.ModelChoiceField(queryset=TriggerType.objects.all())
+    code = forms.ModelChoiceField(queryset=TriggerType.objects.all())
 
     def save(self, user=None):
-        print user
-        myobject = super(UserServiceForm, self).save(commit=False)
-        myobject.author = user
-        myobject.save()
+        self.myobject = super(UserServiceForm, self).save(commit=False)
+        self.myobject.user = user
+        self.myobject.save()
 
 
 class LoginForm(forms.ModelForm):

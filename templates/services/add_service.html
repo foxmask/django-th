@@ -14,22 +14,22 @@
         <form method="post" class="form-horizontal" action="">
         {% csrf_token %}
         {{ form.non_field_errors }}
-        <div class="control-group">
-            <label class="control-label" for="id_my_service">{% trans 'Service' %}</label>
-            <div class="controls">
-            {{ form.my_services.errors }}
-            {{ form.my_services }}
+            <div class="control-group">
+                <label class="control-label" for="id_code">{% trans 'Service' %}</label>
+                <div class="controls">
+                {{ form.code.errors }}
+                {{ form.code }}
+                </div>
             </div>
-        </div>
-        <div class="form-actions">
-            <input type="hidden" name="next" value="{{ next }}" />
-            <input type="hidden" name="my_service_id" value="{{ my_service_id }}" />
-            {% if action = 'add_service' %}
-            <button class="btn btn-primary">{% trans "Activate it" %}</button>
-            {% else %}
-            <button class="btn btn-primary">{% trans "Edit it" %}</button>
-            {% endif %}
-        </div>
+            <div class="form-actions">
+                <input type="hidden" name="next" value="{{ next }}" />
+                <input type="hidden" name="id" value="{{ id }}" />
+                {% if action = 'add_service' %}
+                <button class="btn btn-primary">{% trans "Activate it" %}</button>
+                {% else %}
+                <button class="btn btn-primary">{% trans "Edit it" %}</button>
+                {% endif %}
+            </div>
         </form>
     </div> 
 {% endblock %}

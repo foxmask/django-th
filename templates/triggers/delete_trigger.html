@@ -9,7 +9,7 @@
         <h3>{% trans 'Deletion of your service' %}</h3>
         <form method="post" class="form-horizontal" action="">
         {% csrf_token %}
-        {% trans "Are your sure you want to remove this trigger ?" %} {{ service.description }}
+        {% trans "Are your sure you want to remove this trigger ?" %} : {{ triggerservice.description }}
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
             <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />

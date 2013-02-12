@@ -7,14 +7,14 @@
 {% block content %}
     <div class="span12" id="service-content">
 {% if user.is_authenticated %}
-{% if triggers_list %}
+{% if services_list %}
     {% for service in services_list %}
         <div class="row">
             <div class="service-record span11">
             <article>
                 <div class="span8">
-                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.code.code|lower }}"></i> </a>
-                    <span class="trigger-text">{{ service.name|safe|escape }}</span></a>
+                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.code|safe|escape }}"><i class="icon-{{ service.code|lower }}"></i> </a>
+                    <span class="trigger-text">{{ service.code|safe|escape }}</span></a>
                 </div>
                 <div class="span2">
                     <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>

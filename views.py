@@ -140,7 +140,7 @@ class UserServiceListView(ListView):
     def get_queryset(self):
         # get the Service of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user).order_by('-date_created')
+            return self.queryset.filter(user=self.request.user)
         # otherwise return nothing
         return UserService.objects.none()
 
@@ -155,7 +155,7 @@ class UserServiceCreateView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save(user=self.request.user)
-        return HttpResponseRedirect('/services/add/thanks/')
+        return HttpResponseRedirect('/service/add/thanks/')
 
     def get_context_data(self, **kw):
         context = super(UserServiceCreateView, self).get_context_data(**kw)
@@ -165,7 +165,7 @@ class UserServiceCreateView(CreateView):
 
 class UserServiceUpdateView(UpdateView):
     form_class = UserServiceForm
-    template_name = "services/add_services.html"
+    template_name = "services/add_service.html"
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kw):
@@ -176,7 +176,7 @@ class UserServiceUpdateView(UpdateView):
         return HttpResponseRedirect('/service/edit/thanks/')
 
     def get_object(self, queryset=None):
-        obj = TriggerService.objects.get(pk=self.kwargs['pk'])
+        obj = UserService.objects.get(pk=self.kwargs['pk'])
         return obj
 
     def get_context_data(self, **kw):
@@ -187,7 +187,7 @@ class UserServiceUpdateView(UpdateView):
 
 class UserServiceDeleteView(DeleteView):
     queryset = UserService.objects.all()
-    template_name = "service/delete_service.html"
+    template_name = "services/delete_service.html"
     success_url = '/service/delete/thanks/'
 
     @method_decorator(login_required)

@@ -21,7 +21,7 @@ class TriggerType(models.Model):
         >>> evernote.show()
         'My Service Type Evernote named Evernote Note'
     """
-    code = models.CharField(max_length=80)
+    code = models.CharField(max_length=80, primary_key=True)
     name = models.CharField(max_length=140)
 
     def __unicode__(self):
@@ -70,7 +70,7 @@ class UserService(models.Model):
         UserService a model to link service and user
     """
     user = models.ForeignKey(User)
-    my_service = models.ForeignKey(TriggerType, related_name='+', blank=True)
+    code = models.ForeignKey(TriggerType, related_name='+')
 
 
 class UserProfile(models.Model):
