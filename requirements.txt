@@ -1,3 +1,5 @@
 Django==1.4.3
 django-profiles==0.2
 django-registration==0.8
+evernote==1.23.1
+oauth2==1.5.211

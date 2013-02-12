@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Activated Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block content %}
+    <div class="span12" id="service-content">
+{% if user.is_authenticated %}
+{% if triggers_list %}
+    {% for service in services_list %}
+        <div class="row">
+            <div class="service-record span11">
+            <article>
+                <div class="span8">
+                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.code.code|lower }}"></i> </a>
+                    <span class="trigger-text">{{ service.name|safe|escape }}</span></a>
+                </div>
+                <div class="span2">
+                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>
+                    <a href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash"></i></a><br/>
+                </div>
+            </article>
+            </div>
+         </div>
+    {% endfor %}
+{% else %}
+        <div class="row service-record">
+            <div class="service-record span11">
+            <article>
+                <div class="span8">
+                    {% trans 'No service activated yet' %}, you can now start by 
+                    <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
+                </div>
+            </article>
+            </div>
+            
+        </div>
+{% endif %}
+{% endif %}
+{% endblock %}

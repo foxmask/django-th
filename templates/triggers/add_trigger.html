@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block content %}
+    <div class="span12" id="trigger-content">
+        {% if action = 'add_trigger' %}
+        <h3>{% trans 'Creation of a new trigger' %}</h3>
+        {% else %}
+        <h3>{% trans 'Edition of your trigger' %}</h3>
+        {% endif %}
+        <form method="post" class="form-horizontal" action="">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="control-group">
+            <label class="control-label" for="id_provider">{% trans 'Provider' %}</label>
+            <div class="controls">
+            {{ form.provider.errors }}
+            {{ form.provider }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_consummer">{% trans 'Consummer' %}</label>
+            <div class="controls">
+            {{ form.consummer.errors }}
+            {{ form.consummer }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_description">{% trans 'Description' %}</label>
+            <div class="controls">
+            {{ form.description.errors }}
+            {{ form.description }}
+            </div>
+        </div>
+        <div class="form-actions">
+            <input type="hidden" name="next" value="{{ next }}" />
+            <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
+            {% if action = 'add_trigger' %}
+            <button class="btn btn-primary">{% trans "Create it" %}</button>
+            {% else %}
+            <button class="btn btn-primary">{% trans "Edit it" %}</button>
+            {% endif %}
+        </div>
+        </form>
+    </div> 
+{% endblock %}

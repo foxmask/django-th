@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block content %}
+    <div class="span12" id="trigger-content">
+        <h3>{% trans 'Deletion of your service' %}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {% csrf_token %}
+        {% trans "Are your sure you want to remove this trigger ?" %} {{ service.description }}
+        <div class="form-actions">
+            <input type="hidden" name="next" value="{{ next }}" />
+            <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
+            <input class="btn btn-danger" name="ok" type="submit" value="{% trans "Yes" %}" />
+            <input class="btn btn-primary" name="ko"  type="submit" value="{% trans "No" %}" />
+        </div>
+        </form>
+    </div> 
+{% endblock %}

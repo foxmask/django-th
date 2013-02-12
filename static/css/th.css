@@ -41,11 +41,11 @@ h1 {
 	font-size: small;
 	text-align:right;
 }
-.trigger-record .service-text {
+.trigger-record .trigger-text {
     word-wrap: break-word;
 }
 
-.service-text{
+.trigger-text{
       vertical-align: text-bottom;
 }
 

@@ -1,10 +1,27 @@
 from django.conf.urls import patterns, include, url
+from django.views.generic import TemplateView
 
 # from django.contrib import admin
 # admin.autodiscover()
 
-from .forms import ProfileForm
 from registration.forms import RegistrationFormUniqueEmail
+
+from .forms import ProfileForm
+from .views import TriggerListView, \
+                    TriggerCreateView, \
+                    TriggerUpdateView, \
+                    TriggerDeleteView, \
+                    TriggerAddedTemplateView, \
+                    TriggerEditedTemplateView, \
+                    TriggerDeletedTemplateView, \
+                    UserServiceListView, \
+                    UserServiceCreateView, \
+                    UserServiceUpdateView, \
+                    UserServiceDeleteView, \
+                    UserServiceAddedTemplateView, \
+                    UserServiceEditedTemplateView, \
+                    UserServiceDeletedTemplateView
+
 
 urlpatterns = patterns('',
     # ****************************************
@@ -60,25 +77,40 @@ urlpatterns = patterns('',
     # ****************************************
     # trigger happy module
     # ****************************************
-    url(r'^$', 'django_th.views.base',
+    url(r'^$', TriggerListView.as_view(),
         name='base'),
-    url(r'^trigger/$', 'django_th.views.home',
+    url(r'^trigger/$', TriggerListView.as_view(),
         name='home'),
-    url(r'^trigger/add/$', 'django_th.views.add_service',
+    # ****************************************
+    # * trigger
+    # ****************************************
+    url(r'^trigger/add/$', TriggerCreateView.as_view(),
+        name='add_trigger'),
+    url(r'^trigger/edit/(?P<pk>\d+)$', TriggerUpdateView.as_view(),
+        name='edit_trigger'),
+    url(r'^trigger/delete/(?P<pk>\d+)$', TriggerDeleteView.as_view(),
+        name='delete_trigger'),
+    url(r'^trigger/add/thanks', TriggerAddedTemplateView.as_view()),
+    url(r'^trigger/edit/thanks', TriggerEditedTemplateView.as_view()),
+    url(r'^trigger/delete/$', TriggerDeleteView.as_view(),
+        name='delete_trigger'),
+    url(r'^trigger/delete/thanks', TriggerDeletedTemplateView.as_view()),
+    # ****************************************
+    # * service
+    # ****************************************
+    url(r'^services/$', UserServiceListView.as_view(), name='user_services'),
+    url(r'^service/add/$', UserServiceCreateView.as_view(),
         name='add_service'),
-    url(r'^trigger/save/$', 'django_th.views.save_service',
-        name='save_service'),
-    url(r'^trigger/edit/(?P<trigger_id>\d+)$', 'django_th.views.edit_service',
+    url(r'^service/edit/(?P<pk>\d+)$', UserServiceUpdateView.as_view(),
         name='edit_service'),
-    url(r'^trigger/delete/(?P<trigger_id>\d+)$', 'django_th.views.delete_service',
+    url(r'^service/delete/(?P<pk>\d+)$', UserServiceDeleteView.as_view(),
         name='delete_service'),
-    url(r'^trigger/deleted/$', 'django_th.views.deleted_service',
-        name='deleted_service'),
-    url(r'^trigger/added$', 'django_th.views.added_service',
-        name='added_service'),
-    url(r'^trigger/edited$', 'django_th.views.edited_service',
-        name='edited_service'),
-    url(r'^trigger/hasbeendeleted', 'django_th.views.hasbeendeleted_service',),
+    url(r'^service/add/thanks', UserServiceAddedTemplateView.as_view()),
+    url(r'^service/edit/thanks', UserServiceEditedTemplateView.as_view()),
+    url(r'^service/delete/$', UserServiceDeleteView.as_view(),
+        name='delete_service'),
+    url(r'^service/delete/thanks', UserServiceDeletedTemplateView.as_view()),
+
     # *********************************************
     #  Linked Account
     # *********************************************

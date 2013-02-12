@@ -1,14 +1,25 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.forms import TextInput, PasswordInput, Textarea
-from django.forms.widgets import Select
+from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
-from .models import User, TriggerService, TriggerType, UserProfile
+from .models import User, TriggerService, TriggerType, UserService, UserProfile
+
+
+class TriggerTypeForm(forms.ModelForm):
+    """
+        TriggerType Form
+    """
+    class Meta:
+        """
+            meta to add/override anything we need
+        """
+        model = TriggerType
+    name = forms.ModelChoiceField(queryset=TriggerType.objects.all())
 
 
 class TriggerServiceForm(forms.ModelForm):
     """
-        Trigger Form
+        TriggerService Form
     """
     class Meta:
         """
@@ -26,18 +37,30 @@ class TriggerServiceForm(forms.ModelForm):
     provider = forms.ModelChoiceField(queryset=TriggerType.objects.all())
     consummer = forms.ModelChoiceField(queryset=TriggerType.objects.all())
 
+    def save(self, user=None):
+        self.myobject = super(TriggerServiceForm, self).save(commit=False)
+        self.myobject.user = user
+        self.myobject.save()
 
-class TriggerServiceDeleteForm(forms.ModelForm):
+
+class UserServiceForm(forms.ModelForm):
+    """
+        Form to deal with my own activated service
+    """
     class Meta:
         """
-            meta to remove everything we dont need to just delete the Form
+            meta to add/override anything we need
         """
-        model = TriggerService
-        exclude = ('user',
-                   'date_created',
-                   'provider',
-                   'consummer',
-                   'description')
+        model = UserService
+        exclude = ('user',)
+
+    my_services = forms.ModelChoiceField(queryset=TriggerType.objects.all())
+
+    def save(self, user=None):
+        print user
+        myobject = super(UserServiceForm, self).save(commit=False)
+        myobject.author = user
+        myobject.save()
 
 
 class LoginForm(forms.ModelForm):
@@ -114,3 +137,4 @@ class UserProfileForm(forms.ModelForm):
             meta to override anything about UserProfile
         """
         model = UserProfile
+

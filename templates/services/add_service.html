@@ -11,35 +11,21 @@
         {% else %}
         <h3>{% trans 'Edition of your service' %}</h3>
         {% endif %}
-        <form method="post" class="form-horizontal" action="{% url 'save_service' %}">
+        <form method="post" class="form-horizontal" action="">
         {% csrf_token %}
         {{ form.non_field_errors }}
         <div class="control-group">
-            <label class="control-label" for="id_provider">{% trans 'Provider' %}</label>
+            <label class="control-label" for="id_my_service">{% trans 'Service' %}</label>
             <div class="controls">
-            {{ form.provider.errors }}
-            {{ form.provider }}
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="id_consummer">{% trans 'Consummer' %}</label>
-            <div class="controls">
-            {{ form.consummer.errors }}
-            {{ form.consummer }}
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="id_description">{% trans 'Description' %}</label>
-            <div class="controls">
-            {{ form.description.errors }}
-            {{ form.description }}
+            {{ form.my_services.errors }}
+            {{ form.my_services }}
             </div>
         </div>
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
-            <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
+            <input type="hidden" name="my_service_id" value="{{ my_service_id }}" />
             {% if action = 'add_service' %}
-            <button class="btn btn-primary">{% trans "Create it" %}</button>
+            <button class="btn btn-primary">{% trans "Activate it" %}</button>
             {% else %}
             <button class="btn btn-primary">{% trans "Edit it" %}</button>
             {% endif %}

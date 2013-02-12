@@ -65,6 +65,14 @@ class TriggerService(models.Model):
                                               self.date_created)
 
 
+class UserService(models.Model):
+    """
+        UserService a model to link service and user
+    """
+    user = models.ForeignKey(User)
+    my_service = models.ForeignKey(TriggerType, related_name='+', blank=True)
+
+
 class UserProfile(models.Model):
     """
         Related user to handle his profile

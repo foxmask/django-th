@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static %}
+{% load url from future %}
+{% load i18n %}
+{% load django_th_extras %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block content %}
+    <div class="span12" id="trigger-content">
+        <h3>{% trans sentance %}</h3>
+        <p><a href="{% url 'home' %}">{% trans 'Go back to your list of triggers' %}</a></p>
+    </div> 
+{% endblock %}

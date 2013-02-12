@@ -3,23 +3,24 @@
 {% load url from future %}
 {% load i18n %}
 {% load django_th_extras %}
-{% block title %}{% trans "My Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
     <div class="span12" id="trigger-content">
-{% if datas %}
-    {% for service in datas %}
+{% if user.is_authenticated %}
+{% if triggers_list %}
+    {% for trigger in triggers_list %}
         <div class="row">
         <div class="trigger-record span11">
             <article>
                 <div class="span8">
-                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.provider|safe|escape }} => {{ service.consummer|safe|escape }}">
-                    <i class="icon-{{ service.provider.code|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ service.consummer.code|lower }}"></i></a>
-                    <span class="service-text">{{ service.description|safe|escape }}</span></a>                    
+                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit the trigger " %} {{ trigger.provider|safe|escape }} => {{ trigger.consummer|safe|escape }}">
+                    <i class="icon-{{ trigger.provider.code|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.code|lower }}"></i></a>
+                    <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>                    
                 </div>
                 <div class="span2">
-                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>
-                    <a href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash"></i></a><br/>
-                    <i class="icon-calendar"></i> {{ service.date_created }}
+                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>
+                    <a href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i></a><br/>
+                    <i class="icon-calendar"></i> {{ trigger.date_created }}
                 </div>
             </article>
             </div>
@@ -29,6 +30,17 @@
         <div class="row trigger-record">
             {% trans 'No trigger yet' %}
         </div>
+{% endif %}
+{% else %}
+            <div class="hero-unit">
+                <p>
+                    <strong>Trigger Happy</strong> is up !
+                </p>
+                <p>Let's register !</p>
+                <p>Have Fun</p>
+                <a class="btn btn-info" href="{% url 'registration_register' %}">{% trans "Register" %}</a>                 
+                <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
+            </div>
 {% endif %}
     </div>
 {% endblock %}
