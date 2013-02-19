@@ -32,18 +32,18 @@ class Condition(object):
             condition1 = False
             condition2 = False
             # arg contain the property from which we want to check the 'data'
-            for property in filers:
+            for prop in filers:
                 # check if my datas contains my property
-                if property in datas:
+                if prop in datas:
                     # filter to find only this data
                     if self.match != '' and condition1 == False:
                         condition1 = self.filter_that(self.match,
-                                                      datas[property])
+                                                      datas[prop])
                     # filter to exclude this data,
                     # when found, continue to the next entry
                     if self.does_not_match != '' and condition2 == False:
                         condition2 = self.filter_that(self.does_not_match,
-                                                      datas[property])
+                                                      datas[prop])
                         if condition2 == True:
                             continue
         if condition1 and condition2 == False:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.db.models.signals import post_save, pre_save
+from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 # from .lib import *
 
@@ -13,7 +13,8 @@ class TriggerType(models.Model):
 
         # Create some Type
         >>> rss = TriggerType.objects.create(name="RSS Feeds", code="RSS")
-        >>> evernote = TriggerType.objects.create(name="Evernote Note", code="Evernote")
+        >>> evernote = TriggerType.objects.create(name="Evernote Note", \
+        code="Evernote")
 
         # Show them
         >>> rss.show()
@@ -46,7 +47,9 @@ class TriggerService(models.Model):
         >>> consummer1 = TriggerType.objects.get(pk=2)
         >>> user1 = User.objects.get(id=1)
         >>> date_created1 = '20130122'
-        >>> service1 = TriggerService.objects.create(provider=provider1, consummer=consummer1, description="My First Service", user=user1, date_created=date_created1)
+        >>> service1 = TriggerService.objects.create(provider=provider1, \
+        consummer=consummer1, description="My First Service", user=user1, \
+        date_created=date_created1)
 
         # Show them
         >>> service1.show()

@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.core.context_processors import csrf
-from django.shortcuts import render_to_response, redirect, get_object_or_404
-from django.template import RequestContext
+from django.shortcuts import redirect
 # from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.contrib.auth.models import User
-from django.conf import settings
 from django.http import HttpResponseRedirect
 
 from django.views.generic import CreateView, UpdateView, \
-    DeleteView, ListView, DetailView, TemplateView
+    DeleteView, ListView, TemplateView
 # trigger_happy
 from .models import TriggerService, UserService
 from .forms import TriggerServiceForm, UserServiceForm
@@ -45,7 +41,8 @@ class TriggerListView(ListView):
     def get_queryset(self):
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user).order_by('-date_created')
+            return self.queryset.filter(user=self.request.user).\
+                                        order_by('-date_created')
         # otherwise return nothing
         return TriggerService.objects.none()
 
@@ -122,7 +119,8 @@ class TriggerDeletedTemplateView(TemplateView):
     template_name = "triggers/thanks_trigger.html"
 
     def get_context_data(self, **kw):
-        context = super(TriggerDeletedTemplateView, self).get_context_data(**kw)
+        context = super(TriggerDeletedTemplateView, self).\
+                                                        get_context_data(**kw)
         context['sentance'] = 'Your trigger has been successfully deleted'
         return context
 
@@ -199,7 +197,8 @@ class UserServiceAddedTemplateView(TemplateView):
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
-        context = super(UserServiceAddedTemplateView, self).get_context_data(**kw)
+        context = super(UserServiceAddedTemplateView, self).\
+                                                    get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully created'
         return context
 
@@ -208,7 +207,8 @@ class UserServiceEditedTemplateView(TemplateView):
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
-        context = super(UserServiceEditedTemplateView, self).get_context_data(**kw)
+        context = super(UserServiceEditedTemplateView, self).\
+                                                    get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully modified'
         return context
 
@@ -217,6 +217,7 @@ class UserServiceDeletedTemplateView(TemplateView):
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
-        context = super(UserServiceDeletedTemplateView, self).get_context_data(**kw)
+        context = super(UserServiceDeletedTemplateView, self).\
+                                                    get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully deleted'
         return context
