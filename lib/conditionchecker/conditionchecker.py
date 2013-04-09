@@ -44,7 +44,7 @@ class Condition(object):
                     if self.does_not_match != '' and condition2 == False:
                         condition2 = self.filter_that(self.does_not_match,
                                                       datas[prop])
-                        if condition2 == True:
+                        if condition2:
                             continue
         if condition1 and condition2 == False:
             yield datas

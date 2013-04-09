@@ -12,8 +12,9 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'django.db.backends.',
-        'NAME': '',  # Or path to database file if using sqlite3.
+        'ENGINE': '',
+        'NAME': '',
+        # Or path to database file if using sqlite3.
         'USER': '',  # Not used with sqlite3.
         'PASSWORD': '',  # Not used with sqlite3.
         'HOST': '',  # Set to empty string for localhost. Not used with sqlite3
@@ -174,6 +175,18 @@ AUTH_PROFILE_MODULE = 'django_th.UserProfile'
 # go back on home page after logged in
 from django.core.urlresolvers import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('base')
+
+
+TH_SERVICES = (
+    'django_th.services.rss.ServiceRss',
+    'django_th.services.evernote.ServiceEvernote',
+)
+
+TH_SERVICE_EVERNOTE = {
+    'sandbox': True,
+    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+}
 
 # local settings management
 try:
