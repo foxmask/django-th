@@ -178,8 +178,8 @@ LOGIN_REDIRECT_URL = reverse_lazy('base')
 
 
 TH_SERVICES = (
-    'django_th.services.rss.ServiceRss',
-    'django_th.services.evernote.ServiceEvernote',
+    'django_th.services.my_rss.ServiceRss',
+    'django_th.services.my_evernote.ServiceEvernote',
 )
 
 TH_SERVICE_EVERNOTE = {
