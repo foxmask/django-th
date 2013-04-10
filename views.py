@@ -11,13 +11,12 @@ from django.views.generic import CreateView, UpdateView, \
 # trigger_happy
 from .models import TriggerService, UserService
 from .forms import TriggerServiceForm, UserServiceForm
-from .service_provider import ServiceProvider
+from .service_provider import service_provider
 
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-service_provider = ServiceProvider()
 service_provider.load_services()
 
 from django.contrib.auth import logout

@@ -17,10 +17,13 @@ class ServiceProvider(OrderedDict):
             self.register(class_name, service)
 
     def register(self, class_name, service):
-        self[class_name] = service        
+        self[class_name] = service
 
     """
         get the service (class instance) from its name
     """
     def get_service(self, class_name):
         return self[class_name]
+
+service_provider = ServiceProvider()
+
