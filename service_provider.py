@@ -26,4 +26,3 @@ class ServiceProvider(OrderedDict):
         return self[class_name]
 
 service_provider = ServiceProvider()
-

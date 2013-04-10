@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from .models.services import Services
-# from .lib import *
+from services import Services
 
 
-class ServiceRSS(Services):
+class ServiceRss(Services):
 
     class Meta(Services.Meta):
         db_table = 'rss'
