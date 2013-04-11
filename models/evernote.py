@@ -11,4 +11,4 @@ class ServiceEvernote(Services):
     text = models.TextField()
 
     class Meta(Services.Meta):
-        db_table = 'evernote'
+        app_label = 'django_th'

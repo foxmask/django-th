@@ -6,4 +6,4 @@ from services import Services
 class ServiceRss(Services):
 
     class Meta(Services.Meta):
-        db_table = 'rss'
+        app_label = 'django_th'
