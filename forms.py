@@ -3,6 +3,9 @@ from django import forms
 from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
 from .models import User, TriggerService, TriggerType, UserService, UserProfile
+from .models.services import ServicesManaged
+from .models.rss import ServiceRss
+from .models.evernote import ServiceEvernote
 
 
 class TriggerTypeForm(forms.ModelForm):
@@ -140,3 +143,32 @@ class UserProfileForm(forms.ModelForm):
             meta to override anything about UserProfile
         """
         model = UserProfile
+
+
+class ServicesActivatedForm(forms.ModelForm):
+    """
+        get the list of the available services (the activated one)
+    """
+    class Meta:
+        model = ServicesManaged
+    """
+        get the activated services
+    """
+    name = forms.ModelChoiceField(queryset=ServicesManaged.objects.all())
+
+
+class EvernoteForm(forms.ModelForm):
+    """
+        for to handle Evernote service
+    """
+    class Meta:
+        model = ServiceEvernote
+
+
+class RssForm(forms.ModelForm):
+    """
+        for to handle Rss service
+    """
+
+    class Meta:
+        model = ServiceRss

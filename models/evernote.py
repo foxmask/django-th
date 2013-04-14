@@ -12,3 +12,5 @@ class ServiceEvernote(Services):
 
     class Meta(Services.Meta):
         app_label = 'django_th'
+        verbose_name = 'Evernote'
+        verbose_name_plural = 'Evernote'

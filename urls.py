@@ -1,14 +1,8 @@
 from django.conf.urls import patterns, include, url
 from django.views.generic import TemplateView
 
-from .models.rss import ServiceRss
-from .models.evernote import ServiceEvernote
-
 from django.contrib import admin
 admin.autodiscover()
-
-admin.site.register(ServiceRss)
-admin.site.register(ServiceEvernote)
 
 from registration.forms import RegistrationFormUniqueEmail
 
