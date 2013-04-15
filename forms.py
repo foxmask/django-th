@@ -8,6 +8,29 @@ from .models.rss import ServiceRss
 from .models.evernote import ServiceEvernote
 
 
+def available_services():
+    """
+        get the activated services
+
+        read the models dir to find the services installed
+        to be added to the system by the administrator
+    """
+    import os
+    models_services_dir = os.path.dirname(os.path.abspath(__file__))
+    models_services_dir += '/models'
+    all_datas = ()
+    data = ()
+    print models_services_dir
+    for model_file in os.listdir(models_services_dir):
+        if not model_file in ('services.py', 'services.pyc', \
+                              '__init__.py', '__init__.pyc'):
+            name, name_ext = model_file.rsplit('.', 1)
+            if not name_ext == 'pyc':
+                data = (name, name.capitalize())
+                all_datas = (data,) + all_datas
+    return all_datas
+
+
 class TriggerTypeForm(forms.ModelForm):
     """
         TriggerType Form
@@ -157,6 +180,18 @@ class ServicesActivatedForm(forms.ModelForm):
     name = forms.ModelChoiceField(queryset=ServicesManaged.objects.all())
 
 
+class ServicesManagedForm(forms.ModelForm):
+    """
+        get the list of the available services (the activated one)
+    """
+    class Meta:
+        model = ServicesManaged
+
+    status_values = (('0', 'Disabled'), (1, 'Enabled'), (2, 'Not installed'))
+    status = forms.ChoiceField(status_values)
+    name = forms.ChoiceField(available_services())
+
+
 class EvernoteForm(forms.ModelForm):
     """
         for to handle Evernote service
@@ -172,3 +207,4 @@ class RssForm(forms.ModelForm):
 
     class Meta:
         model = ServiceRss
+
