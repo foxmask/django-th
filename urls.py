@@ -7,6 +7,8 @@ admin.autodiscover()
 from registration.forms import RegistrationFormUniqueEmail
 
 from .forms import ProfileForm
+from .forms.rss import RssForm
+from .forms.evernote import EvernoteForm
 from .views import TriggerListView, \
                     TriggerCreateView, \
                     TriggerUpdateView, \
@@ -20,7 +22,8 @@ from .views import TriggerListView, \
                     UserServiceDeleteView, \
                     UserServiceAddedTemplateView, \
                     UserServiceEditedTemplateView, \
-                    UserServiceDeletedTemplateView
+                    UserServiceDeletedTemplateView, \
+                    UserServiceWizard
 
 
 urlpatterns = patterns('',
@@ -110,6 +113,10 @@ urlpatterns = patterns('',
     url(r'^service/delete/$', UserServiceDeleteView.as_view(),
         name='delete_service'),
     url(r'^service/delete/thanks', UserServiceDeletedTemplateView.as_view()),
+
+    # wizard
+     url(r'^service/create/$', UserServiceWizard.as_view([RssForm, \
+                                                         EvernoteForm])),
 
     # *********************************************
     #  Linked Account

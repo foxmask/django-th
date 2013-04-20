@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .services import Services
+from .services import ThServices
 from evernote.api.client import EvernoteClient
 from django.conf import settings
 """
@@ -16,7 +16,7 @@ from django.conf import settings
 """
 
 
-class ServiceEvernote(Services):
+class ServiceEvernote(ThServices):
 
     def get_title(self):
         pass

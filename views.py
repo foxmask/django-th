@@ -8,8 +8,12 @@ from django.http import HttpResponseRedirect
 
 from django.views.generic import CreateView, UpdateView, \
     DeleteView, ListView, TemplateView
+
+from django.contrib.formtools.wizard.views import SessionWizardView
+
 # trigger_happy
 from .models import TriggerService, UserService
+from .models.services import ThServices
 from .forms import TriggerServiceForm, UserServiceForm
 from .service_provider import service_provider
 
@@ -224,3 +228,63 @@ class UserServiceDeletedTemplateView(TemplateView):
         context['sentance'] = 'Your service has been successfully deleted'
         return context
 
+
+class UserServiceIndexView(ListView):
+    """
+        list of all available services activated from the admin
+    """
+    context_object_name = "services_list"
+    queryset = ThServices.objects.all()
+    template_name = "services/index.html"
+
+    def get_queryset(self):
+        # get the Service of the connected user
+        # if self.request.user.is_authenticated():
+        #    return self.queryset.filter(user=self.request.user)
+        # otherwise return nothing
+        return ThServices.objects.none()
+
+
+from .forms import rss
+from .forms import evernote
+
+
+FORMS = [("rss", rss.RssForm),
+         ("evernote", evernote.EvernoteForm),
+]
+TEMPLATES = {
+         '0': 'rss/wz-rss-form.html',
+         '1': 'evernote/wz-evernote-form.html',
+}
+
+
+class UserServiceWizard(SessionWizardView):
+    instance = None
+
+    def get_form_instance(self, step):
+        """
+        Provides us with an instance of the Project Model to save on completion
+        """
+        if self.instance is None:
+            self.instance = TriggerService()
+        return self.instance
+
+    def done(self, form_list, **kwargs):
+        """
+        Save info to the DB
+        """
+        service = self.instance
+        service.provider_id = ThServices.objects.get(name='rss').id
+        service.consummer_id = ThServices.objects.get(name='evernote').id
+        service.user = self.request.user
+        service.save()
+        return HttpResponseRedirect('/')
+
+    def get_template_names(self):
+        """
+        Custom templates for the different steps
+        """
+        # print settings.TH_WIZARD_TPL
+        # from django.conf import settings
+        print self.steps
+        return [TEMPLATES[self.steps.current]]

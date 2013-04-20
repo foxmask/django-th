@@ -188,6 +188,11 @@ TH_SERVICE_EVERNOTE = {
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
 }
 
+TH_WIZARD_TPL = {
+             'my_rss': 'my_rss/rss-form.html',
+             'my_evernote': 'my_evernote/evernote-form.html',
+}
+
 # local settings management
 try:
     from local_settings import *

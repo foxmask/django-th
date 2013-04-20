@@ -2,27 +2,17 @@
 from django.db import models
 
 
-class Services(models.Model):
+class ThServices(models.Model):
     name = models.CharField(max_length=255)
-
-    class Meta:
-        abstract = True
+    status = models.IntegerField()
 
     def __unicode__(self):
         return "%s" % (self.name)
 
-
-class ServicesManaged(Services):
-    """
-        service activated / desactivated from the admin
-        to manage the service we want to give to the user
-    """
-    class Meta(Services.Meta):
+    class Meta():
         app_label = 'django_th'
         verbose_name = 'Services'
         verbose_name_plural = 'Services'
-
-    status = models.IntegerField()
 
     def my_status(self):
         """
