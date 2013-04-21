@@ -16,6 +16,7 @@
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit the trigger " %} {{ trigger.provider|safe|escape }} => {{ trigger.consummer|safe|escape }}">
                     <i class="icon-{{ trigger.provider|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer|lower }}"></i></a>
                     <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>
+                    HMMMM <span class="trigger-text">{{ trigger.provider.url|safe|escape }}</span></a>
                 </div>
                 <div class="span2">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>

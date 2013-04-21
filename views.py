@@ -247,14 +247,16 @@ class UserServiceIndexView(ListView):
 
 from .forms import rss
 from .forms import evernote
-
+from .forms import ServicesForm
 
 FORMS = [("rss", rss.RssForm),
          ("evernote", evernote.EvernoteForm),
+         ("services", ServicesForm),
 ]
 TEMPLATES = {
          '0': 'rss/wz-rss-form.html',
          '1': 'evernote/wz-evernote-form.html',
+         '2': 'services_wizard/wz-description.html'
 }
 
 
@@ -273,6 +275,7 @@ class UserServiceWizard(SessionWizardView):
         """
         Save info to the DB
         """
+        print kwargs
         service = self.instance
         service.provider_id = ThServices.objects.get(name='rss').id
         service.consummer_id = ThServices.objects.get(name='evernote').id
@@ -286,5 +289,4 @@ class UserServiceWizard(SessionWizardView):
         """
         # print settings.TH_WIZARD_TPL
         # from django.conf import settings
-        print self.steps
         return [TEMPLATES[self.steps.current]]

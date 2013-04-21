@@ -67,7 +67,7 @@ class UserServiceForm(forms.ModelForm):
         model = UserService
         exclude = ('user',)
 
-    code = forms.ModelChoiceField(queryset=ThServices.objects.all())
+    code = forms.ModelChoiceField(queryset=TriggerService.objects.all())
 
     def save(self, user=None):
         self.myobject = super(UserServiceForm, self).save(commit=False)
@@ -177,3 +177,14 @@ class ServicesManagedForm(forms.ModelForm):
     status_values = (('0', 'Disabled'), (1, 'Enabled'), (2, 'Not installed'))
     status = forms.ChoiceField(status_values)
     name = forms.ChoiceField(available_services())
+
+
+class ServicesForm(forms.ModelForm):
+    class Meta:
+        model = TriggerService
+        widgets = {
+                   'description':\
+                   TextInput(attrs={'placeholder':\
+                                    _('A description for your new service')}),
+                   }
+        fields = ('description',)

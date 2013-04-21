@@ -7,6 +7,7 @@ admin.autodiscover()
 from registration.forms import RegistrationFormUniqueEmail
 
 from .forms import ProfileForm
+from .forms import ServicesForm
 from .forms.rss import RssForm
 from .forms.evernote import EvernoteForm
 from .views import TriggerListView, \
@@ -116,7 +117,8 @@ urlpatterns = patterns('',
 
     # wizard
      url(r'^service/create/$', UserServiceWizard.as_view([RssForm, \
-                                                         EvernoteForm])),
+                                                         EvernoteForm, \
+                                                         ServicesForm])),
 
     # *********************************************
     #  Linked Account
