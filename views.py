@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import redirect
-# from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
@@ -12,8 +11,9 @@ from django.views.generic import CreateView, UpdateView, \
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
+#from .models import TriggerService, UserService, ServicesActivated
 from .models import TriggerService, UserService
-from .models.services import ThServices
+from .models.services import ServicesMgr
 from .forms import TriggerServiceForm, UserServiceForm
 from .service_provider import service_provider
 
@@ -232,9 +232,10 @@ class UserServiceDeletedTemplateView(TemplateView):
 class UserServiceIndexView(ListView):
     """
         list of all available services activated from the admin
+        the user can use and activate too for his own usage
     """
     context_object_name = "services_list"
-    queryset = ThServices.objects.all()
+    queryset = ServicesMgr.objects.all()
     template_name = "services/index.html"
 
     def get_queryset(self):
@@ -242,22 +243,20 @@ class UserServiceIndexView(ListView):
         # if self.request.user.is_authenticated():
         #    return self.queryset.filter(user=self.request.user)
         # otherwise return nothing
-        return ThServices.objects.none()
+        return ServicesMgr.objects.none()
 
 
 from .forms import rss
 from .forms import evernote
-from .forms import ServicesForm
+from .forms import ServicesDescriptionForm
 
 FORMS = [("rss", rss.RssForm),
          ("evernote", evernote.EvernoteForm),
-         ("services", ServicesForm),
-]
-TEMPLATES = {
-         '0': 'rss/wz-rss-form.html',
-         '1': 'evernote/wz-evernote-form.html',
-         '2': 'services_wizard/wz-description.html'
-}
+         ("services", ServicesDescriptionForm), ]
+
+TEMPLATES = {'0': 'rss/wz-rss-form.html',
+    '1': 'evernote/wz-evernote-form.html',
+    '2': 'services_wizard/wz-description.html'}
 
 
 class UserServiceWizard(SessionWizardView):
@@ -277,8 +276,8 @@ class UserServiceWizard(SessionWizardView):
         """
         print kwargs
         service = self.instance
-        service.provider_id = ThServices.objects.get(name='rss').id
-        service.consummer_id = ThServices.objects.get(name='evernote').id
+        service.provider = UserService.objects.get(name='rss')
+        service.consummer = UserService.objects.get(name='evernote')
         service.user = self.request.user
         service.save()
         return HttpResponseRedirect('/')

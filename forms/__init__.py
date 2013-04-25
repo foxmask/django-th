@@ -2,32 +2,34 @@
 from django import forms
 from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
-from ..models import User, TriggerService, \
-                    UserService, UserProfile
-from ..models.services import ThServices
+from ..models import User, TriggerService, UserService, UserProfile
+#from ..models import ServicesActivated
+from ..models.services import ServicesMgr
 
 
-def available_services():
+class UserServiceForm(forms.ModelForm):
     """
-        get the activated services
-
-        read the models dir to find the services installed
-        to be added to the system by the administrator
+        Form to deal with my own activated service
     """
-    import os
-    models_services_dir = os.path.dirname(os.path.abspath(__file__))
-    models_services_dir = os.path.realpath(models_services_dir + '/../models')
-    print models_services_dir
-    all_datas = ()
-    data = ()
-    for model_file in os.listdir(models_services_dir):
-        if not model_file in ('services.py', 'services.pyc', \
-                              '__init__.py', '__init__.pyc'):
-            name, name_ext = model_file.rsplit('.', 1)
-            if not name_ext == 'pyc':
-                data = (name, name.capitalize())
-                all_datas = (data,) + all_datas
-    return all_datas
+    def save(self, user=None):
+        self.myobject = super(UserServiceForm, self).save(commit=False)
+        self.myobject.user = user
+        self.myobject.save()
+
+    def __init__(self, *args, **kwargs):
+        super(UserServiceForm, self).__init__(*args, **kwargs)
+        self.fields['name'].initial = forms.ModelChoiceField(
+#           queryset=ServicesActivated.objects.filter(status=1))
+            queryset=ServicesMgr.objects.filter(status=1))
+#            queryset=[(s.id, s.name) for s in
+#            ServicesActivated.objects.filter(status=1)])
+
+    class Meta:
+        """
+            meta to add/override anything we need
+        """
+        model = UserService
+        exclude = ('user',)
 
 
 class TriggerServiceForm(forms.ModelForm):
@@ -40,37 +42,18 @@ class TriggerServiceForm(forms.ModelForm):
         """
         model = TriggerService
         widgets = {
-            'description':\
-            TextInput(attrs={'placeholder':\
+            'description':
+            TextInput(attrs={'placeholder':
                              _('A description for your new service')}),
         }
         exclude = ('user',
                    'date_created')
 
-    provider = forms.ModelChoiceField(queryset=ThServices.objects.all())
-    consummer = forms.ModelChoiceField(queryset=ThServices.objects.all())
+    provider = forms.ModelChoiceField(queryset=UserService.objects.all())
+    consummer = forms.ModelChoiceField(queryset=UserService.objects.all())
 
     def save(self, user=None):
         self.myobject = super(TriggerServiceForm, self).save(commit=False)
-        self.myobject.user = user
-        self.myobject.save()
-
-
-class UserServiceForm(forms.ModelForm):
-    """
-        Form to deal with my own activated service
-    """
-    class Meta:
-        """
-            meta to add/override anything we need
-        """
-        model = UserService
-        exclude = ('user',)
-
-    code = forms.ModelChoiceField(queryset=TriggerService.objects.all())
-
-    def save(self, user=None):
-        self.myobject = super(UserServiceForm, self).save(commit=False)
         self.myobject.user = user
         self.myobject.save()
 
@@ -155,36 +138,24 @@ class UserProfileForm(forms.ModelForm):
         model = UserProfile
 
 
-class ServicesActivatedForm(forms.ModelForm):
-    """
-        get the list of the available services (the activated one)
-    """
-    class Meta:
-        model = ThServices
-    """
-        get the activated services
-    """
-    name = forms.ModelChoiceField(queryset=ThServices.objects.all())
+# class ServicesActivatedForm(forms.ModelForm):
+#     """
+#         get the list of the available services (the activated one)
+#     """
+#     class Meta:
+#         model = ServicesActivated
+#     """
+#         get the activated services
+#     """
+#     service_name = forms.ModelChoiceField(
+#         queryset=ServicesActivated.objects.all())
 
 
-class ServicesManagedForm(forms.ModelForm):
-    """
-        get the list of the available services (the activated one)
-    """
-    class Meta:
-        model = ThServices
-
-    status_values = (('0', 'Disabled'), (1, 'Enabled'), (2, 'Not installed'))
-    status = forms.ChoiceField(status_values)
-    name = forms.ChoiceField(available_services())
-
-
-class ServicesForm(forms.ModelForm):
+class ServicesDescriptionForm(forms.ModelForm):
     class Meta:
         model = TriggerService
-        widgets = {
-                   'description':\
-                   TextInput(attrs={'placeholder':\
+        widgets = {'description':
+                   TextInput(attrs={'placeholder':
                                     _('A description for your new service')}),
                    }
         fields = ('description',)

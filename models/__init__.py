@@ -3,9 +3,76 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
-from .services import ThServices
+from ..models.services import ServicesMgr
+#those 2 lines needs to be here to be able to generate the tables 
+#even if those classes are not used at all
 from .evernote import ServiceEvernote
 from .rss import ServiceRss
+
+
+# class ServicesActivated(models.Model):
+#     """
+#         Services Activated from the admin
+#     """
+#     service_name = models.CharField(max_length=200, unique=True)
+#     status = models.BooleanField()
+#     description = models.CharField(max_length=200)
+
+#     class Meta:
+#         verbose_name = 'Services'
+#         verbose_name_plural = 'Services'
+
+#     def __unicode__(self):
+#         return "%s" % (self.service_name)
+
+# class ServicesMgr(models.Model):
+#     """
+#         Service activated from the admin
+#     """
+#     name = models.CharField(max_length=255, unique=True)
+#     status = models.BooleanField()
+#     #trigger = models.ForeignKey('django_th.TriggerService')
+#     description = models.CharField(max_length=200)
+
+#     class Meta:
+#         app_label = 'django_th'
+#         verbose_name = 'Services'
+#         verbose_name_plural = 'Services'
+
+#     def __unicode__(self):
+#         return "%s" % (self.name)
+
+
+class UserProfile(models.Model):
+    """
+        Related user to handle his profile
+    """
+    user = models.OneToOneField(User)
+
+
+class UserService(models.Model):
+    """
+         UserService a model to link service and user
+    """
+    user = models.ForeignKey(User)
+    #name = models.ForeignKey(ServicesMgr)
+    name = models.ForeignKey(ServicesMgr, to_field="name", related_name='+', unique=True)
+
+    def __unicode__(self):
+        return "%s" % (self.service)
+
+# class UserService(models.Model):
+#     """
+#         UserService a model to link service and user
+#     """
+#     user = models.ForeignKey(User)
+#     service = models.ForeignKey(ServicesActivated,
+#                                 to_field="service_name",
+#                                 related_name='+',
+#                                 unique=True)
+
+#     def __unicode__(self):
+#         return "%s" % (self.service)
 
 
 class TriggerService(models.Model):
@@ -14,9 +81,9 @@ class TriggerService(models.Model):
 
         # Create some Service
         >>> from django.contrib.auth.models import User
-        >>> from django_th.models import ThServices, TriggerService
-        >>> provider1 = ThServices.objects.get(pk=1)
-        >>> consummer1 = ThServices.objects.get(pk=2)
+        >>> from django_th.models import UserService, TriggerService
+        >>> provider1 = UserService.objects.get(pk=1)
+        >>> consummer1 = UserService.objects.get(pk=2)
         >>> user1 = User.objects.get(id=1)
         >>> date_created1 = '20130122'
         >>> service1 = TriggerService.objects.create(provider=provider1, \
@@ -28,8 +95,8 @@ class TriggerService(models.Model):
         'My Service Flux RSS Note Evernote My First Service foxmask 2013-01-23'
 
     """
-    provider = models.ForeignKey(ThServices, related_name='+', blank=True)
-    consummer = models.ForeignKey(ThServices, related_name='+', blank=True)
+    provider = models.ForeignKey(UserService, related_name='+', blank=True)
+    consummer = models.ForeignKey(UserService, related_name='+', blank=True)
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     date_created = models.DateField(auto_now_add=True)
@@ -39,20 +106,8 @@ class TriggerService(models.Model):
                                               self.description, self.user,
                                               self.date_created)
 
-
-class UserService(models.Model):
-    """
-        UserService a model to link service and user
-    """
-    user = models.ForeignKey(User)
-    code = models.ForeignKey(ThServices, related_name='+')
-
-
-class UserProfile(models.Model):
-    """
-        Related user to handle his profile
-    """
-    user = models.OneToOneField(User)
+    def __unicode__(self):
+        return "%s %s " % (self.provider, self.consummer)
 
 
 def create_user_profile(sender, instance, created, **kwargs):

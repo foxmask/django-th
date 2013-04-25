@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from services import ThServices
+from ..models.services import ServicesMgr
 
 
-class ServiceRss(ThServices):
+class ServiceRss(ServicesMgr):
 
     url = models.URLField(max_length=255)
+    trigger = models.ForeignKey('TriggerService')
 
-    class Meta():
+    class Meta:
         app_label = 'django_th'
         verbose_name = 'RSS'
         verbose_name_plural = 'RSS'

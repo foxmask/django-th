@@ -1,19 +1,20 @@
 from django.contrib import admin
-from .models.services import ThServices
 
-from .models.rss import ServiceRss
-from .models.evernote import ServiceEvernote
-from forms import ServicesManagedForm
+#from .models import ServicesActivated
+from .forms.services import ServicesAdminForm
+from .models.services import ServicesMgr
+#from .models.rss import ServiceRss
+#from .models.evernote import ServiceEvernote
 
 
 class ServicesManagedAdmin(admin.ModelAdmin):
     """
         get the list of the available services (the activated one)
     """
-    list_display = ('name', 'my_status')
+    list_display = ('name', 'status', 'description')
 
-    add_form = ServicesManagedForm
-    view_form = ServicesManagedForm
+    add_form = ServicesAdminForm
+    view_form = ServicesAdminForm
 
     def get_form(self, request, obj=None, **args):
         defaults = {}
@@ -22,7 +23,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
         else:
             defaults.update({'form': self.view_form, })
         defaults.update(args)
-        return super(ServicesManagedAdmin, self).get_form(request, obj, \
+        return super(ServicesManagedAdmin, self).get_form(request, obj,
                                                           **defaults)
 
-admin.site.register(ThServices, ServicesManagedAdmin)
+admin.site.register(ServicesMgr, ServicesManagedAdmin)

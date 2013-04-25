@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-class ThServices(object):
+class ServicesMgr(object):
 
     name = ''
     title = ''

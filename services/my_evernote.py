@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from .services import ThServices
+from .services import ServicesMgr
 from evernote.api.client import EvernoteClient
 from django.conf import settings
 """
@@ -16,7 +16,7 @@ from django.conf import settings
 """
 
 
-class ServiceEvernote(ThServices):
+class ServiceEvernote(ServicesMgr):
 
     def get_title(self):
         pass
@@ -30,10 +30,9 @@ class ServiceEvernote(ThServices):
     def get_evernote_client(self, token=None):
         if token:
             return EvernoteClient(token=token,
-                            sandbox=settings.TH_SERVICE_EVERNOTE['sandbox'])
+                sandbox=settings.TH_SERVICE_EVERNOTE['sandbox'])
         else:
             return EvernoteClient(
                 consumer_key=settings.TH_SERVICE_EVERNOTE['consumer_key'],
                 consumer_secret=settings.TH_SERVICE_EVERNOTE['consumer_secret'],
-                sandbox=settings.TH_SERVICE_EVERNOTE['sandbox']
-            )
+                sandbox=settings.TH_SERVICE_EVERNOTE['sandbox'])

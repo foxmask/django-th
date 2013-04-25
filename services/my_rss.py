@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from .services import ThServices
+from .services import ServicesMgr
 from django_th.lib.feedsservice import Feeds
 
 
-class ServiceRss(ThServices):
+class ServiceRss(ServicesMgr):
 
     def get_title(self):
         self.title = self.data['title']

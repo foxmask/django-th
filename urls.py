@@ -7,7 +7,7 @@ admin.autodiscover()
 from registration.forms import RegistrationFormUniqueEmail
 
 from .forms import ProfileForm
-from .forms import ServicesForm
+from .forms import ServicesDescriptionForm
 from .forms.rss import RssForm
 from .forms.evernote import EvernoteForm
 from .views import TriggerListView, \
@@ -38,9 +38,8 @@ urlpatterns = patterns('',
     # ****************************************
     url(r'^profiles/edit/$',
         'profiles.views.edit_profile',
-            {'form_class': ProfileForm,
-             'success_url': '/', }
-        ),
+            {'form_class': ProfileForm,\
+             'success_url': '/'}),
 
     url(r'^profiles/(?P<username>\w+)/$',
         'profiles.views.profile_detail',
@@ -117,8 +116,8 @@ urlpatterns = patterns('',
 
     # wizard
      url(r'^service/create/$', UserServiceWizard.as_view([RssForm, \
-                                                         EvernoteForm, \
-                                                         ServicesForm])),
+                                                    EvernoteForm, \
+                                                    ServicesDescriptionForm])),
 
     # *********************************************
     #  Linked Account
