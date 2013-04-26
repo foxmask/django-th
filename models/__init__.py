@@ -3,44 +3,26 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
-from ..models.services import ServicesMgr
-#those 2 lines needs to be here to be able to generate the tables 
+#those 2 lines needs to be here to be able to generate the tables
 #even if those classes are not used at all
 from .evernote import ServiceEvernote
 from .rss import ServiceRss
 
 
-# class ServicesActivated(models.Model):
-#     """
-#         Services Activated from the admin
-#     """
-#     service_name = models.CharField(max_length=200, unique=True)
-#     status = models.BooleanField()
-#     description = models.CharField(max_length=200)
+class ServicesActivated(models.Model):
+    """
+        Services Activated from the admin
+    """
+    name = models.CharField(max_length=200, unique=True)
+    status = models.BooleanField()
+    description = models.CharField(max_length=200)
 
-#     class Meta:
-#         verbose_name = 'Services'
-#         verbose_name_plural = 'Services'
+    class Meta:
+        verbose_name = 'Services'
+        verbose_name_plural = 'Services'
 
-#     def __unicode__(self):
-#         return "%s" % (self.service_name)
-
-# class ServicesMgr(models.Model):
-#     """
-#         Service activated from the admin
-#     """
-#     name = models.CharField(max_length=255, unique=True)
-#     status = models.BooleanField()
-#     #trigger = models.ForeignKey('django_th.TriggerService')
-#     description = models.CharField(max_length=200)
-
-#     class Meta:
-#         app_label = 'django_th'
-#         verbose_name = 'Services'
-#         verbose_name_plural = 'Services'
-
-#     def __unicode__(self):
-#         return "%s" % (self.name)
+    def __unicode__(self):
+        return "%s" % (self.name)
 
 
 class UserProfile(models.Model):
@@ -56,23 +38,12 @@ class UserService(models.Model):
     """
     user = models.ForeignKey(User)
     #name = models.ForeignKey(ServicesMgr)
-    name = models.ForeignKey(ServicesMgr, to_field="name", related_name='+', unique=True)
+    name = models.ForeignKey(ServicesActivated,
+                            to_field='name',
+                            related_name='+')
 
     def __unicode__(self):
-        return "%s" % (self.service)
-
-# class UserService(models.Model):
-#     """
-#         UserService a model to link service and user
-#     """
-#     user = models.ForeignKey(User)
-#     service = models.ForeignKey(ServicesActivated,
-#                                 to_field="service_name",
-#                                 related_name='+',
-#                                 unique=True)
-
-#     def __unicode__(self):
-#         return "%s" % (self.service)
+        return "%s" % (self.name)
 
 
 class TriggerService(models.Model):

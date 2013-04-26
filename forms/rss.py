@@ -8,6 +8,8 @@ class RssForm(forms.ModelForm):
     """
         for to handle Rss service
     """
+    my_form_is = forms.CharField(widget=forms.HiddenInput(), initial='rss')
+
     class Meta:
         model = ServiceRss
-        fields = ('name', 'url')
+        fields = ('name', 'url', 'my_form_is')

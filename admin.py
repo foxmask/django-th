@@ -1,10 +1,7 @@
 from django.contrib import admin
 
-#from .models import ServicesActivated
 from .forms.services import ServicesAdminForm
-from .models.services import ServicesMgr
-#from .models.rss import ServiceRss
-#from .models.evernote import ServiceEvernote
+from .models import ServicesActivated
 
 
 class ServicesManagedAdmin(admin.ModelAdmin):
@@ -26,4 +23,4 @@ class ServicesManagedAdmin(admin.ModelAdmin):
         return super(ServicesManagedAdmin, self).get_form(request, obj,
                                                           **defaults)
 
-admin.site.register(ServicesMgr, ServicesManagedAdmin)
+admin.site.register(ServicesActivated, ServicesManagedAdmin)

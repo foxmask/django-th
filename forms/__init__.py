@@ -3,8 +3,7 @@ from django import forms
 from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
 from ..models import User, TriggerService, UserService, UserProfile
-#from ..models import ServicesActivated
-from ..models.services import ServicesMgr
+from ..models import ServicesActivated
 
 
 class UserServiceForm(forms.ModelForm):
@@ -19,10 +18,7 @@ class UserServiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserServiceForm, self).__init__(*args, **kwargs)
         self.fields['name'].initial = forms.ModelChoiceField(
-#           queryset=ServicesActivated.objects.filter(status=1))
-            queryset=ServicesMgr.objects.filter(status=1))
-#            queryset=[(s.id, s.name) for s in
-#            ServicesActivated.objects.filter(status=1)])
+            queryset=ServicesActivated.objects.filter(status=1))
 
     class Meta:
         """
@@ -136,19 +132,6 @@ class UserProfileForm(forms.ModelForm):
             meta to override anything about UserProfile
         """
         model = UserProfile
-
-
-# class ServicesActivatedForm(forms.ModelForm):
-#     """
-#         get the list of the available services (the activated one)
-#     """
-#     class Meta:
-#         model = ServicesActivated
-#     """
-#         get the activated services
-#     """
-#     service_name = forms.ModelChoiceField(
-#         queryset=ServicesActivated.objects.all())
 
 
 class ServicesDescriptionForm(forms.ModelForm):

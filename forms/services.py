@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from ..models.services import ServicesMgr
+from ..models import ServicesActivated
 
 
 def available_services():
     """
-        get the activated services
+        get the avaialble services to be activated
 
         read the models dir to find the services installed
         to be added to the system by the administrator
@@ -31,9 +31,7 @@ class ServicesAdminForm(forms.ModelForm):
         get the list of the available services (the activated one)
     """
     class Meta:
-        model = ServicesMgr
-        verbose_name = 'Services'
-        verbose_name_plural = 'Services'
+        model = ServicesActivated
 
     status_values = (('0', 'Disabled'), (1, 'Enabled'))
     status = forms.ChoiceField(status_values)

@@ -11,7 +11,6 @@ from .forms import ServicesDescriptionForm
 from .forms.rss import RssForm
 from .forms.evernote import EvernoteForm
 from .views import TriggerListView, \
-                    TriggerCreateView, \
                     TriggerUpdateView, \
                     TriggerDeleteView, \
                     TriggerAddedTemplateView, \
@@ -87,8 +86,8 @@ urlpatterns = patterns('',
     # ****************************************
     # * trigger
     # ****************************************
-    url(r'^trigger/add/$', TriggerCreateView.as_view(),
-        name='add_trigger'),
+#    url(r'^trigger/add/$', TriggerCreateView.as_view(),
+#        name='add_trigger'),
     url(r'^trigger/edit/(?P<pk>\d+)$', TriggerUpdateView.as_view(),
         name='edit_trigger'),
     url(r'^trigger/delete/(?P<pk>\d+)$', TriggerDeleteView.as_view(),
@@ -101,7 +100,7 @@ urlpatterns = patterns('',
     # ****************************************
     # * service
     # ****************************************
-    url(r'^services/$', UserServiceListView.as_view(), name='user_services'),
+    url(r'^service/$', UserServiceListView.as_view(), name='user_services'),
     url(r'^service/add/$', UserServiceCreateView.as_view(),
         name='add_service'),
     url(r'^service/edit/(?P<pk>\d+)$', UserServiceUpdateView.as_view(),
@@ -117,7 +116,8 @@ urlpatterns = patterns('',
     # wizard
      url(r'^service/create/$', UserServiceWizard.as_view([RssForm, \
                                                     EvernoteForm, \
-                                                    ServicesDescriptionForm])),
+                                                    ServicesDescriptionForm]),
+     name='create_service'),
 
     # *********************************************
     #  Linked Account

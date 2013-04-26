@@ -11,9 +11,7 @@ from django.views.generic import CreateView, UpdateView, \
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
-#from .models import TriggerService, UserService, ServicesActivated
-from .models import TriggerService, UserService
-from .models.services import ServicesMgr
+from .models import TriggerService, UserService, ServicesActivated
 from .forms import TriggerServiceForm, UserServiceForm
 from .service_provider import service_provider
 
@@ -51,24 +49,6 @@ class TriggerListView(ListView):
                                         order_by('-date_created')
         # otherwise return nothing
         return TriggerService.objects.none()
-
-
-class TriggerCreateView(CreateView):
-    form_class = TriggerServiceForm
-    template_name = "triggers/add_trigger.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(TriggerCreateView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        self.object = form.save(user=self.request.user)
-        return HttpResponseRedirect('/trigger/add/thanks/')
-
-    def get_context_data(self, **kw):
-        context = super(TriggerCreateView, self).get_context_data(**kw)
-        context['action'] = 'add_trigger'
-        return context
 
 
 class TriggerUpdateView(UpdateView):
@@ -235,15 +215,16 @@ class UserServiceIndexView(ListView):
         the user can use and activate too for his own usage
     """
     context_object_name = "services_list"
-    queryset = ServicesMgr.objects.all()
+    queryset = ServicesActivated.objects.all()
     template_name = "services/index.html"
 
     def get_queryset(self):
-        # get the Service of the connected user
-        # if self.request.user.is_authenticated():
-        #    return self.queryset.filter(user=self.request.user)
-        # otherwise return nothing
-        return ServicesMgr.objects.none()
+        return ServicesActivated.objects.none()
+
+
+#*************************************
+#  Part III : Service Wizard
+#*************************************
 
 
 from .forms import rss
@@ -262,10 +243,15 @@ TEMPLATES = {'0': 'rss/wz-rss-form.html',
 class UserServiceWizard(SessionWizardView):
     instance = None
 
+    # def process_step(self, form):
+    #     print "je suis la"
+    #     print form
+
     def get_form_instance(self, step):
         """
         Provides us with an instance of the Project Model to save on completion
         """
+
         if self.instance is None:
             self.instance = TriggerService()
         return self.instance
@@ -274,18 +260,36 @@ class UserServiceWizard(SessionWizardView):
         """
         Save info to the DB
         """
-        print kwargs
-        service = self.instance
-        service.provider = UserService.objects.get(name='rss')
-        service.consummer = UserService.objects.get(name='evernote')
-        service.user = self.request.user
-        service.save()
+
+        trigger = self.instance
+        trigger.provider = UserService.objects.get(name='rss',
+                                                    user=self.request.user)
+        trigger.consummer = UserService.objects.get(name='evernote',
+                                                    user=self.request.user)
+        trigger.user = self.request.user
+        trigger.save()
+
+        #for form in form_list:
+        #    print form.cleaned_data
+        #    if form.cleaned_data['my_form_is'] == 'rss':
+        #        from .models.rss import ServiceRss
+        #        ServiceRss.objects.create(
+        #            name=form.cleaned_data['name'],
+        #            url=form.cleaned_data['url'],
+        #            status=1,
+        #            trigger=trigger)
+        #    if form.cleaned_data['my_form_is'] == 'evernote':
+        #        from .models.evernote import ServiceEvernote
+        #        ServiceEvernote.objects.create(
+        #            tag=form.cleaned_data['tag'],
+        #            notebook=form.cleaned_data['notebook'],
+        #            status=1,
+        #            trigger=trigger)
+
         return HttpResponseRedirect('/')
 
     def get_template_names(self):
         """
-        Custom templates for the different steps
+            Custom templates for the different steps
         """
-        # print settings.TH_WIZARD_TPL
-        # from django.conf import settings
         return [TEMPLATES[self.steps.current]]

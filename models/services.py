@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-#from ..models import TriggerService
 
 
-class ServicesMgr(models.Model):
+class Services(models.Model):
     """
+        Main class for Services
     """
     name = models.CharField(max_length=255, unique=True)
     status = models.BooleanField()
@@ -15,5 +15,6 @@ class ServicesMgr(models.Model):
 
     class Meta:
         app_label = 'django_th'
+        abstract = True
         verbose_name = 'Services'
         verbose_name_plural = 'Services'

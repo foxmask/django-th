@@ -14,11 +14,10 @@
             <article>
                 <div class="span8">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit the trigger " %} 
-                    {{ trigger.provider.service|safe|escape }} => 
-                    {{ trigger.consummer.service|safe|escape }}">
-                    <i class="icon-{{ trigger.provider.service|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.service|lower }}"></i></a>
+                    {{ trigger.provider.name|safe|escape }} => 
+                    {{ trigger.consummer.name|safe|escape }}">
+                    <i class="icon-{{ trigger.provider.name|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|lower }}"></i></a>
                     <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>
-                    <span class="trigger-text">>>> {{ trigger.provider.service|th_details:trigger.id|safe|escape }}</span></a>
                 </div>
                 <div class="span2">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>

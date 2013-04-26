@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'profiles',
     'oauth2',
     'evernote',
+    'south',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

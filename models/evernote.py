@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from ..models.services import ServicesMgr
+from ..models.services import Services
 
 
-class ServiceEvernote(ServicesMgr):
+class ServiceEvernote(Services):
 
     tag = models.CharField(max_length=80)
     notebook = models.CharField(max_length=80)
@@ -13,5 +13,3 @@ class ServiceEvernote(ServicesMgr):
 
     class Meta:
         app_label = 'django_th'
-        verbose_name = 'Evernote'
-        verbose_name_plural = 'Evernote'
