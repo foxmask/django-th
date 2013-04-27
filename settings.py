@@ -183,15 +183,15 @@ TH_SERVICES = (
     'django_th.services.my_evernote.ServiceEvernote',
 )
 
-TH_SERVICE_EVERNOTE = {
+TH_EVERNOTE = {
     'sandbox': True,
     'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
 }
 
 TH_WIZARD_TPL = {
-             'my_rss': 'my_rss/rss-form.html',
-             'my_evernote': 'my_evernote/evernote-form.html',
+    'my_rss': 'my_rss/rss-form.html',
+    'my_evernote': 'my_evernote/evernote-form.html',
 }
 
 # local settings management

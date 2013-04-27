@@ -8,7 +8,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
     """
         get the list of the available services (the activated one)
     """
-    list_display = ('name', 'status', 'description')
+    list_display = ('name', 'description', 'status', 'auth_required')
 
     add_form = ServicesAdminForm
     view_form = ServicesAdminForm

@@ -1,28 +1,24 @@
 # -*- coding: utf-8 -*-
 from django import forms
+from django.conf import settings
 from ..models import ServicesActivated
 
 
 def available_services():
     """
-        get the avaialble services to be activated
+        get the available services to be activated
 
         read the models dir to find the services installed
         to be added to the system by the administrator
     """
-    import os
-    models_services_dir = os.path.dirname(os.path.abspath(__file__))
-    models_services_dir = os.path.realpath(models_services_dir + '/../models')
-    print models_services_dir
     all_datas = ()
     data = ()
-    for model_file in os.listdir(models_services_dir):
-        if not model_file in ('services.py', 'services.pyc',
-                              '__init__.py', '__init__.pyc'):
-            name, name_ext = model_file.rsplit('.', 1)
-            if not name_ext == 'pyc':
-                data = (name, name.capitalize())
-                all_datas = (data,) + all_datas
+
+    for class_path in settings.TH_SERVICES:
+        module_name, class_name = class_path.rsplit('.', 1)
+        prefix, service_name = class_name.rsplit('Service', 1)
+        data = (class_name, service_name)
+        all_datas = (data,) + all_datas
     return all_datas
 
 

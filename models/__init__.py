@@ -15,6 +15,7 @@ class ServicesActivated(models.Model):
     """
     name = models.CharField(max_length=200, unique=True)
     status = models.BooleanField()
+    auth_required = models.BooleanField()
     description = models.CharField(max_length=200)
 
     class Meta:
@@ -37,10 +38,9 @@ class UserService(models.Model):
          UserService a model to link service and user
     """
     user = models.ForeignKey(User)
-    #name = models.ForeignKey(ServicesMgr)
-    name = models.ForeignKey(ServicesActivated,
-                            to_field='name',
-                            related_name='+')
+    token = models.CharField(max_length=255)
+    name = models.ForeignKey(
+        ServicesActivated, to_field='name', related_name='+')
 
     def __unicode__(self):
         return "%s" % (self.name)

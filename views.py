@@ -13,15 +13,16 @@ from django.contrib.formtools.wizard.views import SessionWizardView
 # trigger_happy
 from .models import TriggerService, UserService, ServicesActivated
 from .forms import TriggerServiceForm, UserServiceForm
-from .service_provider import service_provider
+from .services import default_provider
+
 
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-service_provider.load_services()
-
 from django.contrib.auth import logout
+
+default_provider.load_services()
 
 
 def logout_view(request):
@@ -138,6 +139,17 @@ class UserServiceCreateView(CreateView):
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
+        # check if this service required an external auth
+        # service_name = ''
+        if self.request.auth_required:
+            #todo :
+            #use default_provider
+            #check the selected service
+            #then
+            #call the auth of this service
+            #service_name = self.request.name
+            #default_provider.service_name.auth()
+            pass
         self.object = form.save(user=self.request.user)
         return HttpResponseRedirect('/service/add/thanks/')
 

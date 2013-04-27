@@ -22,3 +22,9 @@ class ServicesMgr(object):
 
     def save_data(self):
         pass
+
+    def auth(self):
+        """
+            get the auth of the services
+        """
+        pass

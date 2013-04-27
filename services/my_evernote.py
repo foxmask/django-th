@@ -3,11 +3,14 @@
 from .services import ServicesMgr
 from evernote.api.client import EvernoteClient
 from django.conf import settings
+from django.core.urlresolvers import reverse
+#from django.shortcuts import render_to_response
+from django.shortcuts import redirect
 """
     handle process with evernote
     put the following in settings.py
 
-    TH_SERVICE_EVERNOTE = {
+    TH_EVERNOTE = {
         'sandbox': True,
         'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
         'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
@@ -29,10 +32,25 @@ class ServiceEvernote(ServicesMgr):
 
     def get_evernote_client(self, token=None):
         if token:
-            return EvernoteClient(token=token,
-                sandbox=settings.TH_SERVICE_EVERNOTE['sandbox'])
+            return EvernoteClient(
+                token=token,
+                sandbox=settings.TH_EVERNOTE['sandbox'])
         else:
             return EvernoteClient(
-                consumer_key=settings.TH_SERVICE_EVERNOTE['consumer_key'],
-                consumer_secret=settings.TH_SERVICE_EVERNOTE['consumer_secret'],
-                sandbox=settings.TH_SERVICE_EVERNOTE['sandbox'])
+                consumer_key=settings.TH_EVERNOTE['consumer_key'],
+                consumer_secret=settings.TH_EVERNOTE['consumer_secret'],
+                sandbox=settings.TH_EVERNOTE['sandbox'])
+
+    def auth(self, request):
+        client = self.get_evernote_client()
+        callbackUrl = 'http://%s%s' % (
+            request.get_host(), reverse('evernote_callback'))
+        request_token = client.get_request_token(callbackUrl)
+
+        # Save the request token information for later
+        request.session['oauth_token'] = request_token['oauth_token']
+        request.session['oauth_token_secret'] =\
+            request_token['oauth_token_secret']
+
+        # Redirect the user to the Evernote authorization URL
+        return redirect(client.get_authorize_url(request_token))
