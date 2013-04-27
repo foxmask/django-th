@@ -7,16 +7,15 @@
 {% block content %}
     <div class="span12" id="trigger-content">
 {% if user.is_authenticated %}
+        <h2>{% trans "My Triggers" %}</h2>
 {% if triggers_list %}
     {% for trigger in triggers_list %}
         <div class="row">
         <div class="trigger-record span11">
             <article>
                 <div class="span8">
-                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit the trigger " %} 
-                    {{ trigger.provider.name|safe|escape }} => 
-                    {{ trigger.consummer.name|safe|escape }}">
-                    <i class="icon-{{ trigger.provider.name|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|lower }}"></i></a>
+                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|safe|escape }} => {{ trigger.consummer.name|safe|escape }}">
+                    <i class="icon-{{ trigger.provider.name|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|lower }}"></i>
                     <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>
                 </div>
                 <div class="span2">

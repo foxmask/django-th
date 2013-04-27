@@ -10,20 +10,18 @@ from .forms import ProfileForm
 from .forms import ServicesDescriptionForm
 from .forms.rss import RssForm
 from .forms.evernote import EvernoteForm
-from .views import TriggerListView, \
-                    TriggerUpdateView, \
-                    TriggerDeleteView, \
-                    TriggerAddedTemplateView, \
-                    TriggerEditedTemplateView, \
-                    TriggerDeletedTemplateView, \
-                    UserServiceListView, \
-                    UserServiceCreateView, \
-                    UserServiceUpdateView, \
-                    UserServiceDeleteView, \
-                    UserServiceAddedTemplateView, \
-                    UserServiceEditedTemplateView, \
-                    UserServiceDeletedTemplateView, \
-                    UserServiceWizard
+from .views import TriggerListView, TriggerUpdateView, TriggerDeleteView,\
+    TriggerAddedTemplateView,\
+    TriggerEditedTemplateView,\
+    TriggerDeletedTemplateView,\
+    UserServiceListView,\
+    UserServiceCreateView,\
+    UserServiceUpdateView,\
+    UserServiceDeleteView,\
+    UserServiceAddedTemplateView,\
+    UserServiceEditedTemplateView,\
+    UserServiceDeletedTemplateView,\
+    UserServiceWizard
 
 
 urlpatterns = patterns('',
@@ -37,8 +35,7 @@ urlpatterns = patterns('',
     # ****************************************
     url(r'^profiles/edit/$',
         'profiles.views.edit_profile',
-            {'form_class': ProfileForm,\
-             'success_url': '/'}),
+        {'form_class': ProfileForm, 'success_url': '/'}),
 
     url(r'^profiles/(?P<username>\w+)/$',
         'profiles.views.profile_detail',
@@ -114,10 +111,10 @@ urlpatterns = patterns('',
     url(r'^service/delete/thanks', UserServiceDeletedTemplateView.as_view()),
 
     # wizard
-     url(r'^service/create/$', UserServiceWizard.as_view([RssForm, \
-                                                    EvernoteForm, \
-                                                    ServicesDescriptionForm]),
-     name='create_service'),
+    url(r'^service/create/$',
+        UserServiceWizard.as_view([RssForm, EvernoteForm,
+        ServicesDescriptionForm]),
+        name='create_service'),
 
     # *********************************************
     #  Linked Account

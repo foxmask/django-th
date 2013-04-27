@@ -8,12 +8,17 @@
     <div class="span12" id="service-content">
 {% if user.is_authenticated %}
 {% if services_list %}
+        <div class="row">
+            <div class="service-record span11">
+            <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
+            </div>
+        </div>
     {% for service in services_list %}
         <div class="row">
             <div class="service-record span11">
             <article>
                 <div class="span8">
-                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.name|lower }}"></i> </a>
+                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.name|lower }}"></i> 
                     <span class="trigger-text">{{ service.name|safe|escape }}</span></a>
                 </div>
                 <div class="span2">

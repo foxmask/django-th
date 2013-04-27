@@ -9,15 +9,16 @@
     <meta content="text/html; charset=UTF-8" http-equiv="content-type"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <title>{% block title %}{% trans "Home" %} - {{ current_site.name }}{% endblock %}</title>
-    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" type="text/css" media="screen" />
     <link rel="stylesheet" href="{% static "css/th.css" %}" type="text/css" media="screen" />
-    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" type="text/css" media="screen" />
     <meta name="viewport" content="width=device-width; initial-scale=1.0" />
     <meta name="author" content="FoxMaSk">
 <!--[if lt IE 9]>
     <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-    <script type="text/javascript" src="{% static "jquery/jquery.js" %}" ></script>
+    <!-- script type="text/javascript" src="{% static "jquery/jquery.js" %}" ></script-->
+    <script src="http://code.jquery.com/jquery.js"></script>
     <script type="text/javascript" src="{% static "bootstrap/js/bootstrap.min.js" %}" ></script>
 </head>
 <body>
@@ -34,10 +35,9 @@
                 <div class="nav-collapse collapse">
                         {% if user.is_authenticated %}
                     <ul class="nav">
-                        {% url 'base' as 'home'%}
-                        <li><a href="{{ home }}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>
-                        <li><a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}"><i class="icon-pencil"></i></a></li>
-                        <li><a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><i class="icon-pencil"></i></a></li>
+                        <li><a href="{% url 'base' %}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>
+                        <li><a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}"><i class="icon-plus"></i></a></li>
+                        <li><a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><i class="icon-tasks"></i></a></li>
                         {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                         <li><a href="{{ profiles_profile_detail }}" title="{% trans "My profile" %}"><i class="icon-user"></i></a></li>
                         <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><i class="icon-off"></i></a></li>
