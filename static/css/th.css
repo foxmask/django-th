@@ -15,7 +15,7 @@ h1 {
  * shared propery : trigger-record-* & profile-*
  */
 
-.trigger-record, .profile-identity, .profile-stats  {
+.trigger-record, .profile-identity, .profile-stats, .service-record, .wizard-fieldset  {
 	border: 1px solid #DDDDDD;
     background-color: white;
     border-radius: 5px 5px 5px 5px;

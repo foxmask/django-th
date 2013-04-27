@@ -7,10 +7,11 @@
 {% block content %}
     <div class="span12" id="service-content">
 {% if user.is_authenticated %}
+        <h2>My Activated Services</h2>
 {% if services_list %}
         <div class="row">
-            <div class="service-record span11">
-            <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
+            <div class="span11">
+                <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
             </div>
         </div>
     {% for service in services_list %}

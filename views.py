@@ -46,7 +46,7 @@ class TriggerListView(ListView):
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
             return self.queryset.filter(user=self.request.user).\
-                                        order_by('-date_created')
+                order_by('-date_created')
         # otherwise return nothing
         return TriggerService.objects.none()
 
@@ -106,7 +106,7 @@ class TriggerDeletedTemplateView(TemplateView):
 
     def get_context_data(self, **kw):
         context = super(TriggerDeletedTemplateView, self).\
-                                                        get_context_data(**kw)
+            get_context_data(**kw)
         context['sentance'] = 'Your trigger has been successfully deleted'
         return context
 
@@ -184,7 +184,7 @@ class UserServiceAddedTemplateView(TemplateView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceAddedTemplateView, self).\
-                                                    get_context_data(**kw)
+            get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully created'
         return context
 
@@ -194,7 +194,7 @@ class UserServiceEditedTemplateView(TemplateView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceEditedTemplateView, self).\
-                                                    get_context_data(**kw)
+            get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully modified'
         return context
 
@@ -204,7 +204,7 @@ class UserServiceDeletedTemplateView(TemplateView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceDeletedTemplateView, self).\
-                                                    get_context_data(**kw)
+            get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully deleted'
         return context
 
@@ -235,17 +235,14 @@ FORMS = [("rss", rss.RssForm),
          ("evernote", evernote.EvernoteForm),
          ("services", ServicesDescriptionForm), ]
 
-TEMPLATES = {'0': 'rss/wz-rss-form.html',
+TEMPLATES = {
+    '0': 'rss/wz-rss-form.html',
     '1': 'evernote/wz-evernote-form.html',
     '2': 'services_wizard/wz-description.html'}
 
 
 class UserServiceWizard(SessionWizardView):
     instance = None
-
-    # def process_step(self, form):
-    #     print "je suis la"
-    #     print form
 
     def get_form_instance(self, step):
         """
@@ -262,29 +259,31 @@ class UserServiceWizard(SessionWizardView):
         """
 
         trigger = self.instance
-        trigger.provider = UserService.objects.get(name='rss',
-                                                    user=self.request.user)
+        trigger.provider = UserService.objects.get(
+            name='rss',
+            user=self.request.user)
         trigger.consummer = UserService.objects.get(name='evernote',
                                                     user=self.request.user)
         trigger.user = self.request.user
+        #save the trigger
         trigger.save()
-
-        #for form in form_list:
-        #    print form.cleaned_data
-        #    if form.cleaned_data['my_form_is'] == 'rss':
-        #        from .models.rss import ServiceRss
-        #        ServiceRss.objects.create(
-        #            name=form.cleaned_data['name'],
-        #            url=form.cleaned_data['url'],
-        #            status=1,
-        #            trigger=trigger)
-        #    if form.cleaned_data['my_form_is'] == 'evernote':
-        #        from .models.evernote import ServiceEvernote
-        #        ServiceEvernote.objects.create(
-        #            tag=form.cleaned_data['tag'],
-        #            notebook=form.cleaned_data['notebook'],
-        #            status=1,
-        #            trigger=trigger)
+        #...then create the related services from the wizard
+        for form in form_list:
+            print form.cleaned_data
+            if form.cleaned_data['my_form_is'] == 'rss':
+                from .models.rss import ServiceRss
+                ServiceRss.objects.create(
+                    name=form.cleaned_data['name'],
+                    url=form.cleaned_data['url'],
+                    status=1,
+                    trigger=trigger)
+            if form.cleaned_data['my_form_is'] == 'evernote':
+                from .models.evernote import ServiceEvernote
+                ServiceEvernote.objects.create(
+                    tag=form.cleaned_data['tag'],
+                    notebook=form.cleaned_data['notebook'],
+                    status=1,
+                    trigger=trigger)
 
         return HttpResponseRedirect('/')
 

@@ -6,23 +6,30 @@
 {% endblock %}
 
 {% block content %}
-<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
-<form action="" method="post">{% csrf_token %}
-<table>
-{{ wizard.management_form }}
-{% if wizard.form.forms %}
-    {{ wizard.form.management_form }}
-    {% for form in wizard.form.forms %}
-        {{ form }}
-    {% endfor %}
-{% else %}
-    {{ wizard.form }}
-{% endif %}
-</table>
-{% if wizard.steps.prev %}
-<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-<button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
-{% endif %}
-<input type="submit" value="{% trans "submit" %}"/>
-</form>
+    <div class="span12" id="trigger-content">
+    	<h3>Description</h3>
+		<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+		<p>put a description for your service</p>
+		<form action="" method="post">{% csrf_token %}
+			<div class="wizard-fieldset">
+			<table>
+			{{ wizard.management_form }}
+			{% if wizard.form.forms %}
+			    {{ wizard.form.management_form }}
+			    {% for form in wizard.form.forms %}
+			        {{ form }}
+			    {% endfor %}
+			{% else %}
+			    {{ wizard.form }}
+			{% endif %}
+			</table>
+			</div>
+		{% if wizard.steps.prev %}
+		<button class="btn btn-inverse" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+		<button class="btn btn-inverse" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+		{% endif %}
+		<!--input type="submit" value="{% trans "submit" %}"/-->
+		<button class="btn btn-primary">{% trans "Submit" %}</button>
+		</form>
+	</div>
 {% endblock %}

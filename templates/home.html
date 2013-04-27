@@ -11,7 +11,7 @@
 {% if triggers_list %}
     {% for trigger in triggers_list %}
         <div class="row">
-        <div class="trigger-record span11">
+            <div class="trigger-record span11">
             <article>
                 <div class="span8">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|safe|escape }} => {{ trigger.consummer.name|safe|escape }}">
