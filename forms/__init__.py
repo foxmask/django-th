@@ -17,6 +17,7 @@ class UserServiceForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(UserServiceForm, self).__init__(*args, **kwargs)
+        self.fields['token'] = forms.CharField(required=False)
         self.fields['name'].initial = forms.ModelChoiceField(
             queryset=ServicesActivated.objects.filter(status=1))
 

@@ -139,17 +139,11 @@ class UserServiceCreateView(CreateView):
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
-        # check if this service required an external auth
-        # service_name = ''
-        if self.request.auth_required:
-            #todo :
-            #use default_provider
-            #check the selected service
-            #then
-            #call the auth of this service
-            #service_name = self.request.name
-            #default_provider.service_name.auth()
-            pass
+        sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
+        if sa.auth_required:
+            service_name = 'Service' +\
+                str(form.cleaned_data['name']).capitalize()
+            getattr(service_name, 'auth')
         self.object = form.save(user=self.request.user)
         return HttpResponseRedirect('/service/add/thanks/')
 
