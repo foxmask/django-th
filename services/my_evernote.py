@@ -4,7 +4,7 @@ from .services import ServicesMgr
 from evernote.api.client import EvernoteClient
 from django.conf import settings
 from django.core.urlresolvers import reverse
-#from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 """
     handle process with evernote
@@ -36,15 +36,21 @@ class ServiceEvernote(ServicesMgr):
                 token=token,
                 sandbox=settings.TH_EVERNOTE['sandbox'])
         else:
-            return EvernoteClient(
+            print settings.TH_EVERNOTE['consumer_key']
+            print settings.TH_EVERNOTE['consumer_secret']
+            print settings.TH_EVERNOTE['sandbox']
+            res = EvernoteClient(
                 consumer_key=settings.TH_EVERNOTE['consumer_key'],
                 consumer_secret=settings.TH_EVERNOTE['consumer_secret'],
                 sandbox=settings.TH_EVERNOTE['sandbox'])
+            print res.__dict__
+            return res
 
     def auth(self, request):
         client = self.get_evernote_client()
         callbackUrl = 'http://%s%s' % (
             request.get_host(), reverse('evernote_callback'))
+        print callbackUrl
         request_token = client.get_request_token(callbackUrl)
 
         # Save the request token information for later
@@ -54,3 +60,19 @@ class ServiceEvernote(ServicesMgr):
 
         # Redirect the user to the Evernote authorization URL
         return redirect(client.get_authorize_url(request_token))
+
+    def callback(self, request):
+        try:
+            client = self.get_evernote_client()
+            client.get_access_token(
+                request.session['oauth_token'],
+                request.session['oauth_token_secret'],
+                request.GET.get('oauth_verifier', '')
+            )
+        except KeyError:
+            return redirect('/')
+
+        #note_store = client.get_note_store()
+        #notebooks = note_store.listNotebooks()
+
+        return render_to_response('evernote/callback.html',)

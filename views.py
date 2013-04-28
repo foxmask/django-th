@@ -143,7 +143,9 @@ class UserServiceCreateView(CreateView):
         if sa.auth_required:
             service_name = 'Service' +\
                 str(form.cleaned_data['name']).capitalize()
-            getattr(service_name, 'auth')
+            service_object = default_provider.get_service(service_name)
+            lets_auth = getattr(service_object, 'auth')
+            lets_auth(self.request)
         self.object = form.save(user=self.request.user)
         return HttpResponseRedirect('/service/add/thanks/')
 
