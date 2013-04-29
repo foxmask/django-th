@@ -36,21 +36,15 @@ class ServiceEvernote(ServicesMgr):
                 token=token,
                 sandbox=settings.TH_EVERNOTE['sandbox'])
         else:
-            print settings.TH_EVERNOTE['consumer_key']
-            print settings.TH_EVERNOTE['consumer_secret']
-            print settings.TH_EVERNOTE['sandbox']
-            res = EvernoteClient(
+            return EvernoteClient(
                 consumer_key=settings.TH_EVERNOTE['consumer_key'],
                 consumer_secret=settings.TH_EVERNOTE['consumer_secret'],
                 sandbox=settings.TH_EVERNOTE['sandbox'])
-            print res.__dict__
-            return res
 
     def auth(self, request):
         client = self.get_evernote_client()
         callbackUrl = 'http://%s%s' % (
             request.get_host(), reverse('evernote_callback'))
-        print callbackUrl
         request_token = client.get_request_token(callbackUrl)
 
         # Save the request token information for later
@@ -59,7 +53,9 @@ class ServiceEvernote(ServicesMgr):
             request_token['oauth_token_secret']
 
         # Redirect the user to the Evernote authorization URL
-        return redirect(client.get_authorize_url(request_token))
+        # return the URL string which will be used by redirect()
+        # from the calling func
+        return client.get_authorize_url(request_token)
 
     def callback(self, request):
         try:

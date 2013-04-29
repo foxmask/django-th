@@ -140,12 +140,22 @@ class UserServiceCreateView(CreateView):
 
     def form_valid(self, form):
         sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
+        # let's build the 'call' of the auth method
+        # which owns to a ServiceXXX class
         if sa.auth_required:
+            # form.cleaned_data['name'] contains the class of the service
             service_name = 'Service' +\
                 str(form.cleaned_data['name']).capitalize()
+            # use the default_provider to get the object
+            # from the ServiceXXX built
             service_object = default_provider.get_service(service_name)
+            # get the class object
             lets_auth = getattr(service_object, 'auth')
-            lets_auth(self.request)
+            # call the auth func from this class
+            # and redirect to the external service page
+            # to auth the application django-th to access to the user
+            # account details
+            return redirect(lets_auth(self.request))
         self.object = form.save(user=self.request.user)
         return HttpResponseRedirect('/service/add/thanks/')
 
@@ -300,3 +310,8 @@ class UserServiceWizard(SessionWizardView):
             Custom templates for the different steps
         """
         return [TEMPLATES[self.steps.current]]
+
+
+
+
+

@@ -117,7 +117,9 @@ urlpatterns = patterns('',
         name='create_service'),
 
     #evernote
-    url(r"^callback/$", "callback", name="evernote_callback"),
+    url(r"^callbackevernote/$", "callback",
+        {'from': 'evernote', }, name="evernote_callback",
+        ),
 
     # *********************************************
     #  Linked Account
