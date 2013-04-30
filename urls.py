@@ -1,5 +1,4 @@
 from django.conf.urls import patterns, include, url
-from django.views.generic import TemplateView
 
 from django.contrib import admin
 admin.autodiscover()
@@ -23,8 +22,8 @@ from .views import TriggerListView, TriggerUpdateView, TriggerDeleteView,\
     UserServiceDeletedTemplateView,\
     UserServiceWizard
 
-
 urlpatterns = patterns('',
+
     # ****************************************
     # profiles module:
     #
@@ -104,7 +103,8 @@ urlpatterns = patterns('',
         name='edit_service'),
     url(r'^service/delete/(?P<pk>\d+)$', UserServiceDeleteView.as_view(),
         name='delete_service'),
-    url(r'^service/add/thanks', UserServiceAddedTemplateView.as_view()),
+    url(r'^service/add/thanks', UserServiceAddedTemplateView.as_view(),
+        name="service_added"),
     url(r'^service/edit/thanks', UserServiceEditedTemplateView.as_view()),
     url(r'^service/delete/$', UserServiceDeleteView.as_view(),
         name='delete_service'),
@@ -116,10 +116,19 @@ urlpatterns = patterns('',
         ServicesDescriptionForm]),
         name='create_service'),
 
-    #evernote
-    url(r"^callbackevernote/$", "callback",
-        {'from': 'evernote', }, name="evernote_callback",
+    # every service will use django_th.views.finalcallback
+    # and give the service_name value to use to
+    # trigger the real callback
+    url(r"^callbackevernote/$", "django_th.views.finalcallback",
+        {'service_name': 'evernote', },
+        name="evernote_callback",
         ),
+
+    # dummy sample - twitter
+    # url(r"^callbacktwitter/$", "django_th.views.finalcallback",
+    #     {'service_name': 'twitter', },
+    #     name="twitter_callback",
+    #     ),
 
     # *********************************************
     #  Linked Account

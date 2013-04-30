@@ -5,6 +5,9 @@
 {% load django_th_extras %}
 {% block title %}{% trans "My Trigger" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
+<div class="span12" id="trigger-content">
 <p style="color:green">
   Congratulations, you have successfully authorized this application to access your Evernote account!
-</p> {% endblock %}
+</p> 
+</div>
+{% endblock %}

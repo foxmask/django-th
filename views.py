@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.shortcuts import render_to_response
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
@@ -139,6 +140,8 @@ class UserServiceCreateView(CreateView):
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
+        self.object = form.save(user=self.request.user)
+
         sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
         # let's build the 'call' of the auth method
         # which owns to a ServiceXXX class
@@ -156,7 +159,7 @@ class UserServiceCreateView(CreateView):
             # to auth the application django-th to access to the user
             # account details
             return redirect(lets_auth(self.request))
-        self.object = form.save(user=self.request.user)
+
         return HttpResponseRedirect('/service/add/thanks/')
 
     def get_context_data(self, **kw):
@@ -312,6 +315,16 @@ class UserServiceWizard(SessionWizardView):
         return [TEMPLATES[self.steps.current]]
 
 
-
-
-
+def finalcallback(request, **kwargs):
+    """
+        let's do the callback of the related service after
+        the auth request from UserServiceCreateView
+    """
+    service_name = 'Service' + kwargs['service_name'].capitalize()
+    service_object = default_provider.get_service(service_name)
+    lets_callback = getattr(service_object, 'callback')
+    # call the auth func from this class
+    # and redirect to the external service page
+    # to auth the application django-th to access to the user
+    # account details
+    return render_to_response(lets_callback(request))

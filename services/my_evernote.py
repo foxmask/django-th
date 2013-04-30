@@ -66,9 +66,9 @@ class ServiceEvernote(ServicesMgr):
                 request.GET.get('oauth_verifier', '')
             )
         except KeyError:
-            return redirect('/')
+            return '/'
 
         #note_store = client.get_note_store()
         #notebooks = note_store.listNotebooks()
 
-        return render_to_response('evernote/callback.html',)
+        return 'evernote/callback.html'
