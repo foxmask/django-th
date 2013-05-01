@@ -116,8 +116,8 @@ urlpatterns = patterns('',
         ServicesDescriptionForm]),
         name='create_service'),
 
-    # every service will use django_th.views.finalcallback
-    # and give the service_name value to use to
+    # every service will use django_th.views.finalcallback 
+    # and give the service_name value to use to
     # trigger the real callback
     url(r"^callbackevernote/$", "django_th.views.finalcallback",
         {'service_name': 'evernote', },

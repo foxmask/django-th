@@ -231,6 +231,7 @@ class UserServiceDeletedTemplateView(TemplateView):
 
 
 class UserServiceIndexView(ListView):
+
     """
         list of all available services activated from the admin
         the user can use and activate too for his own usage
@@ -286,7 +287,7 @@ class UserServiceWizard(SessionWizardView):
         trigger.consummer = UserService.objects.get(name='evernote',
                                                     user=self.request.user)
         trigger.user = self.request.user
-        #save the trigger
+        # save the trigger
         trigger.save()
         #...then create the related services from the wizard
         for form in form_list:

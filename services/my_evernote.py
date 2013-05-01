@@ -4,8 +4,8 @@ from .services import ServicesMgr
 from evernote.api.client import EvernoteClient
 from django.conf import settings
 from django.core.urlresolvers import reverse
-from django.shortcuts import render_to_response
-from django.shortcuts import redirect
+from ..models import UserService
+from ..models import ServicesActivated
 """
     handle process with evernote
     put the following in settings.py
@@ -42,6 +42,9 @@ class ServiceEvernote(ServicesMgr):
                 sandbox=settings.TH_EVERNOTE['sandbox'])
 
     def auth(self, request):
+        """
+            let's auth the user to the Service
+        """
         client = self.get_evernote_client()
         callbackUrl = 'http://%s%s' % (
             request.get_host(), reverse('evernote_callback'))
@@ -58,13 +61,27 @@ class ServiceEvernote(ServicesMgr):
         return client.get_authorize_url(request_token)
 
     def callback(self, request):
+        """
+            Called from the Service when the user accept to activate it
+        """
         try:
             client = self.get_evernote_client()
-            client.get_access_token(
+            #finally we save the user auth token
+            # As we already stored the object ServicesActivated
+            # from the UserServiceCreateView now we update the same
+            # object to the database so :
+            # 1) we get the previous objet
+            us = UserService.objects.get(
+                user=request.user,
+                name=ServicesActivated.objects.get(name='evernote'))
+            # 2) then get the token
+            us.token = client.get_access_token(
                 request.session['oauth_token'],
                 request.session['oauth_token_secret'],
                 request.GET.get('oauth_verifier', '')
             )
+            # 3) and save everything
+            us.save()
         except KeyError:
             return '/'
 
