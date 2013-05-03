@@ -10,6 +10,7 @@
     	<h3>RSS informations</h3>
 		<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
 		<form class="form-horizontal" action="" method="post">{% csrf_token %}
+			<div class="wizard-fieldset">
 			<table>
 			{{ wizard.management_form }}
 			{% if wizard.form.forms %}
@@ -21,6 +22,7 @@
 			    {{ wizard.form }}
 			{% endif %}
 			</table>
+			</div>
 		{% if wizard.steps.prev %}
 		<button class="btn btn-inverse" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
 		<button class="btn btn-inverse" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>

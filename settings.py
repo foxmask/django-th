@@ -77,7 +77,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -87,7 +87,7 @@ SECRET_KEY = '5830tjg(^k$r@jols*fuxu4htr#yzziq@*!a%k+s)_=12s^e_0'
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
+    #     'django.template.loaders.eggs.Loader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -194,8 +194,13 @@ TH_WIZARD_TPL = {
     'my_evernote': 'my_evernote/evernote-form.html',
 }
 
+# path to the cache path
+RSS_CACHE_PATH = os.path.dirname(os.path.abspath(__file__)) + '/cache/rss'
+# timeout before we need to refresh the cache
+RSS_CACHE_LIFETIME = 3600
+
 # local settings management
 try:
-    from local_settings import *
+    from .local_settings import *
 except ImportError:
     pass

@@ -27,7 +27,7 @@ class ServiceEvernote(ServicesMgr):
     def get_body(self):
         pass
 
-    def process_data(self):
+    def process_data(self, my_obj, datas):
         pass
 
     def get_evernote_client(self, token=None):
@@ -66,7 +66,7 @@ class ServiceEvernote(ServicesMgr):
         """
         try:
             client = self.get_evernote_client()
-            #finally we save the user auth token
+            # finally we save the user auth token
             # As we already stored the object ServicesActivated
             # from the UserServiceCreateView now we update the same
             # object to the database so :
@@ -85,7 +85,7 @@ class ServiceEvernote(ServicesMgr):
         except KeyError:
             return '/'
 
-        #note_store = client.get_note_store()
-        #notebooks = note_store.listNotebooks()
+        # note_store = client.get_note_store()
+        # notebooks = note_store.listNotebooks()
 
         return 'evernote/callback.html'
