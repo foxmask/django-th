@@ -15,26 +15,33 @@ class ServiceRss(ServicesMgr):
     def process_data(self, obj_id):
         # call the model
         from django_th.models.rss import ServiceRss
+        # call the cache
+        from django.core.cache import get_cache
+
         # get the URL from the trigger id
         rss = ServiceRss.objects.get(id=obj_id)
-        # give the url to parse to feedsservice
-        feeds = Feeds(**{'url_to_parse': rss.url})
-        self.data = self.cache_data(rss.name, feeds.datas())
+        self.rss_name = rss.name
 
+        # get the cache settings
+        parms = self._cache_settings()
+        # cache rss backend + parms
+        cache = get_cache('rss', **parms)
+        # datas from the cache
+        self.data = cache.get(self.rss_name)
+        # data not in cache or expiried
+        if self.data is None:
+            # retreive the data
+            feeds = Feeds(**{'url_to_parse': rss.url}).datas()
+            # put in cache
+            cache.set(self.rss_name, feeds, parms['rss']['TIMEOUT'])
+            # get the cache
+            self.data = cache.get(self.rss_name)
+        # return the datas
         return self.data
 
-    def cache_data(self, name, datas):
-        import os
-        import time
+    def _cache_settings(self):
         from django.conf import settings
-        cache_file = settings.RSS_CACHE_PATH + '/' + name
-        try:
-            if os.stat(cache_file).s_isreg:
-                if os.stat(cache_file).st_ctime > time() + settings.RSS_CACHE_LIFETIME:
-                    os.unlink(cache_file, datas)
-        except OSError:
-            print "file not found, let's create it"
-        return self.read_cache(cache_file, datas)
-
-    def read_cache(self, cache_file, datas):
-        return datas
+        location = settings.CACHES['rss']['LOCATION'] + '/' + self.rss_name
+        timeout = settings.CACHES['rss']['TIMEOUT']
+        parms = {'rss': {'LOCATION': location, 'TIMEOUT': timeout}}
+        return parms

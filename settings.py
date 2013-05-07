@@ -194,10 +194,26 @@ TH_WIZARD_TPL = {
     'my_evernote': 'my_evernote/evernote-form.html',
 }
 
-# path to the cache path
-RSS_CACHE_PATH = os.path.dirname(os.path.abspath(__file__)) + '/cache/rss'
-# timeout before we need to refresh the cache
-RSS_CACHE_LIFETIME = 3600
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': PROJECT_DIR + '/cache/',
+        'TIMEOUT': 600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    },
+    'rss': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': PROJECT_DIR + '/cache/rss/',
+        'TIMEOUT': 3600,
+        'OPTIONS': {
+            'MAX_ENTRIES': 1000
+        }
+    }
+}
+
 
 # local settings management
 try:

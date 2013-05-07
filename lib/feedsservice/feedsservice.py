@@ -22,5 +22,4 @@ class Feeds(object):
             read the data from a given URL or path to a local file
         '''
         datas = feedparser.parse(self.URL_TO_PARSE)
-        for entry in datas.entries:
-            yield entry
+        return datas.entries
