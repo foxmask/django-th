@@ -3,13 +3,14 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
-#those 2 lines needs to be here to be able to generate the tables
-#even if those classes are not used at all
+# those 2 lines needs to be here to be able to generate the tables
+# even if those classes are not used at all
 from .evernote import ServiceEvernote
 from .rss import ServiceRss
 
 
 class ServicesActivated(models.Model):
+
     """
         Services Activated from the admin
     """
@@ -27,6 +28,7 @@ class ServicesActivated(models.Model):
 
 
 class UserProfile(models.Model):
+
     """
         Related user to handle his profile
     """
@@ -34,6 +36,7 @@ class UserProfile(models.Model):
 
 
 class UserService(models.Model):
+
     """
          UserService a model to link service and user
     """
@@ -47,6 +50,7 @@ class UserService(models.Model):
 
 
 class TriggerService(models.Model):
+
     """
         TriggerService
 
@@ -71,6 +75,7 @@ class TriggerService(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     date_created = models.DateField(auto_now_add=True)
+    date_triggered = models.DateTimeField()
 
     def show(self):
         return "My Service %s %s %s %s %s" % (self.provider, self.consummer,
