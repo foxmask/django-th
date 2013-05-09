@@ -2,10 +2,13 @@
 
 from .services import ServicesMgr
 from evernote.api.client import EvernoteClient
+import evernote.edam.type.ttypes as Types
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from ..models import UserService
 from ..models import ServicesActivated
+import codecs
+
 """
     handle process with evernote
     put the following in settings.py
@@ -27,8 +30,22 @@ class ServiceEvernote(ServicesMgr):
     def get_body(self):
         pass
 
-    def process_data(self, my_obj, datas):
-        pass
+    def process_data(self, token, title, content):
+        if token:
+            client = EvernoteClient(
+                token=token, sandbox=settings.TH_EVERNOTE['sandbox'])
+            user_store = client.get_user_store()
+            note_store = client.get_note_store()
+            notebooks = note_store.listNotebooks()
+            note = Types.Note()
+            note.title = title.encode('utf-8')
+            note.content = '<?xml version="1.0" encoding="UTF-8"?>'
+            note.content += '<!DOCTYPE en-note SYSTEM ' \
+                '"http://xml.evernote.com/pub/enml2.dtd">'
+            note.content += '<en-note>'
+            note.content += content.encode('utf-8')
+            note.content += '</en-note>'
+            created_note = note_store.createNote(note)
 
     def get_evernote_client(self, token=None):
         if token:

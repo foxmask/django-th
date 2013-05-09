@@ -7,10 +7,10 @@ from django_th.lib.feedsservice import Feeds
 class ServiceRss(ServicesMgr):
 
     def get_title(self):
-        self.title = self.data['title']
+        return self.title
 
     def get_body(self):
-        self.body = self.data['description']
+        return self.body
 
     def process_data(self, obj_id):
         # call the model
@@ -20,28 +20,27 @@ class ServiceRss(ServicesMgr):
 
         # get the URL from the trigger id
         rss = ServiceRss.objects.get(id=obj_id)
-        self.rss_name = rss.name
-
+        self.name = rss.name
         # get the cache settings
         parms = self._cache_settings()
         # cache rss backend + parms
         cache = get_cache('rss', **parms)
         # datas from the cache
-        self.data = cache.get(self.rss_name)
+        self.data = cache.get(self.name)
         # data not in cache or expiried
         if self.data is None:
             # retreive the data
             feeds = Feeds(**{'url_to_parse': rss.url}).datas()
             # put in cache
-            cache.set(self.rss_name, feeds, parms['rss']['TIMEOUT'])
+            cache.set(self.name, feeds, parms['rss']['TIMEOUT'])
             # get the cache
-            self.data = cache.get(self.rss_name)
+            self.data = cache.get(self.name)
         # return the datas
         return self.data
 
     def _cache_settings(self):
         from django.conf import settings
-        location = settings.CACHES['rss']['LOCATION'] + '/' + self.rss_name
+        location = settings.CACHES['rss']['LOCATION'] + '/' + self.name
         timeout = settings.CACHES['rss']['TIMEOUT']
         parms = {'rss': {'LOCATION': location, 'TIMEOUT': timeout}}
         return parms

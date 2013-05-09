@@ -11,11 +11,17 @@ class ServicesMgr(object):
     def __unicode__(self):
         return "%s" % (self.name)
 
+    def set_title(self, string):
+        self.title = string
+
+    def set_body(self, string):
+        self.body = string
+
     def get_title(self):
-        pass
+        return self.title
 
     def get_body(self):
-        pass
+        return self.body
 
     def process_data(self):
         pass
