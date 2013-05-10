@@ -5,6 +5,25 @@ A service like IFTTT which will fire an action from a service when a trigger occ
 
 for example a new RSS item is published, django-trigger-happy will be able to automatically create a note on your Evernote account
 
+
+Parameters :
+------------
+
+### Settings.py 
+```python
+TH_EVERNOTE = {
+    'sandbox':
+    True,
+    'consumer_key':
+    'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret':
+    'abcdefghijklmnopqrstuvwxyz',
+}
+```
+set sandbox to False in production and provide your consummer_key and consumer_secret 
+
+
+
 Setting up : Administration
 ---------------------------
 
