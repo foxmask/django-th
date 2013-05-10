@@ -1,13 +1,17 @@
 # -*- coding: utf-8 -*-
-
+# django_th classes
 from .services import ServicesMgr
-from evernote.api.client import EvernoteClient
-import evernote.edam.type.ttypes as Types
-from django.conf import settings
-from django.core.urlresolvers import reverse
 from ..models import UserService
 from ..models import ServicesActivated
-import codecs
+from ..models.evernote import Evernote
+# evernote classes
+from evernote.api.client import EvernoteClient
+import evernote.edam.type.ttypes as Types
+# django classes
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.utils.log import getLogger
+from . import sanitize
 
 """
     handle process with evernote
@@ -21,30 +25,35 @@ import codecs
     sanbox set to True to make your test and False for production purpose
 """
 
+logger = getLogger('django_th.trigger_happy')
+
 
 class ServiceEvernote(ServicesMgr):
 
-    def get_title(self):
-        pass
-
-    def get_body(self):
-        pass
-
-    def process_data(self, token, title, content):
+    def save_data(self, token, title, content, trigger_id):
         if token:
+
+            # get the evernote data of this trigger
+            trigger = Evernote.objects.get(trigger_id=trigger_id)
+            logger.debug("notebook that will be used %s", trigger.notebook)
+
             client = EvernoteClient(
                 token=token, sandbox=settings.TH_EVERNOTE['sandbox'])
-            user_store = client.get_user_store()
+            # user_store = client.get_user_store()
             note_store = client.get_note_store()
-            notebooks = note_store.listNotebooks()
+            # notebooks = note_store.listNotebooks()
             note = Types.Note()
-            note.title = title.encode('utf-8')
+            if trigger.notebook:
+                note.notebook = trigger.notebook
+            note.title = title.encode('utf-8', 'xmlcharrefreplace')
             note.content = '<?xml version="1.0" encoding="UTF-8"?>'
             note.content += '<!DOCTYPE en-note SYSTEM ' \
                 '"http://xml.evernote.com/pub/enml2.dtd">'
-            note.content += '<en-note>'
-            note.content += content.encode('utf-8')
-            note.content += '</en-note>'
+
+            note.content += sanitize.sanitize(
+                content.encode('ascii', 'xmlcharrefreplace'))
+
+
             created_note = note_store.createNote(note)
 
     def get_evernote_client(self, token=None):
@@ -106,3 +115,6 @@ class ServiceEvernote(ServicesMgr):
         # notebooks = note_store.listNotebooks()
 
         return 'evernote/callback.html'
+
+    def filter_content(self, string):
+        pass

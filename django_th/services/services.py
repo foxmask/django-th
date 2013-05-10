@@ -24,9 +24,15 @@ class ServicesMgr(object):
         return self.body
 
     def process_data(self):
+        """
+            used to get data from the service
+        """
         pass
 
     def save_data(self):
+        """
+            used to save data to the service
+        """
         pass
 
     def auth(self):

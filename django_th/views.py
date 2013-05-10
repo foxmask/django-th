@@ -293,15 +293,15 @@ class UserServiceWizard(SessionWizardView):
         for form in form_list:
             print form.cleaned_data
             if form.cleaned_data['my_form_is'] == 'rss':
-                from .models.rss import ServiceRss
-                ServiceRss.objects.create(
+                from .models.rss import Rss
+                Rss.objects.create(
                     name=form.cleaned_data['name'],
                     url=form.cleaned_data['url'],
                     status=1,
                     trigger=trigger)
             if form.cleaned_data['my_form_is'] == 'evernote':
-                from .models.evernote import ServiceEvernote
-                ServiceEvernote.objects.create(
+                from .models.evernote import Evernote
+                Evernote.objects.create(
                     tag=form.cleaned_data['tag'],
                     notebook=form.cleaned_data['notebook'],
                     status=1,

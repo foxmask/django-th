@@ -2,15 +2,15 @@
 # -*- coding: utf-8 -*-
 import os
 import datetime
-import logging
-import logging.config
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
 from django_th.services import default_provider
 from django_th.models import TriggerService
+from django.utils.log import getLogger
 
 # create logger
-logger = logging.getLogger('trigger_happy')
+logger = getLogger('django_th.trigger_happy')
+
 
 # todo
 # 1) abstract the ".published" properties or add it to each service
@@ -34,13 +34,12 @@ def go():
 
         # 1) get the datas from the provider service
         datas = getattr(service_provider, 'process_data')(service.id)
-        consummer = getattr(service_consummer, 'process_data')
+        consummer = getattr(service_consummer, 'save_data')
 
         # 2) for each one
         for data in datas:
             title = data.title
             content = data.content[0].value
-            print content
             logger.info("from the service %s", service.provider)
             # 3) check if the previous trigger is older than the
             # date of the data we retreived
@@ -49,10 +48,11 @@ def go():
                     to_datetime(data.published) >= service.date_triggered:
                 logger.debug("date %s title %s", data.published, data.title)
                 logger.info("to the service %s", service.consummer)
-                consummer(service.consummer.token, title, content)
+                consummer(
+                    service.consummer.token, title, content, service.id)
             # otherwise do nothing
             else:
-                logger.info(
+                logger.debug(
                     "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
             # update the date of the trigger
             update_trigger(service)
@@ -83,17 +83,6 @@ def to_datetime(my_date_string):
 
 
 def main():
-    logging.config.fileConfig('logging.conf', disable_existing_loggers=False)
-    FORMAT = '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-
-    # write the logfile in the current working dir
-    fh = logging.FileHandler('./trigger_happy_fired.log')
-    fh.setLevel(logging.DEBUG)
-    formatter = logging.Formatter(FORMAT)
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
-
-    # load the services
     default_provider.load_services()
     # let's go
     go()

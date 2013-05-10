@@ -3,7 +3,7 @@ from django.db import models
 from ..models.services import Services
 
 
-class ServiceRss(Services):
+class Rss(Services):
 
     url = models.URLField(max_length=255)
     trigger = models.ForeignKey('TriggerService')

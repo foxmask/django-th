@@ -3,7 +3,7 @@ from django.db import models
 from ..models.services import Services
 
 
-class ServiceEvernote(Services):
+class Evernote(Services):
 
     tag = models.CharField(max_length=80)
     notebook = models.CharField(max_length=80)

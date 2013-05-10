@@ -1,26 +1,27 @@
 # -*- coding: utf-8 -*-
-
+# django_th classes
 from .services import ServicesMgr
 from django_th.lib.feedsservice import Feeds
+# django classes
+from django.utils.log import getLogger
+
+logger = getLogger('django_th.trigger_happy')
 
 
 class ServiceRss(ServicesMgr):
 
-    def get_title(self):
-        return self.title
-
-    def get_body(self):
-        return self.body
-
     def process_data(self, obj_id):
         # call the model
-        from django_th.models.rss import ServiceRss
+        from django_th.models.rss import Rss
         # call the cache
         from django.core.cache import get_cache
 
         # get the URL from the trigger id
-        rss = ServiceRss.objects.get(id=obj_id)
+        rss = Rss.objects.get(id=obj_id)
         self.name = rss.name
+
+        logger.debug("RSS Feeds from %s : url %s", self.name, rss.url)
+
         # get the cache settings
         parms = self._cache_settings()
         # cache rss backend + parms

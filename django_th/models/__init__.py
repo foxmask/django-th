@@ -5,8 +5,9 @@ from django.contrib.auth.models import User
 
 # those 2 lines needs to be here to be able to generate the tables
 # even if those classes are not used at all
-from .evernote import ServiceEvernote
-from .rss import ServiceRss
+from .evernote import Evernote
+
+from .rss import Rss
 
 
 class ServicesActivated(models.Model):

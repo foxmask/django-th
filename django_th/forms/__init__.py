@@ -7,6 +7,7 @@ from ..models import ServicesActivated
 
 
 class UserServiceForm(forms.ModelForm):
+
     """
         Form to deal with my own activated service
     """
@@ -22,6 +23,7 @@ class UserServiceForm(forms.ModelForm):
             queryset=ServicesActivated.objects.filter(status=1))
 
     class Meta:
+
         """
             meta to add/override anything we need
         """
@@ -30,10 +32,12 @@ class UserServiceForm(forms.ModelForm):
 
 
 class TriggerServiceForm(forms.ModelForm):
+
     """
         TriggerService Form
     """
     class Meta:
+
         """
             meta to add/override anything we need
         """
@@ -56,6 +60,7 @@ class TriggerServiceForm(forms.ModelForm):
 
 
 class LoginForm(forms.ModelForm):
+
     """
         Form to manage the login page
     """
@@ -68,10 +73,12 @@ class LoginForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+
     """
         Form to manage the User profile
     """
     class Meta:
+
         """
         meta to override anything about UserProfile
         """
@@ -110,6 +117,7 @@ class ProfileForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+
     """
         Form to deal with the fields of the User Model
     """
@@ -129,6 +137,7 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.save()
 
     class Meta:
+
         """
             meta to override anything about UserProfile
         """

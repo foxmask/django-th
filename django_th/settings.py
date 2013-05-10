@@ -146,6 +146,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '%(asctime)s %(levelname)s %(module)s %(process)d %(message)s'
+        },
+        'simple': {
+            'format': '%(levelname)s %(message)s'
+        },
+    },
     'filters': {
         'require_debug_false': {
             '()': 'django.utils.log.RequireDebugFalse'
@@ -156,14 +164,33 @@ LOGGING = {
             'level': 'ERROR',
             'filters': ['require_debug_false'],
             'class': 'django.utils.log.AdminEmailHandler'
-        }
+        },
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple'
+        },
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': 'trigger_happy.log',
+            'maxBytes': 6128,
+            'backupCount': 3,
+            'formatter': 'verbose',
+
+        },
     },
-    'loggers': {
+    'loggers':
+    {
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': True,
         },
+        'django_th.trigger_happy': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+        }
     }
 }
 
@@ -184,19 +211,25 @@ TH_SERVICES = (
 )
 
 TH_EVERNOTE = {
-    'sandbox': True,
-    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    'sandbox':
+    True,
+    'consumer_key':
+    'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret':
+    'abcdefghijklmnopqrstuvwxyz',
 }
 
 TH_WIZARD_TPL = {
-    'my_rss': 'my_rss/rss-form.html',
-    'my_evernote': 'my_evernote/evernote-form.html',
+    'my_rss':
+    'my_rss/rss-form.html',
+    'my_evernote':
+    'my_evernote/evernote-form.html',
 }
 
 
 CACHES = {
-    'default': {
+    'default':
+    {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': PROJECT_DIR + '/cache/',
         'TIMEOUT': 600,
@@ -204,7 +237,8 @@ CACHES = {
             'MAX_ENTRIES': 1000
         }
     },
-    'rss': {
+    'rss':
+    {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
         'LOCATION': PROJECT_DIR + '/cache/rss/',
         'TIMEOUT': 3600,
