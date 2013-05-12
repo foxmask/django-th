@@ -16,11 +16,23 @@ class UserServiceForm(forms.ModelForm):
         self.myobject.user = user
         self.myobject.save()
 
+    def activated_services(self):
+        """
+            get the activated services added from the administrator
+        """
+        all_datas = ()
+        data = ()
+        services = ServicesActivated.objects.filter(status=1)
+        for class_name in services:
+            # 2nd array position contains the name of the service
+            data = (class_name, class_name.name.rsplit('Service', 1)[1])
+            all_datas = (data,) + all_datas
+        return all_datas
+
     def __init__(self, *args, **kwargs):
         super(UserServiceForm, self).__init__(*args, **kwargs)
         self.fields['token'] = forms.CharField(required=False)
-        self.fields['name'].initial = forms.ModelChoiceField(
-            queryset=ServicesActivated.objects.filter(status=1))
+        self.fields['name'].choices = self.activated_services()
 
     class Meta:
 
@@ -52,6 +64,10 @@ class TriggerServiceForm(forms.ModelForm):
 
     provider = forms.ModelChoiceField(queryset=UserService.objects.all())
     consummer = forms.ModelChoiceField(queryset=UserService.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(TriggerServiceForm, self).__init__(*args, **kwargs)
+        self.fields['date_triggered'] = forms.DateTimeField(required=False)
 
     def save(self, user=None):
         self.myobject = super(TriggerServiceForm, self).save(commit=False)

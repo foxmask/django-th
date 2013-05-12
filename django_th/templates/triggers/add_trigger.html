@@ -14,6 +14,7 @@
         <form method="post" class="form-horizontal" action="">
         {% csrf_token %}
         {{ form.non_field_errors }}
+        {{ form.as_p }}
         <div class="control-group">
             <label class="control-label" for="id_provider">{% trans 'Provider' %}</label>
             <div class="controls">

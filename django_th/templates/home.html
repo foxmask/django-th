@@ -13,15 +13,18 @@
         <div class="row">
             <div class="trigger-record span11">
             <article>
-                <div class="span8">
-                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|safe|escape }} => {{ trigger.consummer.name|safe|escape }}">
-                    <i class="icon-{{ trigger.provider.name|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|lower }}"></i>
+                <div class="span7">
+                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|service_readable|safe|escape }} => {{ trigger.consummer.name|service_readable|safe|escape }}">
+                    <i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|service_readable|lower }}"></i>
                     <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>
                 </div>
-                <div class="span2">
+                <div class="span3">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>
                     <a href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i></a><br/>
-                    <i class="icon-calendar"></i> {{ trigger.date_created }}
+                    <ul>
+                        <li><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }}</li>
+                        <li><i class="icon-calendar"></i>{% trans "Triggered" %} {{ trigger.date_trigger }}</li>
+                    </ul>
                 </div>
             </article>
             </div>

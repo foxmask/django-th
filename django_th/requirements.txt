@@ -7,3 +7,4 @@ feedparser==5.1.3
 httplib2==0.8
 oauth2==1.5.211
 ordereddict==1.1
+South=0.7.6

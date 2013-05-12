@@ -142,16 +142,15 @@ class UserServiceCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(user=self.request.user)
 
+        print form.cleaned_data['name']
+
         sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
         # let's build the 'call' of the auth method
         # which owns to a ServiceXXX class
         if sa.auth_required:
-            # form.cleaned_data['name'] contains the class of the service
-            service_name = 'Service' +\
-                str(form.cleaned_data['name']).capitalize()
-            # use the default_provider to get the object
-            # from the ServiceXXX built
-            service_object = default_provider.get_service(service_name)
+            # use the default_provider to get the object from the ServiceXXX
+            service_object = default_provider.get_service("Service" +
+                                                          str(form.cleaned_data['name']))
             # get the class object
             lets_auth = getattr(service_object, 'auth')
             # call the auth func from this class
@@ -282,9 +281,9 @@ class UserServiceWizard(SessionWizardView):
 
         trigger = self.instance
         trigger.provider = UserService.objects.get(
-            name='rss',
+            name='ServiceRss',
             user=self.request.user)
-        trigger.consummer = UserService.objects.get(name='evernote',
+        trigger.consummer = UserService.objects.get(name='ServiceEvernote',
                                                     user=self.request.user)
         trigger.user = self.request.user
         # save the trigger
@@ -321,7 +320,7 @@ def finalcallback(request, **kwargs):
         let's do the callback of the related service after
         the auth request from UserServiceCreateView
     """
-    service_name = 'Service' + kwargs['service_name'].capitalize()
+    service_name = kwargs['service_name']
     service_object = default_provider.get_service(service_name)
     lets_callback = getattr(service_object, 'callback')
     # call the auth func from this class

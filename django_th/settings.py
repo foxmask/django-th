@@ -211,12 +211,9 @@ TH_SERVICES = (
 )
 
 TH_EVERNOTE = {
-    'sandbox':
-    True,
-    'consumer_key':
-    'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret':
-    'abcdefghijklmnopqrstuvwxyz',
+    'sandbox': True,
+    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
 }
 
 TH_WIZARD_TPL = {

@@ -20,7 +20,7 @@
             <article>
                 <div class="span8">
                     <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.name|lower }}"></i> 
-                    <span class="trigger-text">{{ service.name|safe|escape }}</span></a>
+                    <span class="trigger-text">{{ service.name|service_readable|safe|escape }}</span></a>
                 </div>
                 <div class="span2">
                     <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>

@@ -76,7 +76,7 @@ class TriggerService(models.Model):
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     date_created = models.DateField(auto_now_add=True)
-    date_triggered = models.DateTimeField()
+    date_triggered = models.DateTimeField(null=True)
 
     def show(self):
         return "My Service %s %s %s %s %s" % (self.provider, self.consummer,

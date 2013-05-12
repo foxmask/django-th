@@ -5,4 +5,5 @@ local_settings.py
 manage.py
 run.sh
 test*
-*.sqlite3
+*.sqlite3*
+*.log*

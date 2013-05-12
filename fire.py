@@ -21,41 +21,45 @@ def go():
         run the main process
     """
     trigger = TriggerService.objects.all()
-    for service in trigger:
-        logger.info("from %s to %s ", service.provider, service.consummer)
+    if trigger:
+        for service in trigger:
+            logger.info(
+                "from %s to %s ", service.provider.name, service.consummer.name)
 
-        # provider - the service that offer datas
-        service_name = 'Service' + str(service.provider).capitalize()
-        service_provider = default_provider.get_service(service_name)
+            # provider - the service that offer datas
+            service_name = service.provider.name
+            service_provider = default_provider.get_service(service_name)
 
-        # consummer - the service which uses the datas
-        service_name = 'Service' + str(service.consummer).capitalize()
-        service_consummer = default_provider.get_service(service_name)
+            # consummer - the service which uses the datas
+            service_name = service.consummer.name
+            service_consummer = default_provider.get_service(service_name)
 
-        # 1) get the datas from the provider service
-        datas = getattr(service_provider, 'process_data')(service.id)
-        consummer = getattr(service_consummer, 'save_data')
+            # 1) get the datas from the provider service
+            datas = getattr(service_provider, 'process_data')(service.id)
+            consummer = getattr(service_consummer, 'save_data')
 
-        # 2) for each one
-        for data in datas:
-            title = data.title
-            content = data.content[0].value
-            logger.info("from the service %s", service.provider)
-            # 3) check if the previous trigger is older than the
-            # date of the data we retreived
-            # if yes , process the consummer
-            if service.date_triggered is None or\
-                    to_datetime(data.published) >= service.date_triggered:
-                logger.debug("date %s title %s", data.published, data.title)
-                logger.info("to the service %s", service.consummer)
-                consummer(
-                    service.consummer.token, title, content, service.id)
-            # otherwise do nothing
-            else:
-                logger.debug(
-                    "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
-            # update the date of the trigger
-            update_trigger(service)
+            # 2) for each one
+            for data in datas:
+                title = data.title
+                content = data.content[0].value
+                logger.info("from the service %s", service.provider)
+                # 3) check if the previous trigger is older than the
+                # date of the data we retreived
+                # if yes , process the consummer
+                if service.date_triggered is None or to_datetime(data.published) >= service.date_triggered:
+                    logger.debug(
+                        "date %s title %s", data.published, data.title)
+                    logger.info("to the service %s", service.consummer)
+                    consummer(
+                        service.consummer.token, title, content, service.id)
+                # otherwise do nothing
+                else:
+                    logger.debug(
+                        "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
+                # update the date of the trigger
+                update_trigger(service)
+    else:
+        print "No trigger set by any user"
 
 
 def update_trigger(service):

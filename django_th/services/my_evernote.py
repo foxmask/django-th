@@ -53,9 +53,7 @@ class ServiceEvernote(ServicesMgr):
             note.content += sanitize.sanitize(
                 content.encode('ascii', 'xmlcharrefreplace'))
 
-
-            created_note = note_store.createNote(note)
-
+            # created_note = note_store.createNote(note)
     def get_evernote_client(self, token=None):
         if token:
             return EvernoteClient(
@@ -99,7 +97,7 @@ class ServiceEvernote(ServicesMgr):
             # 1) we get the previous objet
             us = UserService.objects.get(
                 user=request.user,
-                name=ServicesActivated.objects.get(name='evernote'))
+                name=ServicesActivated.objects.get(name='ServiceEvernote'))
             # 2) then get the token
             us.token = client.get_access_token(
                 request.session['oauth_token'],
