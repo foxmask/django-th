@@ -5,6 +5,7 @@ from batbelt.objects import import_from_path
 
 
 class ServiceProvider(OrderedDict):
+
     """
         get the service from the settings
     """
@@ -23,6 +24,7 @@ class ServiceProvider(OrderedDict):
         get the service (class instance) from its name
     """
     def get_service(self, class_name):
-        return self[class_name.name]
+        return self[class_name]
+
 
 service_provider = ServiceProvider()

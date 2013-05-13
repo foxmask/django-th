@@ -31,30 +31,47 @@ logger = getLogger('django_th.trigger_happy')
 class ServiceEvernote(ServicesMgr):
 
     def save_data(self, token, title, content, trigger_id):
+        """
+            let's save the data
+        """
         if token:
 
             # get the evernote data of this trigger
             trigger = Evernote.objects.get(trigger_id=trigger_id)
-            logger.debug("notebook that will be used %s", trigger.notebook)
 
             client = EvernoteClient(
                 token=token, sandbox=settings.TH_EVERNOTE['sandbox'])
             # user_store = client.get_user_store()
             note_store = client.get_note_store()
             # notebooks = note_store.listNotebooks()
+            # note object
             note = Types.Note()
             if trigger.notebook:
+                # get the notebook name
                 note.notebook = trigger.notebook
+                logger.debug("notebook that will be used %s", trigger.notebook)
+
+            # start to build the "note"
+            # the title
             note.title = title.encode('utf-8', 'xmlcharrefreplace')
+            # the body
             note.content = '<?xml version="1.0" encoding="UTF-8"?>'
             note.content += '<!DOCTYPE en-note SYSTEM ' \
                 '"http://xml.evernote.com/pub/enml2.dtd">'
 
             note.content += sanitize.sanitize(
-                content.encode('ascii', 'xmlcharrefreplace'))
+                content.encode('utf-8', 'xmlcharrefreplace'))
+            # create the note !
+            created_note = note_store.createNote(note)
 
-            # created_note = note_store.createNote(note)
+        else:
+            logger.critical(
+                "no token provided for trigger ID %s and title %s", trigger_id, title)
+
     def get_evernote_client(self, token=None):
+        """
+            get the token from evernote
+        """
         if token:
             return EvernoteClient(
                 token=token,
@@ -113,6 +130,3 @@ class ServiceEvernote(ServicesMgr):
         # notebooks = note_store.listNotebooks()
 
         return 'evernote/callback.html'
-
-    def filter_content(self, string):
-        pass

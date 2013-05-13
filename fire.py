@@ -28,11 +28,13 @@ def go():
 
             # provider - the service that offer datas
             service_name = service.provider.name
-            service_provider = default_provider.get_service(service_name)
+            service_provider = default_provider.get_service(
+                'Service' + str(service_name).capitalize())
 
             # consummer - the service which uses the datas
             service_name = service.consummer.name
-            service_consummer = default_provider.get_service(service_name)
+            service_consummer = default_provider.get_service(
+                'Service' + str(service_name).capitalize())
 
             # 1) get the datas from the provider service
             datas = getattr(service_provider, 'process_data')(service.id)

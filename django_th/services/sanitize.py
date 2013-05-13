@@ -10,7 +10,9 @@ from xml.dom.minidom import *
 
 def sanitize(html):
     document, errors = tidy_document(html, options={
-        "output-xhtml": 1, "drop-proprietary-attributes": 1, "merge-divs": 1, "clean": 1})
+        "output-xhtml": 1,
+        "char-encoding": "utf8",
+        "drop-proprietary-attributes": 1, "merge-divs": 1, "clean": 1})
                                      # xml.dom.minidom is an XML parser, not an
                                      # HTML parser. Therefore, it doesn't know
                                      # any HTML entities (only those which are
@@ -18,7 +20,6 @@ def sanitize(html):
                                      # didn't give output-xhtml I got
                                      # xml.parsers.expat.ExpatError: undefined
                                      # entity.
-    print document
     parsedDOM = xml.dom.minidom.parseString(document)
     documentElement = parsedDOM.documentElement
     removeProhibitedElements(documentElement)
