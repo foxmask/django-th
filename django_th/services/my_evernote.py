@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 # django_th classes
 from .services import ServicesMgr
 from ..models import UserService
@@ -11,7 +12,7 @@ import evernote.edam.type.ttypes as Types
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.log import getLogger
-from . import sanitize
+from .sanitize import sanitize
 
 """
     handle process with evernote
@@ -35,7 +36,6 @@ class ServiceEvernote(ServicesMgr):
             let's save the data
         """
         if token:
-
             # get the evernote data of this trigger
             trigger = Evernote.objects.get(trigger_id=trigger_id)
 
@@ -56,13 +56,14 @@ class ServiceEvernote(ServicesMgr):
             note.title = title.encode('utf-8', 'xmlcharrefreplace')
             # the body
             note.content = '<?xml version="1.0" encoding="UTF-8"?>'
-            note.content += '<!DOCTYPE en-note SYSTEM ' \
-                '"http://xml.evernote.com/pub/enml2.dtd">'
-
-            note.content += sanitize.sanitize(
-                content.encode('utf-8', 'xmlcharrefreplace'))
+            note.content += '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">'
+            # tidy and sanitize content
+            enml = sanitize(content)
+            note.content += enml.encode('ascii', 'xmlcharrefreplace')
             # create the note !
             created_note = note_store.createNote(note)
+            sentance = str('note %s created') % created_note.guid
+            logger.debug(sentance)
 
         else:
             logger.critical(
@@ -85,6 +86,11 @@ class ServiceEvernote(ServicesMgr):
     def auth(self, request):
         """
             let's auth the user to the Service
+
+            @todo : manage the user token to see if a token already exist
+            smthg like request.user.token with
+            client = self.get_evernote_client(request.user.token)
+            this will avoid to request a new token
         """
         client = self.get_evernote_client()
         callbackUrl = 'http://%s%s' % (
@@ -93,8 +99,8 @@ class ServiceEvernote(ServicesMgr):
 
         # Save the request token information for later
         request.session['oauth_token'] = request_token['oauth_token']
-        request.session['oauth_token_secret'] =\
-            request_token['oauth_token_secret']
+        request.session['oauth_token_secret'] = request_token[
+            'oauth_token_secret']
 
         # Redirect the user to the Evernote authorization URL
         # return the URL string which will be used by redirect()

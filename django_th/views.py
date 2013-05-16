@@ -142,15 +142,13 @@ class UserServiceCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(user=self.request.user)
 
-        print form.cleaned_data['name']
-
         sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
         # let's build the 'call' of the auth method
         # which owns to a ServiceXXX class
         if sa.auth_required:
             # use the default_provider to get the object from the ServiceXXX
-            service_object = default_provider.get_service("Service" +
-                                                          str(form.cleaned_data['name']))
+            service_object = default_provider.get_service(
+                str(form.cleaned_data['name']))
             # get the class object
             lets_auth = getattr(service_object, 'auth')
             # call the auth func from this class

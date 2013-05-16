@@ -1,25 +1,21 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+
 import sys
 reload(sys)
 sys.setdefaultencoding("utf-8")
-# from https://raw.github.com/mindprince/pinboardToEvernote/master/sanitize.py
-import re
+# sanitize use from https://raw.github.com/mindprince/pinboardToEvernote/master/sanitize.py
+# and modifiy with the adding of the 2nd line
 from tidylib import *
 from xml.dom.minidom import *
 
 
 def sanitize(html):
-    document, errors = tidy_document(html, options={
-        "output-xhtml": 1,
-        "char-encoding": "utf8",
-        "drop-proprietary-attributes": 1, "merge-divs": 1, "clean": 1})
-                                     # xml.dom.minidom is an XML parser, not an
-                                     # HTML parser. Therefore, it doesn't know
-                                     # any HTML entities (only those which are
-                                     # common to both XML and HTML). So, if I
-                                     # didn't give output-xhtml I got
-                                     # xml.parsers.expat.ExpatError: undefined
-                                     # entity.
+    # with  from __future__ import unicode_litterals
+    # tidy_document does not want other options at all such as div merge char-encoding
+    # and so on
+    document, errors = tidy_document(html, options={"output-xhtml": 1})
+
     parsedDOM = xml.dom.minidom.parseString(document)
     documentElement = parsedDOM.documentElement
     removeProhibitedElements(documentElement)
@@ -30,6 +26,9 @@ def sanitize(html):
 
 
 def removeProhibitedElements(documentElement):
+    """
+        To fit the Evernote DTD need, drop this tag name
+    """
     prohibitedTagNames = [
         "applet", "base", "basefont", "bgsound", "blink", "button", "dir", "embed", "fieldset", "form", "frame", "frameset", "head", "iframe", "ilayer", "input", "isindex",
         "label", "layer", "legend", "link", "marquee", "menu", "meta", "noframes", "noscript", "object", "optgroup", "option", "param", "plaintext", "script", "select", "style", "textarea", "xml", ]
@@ -38,6 +37,9 @@ def removeProhibitedElements(documentElement):
 
 
 def removeProhibitedElement(tagName, documentElement):
+    """
+        To fit the Evernote DTD need, drop this tag name
+    """
     elements = documentElement.getElementsByTagName(tagName)
     for element in elements:
         p = element.parentNode
@@ -45,6 +47,9 @@ def removeProhibitedElement(tagName, documentElement):
 
 
 def removeProhibitedAttributes(element):
+    """
+        To fit the Evernote DTD need, drop this attribute name
+    """
     prohibitedAttributes = ["id", "class", "onclick", "ondblclick", "onload",
                             "accesskey", "data", "dynsrc", "tabindex", "onmouseover", "onmouseout", "onblur", ]
     # FIXME All on* attributes are prohibited. How to use a regular expression

@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import os
 import datetime
 
@@ -39,7 +40,6 @@ def go():
             # 1) get the datas from the provider service
             datas = getattr(service_provider, 'process_data')(service.id)
             consummer = getattr(service_consummer, 'save_data')
-
             # 2) for each one
             for data in datas:
                 title = data.title
@@ -60,6 +60,7 @@ def go():
                         "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
                 # update the date of the trigger
                 update_trigger(service)
+
     else:
         print "No trigger set by any user"
 
