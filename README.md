@@ -13,7 +13,7 @@ Thus you could host your own solution and manage your own triggers without depen
 
 With this project you can also host triggers for users, or just for you.
 
-All you need is to have a hosting provider who permits to use a manager of task like "cron" and, of course Python 2.7 with the required python modules listed in django_th/requirements.txt
+All you need is to have a hosting provider (or simply your own server ;) who permits to use a manager of tasks like "cron" and, of course Python 2.7 with the required python modules listed in django_th/requirements.txt
 
 
 Parameters :
