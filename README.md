@@ -16,10 +16,43 @@ With this project you can also host triggers for users, or just for you.
 All you need is to have a hosting provider (or simply your own server ;) who permits to use a manager of tasks like "cron" and, of course Python 2.7 with the required python modules listed in django_th/requirements.txt
 
 
+Installation:
+------------
+to get the project, from your virtualenv, do :
+```system
+git clone https://github.com/foxmask/django-th.git
+```
+to add the needed modules , do :
+```python
+pip install -r https://github.com/foxmask/django-th/blob/master/django_th/requirements.txt
+```
+and at least :
+```python
+python manage.py syncdb
+```
+to startup the database
+
 Parameters :
 ------------
+As usual you will setup the database parameters.
+
+Important parts are the settings of the available services :
 
 ### Settings.py 
+
+#### TH_SERVICES 
+
+TH_SERVICES is a list of the services we put in django_th/services directory
+
+```python
+TH_SERVICES = (
+    'django_th.services.my_rss.ServiceRss',
+    'django_th.services.my_evernote.ServiceEvernote',
+)
+```
+
+##### TH_EVERNOTE
+TH_EVERNOTE is the settings you will need to be able to add/read data in/from Evernote.
 ```python
 TH_EVERNOTE = {
     'sandbox': True,
