@@ -89,3 +89,9 @@ For example :
 * page 1 : the user gives a RSS feed
 * page 2 : the user gives the name of the notebook where notes will be stored and a tag if he wants
 * page 3 : the user gives a description
+
+
+Fire the Triggers :
+-------------------
+To start handling the queue of triggers you/your users configure, just set the fire.py in a crontab or any other scheduler solution of your choice.
+Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services you/your users want to reach.
