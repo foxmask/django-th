@@ -173,7 +173,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': 'trigger_happy.log',
+            'filename': PROJET_DIR + '/../trigger_happy.log',
             'maxBytes': 6128,
             'backupCount': 3,
             'formatter': 'verbose',
