@@ -28,6 +28,7 @@ Requirements :
 * oauth2 1.5.211
 * ordereddict 1.1
 * South 0.7.6
+* PyTidylib : 0.2.1
 
 Installation:
 ------------
