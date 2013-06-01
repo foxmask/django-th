@@ -74,7 +74,7 @@ TH_EVERNOTE = {
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
 }
 ```
-set sandbox to False in production and provide your consummer_key and consumer_secret 
+set sandbox to False in production and provide your consummer_key and consumer_secret you'd requested from http://dev.evernote.com/
 
 
 
