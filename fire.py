@@ -28,7 +28,7 @@ def go():
     if trigger:
         for service in trigger:
             logger.info(
-                "from %s to %s ", service.provider.name, service.consummer.name)
+                "PROVIDER %s CONSUMMER %s ", service.provider.name, service.consummer.name)
 
             # provider - the service that offer datas
             service_name = str(service.provider.name)
@@ -45,9 +45,11 @@ def go():
                 to_update = True
             # run run run
             else:
+                extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
                 consummer = getattr(service_consummer, 'save_data')
+
                 # 2) for each one
                 for data in datas:
                     title = data.title
@@ -55,21 +57,22 @@ def go():
                         content = data.content[0].value
                     else:
                         content = data.description
-                    logger.info("from the service %s", service.provider)
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
-                    if service.date_triggered is not None and to_datetime(data.published_parsed) >= service.date_triggered:
+                    if service.date_triggered is not None and \
+                            to_datetime(data.published_parsed) >= service.date_triggered:
                         logger.debug(
                             "date %s title %s", data.published, data.title)
-                        logger.info("to the service %s", service.consummer)
+
+                        extra = {'link': data.link}
                         consummer(
-                            service.consummer.token, title, content, service.id)
+                            service.consummer.token, title, content, service.id, extra)
                         to_update = True
                     # otherwise do nothing
                     else:
                         logger.debug(
-                            "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
+                            "data outdated skiped : [%s] %s", data.published, data.title)
             # update the date of the trigger
             if to_update:
                 update_trigger(service)

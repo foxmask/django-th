@@ -31,7 +31,7 @@ logger = getLogger('django_th.trigger_happy')
 
 class ServiceEvernote(ServicesMgr):
 
-    def save_data(self, token, title, content, trigger_id):
+    def save_data(self, token, title, content, trigger_id, extra):
         """
             let's save the data
         """
@@ -67,7 +67,7 @@ class ServiceEvernote(ServicesMgr):
                     new_notebook = Types.Notebook()
                     new_notebook.name = trigger.notebook
                     note.notebookGuid == note_store.createNotebook(
-                        new_notebook.guid)
+                        new_notebook)
                 else:
                     note.notebookGuid = notebookGuid
                 # tagGUID does not exists :
@@ -75,11 +75,17 @@ class ServiceEvernote(ServicesMgr):
                 if tagGuid == 0:
                     new_tag = Types.Tag()
                     new_tag.name = trigger.tag
-                    note.tagGuids = note_store.createTag(new_tag.guid)
+                    note.tagGuids = note_store.createTag(new_tag)
                 else:
                     note.tagGuids = tagGuid
 
                 logger.debug("notebook that will be used %s", trigger.notebook)
+
+            if 'link' in extra:
+                footer = "<br/><br/><a href='{}'>{}</a>".format(
+                    extra['link'], trigger.trigger.description)
+                content += footer
+
             # start to build the "note"
             # the title
             note.title = title.encode('utf-8', 'xmlcharrefreplace')
