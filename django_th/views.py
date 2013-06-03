@@ -288,7 +288,6 @@ class UserServiceWizard(SessionWizardView):
         trigger.save()
         #...then create the related services from the wizard
         for form in form_list:
-            print form.cleaned_data
             if form.cleaned_data['my_form_is'] == 'rss':
                 from .models.rss import Rss
                 Rss.objects.create(
