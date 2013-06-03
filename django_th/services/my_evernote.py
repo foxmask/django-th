@@ -43,14 +43,43 @@ class ServiceEvernote(ServicesMgr):
                 token=token, sandbox=settings.TH_EVERNOTE['sandbox'])
             # user_store = client.get_user_store()
             note_store = client.get_note_store()
-            # notebooks = note_store.listNotebooks()
+
             # note object
             note = Types.Note()
             if trigger.notebook:
-                # get the notebook name
-                note.notebook = trigger.notebook
-                logger.debug("notebook that will be used %s", trigger.notebook)
+                notebooks = note_store.listNotebooks()
+                listtags = note_store.listTags()
+                notebookGuid = 0
+                tagGuid = 0
+                # get the notebookGUID ...
+                for notebook in notebooks:
+                    if notebook.name == trigger.notebook:
+                        notebookGuid = notebook.guid
+                        break
+                #... and tagGUID
+                for tag in listtags:
+                    if tag.name == trigger.tag:
+                        tagGuid = tag.guid
+                        break
+                # notebookGUID does not exists :
+                # create it
+                if notebookGuid == 0:
+                    new_notebook = Types.Notebook()
+                    new_notebook.name = trigger.notebook
+                    note.notebookGuid == note_store.createNotebook(
+                        new_notebook.guid)
+                else:
+                    note.notebookGuid = notebookGuid
+                # tagGUID does not exists :
+                # create it
+                if tagGuid == 0:
+                    new_tag = Types.Tag()
+                    new_tag.name = trigger.tag
+                    note.tagGuids = note_store.createTag(new_tag.guid)
+                else:
+                    note.tagGuids = tagGuid
 
+                logger.debug("notebook that will be used %s", trigger.notebook)
             # start to build the "note"
             # the title
             note.title = title.encode('utf-8', 'xmlcharrefreplace')

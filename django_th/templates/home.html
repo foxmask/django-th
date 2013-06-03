@@ -23,7 +23,7 @@
                     <a href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i></a><br/>
                     <ul>
                         <li><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }}</li>
-                        <li><i class="icon-calendar"></i>{% trans "Triggered" %} {{ trigger.date_trigger }}</li>
+                        <li><i class="icon-calendar"></i>{% trans "Triggered" %} {% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %} {% trans "Never triggered" %}{% endif %}</li>
                     </ul>
                 </div>
             </article>

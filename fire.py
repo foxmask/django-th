@@ -3,6 +3,8 @@
 from __future__ import unicode_literals
 import os
 import datetime
+import time
+
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
 from django_th.services import default_provider
@@ -21,6 +23,7 @@ def go():
     """
         run the main process
     """
+    to_update = False
     trigger = TriggerService.objects.all()
     if trigger:
         for service in trigger:
@@ -28,37 +31,47 @@ def go():
                 "from %s to %s ", service.provider.name, service.consummer.name)
 
             # provider - the service that offer datas
-            service_name = service.provider.name
-            service_provider = default_provider.get_service(
-                'Service' + str(service_name).capitalize())
+            service_name = str(service.provider.name)
+            service_provider = default_provider.get_service(service_name)
 
             # consummer - the service which uses the datas
-            service_name = service.consummer.name
-            service_consummer = default_provider.get_service(
-                'Service' + str(service_name).capitalize())
+            service_name = str(service.consummer.name)
+            service_consummer = default_provider.get_service(service_name)
 
-            # 1) get the datas from the provider service
-            datas = getattr(service_provider, 'process_data')(service.id)
-            consummer = getattr(service_consummer, 'save_data')
-            # 2) for each one
-            for data in datas:
-                title = data.title
-                content = data.content[0].value
-                logger.info("from the service %s", service.provider)
-                # 3) check if the previous trigger is older than the
-                # date of the data we retreived
-                # if yes , process the consummer
-                if service.date_triggered is None or to_datetime(data.published) >= service.date_triggered:
-                    logger.debug(
-                        "date %s title %s", data.published, data.title)
-                    logger.info("to the service %s", service.consummer)
-                    consummer(
-                        service.consummer.token, title, content, service.id)
-                # otherwise do nothing
-                else:
-                    logger.debug(
-                        "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
-                # update the date of the trigger
+            # check if the service has already been triggered
+            if service.date_triggered is None:
+                logger.debug("first run for %s => %s " % (str(
+                    service.provider.name), str(service.consummer.name)))
+                to_update = True
+            # run run run
+            else:
+                # 1) get the datas from the provider service
+                datas = getattr(service_provider, 'process_data')(service.id)
+                consummer = getattr(service_consummer, 'save_data')
+                # 2) for each one
+                for data in datas:
+                    title = data.title
+                    if 'content' in data:
+                        content = data.content[0].value
+                    else:
+                        content = data.description
+                    logger.info("from the service %s", service.provider)
+                    # 3) check if the previous trigger is older than the
+                    # date of the data we retreived
+                    # if yes , process the consummer
+                    if service.date_triggered is not None and to_datetime(data.published_parsed) >= service.date_triggered:
+                        logger.debug(
+                            "date %s title %s", data.published, data.title)
+                        logger.info("to the service %s", service.consummer)
+                        consummer(
+                            service.consummer.token, title, content, service.id)
+                        to_update = True
+                    # otherwise do nothing
+                    else:
+                        logger.debug(
+                            "DATA TOO OLD SKIPED : [%s] %s", data.published, data.title)
+            # update the date of the trigger
+            if to_update:
                 update_trigger(service)
 
     else:
@@ -77,16 +90,10 @@ def update_trigger(service):
 
 def to_datetime(my_date_string):
     """
-        convert string to date eg
-        "Sat, 04 May 2013 09:55:17 +0000" to "2013-05-04 09:55:17"
+        convert Datetime 9-tuple to the date and time format
+        feedparser provides this 9-tuple
     """
-    # drop the string tz from the string to avoid
-    # an issue with %z in format eg :
-    # strptime(my_date_string[:-6], "%a, %d %b %Y %H:%M:%S %z")
-    # also the Setting HAS TO BE =>>> USE_TZ = False
-    # or error occurs :
-    # can't compare offset-naive and offset-aware datetimes
-    return datetime.datetime.strptime(my_date_string[:-6], "%a, %d %b %Y %H:%M:%S")
+    return datetime.datetime.fromtimestamp(time.mktime(my_date_string))
 
 
 def main():
