@@ -53,12 +53,12 @@ class ServiceEvernote(ServicesMgr):
                 tagGuid = 0
                 # get the notebookGUID ...
                 for notebook in notebooks:
-                    if notebook.name == trigger.notebook:
+                    if notebook.name.lower() == trigger.notebook.lower():
                         notebookGuid = notebook.guid
                         break
                 #... and tagGUID
                 for tag in listtags:
-                    if tag.name == trigger.tag:
+                    if tag.name.lower() == trigger.tag.lower():
                         tagGuid = tag.guid
                         break
                 # notebookGUID does not exists :
@@ -66,8 +66,9 @@ class ServiceEvernote(ServicesMgr):
                 if notebookGuid == 0:
                     new_notebook = Types.Notebook()
                     new_notebook.name = trigger.notebook
-                    note.notebookGuid == note_store.createNotebook(
-                        new_notebook)
+                    new_notebook.defaultNotebook = False
+                    note.notebookGuid = note_store.createNotebook(
+                        new_notebook).guid
                 else:
                     note.notebookGuid = notebookGuid
                 # tagGUID does not exists :
@@ -75,9 +76,9 @@ class ServiceEvernote(ServicesMgr):
                 if tagGuid == 0:
                     new_tag = Types.Tag()
                     new_tag.name = trigger.tag
-                    note.tagGuids = note_store.createTag(new_tag)
+                    note.tagGuids = [note_store.createTag(new_tag).guid]
                 else:
-                    note.tagGuids = tagGuid
+                    note.tagGuids = [tagGuid]
 
                 logger.debug("notebook that will be used %s", trigger.notebook)
 

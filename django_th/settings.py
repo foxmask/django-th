@@ -1,6 +1,6 @@
 # Django settings for django_th project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
@@ -44,7 +44,7 @@ USE_I18N = True
 USE_L10N = True
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = False
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -171,10 +171,10 @@ LOGGING = {
             'formatter': 'simple'
         },
         'file': {
-            'level': 'DEBUG',
+            'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': PROJECT_DIR + '/../trigger_happy.log',
-            'maxBytes': 6128,
+            'maxBytes': 61280,
             'backupCount': 3,
             'formatter': 'verbose',
 
@@ -189,7 +189,7 @@ LOGGING = {
         },
         'django_th.trigger_happy': {
             'handlers': ['console', 'file'],
-            'level': 'DEBUG',
+            'level': 'INFO',
         }
     }
 }

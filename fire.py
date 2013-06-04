@@ -28,8 +28,7 @@ def go():
     if trigger:
         for service in trigger:
             logger.info(
-                "PROVIDER %s CONSUMMER %s ", service.provider.name, service.consummer.name)
-
+                "PROVIDER %s CONSUMMER %s : %s", service.provider.name, service.consummer.name, service.description)
             # provider - the service that offer datas
             service_name = str(service.provider.name)
             service_provider = default_provider.get_service(service_name)
@@ -95,6 +94,8 @@ def to_datetime(my_date_string):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
+        settings.USE_TZ has to be False otherwise
+        the compare will fail
     """
     return datetime.datetime.fromtimestamp(time.mktime(my_date_string))
 
