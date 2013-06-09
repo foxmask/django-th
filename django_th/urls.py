@@ -20,7 +20,8 @@ from .views import TriggerListView, TriggerUpdateView, TriggerDeleteView,\
     UserServiceAddedTemplateView,\
     UserServiceEditedTemplateView,\
     UserServiceDeletedTemplateView,\
-    UserServiceWizard
+    UserServiceWizard,\
+    trigger_on_off
 
 urlpatterns = patterns('',
 
@@ -99,6 +100,8 @@ urlpatterns = patterns('',
                            name='delete_trigger'),
                        url(r'^trigger/delete/thanks',
                            TriggerDeletedTemplateView.as_view()),
+                       url(r'^trigger/onoff/(?P<trigger_id>\d+)$', trigger_on_off,
+                           name="trigger_on_off"),
                        # ****************************************
                        # * service
                        # ****************************************
