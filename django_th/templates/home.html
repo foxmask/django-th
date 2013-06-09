@@ -11,7 +11,7 @@
 {% if triggers_list %}
     {% for trigger in triggers_list %}
         <div class="row">
-            <div class="trigger-record span11">
+            <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} span11">
             <article>
                 <div class="span7">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|service_readable|safe|escape }} => {{ trigger.consummer.name|service_readable|safe|escape }}">
@@ -20,6 +20,11 @@
                 </div>
                 <div class="span3">
                     <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>
+                    {% if trigger.status %}
+                    <a href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off"></i></a>
+                    {% else %}
+                    <a href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><i class="icon-off"></i></a>
+                    {% endif %}                    
                     <a href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i></a><br/>
                     <ul>
                         <li><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }}</li>

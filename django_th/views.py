@@ -34,6 +34,17 @@ def logout_view(request):
     return redirect('base')
 
 
+def trigger_on_off(request, trigger_id):
+    trigger = TriggerService.objects.get(id=trigger_id)
+    if trigger.status:
+        trigger.status = False
+    else:
+        trigger.status = True
+    trigger.save()
+
+    return redirect('base')
+
+
 #*************************************
 #  Part I : the Triggers
 #*************************************
@@ -116,8 +127,6 @@ class TriggerDeletedTemplateView(TemplateView):
 #*************************************
 #  Part II : the UserServices
 #*************************************
-
-
 class UserServiceListView(ListView):
     context_object_name = "services_list"
     queryset = UserService.objects.all()
@@ -284,6 +293,7 @@ class UserServiceWizard(SessionWizardView):
         trigger.consummer = UserService.objects.get(name='ServiceEvernote',
                                                     user=self.request.user)
         trigger.user = self.request.user
+        trigger.status = True
         # save the trigger
         trigger.save()
         #...then create the related services from the wizard
