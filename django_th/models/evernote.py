@@ -5,7 +5,7 @@ from ..models.services import Services
 
 class Evernote(Services):
 
-    tag = models.CharField(max_length=80)
+    tag = models.CharField(max_length=80, blank=True)
     notebook = models.CharField(max_length=80)
     title = models.CharField(max_length=80)
     text = models.TextField()
