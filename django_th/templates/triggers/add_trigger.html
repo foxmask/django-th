@@ -35,6 +35,13 @@
             {{ form.description }}
             </div>
         </div>
+        <div class="control-group">
+            <label class="control-label" for="id_description">{% trans 'Enable this trigger ?' %}</label>
+            <div class="controls">
+            {{ form.status.errors }}
+            {{ form.status }}
+            </div>
+        </div>        
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
             <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
