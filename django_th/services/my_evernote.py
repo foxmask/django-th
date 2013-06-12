@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.utils.translation import ugettext as _
+
 # django_th classes
 from .services import ServicesMgr
 from ..models import UserService
@@ -61,7 +64,7 @@ class ServiceEvernote(ServicesMgr):
                     if tag.name.lower() == trigger.tag.lower():
                         tagGuid = tag.guid
                         break
-                # notebookGUID does not exists :
+                # notebookGUID does not exist:
                 # create it
                 if notebookGuid == 0:
                     new_notebook = Types.Notebook()
@@ -71,7 +74,7 @@ class ServiceEvernote(ServicesMgr):
                         new_notebook).guid
                 else:
                     note.notebookGuid = notebookGuid
-                # tagGUID does not exists :
+                # tagGUID does not exist:
                 # create it
                 if tagGuid == 0:
                     new_tag = Types.Tag()
@@ -83,8 +86,22 @@ class ServiceEvernote(ServicesMgr):
                 logger.debug("notebook that will be used %s", trigger.notebook)
 
             if 'link' in extra:
-                footer = "<br/><br/><a href='{}'>{}</a>".format(
-                    extra['link'], trigger.trigger.description)
+                # add the link of the 'source' in the note
+                # get a NoteAttributes object
+                na = Types.NoteAttributes()
+                # add the url
+                na.sourceURL = extra['link']
+                # add the object to the note
+                note.attributes = na
+                
+                # will add this kind of info in the footer of the note :
+                # "provided by FoxMaSk's News from http://domain.com"
+                # domain.com will be the link and the text of the link
+                provided_by = _('Provided by')
+                provided_from = _('from')
+                footer = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>".format(
+                    provided_by, trigger.trigger.description,
+                    provided_from, extra['link'], extra['link'])
                 content += footer
 
             # start to build the "note"
