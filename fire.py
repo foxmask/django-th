@@ -24,7 +24,7 @@ def go():
         run the main process
     """
     to_update = False
-    trigger = TriggerService.objects.all()
+    trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
             logger.info(
@@ -48,10 +48,11 @@ def go():
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
                 consummer = getattr(service_consummer, 'save_data')
-
+                published = ''
                 # 2) for each one
                 for data in datas:
                     title = data.title
+                    published = to_datetime(data)
                     if 'content' in data:
                         content = data.content[0].value
                     else:
@@ -60,9 +61,9 @@ def go():
                     # date of the data we retreived
                     # if yes , process the consummer
                     if service.date_triggered is not None and \
-                            to_datetime(data.published_parsed) >= service.date_triggered:
+                            published >= service.date_triggered:
                         logger.debug(
-                            "date %s title %s", data.published, data.title)
+                            "date %s title %s", published, data.title)
 
                         extra = {'link': data.link}
                         consummer(
@@ -71,7 +72,7 @@ def go():
                     # otherwise do nothing
                     else:
                         logger.debug(
-                            "data outdated skiped : [%s] %s", data.published, data.title)
+                            "data outdated skiped : [%s] %s", published, data.title)
             # update the date of the trigger
             if to_update:
                 update_trigger(service)
@@ -90,14 +91,21 @@ def update_trigger(service):
         trigger.save()
 
 
-def to_datetime(my_date_string):
+def to_datetime(data):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
         settings.USE_TZ has to be False otherwise
         the compare will fail
     """
-    return datetime.datetime.fromtimestamp(time.mktime(my_date_string))
+    # set a default date and time in case none of the expected
+    # xml properties was here
+    my_date_time = time.time()
+    if 'published_parsed' in data:
+        my_date_time = data.published_parsed
+    elif 'updated_parsed' in data:
+        my_date_time = data.updated_parsed
+    return datetime.datetime.fromtimestamp(time.mktime(my_date_time))
 
 
 def main():
