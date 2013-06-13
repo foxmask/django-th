@@ -14,7 +14,7 @@ def sanitize(html):
     # with  from __future__ import unicode_litterals
     # tidy_document does not want other options at all such as div merge char-encoding
     # and so on
-    document, errors = tidy_document(html, options={"output-xhtml": 1})
+    document, errors = tidy_document(html, options={"output-xhtml": 1,"force-output": 1})
 
     parsedDOM = xml.dom.minidom.parseString(document)
     documentElement = parsedDOM.documentElement
@@ -51,7 +51,8 @@ def removeProhibitedAttributes(element):
         To fit the Evernote DTD need, drop this attribute name
     """
     prohibitedAttributes = ["id", "class", "onclick", "ondblclick", "onload",
-                            "accesskey", "data", "dynsrc", "tabindex", "onmouseover", "onmouseout", "onblur", ]
+                            "accesskey", "data", "dynsrc", "tabindex", "onmouseover", "onmouseout", "onblur",
+                            "frame", "rules",]
     # FIXME All on* attributes are prohibited. How to use a regular expression
     # as argument to removeAttribute?
     for attribute in prohibitedAttributes:

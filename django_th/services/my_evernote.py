@@ -59,11 +59,12 @@ class ServiceEvernote(ServicesMgr):
                     if notebook.name.lower() == trigger.notebook.lower():
                         notebookGuid = notebook.guid
                         break
-                #... and tagGUID
-                for tag in listtags:
-                    if tag.name.lower() == trigger.tag.lower():
-                        tagGuid = tag.guid
-                        break
+                #... and get the tagGUID if a tag has been provided
+                if trigger.tag is not '':
+                    for tag in listtags:
+                        if tag.name.lower() == trigger.tag.lower():
+                            tagGuid = tag.guid
+                            break
                 # notebookGUID does not exist:
                 # create it
                 if notebookGuid == 0:
@@ -75,12 +76,14 @@ class ServiceEvernote(ServicesMgr):
                 else:
                     note.notebookGuid = notebookGuid
                 # tagGUID does not exist:
-                # create it
-                if tagGuid == 0:
+                # create it if a tag has been provided
+                if tagGuid == 0 and trigger.tag is not '':
                     new_tag = Types.Tag()
                     new_tag.name = trigger.tag
-                    note.tagGuids = [note_store.createTag(new_tag).guid]
-                else:
+                    tagGuid = note_store.createTag(new_tag).guid
+
+                if trigger.tag is not '':
+                    #set the tag to the note if a tag has been provided
                     note.tagGuids = [tagGuid]
 
                 logger.debug("notebook that will be used %s", trigger.notebook)
@@ -93,7 +96,7 @@ class ServiceEvernote(ServicesMgr):
                 na.sourceURL = extra['link']
                 # add the object to the note
                 note.attributes = na
-                
+
                 # will add this kind of info in the footer of the note :
                 # "provided by FoxMaSk's News from http://domain.com"
                 # domain.com will be the link and the text of the link
