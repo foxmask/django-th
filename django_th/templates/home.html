@@ -5,38 +5,72 @@
 {% load django_th_extras %}
 {% block title %}{% trans "My Trigger" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
-    <div class="span12" id="trigger-content">
+
 {% if user.is_authenticated %}
-        <h2>{% trans "My Triggers" %}</h2>
+        <div class="span12"><h2>{% trans "My Triggers" %}</h2></div>       
 {% if triggers_list %}
+    {% if is_paginated %}
+        <div class="span12 pagination">
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
+                {% endif %}
+                    <li class="active"><a >
+                    {% blocktrans with page_number=page_obj.number total_of_pages=page_obj.paginator.num_pages %}
+                    Page {{ page_number }} of {{ total_of_pages }}
+                    {% endblocktrans %}</a>
+                    </li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
     {% for trigger in triggers_list %}
-        <div class="row">
-            <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} span11">
-            <article>
-                <div class="span7">
-                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|service_readable|safe|escape }} => {{ trigger.consummer.name|service_readable|safe|escape }}">
-                    <i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|service_readable|lower }}"></i>
-                    <span class="trigger-text">{{ trigger.description|safe|escape }}</span></a>
-                </div>
-                <div class="span3">
-                    <a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i></a>
-                    {% if trigger.status %}
-                    <a href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off"></i></a>
-                    {% else %}
-                    <a href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><i class="icon-off"></i></a>
-                    {% endif %}                    
-                    <a href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i></a><br/>
-                    <ul>
-                        <li><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }}</li>
-                        <li><i class="icon-calendar"></i>{% trans "Triggered" %} {% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %} {% trans "Never triggered" %}{% endif %}</li>
-                    </ul>
-                </div>
-            </article>
+        <article>
+        <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} span12">
+            <div class="span7 trigger-text">
+                <i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|service_readable|lower }}"></i>
+                <h3><a href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit your trigger " %} {{ trigger.provider.name|service_readable|safe|escape }} => {{ trigger.consummer.name|service_readable|safe|escape }}">{{ trigger.description|safe|escape }}</a></h3>
             </div>
-         </div>
+            <div class="span4">
+                <br/>
+                <a class="btn btn-large" href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i> {% trans "Edit it" %}</a>
+                {% if trigger.status %}
+                <a class="btn btn-large btn-primary active" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off"></i> {% trans "Turn off" %}</a>
+                {% else %}
+                <a class="btn btn-large btn-primary disabled" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><i class="icon-off"></i> {% trans "Turn on" %}</a>
+                {% endif %}                    
+                <a class="btn btn-large btn-danger" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash"></i> {% trans "Delete it" %}</a><br/>
+            </div>
+            <footer>
+            <div class="span12">
+                    <p><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }} - 
+                    <i class="icon-calendar"></i>{% trans "Triggered" %} {% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %} {% trans "Never triggered" %}{% endif %}</p>
+            </div>  
+            </footer>                  
+        </div>
+        </article>
     {% endfor %}
+    {% if is_paginated %}
+        <div class="span12 pagination">
+            <ul>
+                {% if page_obj.has_previous %}
+                    <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
+                {% endif %}
+                    <li class="active"><a >
+                    {% blocktrans with page_number=page_obj.number total_of_pages=page_obj.paginator.num_pages %}
+                    Page {{ page_number }} of {{ total_of_pages }}
+                    {% endblocktrans %}</a>
+                    </li>
+                {% if page_obj.has_next %}
+                    <li><a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    {% endif %}
 {% else %}
-        <div class="row trigger-record">
+        <div class="trigger-record span12">
             {% trans 'No trigger yet' %}
         </div>
 {% endif %}
@@ -51,5 +85,5 @@
                 <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
             </div>
 {% endif %}
-    </div>
+    
 {% endblock %}

@@ -32,6 +32,15 @@ h1 {
     border: 1px solid #FF06C1;
 }
 
+.trigger-enable:hover {
+    border: 2px solid #600;
+}
+
+.trigger-disable:hover {
+    border: 2px solid #600;
+}
+
+
 .trigger-record-user, .profile-identity-head {
 	background-image: url('/static/images/glyphicons_003_user.png');
 }
@@ -44,16 +53,14 @@ h1 {
 /****
  * History
  */
-.trigger-record article footer {
+
+.trigger-record footer {
 	font-size: small;
-	text-align:right;
-}
-.trigger-record .trigger-text {
-    word-wrap: break-word;
+    vertical-align: text-bottom;
 }
 
-.trigger-text{
-      vertical-align: text-bottom;
+.trigger-record .trigger-text {
+    word-wrap: break-word;
 }
 
 .charWarning {
@@ -111,6 +118,19 @@ h1 {
     height: 30px;
     line-height: 30px;
     background-position: 0px 0px;    
+}
+
+/****
+ * wizard 
+ */
+#trigger-content fieldset {
+    border-radius: 5px 5px 5px 5px;
+    border: 1px solid #DDDDDD;  
+}
+
+#trigger-content fieldset:hover {
+    border-radius: 5px 5px 5px 5px;
+    border: 2px solid #600;
 }
 
 

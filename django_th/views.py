@@ -54,6 +54,7 @@ class TriggerListView(ListView):
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
     template_name = "home.html"
+    paginate_by = 7
 
     def get_queryset(self):
         # get the Trigger of the connected user
