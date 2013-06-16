@@ -53,51 +53,54 @@ def edit_trigger_rss_evernote(request, trigger_id):
         load the form from the Trigger ID and data from 3 models
     """
     if request.user.is_authenticated():
-        if request.method == 'POST':
-            form = TriggerServiceRssEvernoteForm(request.POST)
-            if form.is_valid():  # All validation rules pass
+        print request.user
+        service = TriggerService.objects.get(pk=trigger_id)
+        if request.user == service.user:
+            if request.method == 'POST':
+                form = TriggerServiceRssEvernoteForm(request.POST)
+                if form.is_valid():  # All validation rules pass
+                    rss = Rss.objects.get(trigger=trigger_id)
+                    evernote = Evernote.objects.get(trigger=trigger_id)
 
-                service = TriggerService.objects.get(pk=trigger_id)
+                    # service
+                    service.description = form.cleaned_data['description']
+                    if form.cleaned_data['status']:
+                        service.status = 1
+                    else:
+                        service.status = 0
+
+                    service.save()
+                    # rss
+                    rss.url = form.cleaned_data['url']
+                    rss.save()
+
+                    # evernote
+                    evernote.tag = form.cleaned_data['tag']
+                    evernote.notebook = form.cleaned_data['notebook']
+                    evernote.save()
+
+                    return HttpResponseRedirect('/trigger/edit/thanks/')  # Redirect after POST
+
+            else:
                 rss = Rss.objects.get(trigger=trigger_id)
                 evernote = Evernote.objects.get(trigger=trigger_id)
+                instance = {'trigger_id': service.id,
+                            'description': service.description,
+                            'status': service.status,
 
-                # service
-                service.description = form.cleaned_data['description']
-                if form.cleaned_data['status']:
-                    service.status = 1
-                else:
-                    service.status = 0
+                            'url': rss.url,
 
-                service.save()
-                # rss
-                rss.url = form.cleaned_data['url']
-                rss.save()
+                            'tag': evernote.tag,
+                            'notebook': evernote.notebook}
 
-                # evernote
-                evernote.tag = form.cleaned_data['tag']
-                evernote.notebook = form.cleaned_data['notebook']
-                evernote.save()
+                form = TriggerServiceRssEvernoteForm(
+                    instance)  # An unbound form
 
-                return HttpResponseRedirect('/trigger/edit/thanks/')  # Redirect after POST
-
+            return render(request, 'triggers/edit_trigger_rss_evernote.html', {
+                'form': form,
+            })
         else:
-            service = TriggerService.objects.get(pk=trigger_id)
-            rss = Rss.objects.get(trigger=trigger_id)
-            evernote = Evernote.objects.get(trigger=trigger_id)
-            instance = {'trigger_id': service.id,
-                        'description': service.description,
-                        'status': service.status,
-
-                        'url': rss.url,
-
-                        'tag': evernote.tag,
-                        'notebook': evernote.notebook}
-
-            form = TriggerServiceRssEvernoteForm(instance)  # An unbound form
-
-        return render(request, 'triggers/edit_trigger_rss_evernote.html', {
-            'form': form,
-        })
+            raise PermissionDenied
     else:
         raise PermissionDenied
 
