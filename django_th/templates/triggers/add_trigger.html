@@ -6,28 +6,15 @@
 {% block title %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
     <div class="span12" id="trigger-content">
-        {% if action = 'add_trigger' %}
-        <h3>{% trans 'Creation of a new trigger' %}</h3>
-        {% else %}
         <h3>{% trans 'Edition of your trigger' %}</h3>
-        {% endif %}
         <form method="post" class="form-horizontal" action="">
         {% csrf_token %}
+        
         {{ form.non_field_errors }}
-        <div class="control-group">
-            <label class="control-label" for="id_provider">{% trans 'Provider' %}</label>
-            <div class="controls">
-            {{ form.provider.errors }}
-            {{ form.provider }}
-            </div>
-        </div>
-        <div class="control-group">
-            <label class="control-label" for="id_consummer">{% trans 'Consummer' %}</label>
-            <div class="controls">
-            {{ form.consummer.errors }}
-            {{ form.consummer }}
-            </div>
-        </div>
+
+        {% for hidden in form.hidden_fields %}
+        {{ hidden }}
+        {% endfor %}
         <div class="control-group">
             <label class="control-label" for="id_description">{% trans 'Description' %}</label>
             <div class="controls">
@@ -36,20 +23,37 @@
             </div>
         </div>
         <div class="control-group">
-            <label class="control-label" for="id_description">{% trans 'Enable this trigger ?' %}</label>
+            <label class="control-label" for="id_status">{% trans 'Trigger activated ?' %}</label>
             <div class="controls">
             {{ form.status.errors }}
             {{ form.status }}
             </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_url">{% trans 'URL' %}</label>
+            <div class="controls">
+            {{ form.url.errors }}
+            {{ form.url }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_tag">{% trans 'Tag' %}</label>
+            <div class="controls">
+            {{ form.tag.errors }}
+            {{ form.tag }}
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label" for="id_description">{% trans 'Notebook' %}</label>
+            <div class="controls">
+            {{ form.notebook.errors }}
+            {{ form.notebook }}
+            </div>
         </div>        
         <div class="form-actions">
             <input type="hidden" name="next" value="{{ next }}" />
-            <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
-            {% if action = 'add_trigger' %}
-            <button class="btn btn-primary">{% trans "Create it" %}</button>
-            {% else %}
-            <button class="btn btn-primary">{% trans "Edit it" %}</button>
-            {% endif %}
+            <!--input type="hidden" name="trigger_id" value="{{ trigger_id }}" /-->
+            <button class="btn btn-primary">{% trans "Save" %}</button>
         </div>
         </form>
     </div> 

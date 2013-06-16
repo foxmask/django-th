@@ -126,6 +126,7 @@ h1 {
 #trigger-content fieldset {
     border-radius: 5px 5px 5px 5px;
     border: 1px solid #DDDDDD;  
+    padding: 10px;
 }
 
 #trigger-content fieldset:hover {

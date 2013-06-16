@@ -9,7 +9,7 @@ from .forms import ProfileForm
 from .forms import ServicesDescriptionForm
 from .forms.rss import RssForm
 from .forms.evernote import EvernoteForm
-from .views import TriggerListView, TriggerUpdateView, TriggerDeleteView,\
+from .views import TriggerListView, TriggerDeleteView,\
     TriggerAddedTemplateView,\
     TriggerEditedTemplateView,\
     TriggerDeletedTemplateView,\
@@ -21,7 +21,8 @@ from .views import TriggerListView, TriggerUpdateView, TriggerDeleteView,\
     UserServiceEditedTemplateView,\
     UserServiceDeletedTemplateView,\
     UserServiceWizard,\
-    trigger_on_off
+    trigger_on_off,\
+    edit_trigger_rss_evernote
 
 urlpatterns = patterns('',
 
@@ -88,7 +89,7 @@ urlpatterns = patterns('',
                        # ****************************************
                        #    url(r'^trigger/add/$', TriggerCreateView.as_view(),
                        #        name='add_trigger'),
-                       url(r'^trigger/edit/(?P<pk>\d+)$', TriggerUpdateView.as_view(),
+                       url(r'^trigger/edit/(?P<trigger_id>\d+)$', edit_trigger_rss_evernote,
                            name='edit_trigger'),
                        url(r'^trigger/delete/(?P<pk>\d+)$', TriggerDeleteView.as_view(),
                            name='delete_trigger'),
@@ -96,8 +97,6 @@ urlpatterns = patterns('',
                            TriggerAddedTemplateView.as_view()),
                        url(r'^trigger/edit/thanks',
                            TriggerEditedTemplateView.as_view()),
-                       url(r'^trigger/delete/$', TriggerDeleteView.as_view(),
-                           name='delete_trigger'),
                        url(r'^trigger/delete/thanks',
                            TriggerDeletedTemplateView.as_view()),
                        url(r'^trigger/onoff/(?P<trigger_id>\d+)$', trigger_on_off,

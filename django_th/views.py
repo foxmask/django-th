@@ -1,19 +1,22 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render_to_response
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.core.exceptions import PermissionDenied
 
 from django.views.generic import CreateView, UpdateView, \
-    DeleteView, ListView, TemplateView
+    DeleteView, ListView, TemplateView, FormView
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
 from .models import TriggerService, UserService, ServicesActivated
-from .forms import TriggerServiceForm, UserServiceForm
+from .models.rss import Rss
+from .models.evernote import Evernote
+from .forms import TriggerServiceRssEvernoteForm, UserServiceForm
 from .services import default_provider
 
 
@@ -45,6 +48,59 @@ def trigger_on_off(request, trigger_id):
     return redirect('base')
 
 
+def edit_trigger_rss_evernote(request, trigger_id):
+    """
+        load the form from the Trigger ID and data from 3 models
+    """
+    if request.user.is_authenticated():
+        if request.method == 'POST':
+            form = TriggerServiceRssEvernoteForm(request.POST)
+            if form.is_valid():  # All validation rules pass
+
+                service = TriggerService.objects.get(pk=trigger_id)
+                rss = Rss.objects.get(trigger=trigger_id)
+                evernote = Evernote.objects.get(trigger=trigger_id)
+
+                # service
+                service.description = form.cleaned_data['description']
+                if form.cleaned_data['status']:
+                    service.status = 1
+                else:
+                    service.status = 0
+
+                service.save()
+                # rss
+                rss.url = form.cleaned_data['url']
+                rss.save()
+
+                # evernote
+                evernote.tag = form.cleaned_data['tag']
+                evernote.notebook = form.cleaned_data['notebook']
+                evernote.save()
+
+                return HttpResponseRedirect('/trigger/edit/thanks/')  # Redirect after POST
+
+        else:
+            service = TriggerService.objects.get(pk=trigger_id)
+            rss = Rss.objects.get(trigger=trigger_id)
+            evernote = Evernote.objects.get(trigger=trigger_id)
+            instance = {'trigger_id': service.id,
+                        'description': service.description,
+                        'status': service.status,
+
+                        'url': rss.url,
+
+                        'tag': evernote.tag,
+                        'notebook': evernote.notebook}
+
+            form = TriggerServiceRssEvernoteForm(instance)  # An unbound form
+
+        return render(request, 'triggers/edit_trigger_rss_evernote.html', {
+            'form': form,
+        })
+    else:
+        raise PermissionDenied
+
 #*************************************
 #  Part I : the Triggers
 #*************************************
@@ -63,28 +119,6 @@ class TriggerListView(ListView):
                 order_by('-date_created')
         # otherwise return nothing
         return TriggerService.objects.none()
-
-
-class TriggerUpdateView(UpdateView):
-    form_class = TriggerServiceForm
-    template_name = "triggers/add_trigger.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kw):
-        return super(TriggerUpdateView, self).dispatch(*args, **kw)
-
-    def form_valid(self, form):
-        self.object = form.save(user=self.request.user)
-        return HttpResponseRedirect('/trigger/edit/thanks/')
-
-    def get_object(self, queryset=None):
-        obj = TriggerService.objects.get(pk=self.kwargs['pk'])
-        return obj
-
-    def get_context_data(self, **kw):
-        context = super(TriggerUpdateView, self).get_context_data(**kw)
-        context['action'] = 'edit_trigger'
-        return context
 
 
 class TriggerDeleteView(DeleteView):

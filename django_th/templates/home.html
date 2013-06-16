@@ -3,7 +3,7 @@
 {% load url from future %}
 {% load i18n %}
 {% load django_th_extras %}
-{% block title %}{% trans "My Trigger" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+{% block title %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
 
 {% if user.is_authenticated %}
@@ -37,17 +37,14 @@
                 <br/>
                 <a class="btn btn-large" href="{% url 'edit_trigger' trigger.id %}" title="{% trans "Edit this trigger" %}"><i class="icon-pencil"></i> {% trans "Edit it" %}</a>
                 {% if trigger.status %}
-                <a class="btn btn-large btn-primary active" href="{% url
-                    'trigger_on_off' trigger.id %}" title="{% trans 'Set this
-                    trigger off' %}"><i class="icon-off icon-white"></i> {% trans "Turn off" %}</a>
+                <a class="btn btn-large btn-primary active" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off icon-white"></i> {% trans "Turn off" %}</a>
+
                 {% else %}
-                <a class="btn btn-large btn-primary disabled" href="{% url
-                    'trigger_on_off' trigger.id %}" title="{% trans 'Set this
-                    trigger on' %}"><i class="icon-off icon-white"></i> {% trans "Turn on" %}</a>
+                <a class="btn btn-large btn-primary disabled" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><i class="icon-off icon-white"></i> {% trans "Turn on" %}</a>
+
                 {% endif %}                    
-                <a class="btn btn-large btn-danger" href="{% url
-                    'delete_trigger' trigger.id %}" title="{% trans "Delete
-                    this trigger ?" %}"><i class="icon-trash icon-white"></i> {% trans "Delete it" %}</a><br/>
+                <a class="btn btn-large btn-danger" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash icon-white"></i> {% trans "Delete it" %}</a><br/>
+                
             </div>
             <footer>
             <div class="span12">

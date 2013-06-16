@@ -43,36 +43,16 @@ class UserServiceForm(forms.ModelForm):
         exclude = ('user',)
 
 
-class TriggerServiceForm(forms.ModelForm):
-
+class TriggerServiceRssEvernoteForm(forms.Form):
     """
-        TriggerService Form
+        define a form for 3 models : Servirce + Rss + Evernote
     """
-    class Meta:
-
-        """
-            meta to add/override anything we need
-        """
-        model = TriggerService
-        widgets = {
-            'description':
-            TextInput(attrs={'placeholder':
-                             _('A description for your new service')}),
-        }
-        exclude = ('user',
-                   'date_created')
-
-    provider = forms.ModelChoiceField(queryset=UserService.objects.all())
-    consummer = forms.ModelChoiceField(queryset=UserService.objects.all())
-
-    def __init__(self, *args, **kwargs):
-        super(TriggerServiceForm, self).__init__(*args, **kwargs)
-        self.fields['date_triggered'] = forms.DateTimeField(required=False)
-
-    def save(self, user=None):
-        self.myobject = super(TriggerServiceForm, self).save(commit=False)
-        self.myobject.user = user
-        self.myobject.save()
+    trigger_id = forms.HiddenInput()
+    description = forms.CharField(max_length=200)
+    status = forms.BooleanField(required=False)
+    tag = forms.CharField(max_length=80, required=False)
+    notebook = forms.CharField(max_length=80)
+    url = forms.URLField(max_length=255)
 
 
 class LoginForm(forms.ModelForm):
