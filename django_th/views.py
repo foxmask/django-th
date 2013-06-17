@@ -53,7 +53,6 @@ def edit_trigger_rss_evernote(request, trigger_id):
         load the form from the Trigger ID and data from 3 models
     """
     if request.user.is_authenticated():
-        print request.user
         service = TriggerService.objects.get(pk=trigger_id)
         if request.user == service.user:
             if request.method == 'POST':

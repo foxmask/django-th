@@ -8,6 +8,7 @@
     <div class="span12" id="trigger-content">
         <h3>{% trans 'Edition of your trigger' %}</h3>
         <form method="post" class="form-horizontal" action="">
+            <fieldset>
         {% csrf_token %}
         
         {{ form.non_field_errors }}
@@ -55,6 +56,7 @@
             <!--input type="hidden" name="trigger_id" value="{{ trigger_id }}" /-->
             <button class="btn btn-primary">{% trans "Save" %}</button>
         </div>
+            </fieldset>
         </form>
     </div> 
 {% endblock %}
