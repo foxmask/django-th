@@ -23,12 +23,14 @@ def go():
     """
         run the main process
     """
-    to_update = False
     trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
-            logger.info(
-                "PROVIDER %s CONSUMMER %s : %s", service.provider.name, service.consummer.name, service.description)
+            #flag to know if we have to udapte
+            to_update = False
+            #counting the new data to store to display them in the log
+            count_new_data = 0
+
             # provider - the service that offer datas
             service_name = str(service.provider.name)
             service_provider = default_provider.get_service(service_name)
@@ -43,7 +45,7 @@ def go():
                     service.provider.name), str(service.consummer.name)))
                 to_update = True
             # run run run
-            else:
+            else:                
                 extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
@@ -69,14 +71,17 @@ def go():
                         consummer(
                             service.consummer.token, title, content, service.id, extra)
                         to_update = True
+                        count_new_data += 1
                     # otherwise do nothing
                     else:
                         logger.debug(
                             "data outdated skiped : [%s] %s", published, data.title)
             # update the date of the trigger
             if to_update:
+                logger.info("user: %s - provider: %s - consummer: %s - %s = %s new data", service.user, service.provider.name, service.consummer.name, service.description, count_new_data)
                 update_trigger(service)
-
+            else:
+                logger.info("user: %s - provider: %s - consummer: %s - %s nothing new", service.user, service.provider.name, service.consummer.name, service.description)
     else:
         print "No trigger set by any user"
 
