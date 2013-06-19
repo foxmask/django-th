@@ -28,6 +28,10 @@ from django.contrib.auth import logout
 
 default_provider.load_services()
 
+#************************
+# FBV : simple actions  *
+#************************
+
 
 def logout_view(request):
     """
@@ -38,6 +42,9 @@ def logout_view(request):
 
 
 def trigger_on_off(request, trigger_id):
+    """
+        switch the status of the trigger then go back home
+    """
     trigger = TriggerService.objects.get(id=trigger_id)
     if trigger.status:
         trigger.status = False
@@ -103,10 +110,10 @@ def edit_trigger_rss_evernote(request, trigger_id):
     else:
         raise PermissionDenied
 
+
 #*************************************
 #  Part I : the Triggers
 #*************************************
-
 
 class TriggerListView(ListView):
     context_object_name = "triggers_list"
@@ -123,6 +130,15 @@ class TriggerListView(ListView):
         return TriggerService.objects.none()
 
 
+class TriggerEditedTemplateView(TemplateView):
+    template_name = "triggers/thanks_trigger.html"
+
+    def get_context_data(self, **kw):
+        context = super(TriggerEditedTemplateView, self).get_context_data(**kw)
+        context['sentance'] = 'Your trigger has been successfully modified'
+        return context
+
+
 class TriggerDeleteView(DeleteView):
     queryset = TriggerService.objects.all()
     template_name = "triggers/delete_trigger.html"
@@ -131,24 +147,6 @@ class TriggerDeleteView(DeleteView):
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TriggerDeleteView, self).dispatch(*args, **kwargs)
-
-
-class TriggerAddedTemplateView(TemplateView):
-    template_name = "triggers/thanks_trigger.html"
-
-    def get_context_data(self, **kw):
-        context = super(TriggerAddedTemplateView, self).get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully created'
-        return context
-
-
-class TriggerEditedTemplateView(TemplateView):
-    template_name = "triggers/thanks_trigger.html"
-
-    def get_context_data(self, **kw):
-        context = super(TriggerEditedTemplateView, self).get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully modified'
-        return context
 
 
 class TriggerDeletedTemplateView(TemplateView):

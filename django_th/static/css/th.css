@@ -24,15 +24,15 @@ h1 {
     padding: 1em;
 }
 
-.trigger-enable {
-    border: 1px solid #DDDDDD;    
+.trigger-enable, .service-record {
+    border: 1px solid #DDDDDD;
 }
 
 .trigger-disable {
     border: 1px solid #FF06C1;
 }
 
-.trigger-enable:hover {
+.trigger-enable:hover, .service-record:hover {
     border: 2px solid #600;
 }
 

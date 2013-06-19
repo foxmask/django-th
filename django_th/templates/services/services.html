@@ -5,43 +5,35 @@
 {% load django_th_extras %}
 {% block title %}{% trans "My Activated Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
-    <div class="span12" id="service-content">
+    <div class="span12">
 {% if user.is_authenticated %}
         <h2>My Activated Services</h2>
 {% if services_list %}
-        <div class="row">
-            <div class="span11">
-                <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
-            </div>
+        <div class="span11">
+            <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
         </div>
     {% for service in services_list %}
-        <div class="row">
-            <div class="service-record span11">
-            <article>
-                <div class="span8">
+        <article>
+            <div class="service-record span12">
+                <div class="service-text span8">
                     <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit the service " %} {{ service.name|safe|escape }}"><i class="icon-{{ service.name|lower }}"></i> 
                     <span class="trigger-text">{{ service.name|service_readable|safe|escape }}</span></a>
                 </div>
                 <div class="span2">
-                    <a href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>
-                    <a href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash"></i></a><br/>
+                    <a class="btn btn-large" href="{% url 'edit_service' service.id %}" title="{% trans "Edit this service" %}"><i class="icon-pencil"></i></a>
+                    <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a><br/>
                 </div>
-            </article>
             </div>
-         </div>
+        </article>
     {% endfor %}
 {% else %}
-        <div class="row service-record">
-            <div class="service-record span11">
-            <article>
-                <div class="span8">
-                    {% trans 'No service activated yet' %}, you can now start by 
-                    <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
-                </div>
-            </article>
+        <article>
+            <div class="span8">
+                {% trans 'No service activated yet' %}, you can now start by 
+                <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
             </div>
-            
-        </div>
+        </article>
 {% endif %}
 {% endif %}
+    </div>
 {% endblock %}
