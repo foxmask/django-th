@@ -7,9 +7,17 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-        <div class="span12"><h2>{% trans "My Triggers" %}</h2></div>       
+        <div class="span12 row">
+            <div class="span7">
+                <h2>{% trans "My Triggers" %}</h2>
+            </div>
+            <div class="span4 trigger-summary">            
+                <span class="label label-info">{{ nb_triggers.enabled }}</span> {%  trans "activated triggers" %}
+                <span class="label label-important">{{ nb_triggers.disabled }}</span> {%  trans "deactivated triggers" %}
+            </div>        
+        </div>
 {% if triggers_list %}
-    {% if is_paginated %}
+        {% if is_paginated %}
         <div class="span12 pagination">
             <ul>
                 {% if page_obj.has_previous %}

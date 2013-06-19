@@ -129,6 +129,13 @@ class TriggerListView(ListView):
         # otherwise return nothing
         return TriggerService.objects.none()
 
+    def get_context_data(self, **kw):
+        context = super(TriggerListView, self).get_context_data(**kw)
+        enabled = TriggerService.objects.filter(user=self.request.user, status=1)
+        disabled = TriggerService.objects.filter(user=self.request.user, status=0)
+        context['nb_triggers'] = {'enabled': len(enabled), 'disabled': len(disabled)}
+        return context
+
 
 class TriggerEditedTemplateView(TemplateView):
     template_name = "triggers/thanks_trigger.html"

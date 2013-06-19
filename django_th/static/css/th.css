@@ -15,7 +15,7 @@ h1 {
  * shared propery : trigger-record-* & profile-*
  */
 
-.trigger-record, .profile-identity, .profile-stats, .service-record, .wizard-fieldset  {
+.trigger-record, .profile-identity, .profile-stats, .service-record, .wizard-fieldset, .trigger-summary  {
     background-color: white;
     border-radius: 5px 5px 5px 5px;
     color: #6B6B6B;
@@ -24,7 +24,7 @@ h1 {
     padding: 1em;
 }
 
-.trigger-enable, .service-record {
+.trigger-enable, .service-record, .trigger-summary {
     border: 1px solid #DDDDDD;
 }
 
@@ -61,6 +61,10 @@ h1 {
 
 .trigger-record .trigger-text {
     word-wrap: break-word;
+}
+
+.trigger-summary {
+    text-align: right;
 }
 
 .charWarning {
