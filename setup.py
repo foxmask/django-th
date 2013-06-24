@@ -1,14 +1,25 @@
 from setuptools import setup, find_packages
+from django_th import __version__ as version
+import os
+
+def strip_comments(l):
+    return l.split('#', 1)[0].strip()
+
+def reqs(*f):
+    return list(filter(None, [strip_comments(l) for l in open(
+        os.path.join(os.getcwd(), *f)).readlines()]))
+
+install_requires = reqs('requirements.txt')
 
 setup(
     name='django_th',
-    version='0.3.0',
+    version=version,
     description='Django Trigger Happy acts when events occur and triggers actions for your account on all the social networks',
     author='Olivier Demah',
     author_email='olivier@foxmask.info',
     url='https://github.com/foxmask/django-th',
     download_url="https://github.com/foxmask/django-th/archive/trigger-happy-0.3.0.zip",
-    packages=find_packages(),
+    packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
@@ -17,5 +28,6 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Framework :: Django',
-    ]
+    ],
+    install_requires=install_requires,    
 )
