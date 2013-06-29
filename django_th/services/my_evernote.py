@@ -4,10 +4,10 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext as _
 
 # django_th classes
-from .services import ServicesMgr
-from ..models import UserService
-from ..models import ServicesActivated
-from ..models.evernote import Evernote
+from django_th.services.services import ServicesMgr
+from django_th.models import UserService
+from django_th.models import ServicesActivated
+from django_th.models.evernote import Evernote
 # evernote classes
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
@@ -15,7 +15,7 @@ import evernote.edam.type.ttypes as Types
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.log import getLogger
-from .sanitize import sanitize
+from django_th.services.sanitize import sanitize
 
 """
     handle process with evernote

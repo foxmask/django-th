@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # django_th classes
-from .services import ServicesMgr
+from django_th.services.services import ServicesMgr
 from django_th.lib.feedsservice import Feeds
 # django classes
 from django.utils.log import getLogger

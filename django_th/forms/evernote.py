@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from ..models.evernote import Evernote
+from django_th.models.evernote import Evernote
 
 
 class EvernoteForm(forms.ModelForm):

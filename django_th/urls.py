@@ -5,11 +5,11 @@ admin.autodiscover()
 
 from registration.forms import RegistrationFormUniqueEmail
 
-from .forms import ProfileForm
-from .forms import ServicesDescriptionForm
-from .forms.rss import RssForm
-from .forms.evernote import EvernoteForm
-from .views import TriggerListView, TriggerDeleteView,\
+from django_th.forms.base import ProfileForm
+from django_th.forms.base import ServicesDescriptionForm
+from django_th.forms.rss import RssForm
+from django_th.forms.evernote import EvernoteForm
+from django_th.views import TriggerListView, TriggerDeleteView,\
     TriggerEditedTemplateView,\
     TriggerDeletedTemplateView,\
     UserServiceListView,\

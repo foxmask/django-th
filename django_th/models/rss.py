@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from ..models.services import Services
+from django_th.models.services import Services
 
 
 class Rss(Services):

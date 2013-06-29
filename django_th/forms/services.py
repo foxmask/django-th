@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.conf import settings
-from ..models import ServicesActivated
+from django_th.models import ServicesActivated
 
 
 def available_services():

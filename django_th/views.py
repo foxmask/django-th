@@ -13,11 +13,13 @@ from django.views.generic import CreateView, UpdateView, \
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
-from .models import TriggerService, UserService, ServicesActivated
-from .models.rss import Rss
-from .models.evernote import Evernote
-from .forms import TriggerServiceRssEvernoteForm, UserServiceForm
-from .services import default_provider
+from django_th.models import TriggerService, UserService, ServicesActivated
+from django_th.forms.base import TriggerServiceRssEvernoteForm, UserServiceForm
+
+from django_th.models.rss import Rss
+from django_th.models.evernote import Evernote
+
+from django_th.services import default_provider
 
 
 import logging
@@ -297,9 +299,9 @@ class UserServiceIndexView(ListView):
 #*************************************
 
 
-from .forms import rss
-from .forms import evernote
-from .forms import ServicesDescriptionForm
+from django_th.forms import rss
+from django_th.forms import evernote
+from django_th.forms.base import ServicesDescriptionForm
 
 FORMS = [("rss", rss.RssForm),
          ("evernote", evernote.EvernoteForm),
@@ -341,14 +343,14 @@ class UserServiceWizard(SessionWizardView):
         #...then create the related services from the wizard
         for form in form_list:
             if form.cleaned_data['my_form_is'] == 'rss':
-                from .models.rss import Rss
+                from django_th.models.rss import Rss
                 Rss.objects.create(
                     name=form.cleaned_data['name'],
                     url=form.cleaned_data['url'],
                     status=1,
                     trigger=trigger)
             if form.cleaned_data['my_form_is'] == 'evernote':
-                from .models.evernote import Evernote
+                from django_th.models.evernote import Evernote
                 Evernote.objects.create(
                     tag=form.cleaned_data['tag'],
                     notebook=form.cleaned_data['notebook'],

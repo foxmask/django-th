@@ -1,7 +1,7 @@
 from django.contrib import admin
 
-from .forms.services import ServicesAdminForm
-from .models import ServicesActivated
+from django_th.forms.services import ServicesAdminForm
+from django_th.models import ServicesActivated
 
 
 class ServicesManagedAdmin(admin.ModelAdmin):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from ..models.rss import Rss
+from django_th.models.rss import Rss
 
 
 class RssForm(forms.ModelForm):
