@@ -24,4 +24,4 @@ being used. This template has the following context:
     <http://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_ for
     details regarding these objects' interfaces.
 {% endcomment %}
-[HUANUI] {% trans "Subscription Confirmation" %}
+[Trigger Happy] {% trans "Subscription Confirmation" %}

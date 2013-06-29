@@ -34,6 +34,6 @@ To confirm your subscription, go on the following page {{ site_domain }}{{ regi
 Your subscription request will expire in  {{ expiration_days }} days if you dont confirm it.
 
 --
-2012 - {{ site_domain }} 
+2013 - {{ site_domain }} 
  
 {% endblocktrans %}

@@ -53,11 +53,12 @@ urlpatterns = patterns('',
                        # ****************************************
                        # registration module
                        # ****************************************
+                       url(r'^accounts/', include(
+                           'registration.backends.default.urls')),
+                       
                        url(r'^accounts/register/', 'registration.views.register',
                            {'form_class': RegistrationFormUniqueEmail,
                             'backend': 'registration.backends.default.DefaultBackend'}),
-                       url(r'^accounts/', include(
-                           'registration.backends.default.urls')),
 
                        # ****************************************
                        # profile module
