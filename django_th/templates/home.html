@@ -3,7 +3,9 @@
 {% load url from future %}
 {% load i18n %}
 {% load django_th_extras %}
-{% block title %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
+
+{% block title %}{% if user.is_authenticated %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% else %}{% trans "Home" %} - {{ current_site.name }}{% endif %}{% endblock %}
+
 {% block content %}
 
 {% if user.is_authenticated %}
