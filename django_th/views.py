@@ -132,9 +132,11 @@ class TriggerListView(ListView):
         return TriggerService.objects.none()
 
     def get_context_data(self, **kw):
+        enabled = disabled = ()
+        if self.request.user.is_authenticated():
+            enabled = TriggerService.objects.filter(user=self.request.user, status=1)
+            disabled = TriggerService.objects.filter(user=self.request.user, status=0)
         context = super(TriggerListView, self).get_context_data(**kw)
-        enabled = TriggerService.objects.filter(user=self.request.user, status=1)
-        disabled = TriggerService.objects.filter(user=self.request.user, status=0)
         context['nb_triggers'] = {'enabled': len(enabled), 'disabled': len(disabled)}
         return context
 
