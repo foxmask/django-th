@@ -18,7 +18,7 @@ setup(
     author='Olivier Demah',
     author_email='olivier@foxmask.info',
     url='https://github.com/foxmask/django-th',
-    download_url="https://github.com/foxmask/django-th/archive/trigger-happy-0.3.0.zip",
+    download_url="https://github.com/foxmask/django-th/archive/trigger-happy-0.4.0.zip",
     packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
         'Development Status :: 4 - Beta',
