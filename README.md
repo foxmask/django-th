@@ -29,6 +29,8 @@ Requirements :
 * ordereddict 1.1
 * South 0.7.6
 * PyTidylib : 0.2.1
+* th_rss 0.1.0
+* th_evernote 0.1.0
 
 Installation:
 ------------
@@ -54,9 +56,16 @@ Important parts are the settings of the available services :
 
 ### Settings.py 
 
+add the module django_th to the INSTALLED_APPS
+
+```python
+INSTALLED_APPS = (
+    'django_th',
+)
+```
 #### TH_SERVICES 
 
-TH_SERVICES is a list of the services we put in django_th/services directory
+TH_SERVICES is a list of the services we, like for example,  
 
 ```python
 TH_SERVICES = (
@@ -64,19 +73,6 @@ TH_SERVICES = (
     'django_th.services.my_evernote.ServiceEvernote',
 )
 ```
-
-##### TH_EVERNOTE
-TH_EVERNOTE is the settings you will need to be able to add/read data in/from Evernote.
-```python
-TH_EVERNOTE = {
-    'sandbox': True,
-    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
-}
-```
-set sandbox to False in production and provide your consummer_key and consumer_secret you'd requested from http://dev.evernote.com/
-
-
 
 Setting up : Administration
 ---------------------------
