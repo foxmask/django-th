@@ -7,17 +7,15 @@ from registration.forms import RegistrationFormUniqueEmail
 
 from django_th.forms.base import ProfileForm
 from django_th.forms.base import ServicesDescriptionForm
-from django_th.forms.rss import RssForm
-from django_th.forms.evernote import EvernoteForm
+from th_rss.forms import RssForm
+from th_evernote.forms import EvernoteForm
 from django_th.views import TriggerListView, TriggerDeleteView,\
     TriggerEditedTemplateView,\
     TriggerDeletedTemplateView,\
     UserServiceListView,\
     UserServiceCreateView,\
-    UserServiceUpdateView,\
     UserServiceDeleteView,\
     UserServiceAddedTemplateView,\
-    UserServiceEditedTemplateView,\
     UserServiceDeletedTemplateView,\
     UserServiceWizard,\
     trigger_on_off,\
@@ -55,7 +53,6 @@ urlpatterns = patterns('',
                        # ****************************************
                        url(r'^accounts/', include(
                            'registration.backends.default.urls')),
-                       
                        url(r'^accounts/register/', 'registration.views.register',
                            {'form_class': RegistrationFormUniqueEmail,
                             'backend': 'registration.backends.default.DefaultBackend'}),
@@ -106,14 +103,10 @@ urlpatterns = patterns('',
                            name='user_services'),
                        url(r'^service/add/$', UserServiceCreateView.as_view(),
                            name='add_service'),
-                       url(r'^service/edit/(?P<pk>\d+)$', UserServiceUpdateView.as_view(),
-                           name='edit_service'),
                        url(r'^service/delete/(?P<pk>\d+)$', UserServiceDeleteView.as_view(),
                            name='delete_service'),
                        url(r'^service/add/thanks', UserServiceAddedTemplateView.as_view(),
                            name="service_added"),
-                       url(r'^service/edit/thanks',
-                           UserServiceEditedTemplateView.as_view()),
                        url(r'^service/delete/$', UserServiceDeleteView.as_view(),
                            name='delete_service'),
                        url(r'^service/delete/thanks',

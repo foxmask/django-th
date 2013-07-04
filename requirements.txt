@@ -2,10 +2,8 @@ Django==1.4.3
 batbelt==0.4
 django-profiles==0.2
 django-registration==0.8
-evernote==1.23.2
-feedparser==5.1.3
-httplib2==0.8
-oauth2==1.5.211
 ordereddict==1.1
 South==0.7.6
-pytidylib==0.2.1
+th_rss=0.1.0
+th_evernote=0.1.1
+

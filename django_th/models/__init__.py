@@ -3,12 +3,6 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
 
-# those 2 lines needs to be here to be able to generate the tables
-# even if those classes are not used at all
-from django_th.models.evernote import Evernote
-
-from django_th.models.rss import Rss
-
 
 class ServicesActivated(models.Model):
     """
@@ -73,14 +67,14 @@ class UserService(models.Model):
     >>> service_activated = ServicesActivated.objects.create(name=name, status=status, auth_required=auth_required, description=description)
     >>> name = ServicesActivated.objects.get(name='ServiceRss1')
     >>> user_service = UserService.objects.create(user=user1, token=token, name=name)
-    >>> user_service.show()    
+    >>> user_service.show()
     'User Service foxmask ServiceRss1'
     >>> token = 'foobar123'
     >>> name = 'ServiceEvernote1'
     >>> status = True
     >>> auth_required = True
     >>> description = 'Evernote Service'
-    >>> service_activated = ServicesActivated.objects.create(name=name, status=status, auth_required=auth_required, description=description)    
+    >>> service_activated = ServicesActivated.objects.create(name=name, status=status, auth_required=auth_required, description=description)
     >>> name = ServicesActivated.objects.get(name='ServiceEvernote1')
     >>> user_service = UserService.objects.create(user=user1, token=token, name=name)
     >>> user_service.show()
@@ -119,7 +113,7 @@ class TriggerService(models.Model):
     >>> status = True
     >>> auth_required = True
     >>> description = 'Evernote Service'
-    >>> service_activated = ServicesActivated.objects.create(name=name, status=status, auth_required=auth_required, description=description)    
+    >>> service_activated = ServicesActivated.objects.create(name=name, status=status, auth_required=auth_required, description=description)
     >>> name = ServicesActivated.objects.get(name='ServiceEvernote2')
     >>> user_service = UserService.objects.create(user=user1, token=token, name=name)
     >>> provider1 = UserService.objects.get(pk=1)

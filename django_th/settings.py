@@ -9,11 +9,16 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+import os
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': '',
-        'NAME': '',
+
+        'ENGINE': 'django.db.backends.sqlite3',
+
+        'NAME': PROJECT_DIR + '/../trigger_happy.sqlite3',
         # Or path to database file if using sqlite3.
         'USER': '',  # Not used with sqlite3.
         'PASSWORD': '',  # Not used with sqlite3.
@@ -21,8 +26,7 @@ DATABASES = {
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     }
 }
-import os
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
@@ -129,6 +133,8 @@ INSTALLED_APPS = (
     'oauth2',
     'evernote',
     'south',
+    'th_rss',
+    'th_evernote',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -204,26 +210,6 @@ AUTH_PROFILE_MODULE = 'django_th.UserProfile'
 from django.core.urlresolvers import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('base')
 
-
-TH_SERVICES = (
-    'django_th.services.my_rss.ServiceRss',
-    'django_th.services.my_evernote.ServiceEvernote',
-)
-
-TH_EVERNOTE = {
-    'sandbox': True,
-    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
-}
-
-TH_WIZARD_TPL = {
-    'my_rss':
-    'my_rss/rss-form.html',
-    'my_evernote':
-    'my_evernote/evernote-form.html',
-}
-
-
 CACHES = {
     'default':
     {
@@ -245,6 +231,7 @@ CACHES = {
     }
 }
 
+TH_SERVICES = ()
 
 # local settings management
 try:

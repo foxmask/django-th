@@ -23,9 +23,13 @@ class UserServiceForm(forms.ModelForm):
         data = ()
         services = ServicesActivated.objects.filter(status=1)
         for class_name in services:
+            #only display the services that are not already used
+            if UserService.objects.filter(name__exact=class_name.name):
+                continue
+            else:
             # 2nd array position contains the name of the service
-            data = (class_name, class_name.name.rsplit('Service', 1)[1])
-            all_datas = (data,) + all_datas
+                data = (class_name, class_name.name.rsplit('Service', 1)[1])
+                all_datas = (data,) + all_datas
         return all_datas
 
     def __init__(self, *args, **kwargs):

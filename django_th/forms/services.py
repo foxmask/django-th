@@ -15,7 +15,9 @@ def available_services():
     data = ()
 
     for class_path in settings.TH_SERVICES:
+        print class_path
         class_name = class_path.rsplit('.', 1)[1]
+        print class_name
         # 2nd array position contains the name of the service
         data = (class_name, class_name.rsplit('Service', 1)[1])
         all_datas = (data,) + all_datas

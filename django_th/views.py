@@ -16,8 +16,8 @@ from django.contrib.formtools.wizard.views import SessionWizardView
 from django_th.models import TriggerService, UserService, ServicesActivated
 from django_th.forms.base import TriggerServiceRssEvernoteForm, UserServiceForm
 
-from django_th.models.rss import Rss
-from django_th.models.evernote import Evernote
+from th_rss.models import Rss
+from th_evernote.models import Evernote
 
 from django_th.services import default_provider
 
@@ -185,6 +185,17 @@ class UserServiceListView(ListView):
         # otherwise return nothing
         return UserService.objects.none()
 
+    def get_context_data(self, **kw):
+        context = super(UserServiceListView, self).get_context_data(**kw)
+        if self.request.user.is_authenticated():
+            nb_user_service = UserService.objects.filter(user=self.request.user).count()
+            nb_service = ServicesActivated.objects.all().count()
+            if nb_user_service == nb_service:
+                context['action'] = 'hide'
+            else:
+                context['action'] = 'display'
+        return context
+
 
 class UserServiceCreateView(CreateView):
     form_class = UserServiceForm
@@ -220,28 +231,6 @@ class UserServiceCreateView(CreateView):
         return context
 
 
-class UserServiceUpdateView(UpdateView):
-    form_class = UserServiceForm
-    template_name = "services/add_service.html"
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kw):
-        return super(UserServiceUpdateView, self).dispatch(*args, **kw)
-
-    def form_valid(self, form):
-        self.object = form.save(user=self.request.user)
-        return HttpResponseRedirect('/service/edit/thanks/')
-
-    def get_object(self, queryset=None):
-        obj = UserService.objects.get(pk=self.kwargs['pk'])
-        return obj
-
-    def get_context_data(self, **kw):
-        context = super(UserServiceUpdateView, self).get_context_data(**kw)
-        context['action'] = 'edit_service'
-        return context
-
-
 class UserServiceDeleteView(DeleteView):
     queryset = UserService.objects.all()
     template_name = "services/delete_service.html"
@@ -259,16 +248,6 @@ class UserServiceAddedTemplateView(TemplateView):
         context = super(UserServiceAddedTemplateView, self).\
             get_context_data(**kw)
         context['sentance'] = 'Your service has been successfully created'
-        return context
-
-
-class UserServiceEditedTemplateView(TemplateView):
-    template_name = "services/thanks_service.html"
-
-    def get_context_data(self, **kw):
-        context = super(UserServiceEditedTemplateView, self).\
-            get_context_data(**kw)
-        context['sentance'] = 'Your service has been successfully modified'
         return context
 
 
@@ -301,12 +280,12 @@ class UserServiceIndexView(ListView):
 #*************************************
 
 
-from django_th.forms import rss
-from django_th.forms import evernote
+from th_rss.forms import RssForm
+from th_evernote.forms import EvernoteForm
 from django_th.forms.base import ServicesDescriptionForm
 
-FORMS = [("rss", rss.RssForm),
-         ("evernote", evernote.EvernoteForm),
+FORMS = [("rss", RssForm),
+         ("evernote", EvernoteForm),
          ("services", ServicesDescriptionForm), ]
 
 TEMPLATES = {
@@ -345,14 +324,14 @@ class UserServiceWizard(SessionWizardView):
         #...then create the related services from the wizard
         for form in form_list:
             if form.cleaned_data['my_form_is'] == 'rss':
-                from django_th.models.rss import Rss
+                from th_rss.models import Rss
                 Rss.objects.create(
                     name=form.cleaned_data['name'],
                     url=form.cleaned_data['url'],
                     status=1,
                     trigger=trigger)
             if form.cleaned_data['my_form_is'] == 'evernote':
-                from django_th.models.evernote import Evernote
+                from th_evernote.models import Evernote
                 Evernote.objects.create(
                     tag=form.cleaned_data['tag'],
                     notebook=form.cleaned_data['notebook'],
