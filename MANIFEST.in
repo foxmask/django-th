@@ -1,2 +1,3 @@
 exclude django_th/local_settings.py
 include *.txt
+recursive-include django_th *.html
