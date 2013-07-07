@@ -42,12 +42,14 @@ to get the project, from your virtualenv, do :
     git clone https://github.com/foxmask/django-th.git
 
 to add the needed modules , do :
-.. code: python
+
+.. code:: python
+
     pip install -r https://github.com/foxmask/django-th/blob/master/django_th/requirements.txt
 
 and at least :
 
-.. code: python
+.. code:: python
 
     python manage.py syncdb
 
@@ -65,7 +67,8 @@ Settings.py
 add the module django_th to the INSTALLED_APPS
 
 
-.. code: python
+.. code:: python
+
     INSTALLED_APPS = (
         'django_th',
     )
@@ -75,10 +78,11 @@ TH_SERVICES
 
 TH_SERVICES is a list of the services we, like for example,  
 
-.. code: python
+.. code:: python
+
     TH_SERVICES = (
-        'django_th.services.my_rss.ServiceRss',
-        'django_th.services.my_evernote.ServiceEvernote',
+        'th_rss.my_rss.ServiceRss',
+        'th_evernote.my_evernote.ServiceEvernote',
     )
 
 
@@ -106,6 +110,7 @@ Using the activated services :
 a set of 3 pages will ask to the user information that will permit to trigger data from a service "provider" to a service "consummer".
 
 For example : 
+
 * page 1 : the user gives a RSS feed
 * page 2 : the user gives the name of the notebook where notes will be stored and a tag if he wants
 * page 3 : the user gives a description
