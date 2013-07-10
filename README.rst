@@ -30,8 +30,8 @@ Requirements :
 * ordereddict 1.1
 * South 0.7.6
 * PyTidylib : 0.2.1
-* th_rss 0.1.0
-* th_evernote 0.1.0
+* th_rss 0.2.0
+* th_evernote 0.2.0
 
 Installation:
 =============
