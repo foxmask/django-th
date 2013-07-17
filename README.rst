@@ -30,8 +30,8 @@ Requirements :
 * ordereddict 1.1
 * South 0.7.6
 * PyTidylib : 0.2.1
-* th_rss 0.2.0
-* th_evernote 0.2.0
+* django-th-rss 0.2.0
+* django-th-evernote 0.2.0
 
 Installation:
 =============
@@ -85,7 +85,7 @@ TH_SERVICES is a list of the services we, like for example,
         'th_evernote.my_evernote.ServiceEvernote',
     )
 
-To deal with the templates and avoid the TemplateDoesNotExist error you can 
+If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
 copy the template in your own templates directory or set the path like this :
 
 .. code:: python
@@ -95,6 +95,9 @@ copy the template in your own templates directory or set the path like this :
     TEMPLATE_DIRS += (
         PROJECT_DIR + '/../../lib/python2.7/site-package/django_th/templates/',
     )
+
+also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.
+
 
 Setting up : Administration
 ===========================
