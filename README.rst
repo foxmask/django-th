@@ -85,6 +85,16 @@ TH_SERVICES is a list of the services we, like for example,
         'th_evernote.my_evernote.ServiceEvernote',
     )
 
+To deal with the templates and avoid the TemplateDoesNotExist error you can 
+copy the template in your own templates directory or set the path like this :
+
+.. code:: python
+
+    import os
+    PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+    TEMPLATE_DIRS += (
+        PROJECT_DIR + '/../../lib/python2.7/site-package/django_th/templates/',
+    )
 
 Setting up : Administration
 ===========================
