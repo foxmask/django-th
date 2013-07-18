@@ -31,4 +31,10 @@ setup(
         'Framework :: Django',
     ],
     install_requires=install_requires,    
+    include_package_data=True,
+        entry_points = {
+        'console_scripts': [
+            'trigger-happy = django_th.fire:go',
+        ],
+    }
 )
