@@ -15,7 +15,7 @@ class UserServiceForm(forms.ModelForm):
         self.myobject.user = user
         self.myobject.save()
 
-    def activated_services(self):
+    def activated_services(self, user):
         """
             get the activated services added from the administrator
         """
@@ -24,7 +24,7 @@ class UserServiceForm(forms.ModelForm):
         services = ServicesActivated.objects.filter(status=1)
         for class_name in services:
             #only display the services that are not already used
-            if UserService.objects.filter(name__exact=class_name.name):
+            if UserService.objects.filter(name__exact=class_name.name,user__exact=user):
                 continue
             else:
             # 2nd array position contains the name of the service
@@ -35,7 +35,7 @@ class UserServiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserServiceForm, self).__init__(*args, **kwargs)
         self.fields['token'] = forms.CharField(required=False)
-        self.fields['name'].choices = self.activated_services()
+        self.fields['name'].choices = self.activated_services(self.initial['user'])
 
     class Meta:
 

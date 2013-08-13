@@ -230,6 +230,10 @@ class UserServiceCreateView(CreateView):
         context['action'] = 'add_service'
         return context
 
+    def get_form_kwargs(self, **kwargs):
+        kwargs = super(UserServiceCreateView, self).get_form_kwargs(**kwargs)
+        kwargs['initial']['user'] = self.request.user
+        return kwargs
 
 class UserServiceDeleteView(DeleteView):
     queryset = UserService.objects.all()
