@@ -34,6 +34,11 @@ default_provider.load_services()
 # FBV : simple actions  *
 #************************
 
+def qty_services_activated(user):
+    """
+        get the quantity of activated services
+    """
+    return UserService.objects.filter(user=user)
 
 def logout_view(request):
     """
@@ -134,10 +139,15 @@ class TriggerListView(ListView):
     def get_context_data(self, **kw):
         enabled = disabled = ()
         if self.request.user.is_authenticated():
-            enabled = TriggerService.objects.filter(user=self.request.user, status=1)
-            disabled = TriggerService.objects.filter(user=self.request.user, status=0)
+            #get the enabled triggers
+            triggers_enabled = TriggerService.objects.filter(user=self.request.user, status=1)
+            #get the disabled triggers
+            triggers_disabled = TriggerService.objects.filter(user=self.request.user, status=0)
+            #get the activated services
+            services_activated = qty_services_activated(self.request.user)
         context = super(TriggerListView, self).get_context_data(**kw)
-        context['nb_triggers'] = {'enabled': len(enabled), 'disabled': len(disabled)}
+        context['nb_triggers'] = {'enabled': len(triggers_enabled), 'disabled': len(triggers_disabled)}
+        context['nb_services'] = len(services_activated)
         return context
 
 

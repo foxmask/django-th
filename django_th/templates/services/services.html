@@ -8,13 +8,13 @@
     <div class="span12">
 {% if user.is_authenticated %}
         <h2>My Activated Services</h2>
-{% if services_list %}
+    {% if services_list %}
         {% if action == 'display' %}
         <div class="span11">
             <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
         </div>
         {% endif %}
-    {% for service in services_list %}
+        {% for service in services_list %}
         <article>
             <div class="service-record span11">
                 <div class="service-text span8">                    
@@ -25,15 +25,15 @@
                 </div>
             </div>
         </article>
-    {% endfor %}
-{% else %}
+        {% endfor %}
+    {% else %}
         <article>
             <div class="span8">
                 {% trans 'No service activated yet, you can now start by' %} 
                 <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
             </div>
         </article>
-{% endif %}
+    {% endif %}
 {% endif %}
     </div>
 {% endblock %}

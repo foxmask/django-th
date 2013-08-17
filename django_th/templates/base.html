@@ -36,7 +36,7 @@
                         {% if user.is_authenticated %}
                     <ul class="nav">
                         <li><a href="{% url 'base' %}" title="{% trans "Home" %}"><i class="icon-home"></i></a></li>
-                        <li><a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}"><i class="icon-plus"></i></a></li>
+                        <li>{% if nb_services > 1 %}<a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}">{% else %}<a href="#" title="You can't create a new trigger until 2 services are activated">{% endif %}<i class="icon-plus"></i></a></li>
                         <li><a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><i class="icon-tasks"></i></a></li>
                         {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                         <li><a href="{{ profiles_profile_detail }}" title="{% trans "My profile" %}"><i class="icon-user"></i></a></li>
