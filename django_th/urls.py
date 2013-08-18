@@ -19,6 +19,7 @@ from django_th.views import TriggerListView, TriggerDeleteView,\
     UserServiceDeletedTemplateView,\
     UserServiceWizard,\
     trigger_on_off,\
+    trigger_switch_all_to,\
     edit_trigger_rss_evernote
 
 urlpatterns = patterns('',
@@ -96,6 +97,8 @@ urlpatterns = patterns('',
                            TriggerDeletedTemplateView.as_view()),
                        url(r'^trigger/onoff/(?P<trigger_id>\d+)$', trigger_on_off,
                            name="trigger_on_off"),
+                       url(r'^trigger/all/(?P<switch>(on|off))$', trigger_switch_all_to,
+                           name="trigger_switch_all_to"),
                        # ****************************************
                        # * service
                        # ****************************************

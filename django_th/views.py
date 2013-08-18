@@ -34,19 +34,12 @@ default_provider.load_services()
 # FBV : simple actions  *
 #************************
 
-def qty_services_activated(user):
-    """
-        get the quantity of activated services
-    """
-    return UserService.objects.filter(user=user)
-
 def logout_view(request):
     """
         logout the user then redirect him to the home page
     """
     logout(request)
     return redirect('base')
-
 
 def trigger_on_off(request, trigger_id):
     """
@@ -61,6 +54,25 @@ def trigger_on_off(request, trigger_id):
 
     return redirect('base')
 
+def trigger_switch_all_to(request, switch):
+    """
+        switch the status of all the triggers then go back home
+    """
+    status = True 
+    if switch == 'off':
+        status = False
+    triggers = TriggerService.objects.all()
+    for trigger in triggers:
+        trigger.status = status
+        trigger.save()
+
+    return redirect('base')
+
+def qty_services_activated(user):
+    """
+        get the quantity of activated services
+    """
+    return UserService.objects.filter(user=user)
 
 def edit_trigger_rss_evernote(request, trigger_id):
     """
@@ -116,6 +128,8 @@ def edit_trigger_rss_evernote(request, trigger_id):
             raise PermissionDenied
     else:
         raise PermissionDenied
+
+
 
 
 #*************************************
