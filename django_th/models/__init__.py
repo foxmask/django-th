@@ -2,9 +2,12 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.conf import settings
+
 
 
 class ServicesActivated(models.Model):
+
     """
     Services Activated from the admin
     # Create a ServicesActivated
@@ -35,6 +38,7 @@ class ServicesActivated(models.Model):
 
 
 class UserProfile(models.Model):
+
     """
     Related user to handle his profile
     >>> from django_th.models import UserProfile
@@ -52,6 +56,7 @@ class UserProfile(models.Model):
 
 
 class UserService(models.Model):
+
     """
     UserService a model to link service and user
     # Create a UserService
@@ -93,6 +98,7 @@ class UserService(models.Model):
 
 
 class TriggerService(models.Model):
+
     """
     TriggerService
     # Create some Service
@@ -151,3 +157,28 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 post_save.connect(create_user_profile, sender=User)
+
+if settings.TH_ADMIN_RECEIVE_REGISTRATION:
+    from django.core.mail import send_mail
+    from registration.signals import user_registered, user_activated
+
+    def send_user_registrered_to_admin(sender, **kwargs):
+        """
+            function to warn the admin a new user has registered his account
+        """
+        send_mail(
+            'Registration of a new account %s' % kwargs['user'], 'A new user has just registered, go to the admin to check it',
+            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
+
+    def send_user_activated_to_admin(sender, **kwargs):
+        """
+            function to warn the admin a new user has activated his account
+        """
+        send_mail(
+            'Activation of the account %s' % kwargs['user'], 'A new user has just activated his account, go to the admin to check it', 
+            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
+    # signal sent from the registration module when a user registers
+    user_registered.connect(send_user_registrered_to_admin)
+    # signal sent from the registration module when a user confirms his
+    # registration
+    user_activated.connect(send_user_activated_to_admin)

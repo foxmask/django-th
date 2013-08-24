@@ -232,6 +232,11 @@ CACHES = {
 }
 
 TH_SERVICES = ()
+TH_ADMIN_RECEIVE_REGISTRATION = True
+
+# Set to false if the admin account should not receive registration mail
+# of members
+TH_ADMIN_RECEIVE_REGISTRATION = True
 
 # local settings management
 try:
