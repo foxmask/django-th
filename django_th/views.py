@@ -151,7 +151,7 @@ class TriggerListView(ListView):
         return TriggerService.objects.none()
 
     def get_context_data(self, **kw):
-        enabled = disabled = ()
+        triggers_enabled = triggers_disabled = services_activated  = ()
         if self.request.user.is_authenticated():
             #get the enabled triggers
             triggers_enabled = TriggerService.objects.filter(user=self.request.user, status=1)
