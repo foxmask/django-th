@@ -5,8 +5,7 @@ import os
 import datetime
 import time
 
-
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "th.settings")
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django.utils.log import getLogger
@@ -30,7 +29,6 @@ def go():
             to_update = False
             #counting the new data to store to display them in the log
             count_new_data = 0
-
             # provider - the service that offer datas
             service_name = str(service.provider.name)
             service_provider = default_provider.get_service(service_name)
@@ -62,10 +60,11 @@ def go():
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
-                    if service.date_triggered is not None and \
-                            published >= service.date_triggered:
-                        logger.debug(
-                            "date %s title %s", published, data.title)
+                    date_triggered = datetime.datetime.strptime(str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+                    if date_triggered is not None and \
+                            published >= date_triggered:
+                        logger.info(
+                            "date %s >= date triggered %s title %s", published, date_triggered, data.title)
 
                         extra = {'link': data.link}
                         consummer(
@@ -92,7 +91,9 @@ def update_trigger(service):
     """
     trigger = TriggerService.objects.get(id=service.id)
     if trigger:
-        trigger.date_triggered = datetime.datetime.now()
+        its_now =  datetime.datetime.now()
+        triggered =  datetime.datetime.fromtimestamp(time.mktime(its_now.timetuple()))
+        trigger.date_triggered = triggered
         trigger.save()
 
 
@@ -100,8 +101,6 @@ def to_datetime(data):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
-        settings.USE_TZ has to be False otherwise
-        the compare will fail
     """
     # set a default date and time in case none of the expected
     # xml properties was here
@@ -111,7 +110,6 @@ def to_datetime(data):
     elif 'updated_parsed' in data:
         my_date_time = data.updated_parsed
     return datetime.datetime.fromtimestamp(time.mktime(my_date_time))
-
 
 def main():
     default_provider.load_services()
