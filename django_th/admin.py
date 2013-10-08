@@ -28,8 +28,8 @@ class ServicesManagedAdmin(admin.ModelAdmin):
 class UserServiceAdmin(admin.ModelAdmin):
 
     list_display = ('user', 'name', 'token')
-    list_filter = ['user','name']
+    list_filter = ['user', 'name']
 
 
 admin.site.register(ServicesActivated, ServicesManagedAdmin)
-admin.site.register(UserService, UserServiceAdmin)    
+admin.site.register(UserService, UserServiceAdmin)

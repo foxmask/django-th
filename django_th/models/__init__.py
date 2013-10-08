@@ -5,7 +5,6 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 
-
 class ServicesActivated(models.Model):
 
     """
@@ -31,7 +30,7 @@ class ServicesActivated(models.Model):
 
     def show(self):
         return "Service Activated %s %s %s %s" % (self.name, self.status,
-                                                  self.auth_required, self.description)
+                                      self.auth_required, self.description)
 
     def __unicode__(self):
         return "%s" % (self.name)
@@ -167,16 +166,20 @@ if settings.TH_ADMIN_RECEIVE_REGISTRATION:
             function to warn the admin a new user has registered his account
         """
         send_mail(
-            'Registration of a new account %s' % kwargs['user'], 'A new user has just registered, go to the admin to check it',
-            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
+            'Registration of a new account %s' % kwargs['user'],
+            'A new user has just registered, go to the admin to check it',
+            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL],
+                                        fail_silently=False)
 
     def send_user_activated_to_admin(sender, **kwargs):
         """
             function to warn the admin a new user has activated his account
         """
         send_mail(
-            'Activation of the account %s' % kwargs['user'], 'A new user has just activated his account, go to the admin to check it', 
-            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL], fail_silently=False)
+            'Activation of the account %s' % kwargs['user'],
+            'A new user has just activated his account, go to the admin to check it',
+            settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL],
+                                        fail_silently=False)
     # signal sent from the registration module when a user registers
     user_registered.connect(send_user_registrered_to_admin)
     # signal sent from the registration module when a user confirms his

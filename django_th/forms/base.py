@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
-#trigger happy
-from django_th.models import User, TriggerService, UserService, UserProfile, ServicesActivated
+# trigger happy
+from django_th.models import User, TriggerService, UserService, \
+    UserProfile, ServicesActivated
 
 
 class UserServiceForm(forms.ModelForm):
@@ -10,6 +11,7 @@ class UserServiceForm(forms.ModelForm):
     """
         Form to deal with my own activated service
     """
+
     def save(self, user=None):
         self.myobject = super(UserServiceForm, self).save(commit=False)
         self.myobject.user = user
@@ -23,8 +25,9 @@ class UserServiceForm(forms.ModelForm):
         data = ()
         services = ServicesActivated.objects.filter(status=1)
         for class_name in services:
-            #only display the services that are not already used
-            if UserService.objects.filter(name__exact=class_name.name,user__exact=user):
+            # only display the services that are not already used
+            if UserService.objects.filter(name__exact=class_name.name,
+                                          user__exact=user):
                 continue
             else:
             # 2nd array position contains the name of the service
@@ -35,7 +38,8 @@ class UserServiceForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserServiceForm, self).__init__(*args, **kwargs)
         self.fields['token'] = forms.CharField(required=False)
-        self.fields['name'].choices = self.activated_services(self.initial['user'])
+        self.fields['name'].choices = self.activated_services(
+            self.initial['user'])
 
     class Meta:
 
@@ -47,6 +51,7 @@ class UserServiceForm(forms.ModelForm):
 
 
 class TriggerServiceRssEvernoteForm(forms.Form):
+
     """
         define a form for 3 models : Servirce + Rss + Evernote
     """
@@ -144,9 +149,9 @@ class UserProfileForm(forms.ModelForm):
 
 
 class ServicesDescriptionForm(forms.ModelForm):
-    my_form_is = forms.CharField(
-        widget=forms.HiddenInput(),
-        initial='description')
+
+    my_form_is = forms.CharField(widget=forms.HiddenInput(),
+                                 initial='description')
 
     class Meta:
         model = TriggerService
@@ -154,4 +159,4 @@ class ServicesDescriptionForm(forms.ModelForm):
                    TextInput(attrs={'placeholder':
                                     _('A description for your new service')}),
                    }
-        fields = ('description', 'my_form_is', )
+        fields = ('description', )
