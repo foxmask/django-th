@@ -5,21 +5,19 @@ admin.autodiscover()
 
 from registration.forms import RegistrationFormUniqueEmail
 
-from django_th.forms.base import ProfileForm
-from django_th.forms.base import ServicesDescriptionForm
-from th_rss.forms import RssForm
-from th_evernote.forms import EvernoteForm
-from django_th.views import TriggerListView, TriggerDeleteView,\
-    TriggerEditedTemplateView,\
-    TriggerDeletedTemplateView,\
-    UserServiceListView,\
-    UserServiceCreateView,\
-    UserServiceDeleteView,\
-    UserServiceAddedTemplateView,\
-    UserServiceDeletedTemplateView,\
-    UserServiceWizard,\
-    trigger_on_off,\
-    trigger_switch_all_to,\
+from django_th.forms.base import ProfileForm, ServicesDescriptionForm
+from django_th.forms.wizard import DummyForm, ProviderForm, ConsummerForm
+from django_th.views import TriggerListView, TriggerDeleteView, \
+    TriggerEditedTemplateView, \
+    TriggerDeletedTemplateView, \
+    UserServiceListView, \
+    UserServiceCreateView, \
+    UserServiceDeleteView, \
+    UserServiceAddedTemplateView, \
+    UserServiceDeletedTemplateView, \
+    UserServiceWizard, \
+    trigger_on_off, \
+    trigger_switch_all_to, \
     edit_trigger_rss_evernote
 
 urlpatterns = patterns('',
@@ -54,9 +52,11 @@ urlpatterns = patterns('',
                        # ****************************************
                        url(r'^accounts/', include(
                            'registration.backends.default.urls')),
-                       url(r'^accounts/register/', 'registration.views.register',
+                       url(r'^accounts/register/',
+                           'registration.views.register',
                            {'form_class': RegistrationFormUniqueEmail,
-                            'backend': 'registration.backends.default.DefaultBackend'}),
+                            'backend':
+                            'registration.backends.default.DefaultBackend'}),
 
                        # ****************************************
                        # profile module
@@ -87,17 +87,21 @@ urlpatterns = patterns('',
                        # ****************************************
                        #    url(r'^trigger/add/$', TriggerCreateView.as_view(),
                        #        name='add_trigger'),
-                       url(r'^trigger/edit/(?P<trigger_id>\d+)$', edit_trigger_rss_evernote,
+                       url(r'^trigger/edit/(?P<trigger_id>\d+)$',
+                           edit_trigger_rss_evernote,
                            name='edit_trigger'),
-                       url(r'^trigger/delete/(?P<pk>\d+)$', TriggerDeleteView.as_view(),
+                       url(r'^trigger/delete/(?P<pk>\d+)$',
+                           TriggerDeleteView.as_view(),
                            name='delete_trigger'),
                        url(r'^trigger/edit/thanks',
                            TriggerEditedTemplateView.as_view()),
                        url(r'^trigger/delete/thanks',
                            TriggerDeletedTemplateView.as_view()),
-                       url(r'^trigger/onoff/(?P<trigger_id>\d+)$', trigger_on_off,
+                       url(r'^trigger/onoff/(?P<trigger_id>\d+)$',
+                           trigger_on_off,
                            name="trigger_on_off"),
-                       url(r'^trigger/all/(?P<switch>(on|off))$', trigger_switch_all_to,
+                       url(r'^trigger/all/(?P<switch>(on|off))$',
+                           trigger_switch_all_to,
                            name="trigger_switch_all_to"),
                        # ****************************************
                        # * service
@@ -106,34 +110,35 @@ urlpatterns = patterns('',
                            name='user_services'),
                        url(r'^service/add/$', UserServiceCreateView.as_view(),
                            name='add_service'),
-                       url(r'^service/delete/(?P<pk>\d+)$', UserServiceDeleteView.as_view(),
+                       url(r'^service/delete/(?P<pk>\d+)$',
+                           UserServiceDeleteView.as_view(),
                            name='delete_service'),
-                       url(r'^service/add/thanks', UserServiceAddedTemplateView.as_view(),
+                       url(r'^service/add/thanks',
+                           UserServiceAddedTemplateView.as_view(),
                            name="service_added"),
-                       url(r'^service/delete/$', UserServiceDeleteView.as_view(),
+                       url(r'^service/delete/$',
+                           UserServiceDeleteView.as_view(),
                            name='delete_service'),
                        url(r'^service/delete/thanks',
                            UserServiceDeletedTemplateView.as_view()),
 
                        # wizard
                        url(r'^service/create/$',
-                           UserServiceWizard.as_view([RssForm, EvernoteForm,
+                           UserServiceWizard.as_view([ProviderForm,
+                                                      DummyForm,
+                                                      ConsummerForm,
+                                                      DummyForm,
                                                       ServicesDescriptionForm]),
                            name='create_service'),
-
                        # every service will use django_th.views.finalcallback
                        # and give the service_name value to use to
                        # trigger the real callback
-                       url(r"^callbackevernote/$", "django_th.views.finalcallback",
+                       url(r"^callbackevernote/$",
+                           "django_th.views.finalcallback",
                            {'service_name': 'ServiceEvernote', },
                            name="evernote_callback",
                            ),
 
-                       # dummy sample - twitter
-                       # url(r"^callbacktwitter/$", "django_th.views.finalcallback",
-                       #     {'service_name': 'twitter', },
-                       #     name="twitter_callback",
-                       #     ),
 
                        # *********************************************
                        #  Linked Account

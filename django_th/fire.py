@@ -16,7 +16,7 @@ logger = getLogger('django_th.trigger_happy')
 
 
 # todo
-# 1) abstract the ".published" properties or add it to each service
+#  1) abstract the ".published" properties or add it to each service
 
 
 def go():
@@ -26,9 +26,9 @@ def go():
     trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
-            #flag to know if we have to udapte
+            # flag to know if we have to udapte
             to_update = False
-            #counting the new data to store to display them in the log
+            # counting the new data to store to display them in the log
             count_new_data = 0
 
             # provider - the service that offer datas
@@ -45,7 +45,7 @@ def go():
                     service.provider.name), str(service.consummer.name)))
                 to_update = True
             # run run run
-            else:                
+            else:
                 extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
@@ -60,8 +60,8 @@ def go():
                     else:
                         content = data.description
                     # 3) check if the previous trigger is older than the
-                    # date of the data we retreived
-                    # if yes , process the consummer
+                    #  date of the data we retreived
+                    #  if yes , process the consummer
                     if service.date_triggered is not None and \
                             published >= service.date_triggered:
                         logger.debug(
@@ -69,19 +69,29 @@ def go():
 
                         extra = {'link': data.link}
                         consummer(
-                            service.consummer.token, title, content, service.id, extra)
+                            service.consummer.token, title, content,
+                            service.id, extra)
                         to_update = True
                         count_new_data += 1
                     # otherwise do nothing
                     else:
                         logger.debug(
-                            "data outdated skiped : [%s] %s", published, data.title)
+                            "data outdated skiped : [%s] %s",
+                            published, data.title)
             # update the date of the trigger
             if to_update:
-                logger.info("user: %s - provider: %s - consummer: %s - %s = %s new data", service.user, service.provider.name, service.consummer.name, service.description, count_new_data)
+                logger.info(
+                "user: %s - provider: %s - consummer: %s - %s = %s new data",
+                service.user, service.provider.name,
+                service.consummer.name,
+                service.description, count_new_data)
+
                 update_trigger(service)
             else:
-                logger.info("user: %s - provider: %s - consummer: %s - %s nothing new", service.user, service.provider.name, service.consummer.name, service.description)
+                logger.info(
+                    "user: %s - provider: %s - consummer: %s - %s nothing new",
+                    service.user, service.provider.name,
+                    service.consummer.name, service.description)
     else:
         print "No trigger set by any user"
 

@@ -7,3 +7,4 @@ run.sh
 test*
 *.sqlite3*
 *.log*
+.idea
