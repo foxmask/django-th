@@ -18,8 +18,11 @@ class ServiceChoiceForm(forms.ModelForm):
 
 
 class ProviderForm(ServiceChoiceForm):
-    provider = forms.ModelChoiceField(
-                        queryset=ServicesActivated.objects.filter(status=1))
+    
+    provider = forms.ChoiceField()
+    def __init__(self, *args, **kwargs):
+        super(ProviderForm, self).__init__(*args, **kwargs)
+        self.fields['provider'].choices = self.activated_services()                
 
     class Meta:
         model = TriggerService
@@ -27,8 +30,12 @@ class ProviderForm(ServiceChoiceForm):
 
 
 class ConsummerForm(ServiceChoiceForm):
-    consummer = forms.ModelChoiceField(
-                        queryset=ServicesActivated.objects.filter(status=1))
+
+    consummer = forms.ChoiceField()
+
+    def __init__(self, *args, **kwargs):
+        super(ConsummerForm, self).__init__(*args, **kwargs)
+        self.fields['consummer'].choices = self.activated_services()
 
     class Meta:
         model = TriggerService

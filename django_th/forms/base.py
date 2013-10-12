@@ -150,9 +150,6 @@ class UserProfileForm(forms.ModelForm):
 
 class ServicesDescriptionForm(forms.ModelForm):
 
-    my_form_is = forms.CharField(widget=forms.HiddenInput(),
-                                 initial='description')
-
     class Meta:
         model = TriggerService
         widgets = {'description':
