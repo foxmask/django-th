@@ -14,6 +14,7 @@ from django.contrib.formtools.wizard.views import SessionWizardView
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
 from django_th.forms.base import TriggerServiceRssEvernoteForm, UserServiceForm
+from django_th.forms.wizard import ConsummerForm
 
 from django_th.services import default_provider
 
@@ -355,16 +356,6 @@ def get_service_model(what, data):
 
 
 class UserServiceWizard(SessionWizardView):
-    instance = None
-
-    def get_form_instance(self, step):
-        """
-        Provides us with an instance of the Project Model to save on completion
-        """
-
-        if self.instance is None:
-            self.instance = UserService()
-        return self.instance
 
     def get_template_names(self):
         # name to find template :
@@ -382,7 +373,7 @@ class UserServiceWizard(SessionWizardView):
                 self.steps.current))
             if 'provider' in data:
                 folder = str(data['provider']).split('Service')[1] + 'form'
-            else:
+            elif 'consummer' in data:
                 folder = str(data['consummer']).split('Service')[1] + 'form'
 
         return '%s/wz-%s-form.html' % (folder.lower(), self.steps.current)
@@ -392,28 +383,35 @@ class UserServiceWizard(SessionWizardView):
             change the form instance dynamically from the data we entered
             at the previous step
         """
+        #
         if step is None:
             step = self.steps.current
 
         if step == '1':
-            # change the form
+
             prev_data = self.get_cleaned_data_for_step('0')
             service_name = str(prev_data['provider']).split('Service')[1]
             class_name = 'th_' + service_name.lower() + '.forms'
             form_name = service_name + 'ProviderForm'
             form_class = class_for_name(class_name, form_name)
             form = form_class(data)
+
+        elif step == '2':
+            data = self.get_cleaned_data_for_step('0')
+            form = ConsummerForm(initial={'provider': data['provider']})
+
         elif step == '3':
-            # change the form
+
             prev_data = self.get_cleaned_data_for_step('2')
             service_name = str(prev_data['consummer']).split('Service')[1]
             class_name = 'th_' + service_name.lower() + '.forms'
             form_name = service_name + 'ConsummerForm'
             form_class = class_for_name(class_name, form_name)
             form = form_class(data)
+
         else:
-            # get the default form
             form = super(UserServiceWizard, self).get_form(step, data, files)
+
         return form
 
     def done(self, form_list, **kwargs):

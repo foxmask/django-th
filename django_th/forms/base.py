@@ -1,8 +1,9 @@
 from django import forms
 from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext as _
+
 # trigger happy
-from django_th.models import User, TriggerService, UserService, \
+from django_th.models import User, UserService, \
     UserProfile, ServicesActivated
 
 
@@ -146,17 +147,3 @@ class UserProfileForm(forms.ModelForm):
             meta to override anything about UserProfile
         """
         model = UserProfile
-
-
-class ServicesDescriptionForm(forms.ModelForm):
-
-    my_form_is = forms.CharField(widget=forms.HiddenInput(),
-                                 initial='description')
-
-    class Meta:
-        model = TriggerService
-        widgets = {'description':
-                   TextInput(attrs={'placeholder':
-                                    _('A description for your new service')}),
-                   }
-        fields = ('description', )

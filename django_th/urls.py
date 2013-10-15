@@ -5,23 +5,17 @@ admin.autodiscover()
 
 from registration.forms import RegistrationFormUniqueEmail
 
-from django_th.forms.base import ProfileForm, ServicesDescriptionForm
-from django_th.forms.wizard import DummyForm, ProviderForm, ConsummerForm
+from django_th.forms.base import ProfileForm
+from django_th.forms.wizard import DummyForm, ProviderForm, \
+    ConsummerForm, ServicesDescriptionForm
 from django_th.views import TriggerListView, TriggerDeleteView, \
-    TriggerEditedTemplateView, \
-    TriggerDeletedTemplateView, \
-    UserServiceListView, \
-    UserServiceCreateView, \
-    UserServiceDeleteView, \
-    UserServiceAddedTemplateView, \
-    UserServiceDeletedTemplateView, \
-    UserServiceWizard, \
-    trigger_on_off, \
-    trigger_switch_all_to, \
-    edit_trigger_rss_evernote
+    TriggerEditedTemplateView, TriggerDeletedTemplateView, \
+    UserServiceWizard, UserServiceListView, \
+    UserServiceCreateView, UserServiceDeleteView, \
+    UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
+    trigger_on_off, trigger_switch_all_to, edit_trigger_rss_evernote
 
 urlpatterns = patterns('',
-
                        # ****************************************
                        # profiles module:
                        #
