@@ -24,7 +24,6 @@ class ServiceChoiceForm(forms.Form):
         return choices
 
 
-# class ProviderForm(forms.Form):
 class ProviderForm(ServiceChoiceForm):
 
     provider = forms.ChoiceField()
@@ -34,7 +33,6 @@ class ProviderForm(ServiceChoiceForm):
         self.fields['provider'].choices = self.activated_services()
 
 
-# class ConsummerForm(forms.Form):
 class ConsummerForm(ServiceChoiceForm):
 
     consummer = forms.ChoiceField()

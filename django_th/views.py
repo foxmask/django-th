@@ -383,7 +383,6 @@ class UserServiceWizard(SessionWizardView):
             change the form instance dynamically from the data we entered
             at the previous step
         """
-        #
         if step is None:
             step = self.steps.current
 
@@ -397,8 +396,9 @@ class UserServiceWizard(SessionWizardView):
             form = form_class(data)
 
         elif step == '2':
-            data = self.get_cleaned_data_for_step('0')
-            form = ConsummerForm(initial={'provider': data['provider']})
+            step0_data = self.get_cleaned_data_for_step('0')
+            form = ConsummerForm(
+                data, initial={'provider': step0_data['provider']})
 
         elif step == '3':
 
