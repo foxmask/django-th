@@ -1,19 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render_to_response
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
-from django.core.exceptions import PermissionDenied
-
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
-from django_th.forms.base import TriggerServiceRssEvernoteForm, UserServiceForm
+from django_th.forms.base import UserServiceForm
 from django_th.forms.wizard import ConsummerForm
 
 from django_th.services import default_provider
@@ -74,65 +72,6 @@ def qty_services_activated(user):
         get the quantity of activated services
     """
     return UserService.objects.filter(user=user)
-
-
-def edit_trigger_rss_evernote(request, trigger_id):
-    """
-        load the form from the Trigger ID and data from 3 models
-    """
-    if request.user.is_authenticated():
-        service = TriggerService.objects.get(pk=trigger_id)
-        if request.user == service.user:
-
-            from th_rss.models import Rss
-            from th_evernote.models import Evernote
-
-            rss = Rss.objects.get(trigger=trigger_id)
-            evernote = Evernote.objects.get(trigger=trigger_id)
-
-            if request.method == 'POST':
-                form = TriggerServiceRssEvernoteForm(request.POST)
-                if form.is_valid():  # All validation rules pass
-
-                    # service
-                    service.description = form.cleaned_data['description']
-                    if form.cleaned_data['status']:
-                        service.status = 1
-                    else:
-                        service.status = 0
-
-                    service.save()
-                    # rss
-                    rss.url = form.cleaned_data['url']
-                    rss.save()
-
-                    # evernote
-                    evernote.tag = form.cleaned_data['tag']
-                    evernote.notebook = form.cleaned_data['notebook']
-                    evernote.save()
-                    # Redirect after POST
-                    return HttpResponseRedirect('/trigger/edit/thanks/')
-
-            else:
-                instance = {'trigger_id': service.id,
-                            'description': service.description,
-                            'status': service.status,
-
-                            'url': rss.url,
-
-                            'tag': evernote.tag,
-                            'notebook': evernote.notebook}
-
-                form = TriggerServiceRssEvernoteForm(
-                    instance)  # An unbound form
-
-            return render(request, 'triggers/edit_trigger_rss_evernote.html', {
-                'form': form,
-            })
-        else:
-            raise PermissionDenied
-    else:
-        raise PermissionDenied
 
 
 def list_services(request, step):
@@ -346,13 +285,26 @@ def class_for_name(module_name, class_name):
     return c
 
 
-def get_service_model(what, data):
+def get_service(service, model_form='models', form_name=''):
     """
         get the service name then load the model
+        class_name could be :
+            th_rss.models
+            th_rss.forms
+        service_name could be :
+            ServiceRss
+        then could call :
+            Rss+ProviderForm
+            Evernote+ConsummerForm
     """
-    service_name = str(data[what]).split('Service')[1]
-    return class_for_name('th_' + service_name.lower() +
-                          '.models', service_name)
+    service_name = str(service).split('Service')[1]
+
+    class_name = 'th_' + service_name.lower() + '.' + model_form
+
+    if model_form == 'forms':
+        return class_for_name(class_name, service_name + form_name)
+    else:
+        return class_for_name(class_name, service_name)
 
 
 class UserServiceWizard(SessionWizardView):
@@ -434,13 +386,13 @@ class UserServiceWizard(SessionWizardView):
                 trigger_provider = UserService.objects.get(
                     name=data['provider'],
                     user=self.request.user)
-                model_provider = get_service_model('provider', data)
+                model_provider = get_service(data['provider'], 'models')
             # get the service we selected at step 2 : consummer
             elif i == 2:
                 trigger_consummer = UserService.objects.get(
                     name=data['consummer'],
                     user=self.request.user)
-                model_consummer = get_service_model('consummer', data)
+                model_consummer = get_service(data['consummer'], 'models')
             # get the description we gave for the trigger
             elif i == 4:
                 trigger_description = data['description']

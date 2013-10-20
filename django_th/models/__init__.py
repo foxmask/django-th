@@ -30,7 +30,7 @@ class ServicesActivated(models.Model):
 
     def show(self):
         return "Service Activated %s %s %s %s" % (self.name, self.status,
-                                      self.auth_required, self.description)
+                                                  self.auth_required, self.description)
 
     def __unicode__(self):
         return "%s" % (self.name)
@@ -169,7 +169,7 @@ if settings.TH_ADMIN_RECEIVE_REGISTRATION:
             'Registration of a new account %s' % kwargs['user'],
             'A new user has just registered, go to the admin to check it',
             settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL],
-                                        fail_silently=False)
+            fail_silently=False)
 
     def send_user_activated_to_admin(sender, **kwargs):
         """
@@ -179,7 +179,7 @@ if settings.TH_ADMIN_RECEIVE_REGISTRATION:
             'Activation of the account %s' % kwargs['user'],
             'A new user has just activated his account, go to the admin to check it',
             settings.DEFAULT_FROM_EMAIL, [settings.DEFAULT_FROM_EMAIL],
-                                        fail_silently=False)
+            fail_silently=False)
     # signal sent from the registration module when a user registers
     user_registered.connect(send_user_registrered_to_admin)
     # signal sent from the registration module when a user confirms his

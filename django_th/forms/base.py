@@ -51,19 +51,6 @@ class UserServiceForm(forms.ModelForm):
         exclude = ('user',)
 
 
-class TriggerServiceRssEvernoteForm(forms.Form):
-
-    """
-        define a form for 3 models : Servirce + Rss + Evernote
-    """
-    trigger_id = forms.HiddenInput()
-    description = forms.CharField(max_length=200)
-    status = forms.BooleanField(required=False)
-    tag = forms.CharField(max_length=80, required=False)
-    notebook = forms.CharField(max_length=80)
-    url = forms.URLField(max_length=255)
-
-
 class LoginForm(forms.ModelForm):
 
     """

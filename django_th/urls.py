@@ -13,7 +13,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceWizard, UserServiceListView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
-    trigger_on_off, trigger_switch_all_to, edit_trigger_rss_evernote
+    trigger_on_off, trigger_switch_all_to
 
 urlpatterns = patterns('',
                        # ****************************************
@@ -79,11 +79,6 @@ urlpatterns = patterns('',
                        # ****************************************
                        # * trigger
                        # ****************************************
-                       #    url(r'^trigger/add/$', TriggerCreateView.as_view(),
-                       #        name='add_trigger'),
-                       url(r'^trigger/edit/(?P<trigger_id>\d+)$',
-                           edit_trigger_rss_evernote,
-                           name='edit_trigger'),
                        url(r'^trigger/delete/(?P<pk>\d+)$',
                            TriggerDeleteView.as_view(),
                            name='delete_trigger'),
