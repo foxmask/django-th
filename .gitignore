@@ -4,7 +4,6 @@
 local_settings.py
 manage.py
 run.sh
-test*
 *.sqlite3*
 *.log*
 .idea
