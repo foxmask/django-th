@@ -3,61 +3,22 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 admin.autodiscover()
 
-from registration.forms import RegistrationFormUniqueEmail
-
-from django_th.forms.base import ProfileForm
 from django_th.forms.wizard import DummyForm, ProviderForm, \
     ConsummerForm, ServicesDescriptionForm
 from django_th.views import TriggerListView, TriggerDeleteView, \
+    TriggerUpdateView, \
     TriggerEditedTemplateView, TriggerDeletedTemplateView, \
     UserServiceWizard, UserServiceListView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
-    trigger_on_off, trigger_switch_all_to
+    trigger_on_off, trigger_switch_all_to, \
+    trigger_edit_provider, trigger_edit_consummer
 
 urlpatterns = patterns('',
-                       # ****************************************
-                       # profiles module:
-                       #
-                       #
-                       # for each method ; add an extrat context
-                       # thus we can load a modal form to add
-                       # his own histo
-                       # ****************************************
-                       url(r'^profiles/edit/$',
-                           'profiles.views.edit_profile',
-                           {'form_class': ProfileForm, 'success_url': '/'}),
-
-                       url(r'^profiles/(?P<username>\w+)/$',
-                           'profiles.views.profile_detail',
-                           ),
-
-                       url(r'^profiles/$',
-                           'profiles.views.profile_list',
-                           ),
-
-
                        # ****************************************
                        # admin module
                        # ****************************************
                        url(r'^admin/', include(admin.site.urls)),
-                       # ****************************************
-                       # registration module
-                       # ****************************************
-                       url(r'^accounts/', include(
-                           'registration.backends.default.urls')),
-                       url(r'^accounts/register/',
-                           'registration.views.register',
-                           {'form_class': RegistrationFormUniqueEmail,
-                            'backend':
-                            'registration.backends.default.DefaultBackend'}),
-
-                       # ****************************************
-                       # profile module
-                       # here to add the last method : create !
-                       # ****************************************
-                       url(r'^profiles/', include('profiles.urls')),
-
                        # ****************************************
                        # auth module
                        # ****************************************
@@ -82,6 +43,15 @@ urlpatterns = patterns('',
                        url(r'^trigger/delete/(?P<pk>\d+)$',
                            TriggerDeleteView.as_view(),
                            name='delete_trigger'),
+                       url(r'^trigger/edit/(?P<pk>\d+)$',
+                           TriggerUpdateView.as_view(),
+                           name='edit_trigger'),
+                       url(r'^trigger/editprovider/(?P<trigger_id>\d+)$',
+                           trigger_edit_provider,
+                           name='edit_provider'),
+                       url(r'^trigger/editconsummer/(?P<trigger_id>\d+)$',
+                           trigger_edit_consummer,
+                           name='edit_consummer'),
                        url(r'^trigger/edit/thanks',
                            TriggerEditedTemplateView.as_view()),
                        url(r'^trigger/delete/thanks',

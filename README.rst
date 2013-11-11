@@ -4,7 +4,7 @@ Django Trigger Happy
 
 it is a service like IFTTT service which will fire action when events occur elsewhere on the web
 
-for example a new RSS item is published, django-trigger-happy will be able to automatically create a note on your Evernote account
+for example a new RSS item is published, django-trigger-happy will be able to automatically create a note on your Evernote account or publish a Twitter for (and from) your own account
 
 Description:
 ============
@@ -19,19 +19,10 @@ who permits to use a manager of tasks like "cron" and, of course Python 2.7
 
 Requirements :
 ==============
-* Django 1.4.3
-* batbelt 0.4
-* django-profiles 0.2
-* django-registration 0.8
-* evernote 1.23.2
-* feedparser 5.1.3
-* httplib2 0.8
-* oauth2 1.5.211
+* Django 1.5.5
+* batbelt 0.5.1
 * ordereddict 1.1
 * South 0.7.6
-* PyTidylib : 0.2.1
-* django-th-rss 0.2.0
-* django-th-evernote 0.2.0
 
 Installation:
 =============

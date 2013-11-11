@@ -6,6 +6,7 @@ TEMPLATE_DEBUG = DEBUG
 ADMINS = (
     # ('Your Name', 'your_email@example.com'),
 )
+ALLOWED_HOSTS = ["*"]
 
 MANAGERS = ADMINS
 
@@ -128,8 +129,6 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_th',
-    'registration',
-    'profiles',
     'oauth2',
     'evernote',
     'south',
@@ -201,9 +200,6 @@ LOGGING = {
 }
 
 
-# REGISTRATION MODULE
-ACCOUNT_ACTIVATION_DAYS = 7
-
 AUTH_PROFILE_MODULE = 'django_th.UserProfile'
 
 # go back on home page after logged in
@@ -232,11 +228,6 @@ CACHES = {
 }
 
 TH_SERVICES = ()
-TH_ADMIN_RECEIVE_REGISTRATION = True
-
-# Set to false if the admin account should not receive registration mail
-# of members
-TH_ADMIN_RECEIVE_REGISTRATION = True
 
 # local settings management
 try:

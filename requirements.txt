@@ -1,8 +1,7 @@
-Django==1.4.6
-batbelt==0.4
-django-profiles==0.2
-django-registration==0.8
+Django==1.6
+South==0.8.2
+batbelt==0.5.1
 ordereddict==1.1
-South==0.7.6
+oauth2==1.5.211
 django-th-rss==0.2.1
 django-th-evernote==0.2.1

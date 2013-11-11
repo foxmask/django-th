@@ -31,7 +31,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="{% url 'base' %}" title="{% trans "Home" %}">Django Trigger Happy</a>
+                <a class="brand" href="{% url 'base' %}" title="{% trans "Home" %}">Trigger Happy</a>
                 <div class="nav-collapse collapse">
                         {% if user.is_authenticated %}
                     <ul class="nav">
@@ -39,7 +39,6 @@
                         <li>{% if nb_services > 1 %}<a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}">{% else %}<a href="#" title="You can't create a new trigger until 2 services are activated">{% endif %}<i class="icon-plus"></i></a></li>
                         <li><a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><i class="icon-tasks"></i></a></li>
                         {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
-                        <li><a href="{{ profiles_profile_detail }}" title="{% trans "My profile" %}"><i class="icon-user"></i></a></li>
                         <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><i class="icon-off"></i></a></li>
                     </ul>
                         {% endif %}
@@ -55,9 +54,7 @@
                 <p>
                     <strong>Trigger Happy</strong> is up !
                 </p>
-                <p>Let's register !</p>
                 <p>Have Fun</p>
-                <a class="btn btn-info" href="{% url 'registration_register' %}">{% trans "Register" %}</a>
                 <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>
             </div>
         {% endblock %}
@@ -69,7 +66,7 @@
     <footer class="footer">
         {% block footer %}
         <div class="container">
-            <p>2013 - <a href="http://trigger-happy.eu">Django Trigger Happy</a></p>
+            <p>2013 - <a href="http://trigger-happy.eu">Trigger Happy</a></p>
         </div>
         {% endblock footer %}
     </footer>

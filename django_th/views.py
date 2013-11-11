@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response, render
 from django.shortcuts import redirect
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView
+from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 
@@ -24,6 +24,42 @@ logger = logging.getLogger(__name__)
 from django.contrib.auth import logout
 
 default_provider.load_services()
+
+
+#*****************************
+# Simple utility functions
+#*****************************
+import importlib
+
+
+def class_for_name(module_name, class_name):
+    # load the module, will raise ImportError if module cannot be loaded
+    m = importlib.import_module(module_name)
+    # get the class, will raise AttributeError if class cannot be found
+    c = getattr(m, class_name)
+    return c
+
+
+def get_service(service, model_form='models', form_name=''):
+    """
+        get the service name then load the model
+        class_name could be :
+            th_rss.models
+            th_rss.forms
+        service_name could be :
+            ServiceRss
+        then could call :
+            Rss+ProviderForm
+            Evernote+ConsummerForm
+    """
+    service_name = str(service).split('Service')[1]
+
+    class_name = 'th_' + service_name.lower() + '.' + model_form
+
+    if model_form == 'forms':
+        return class_for_name(class_name, service_name + form_name)
+    else:
+        return class_for_name(class_name, service_name)
 
 #************************
 # FBV : simple actions  *
@@ -98,6 +134,51 @@ def list_services(request, step):
 #  Part I : the Triggers
 #*************************************
 
+
+def trigger_edit_provider(request, trigger_id):
+    service = TriggerService.objects.get(id=trigger_id)
+    service_name = str(service.provider).split('Service')[1]
+    model = get_service(service.provider)
+    data = model.objects.get(trigger_id=trigger_id)
+
+    if request.method == 'POST':
+        form = get_service(service.provider, 'forms', 'ProviderForm')(
+            request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/trigger/edit/thanks/')
+    else:
+        form = get_service(
+            service.provider, 'forms', 'ProviderForm')(instance=data)
+    context = {'description': service.description}
+    return render(request, service_name.lower() + 'provider/edit_provider.html', {
+        'form': form,
+        'context': context
+    })
+
+
+def trigger_edit_consummer(request, trigger_id):
+    service = TriggerService.objects.get(id=trigger_id)
+    service_name = str(service.consummer).split('Service')[1]
+    model = get_service(service.consummer)
+    data = model.objects.get(trigger_id=trigger_id)
+
+    if request.method == 'POST':
+        form = get_service(service.consummer, 'forms', 'ConsummerForm')(
+            request.POST, instance=data)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/trigger/edit/thanks/')
+    else:
+        form = get_service(
+            service.consummer, 'forms', 'ConsummerForm')(instance=data)
+    context = {'description': service.description}
+    return render(request, service_name.lower() + 'consummer/edit_consummer.html', {
+        'form': form,
+        'context': context
+    })
+
+
 class TriggerListView(ListView):
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
@@ -128,6 +209,17 @@ class TriggerListView(ListView):
                                   'disabled': len(triggers_disabled)}
         context['nb_services'] = len(services_activated)
         return context
+
+
+class TriggerUpdateView(UpdateView):
+    queryset = TriggerService.objects.all()
+    fields = ['description']
+    template_name = "triggers/triggerservice_update_form.html"
+    success_url = '/trigger/edit/thanks/'
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(TriggerUpdateView, self).dispatch(*args, **kwargs)
 
 
 class TriggerEditedTemplateView(TemplateView):
@@ -273,38 +365,6 @@ class UserServiceIndexView(ListView):
 #*************************************
 #  Part III : Service Wizard
 #*************************************
-
-import importlib
-
-
-def class_for_name(module_name, class_name):
-    # load the module, will raise ImportError if module cannot be loaded
-    m = importlib.import_module(module_name)
-    # get the class, will raise AttributeError if class cannot be found
-    c = getattr(m, class_name)
-    return c
-
-
-def get_service(service, model_form='models', form_name=''):
-    """
-        get the service name then load the model
-        class_name could be :
-            th_rss.models
-            th_rss.forms
-        service_name could be :
-            ServiceRss
-        then could call :
-            Rss+ProviderForm
-            Evernote+ConsummerForm
-    """
-    service_name = str(service).split('Service')[1]
-
-    class_name = 'th_' + service_name.lower() + '.' + model_form
-
-    if model_form == 'forms':
-        return class_for_name(class_name, service_name + form_name)
-    else:
-        return class_for_name(class_name, service_name)
 
 
 class UserServiceWizard(SessionWizardView):

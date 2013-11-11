@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 
 # trigger happy
 from django_th.models import User, UserService, \
-    UserProfile, ServicesActivated
+    UserProfile, ServicesActivated, TriggerService
 
 
 class UserServiceForm(forms.ModelForm):

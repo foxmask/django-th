@@ -44,8 +44,8 @@
         <article>
         <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} span12">
             <div class="span7 trigger-text">
-                <i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i> <i class="icon-from-to"></i> <i class="icon-{{ trigger.consummer.name|service_readable|lower }}"></i>
-                <h3>{{ trigger.description|safe|escape }}</h3>
+                <a href="{% url 'edit_provider' trigger.id %}" ><i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i></a> <i class="icon-from-to"></i> <a href="{% url 'edit_consummer' trigger.id %}"><i class="icon-{{ trigger.consummer.name|service_readable|lower }}"></i></a>
+                <h3><a href="{% url 'edit_trigger' trigger.id %}">{{ trigger.description|safe|escape }}</a></h3>
             </div>
             <div class="span4">            
                 {% if trigger.status %}
@@ -102,9 +102,7 @@
                 <p>
                     <strong>Trigger Happy</strong> is up !
                 </p>
-                <p>Let's register !</p>
                 <p>Have Fun</p>
-                <a class="btn btn-info" href="{% url 'registration_register' %}">{% trans "Register" %}</a>                 
                 <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
             </div>
 {% endif %}
