@@ -227,7 +227,11 @@ CACHES = {
     }
 }
 
-TH_SERVICES = ()
+TH_SERVICES = (
+    'th_rss.my_rss.ServiceRss',
+    'th_evernote.my_evernote.ServiceEvernote',
+)
+
 
 # local settings management
 try:
