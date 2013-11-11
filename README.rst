@@ -6,6 +6,12 @@ it is a service like IFTTT service which will fire action when events occur else
 
 for example a new RSS item is published, django-trigger-happy will be able to automatically create a note on your Evernote account or publish a Twitter for (and from) your own account
 
+|ImageLink|_
+
+.. |ImageLink| image:: https://drone.io/github.com/foxmask/django-th/status.png
+.. _ImageLink: https://drone.io/github.com/foxmask/django-th/status.png
+
+
 Description:
 ============
 The goal of this project is to be independant from any other solution like IFTTT, CloudWork or others.
