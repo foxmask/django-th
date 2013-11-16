@@ -14,18 +14,23 @@
             <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
         </div>
         {% endif %}
+        <div class="row-fluid">
+            <ul class="thumbnails">        
         {% for service in services_list %}
-        <article>
-            <div class="service-record span11">
-                <div class="service-text span8">                    
-                    <span class="trigger-text">{{ service.name|service_readable|safe|escape }}</span></a>
-                </div>
-                <div class="span2">
-                    <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a><br/>
-                </div>
-            </div>
-        </article>
+                <li class="span3">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h3>{{ service.name|service_readable|safe|escape }}</h3>
+                            <p>Description</p>
+                            <p>
+                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
         {% endfor %}
+            </ul>
+        </div>
     {% else %}
         <article>
             <div class="span8">
@@ -33,6 +38,23 @@
                 <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
             </div>
         </article>
+        <div class="row-fluid">
+            <ul class="thumbnails">        
+        {% for service in service_list_available %}
+                <li class="span3">
+                    <div class="thumbnail">
+                        <div class="caption">
+                            <h3>{{ service.name|service_readable|safe|escape }}</h3>
+                            <p>Description</p>
+                            <p>
+                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </li>
+        {% endfor %}
+            </ul>
+        </div>        
     {% endif %}
 {% endif %}
     </div>

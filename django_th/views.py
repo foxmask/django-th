@@ -269,6 +269,9 @@ class UserServiceListView(ListView):
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
         if self.request.user.is_authenticated():
+            activated_qs = ServicesActivated.objects.all()
+            service_list_available = UserService.objects.filter(
+                id__exact=None, name__in=activated_qs)
             nb_user_service = UserService.objects.filter(
                 user=self.request.user).count()
             nb_service = ServicesActivated.objects.all().count()
@@ -276,6 +279,7 @@ class UserServiceListView(ListView):
                 context['action'] = 'hide'
             else:
                 context['action'] = 'display'
+            context['service_list_available'] = service_list_available
         return context
 
 
