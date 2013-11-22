@@ -77,51 +77,6 @@ class UserServiceDeletedTemplateViewTestCase(unittest.TestCase):
         self.assertEqual(response.context_data['sentance'], sentance)
 
 
-class TriggerListViewTestCase(unittest.TestCase):
-
-    def setUp(self):
-        # Every test needs access to the request factory.
-        self.factory = RequestFactory()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
-    def test_context_data(self):
-        """
-        TriggerListView.get_context_data() sets 
-        'triggers_enabled', 'triggers_disabled', 'services_activated'
-        in context.
-        """
-        # Setup name.
-        triggers_enabled = 0
-        triggers_disabled = 0
-        services_activated = 0
-        queryset = TriggerService.objects.all()
-
-        # Setup request and view.
-        request = RequestFactory().get('/')
-        request.user = self.user
-
-        view = TriggerListView(
-            template_name='home.html', object_list=queryset)
-        view = setup_view(view, request)
-        # Run.
-        if request.user.is_authenticated():
-            triggers_enabled = 3
-            triggers_disabled = 1
-            services_activated = 5
-
-        context = view.get_context_data()
-        context['nb_triggers'] = {
-            'enabled': triggers_enabled, 'disabled': triggers_disabled}
-        context['nb_services'] = services_activated
-
-        # Check.
-        self.assertEqual(context['nb_triggers']['enabled'], triggers_enabled)
-        self.assertEqual(context['nb_triggers']['disabled'], triggers_disabled)
-        self.assertEqual(context['nb_services'], services_activated)
 
 
 class UserServiceListViewTestCase(unittest.TestCase):
