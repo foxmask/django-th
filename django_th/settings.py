@@ -16,7 +16,7 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'mysql',
+        'ENGINE': 'django.db.backends.mysql',
         'NAME': 'th',
         # Or path to database file if using sqlite3.
         'USER': 'th',  # Not used with sqlite3.
