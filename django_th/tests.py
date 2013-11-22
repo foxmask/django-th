@@ -78,58 +78,6 @@ class UserServiceDeletedTemplateViewTestCase(unittest.TestCase):
 
 
 
-
-class UserServiceListViewTestCase(unittest.TestCase):
-
-    def setUp(self):
-        # Every test needs access to the request factory.
-        self.factory = RequestFactory()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
-    def test_context_data(self):
-        # Setup request and view
-        queryset = UserService.objects.all()
-
-        request = RequestFactory().get('/')
-        request.user = self.user
-
-        view = UserServiceListView(
-            template_name='services/services.html',
-            context_object_name="services_list",
-            object_list=queryset)
-        view = setup_view(view, request)
-
-        context = view.get_context_data()
-
-        if request.user.is_authenticated():
-            nb_user_service = nb_service = 20
-            if nb_user_service == nb_service:
-                context['action'] = 'hide'
-            else:
-                context['action'] = 'display'
-
-            if nb_user_service == nb_service:
-                self.assertEqual(context['action'], 'hide')
-            else:
-                self.assertEqual(context['action'], 'display')
-
-            nb_user_service = 19
-            nb_service = 20
-            if nb_user_service == nb_service:
-                context['action'] = 'hide'
-            else:
-                context['action'] = 'display'
-
-            if nb_user_service == nb_service:
-                self.assertEqual(context['action'], 'hide')
-            else:
-                self.assertEqual(context['action'], 'display')
-
-
 def setup_view(view, request, *args, **kwargs):
     """Mimic as_view() returned callable, but returns view instance.
 
