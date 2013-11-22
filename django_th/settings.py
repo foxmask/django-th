@@ -16,11 +16,11 @@ PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': PROJECT_DIR + '/../trigger_happy.sqlite3',
+        'ENGINE': 'mysql',
+        'NAME': 'th',
         # Or path to database file if using sqlite3.
-        'USER': '',  # Not used with sqlite3.
-        'PASSWORD': '',  # Not used with sqlite3.
+        'USER': 'th',  # Not used with sqlite3.
+        'PASSWORD': 'th',  # Not used with sqlite3.
         'HOST': '',  # Set to empty string for localhost. Not used with sqlite3
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
     }
