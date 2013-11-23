@@ -2,7 +2,6 @@
 *.pot
 *.pyc
 local_settings.py
-manage.py
 run.sh
 *.sqlite3*
 *.log*
