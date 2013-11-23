@@ -175,7 +175,6 @@ class TriggerListViewTestCase(unittest.TestCase):
         self.assertEqual(context['nb_services'], services_activated)
 
 
-
 def setup_view(view, request, *args, **kwargs):
     """Mimic as_view() returned callable, but returns view instance.
 

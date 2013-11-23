@@ -351,21 +351,6 @@ class UserServiceDeletedTemplateView(TemplateView):
         context['sentance'] = 'Your service has been successfully deleted'
         return context
 
-
-class UserServiceIndexView(ListView):
-
-    """
-        list of all available services activated from the admin
-        the user can use and activate too for his own usage
-    """
-    context_object_name = "services_list"
-    queryset = ServicesActivated.objects.all()
-    template_name = "services/index.html"
-
-    def get_queryset(self):
-        return ServicesActivated.objects.none()
-
-
 #*************************************
 #  Part III : Service Wizard
 #*************************************

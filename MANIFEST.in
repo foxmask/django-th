@@ -1,4 +1,4 @@
-exclude django_th/local_settings.py
+exclude django_th/local_settings.py manage.py
 include *.txt *.rst 
 recursive-include django_th *.html *.png *.css *.gif *.jpg *.jpeg
 recursive-include django_th/static *
