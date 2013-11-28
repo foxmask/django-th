@@ -25,9 +25,9 @@ def go():
     trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
-            #flag to know if we have to udapte
+            # flag to know if we have to udapte
             to_update = False
-            #counting the new data to store to display them in the log
+            # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer datas
             service_name = str(service.provider.name)
@@ -43,7 +43,7 @@ def go():
                     service.provider.name), str(service.consummer.name)))
                 to_update = True
             # run run run
-            else:                
+            else:
                 extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
@@ -60,8 +60,9 @@ def go():
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
-                    date_triggered = datetime.datetime.strptime(str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
-                    if date_triggered is not None and \
+                    date_triggered = datetime.datetime.strptime(
+                        str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+                    if date_triggered is not None and published is not None and \
                             published >= date_triggered:
                         logger.info(
                             "date %s >= date triggered %s title %s", published, date_triggered, data.title)
@@ -77,10 +78,14 @@ def go():
                             "data outdated skiped : [%s] %s", published, data.title)
             # update the date of the trigger
             if to_update:
-                logger.info("user: %s - provider: %s - consummer: %s - %s = %s new data", service.user, service.provider.name, service.consummer.name, service.description, count_new_data)
+                logger.info(
+                    "user: %s - provider: %s - consummer: %s - %s = %s new data", service.user,
+                    service.provider.name, service.consummer.name, service.description, count_new_data)
                 update_trigger(service)
             else:
-                logger.info("user: %s - provider: %s - consummer: %s - %s nothing new", service.user, service.provider.name, service.consummer.name, service.description)
+                logger.info(
+                    "user: %s - provider: %s - consummer: %s - %s nothing new",
+                    service.user, service.provider.name, service.consummer.name, service.description)
     else:
         print "No trigger set by any user"
 
@@ -91,8 +96,9 @@ def update_trigger(service):
     """
     trigger = TriggerService.objects.get(id=service.id)
     if trigger:
-        its_now =  datetime.datetime.now()
-        triggered =  datetime.datetime.fromtimestamp(time.mktime(its_now.timetuple()))
+        its_now = datetime.datetime.now()
+        triggered = datetime.datetime.fromtimestamp(
+            time.mktime(its_now.timetuple()))
         trigger.date_triggered = triggered
         trigger.save()
 
@@ -104,12 +110,15 @@ def to_datetime(data):
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    my_date_time = datetime.datetime.now().timetuple() 
+    my_date_time = None
     if 'published_parsed' in data:
-        my_date_time = data.published_parsed
+        my_date_time = datetime.datetime.fromtimestamp(
+            time.mktime(data.published_parsed))
     elif 'updated_parsed' in data:
-        my_date_time = data.updated_parsed
-    return datetime.datetime.fromtimestamp(time.mktime(my_date_time))
+        my_date_time = datetime.datetime.fromtimestamp(
+            time.mktime(data.updated_parsed))
+    return my_date_time
+
 
 def main():
     default_provider.load_services()
