@@ -104,7 +104,7 @@ def to_datetime(data):
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    my_date_time = time.time()
+    my_date_time = datetime.datetime.now().timetuple() 
     if 'published_parsed' in data:
         my_date_time = data.published_parsed
     elif 'updated_parsed' in data:
