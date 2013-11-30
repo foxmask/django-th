@@ -129,7 +129,7 @@ INSTALLED_APPS = (
     'django_th',
     'oauth2',
     'evernote',
-    # 'south',
+    'south',
     'th_rss',
     'th_evernote',
 )
