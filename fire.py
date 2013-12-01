@@ -5,7 +5,7 @@ import os
 import datetime
 import time
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "th.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django.utils.log import getLogger
@@ -44,19 +44,17 @@ def go():
                 to_update = True
             # run run run
             else:
-                extra = {}
+                # extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
                 consummer = getattr(service_consummer, 'save_data')
+
                 published = ''
                 # 2) for each one
                 for data in datas:
-                    title = data.title
+
                     published = to_datetime(data)
-                    if 'content' in data:
-                        content = data.content[0].value
-                    else:
-                        content = data.description
+
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
@@ -67,9 +65,8 @@ def go():
                         logger.info(
                             "date %s >= date triggered %s title %s", published, date_triggered, data.title)
 
-                        extra = {'link': data.link}
-                        consummer(
-                            service.consummer.token, title, content, service.id, extra)
+                        consummer(service.consummer.token, service.id, **data)
+
                         to_update = True
                         count_new_data += 1
                     # otherwise do nothing
