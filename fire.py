@@ -44,7 +44,6 @@ def go():
                 to_update = True
             # run run run
             else:
-                # extra = {}
                 # 1) get the datas from the provider service
                 datas = getattr(service_provider, 'process_data')(service.id)
                 consummer = getattr(service_consummer, 'save_data')
@@ -60,8 +59,10 @@ def go():
                     # if yes , process the consummer
                     date_triggered = datetime.datetime.strptime(
                         str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+
                     if date_triggered is not None and published is not None and \
                             published >= date_triggered:
+
                         logger.info(
                             "date %s >= date triggered %s title %s", published, date_triggered, data.title)
 
