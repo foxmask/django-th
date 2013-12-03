@@ -45,14 +45,15 @@ def go():
             # run run run
             else:
                 # 1) get the datas from the provider service
-                datas = getattr(service_provider, 'process_data')(service.id)
+                datas = getattr(service_provider, 'process_data')(**service)
                 consummer = getattr(service_consummer, 'save_data')
 
                 published = ''
                 # 2) for each one
                 for data in datas:
-
-                    published = to_datetime(data)
+                    # let's try to determine the date contained in the data, otherwise
+                    # we'll return the date_triggered of the current service
+                    published = to_datetime(data, service.date_triggered)
 
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
@@ -66,7 +67,8 @@ def go():
                         logger.info(
                             "date %s >= date triggered %s title %s", published, date_triggered, data.title)
 
-                        consummer(service.consummer.token, service.id, **data)
+                        consummer(
+                            service.consummer.token, service.id, **data)
 
                         to_update = True
                         count_new_data += 1
@@ -101,20 +103,21 @@ def update_trigger(service):
         trigger.save()
 
 
-def to_datetime(data):
+def to_datetime(data, default_date):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    my_date_time = None
+    my_date_time = default_date
     if 'published_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
             time.mktime(data.published_parsed))
     elif 'updated_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
             time.mktime(data.updated_parsed))
+
     return my_date_time
 
 
