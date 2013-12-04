@@ -45,7 +45,7 @@ def go():
             # run run run
             else:
                 # 1) get the datas from the provider service
-                datas = getattr(service_provider, 'process_data')(**service)
+                datas = getattr(service_provider, 'process_data')(service.id)
                 consummer = getattr(service_consummer, 'save_data')
 
                 published = ''

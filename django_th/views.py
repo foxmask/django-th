@@ -214,7 +214,7 @@ class TriggerListView(ListView):
 class TriggerUpdateView(UpdateView):
     queryset = TriggerService.objects.all()
     fields = ['description']
-    template_name = "triggers/triggerservice_update_form.html"
+    template_name = "triggers/edit_description_trigger.html"
     success_url = '/trigger/edit/thanks/'
 
     @method_decorator(login_required)
