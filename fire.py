@@ -45,7 +45,8 @@ def go():
             # run run run
             else:
                 # 1) get the datas from the provider service
-                datas = getattr(service_provider, 'process_data')(service.id)
+                # get a timestamp of the last triggered of the service
+                datas = getattr(service_provider, 'process_data')(service.provider.token, service.id, service.date_triggered)
                 consummer = getattr(service_consummer, 'save_data')
 
                 published = ''
@@ -63,19 +64,26 @@ def go():
 
                     if date_triggered is not None and published is not None and \
                             published >= date_triggered:
+                        if 'title' in data:
+                            logger.info(
+                                "date %s >= date triggered %s title %s", published, date_triggered, data['title'])
+                        else:
+                            logger.info(
+                                "date %s >= date triggered %s ", published, date_triggered)
 
-                        logger.info(
-                            "date %s >= date triggered %s title %s", published, date_triggered, data.title)
-
-                        consummer(
-                            service.consummer.token, service.id, **data)
+                        consummer(service.consummer.token, service.id, **data)
 
                         to_update = True
                         count_new_data += 1
                     # otherwise do nothing
                     else:
-                        logger.debug(
-                            "data outdated skiped : [%s] %s", published, data.title)
+                        if 'title' in data:
+                            logger.debug(
+                                "data outdated skiped : [%s] %s", published, data.title)
+                        else:
+                            logger.debug(
+                                "data outdated skiped : [%s] ", published)
+
             # update the date of the trigger
             if to_update:
                 logger.info(
@@ -110,7 +118,9 @@ def to_datetime(data, default_date):
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    my_date_time = default_date
+    # drop the tzinfo to be able to compare offset-naive and offset-aware datetimes    
+    my_date_time = default_date.replace(tzinfo=None)
+
     if 'published_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
             time.mktime(data.published_parsed))
