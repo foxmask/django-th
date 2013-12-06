@@ -46,13 +46,15 @@ def go():
             else:
                 # 1) get the datas from the provider service
                 # get a timestamp of the last triggered of the service
-                datas = getattr(service_provider, 'process_data')(service.provider.token, service.id, service.date_triggered)
+                datas = getattr(service_provider, 'process_data')(
+                    service.provider.token, service.id, service.date_triggered)
                 consummer = getattr(service_consummer, 'save_data')
 
                 published = ''
                 # 2) for each one
                 for data in datas:
-                    # let's try to determine the date contained in the data, otherwise
+                    # let's try to determine the date contained in the data,
+                    # otherwise
                     # we'll return the date_triggered of the current service
                     published = to_datetime(data, service.date_triggered)
 
@@ -62,8 +64,7 @@ def go():
                     date_triggered = datetime.datetime.strptime(
                         str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
 
-                    if date_triggered is not None and published is not None and \
-                            published >= date_triggered:
+                    if date_triggered is not None and published is not None and published >= date_triggered:
                         if 'title' in data:
                             logger.info(
                                 "date %s >= date triggered %s title %s", published, date_triggered, data['title'])
@@ -118,7 +119,8 @@ def to_datetime(data, default_date):
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    # drop the tzinfo to be able to compare offset-naive and offset-aware datetimes    
+    # drop the tzinfo to be able to compare offset-naive and offset-aware
+    # datetimes
     my_date_time = default_date.replace(tzinfo=None)
 
     if 'published_parsed' in data:
