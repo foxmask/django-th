@@ -5,7 +5,6 @@ import os
 import datetime
 import time
 
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
 from django_th.services import default_provider
 from django_th.models import TriggerService
@@ -16,7 +15,7 @@ logger = getLogger('django_th.trigger_happy')
 
 
 # todo
-#  1) abstract the ".published" properties or add it to each service
+# 1) abstract the ".published" properties or add it to each service
 
 
 def go():
@@ -30,7 +29,6 @@ def go():
             to_update = False
             # counting the new data to store to display them in the log
             count_new_data = 0
-
             # provider - the service that offer datas
             service_name = str(service.provider.name)
             service_provider = default_provider.get_service(service_name)
@@ -46,52 +44,57 @@ def go():
                 to_update = True
             # run run run
             else:
-                extra = {}
                 # 1) get the datas from the provider service
-                datas = getattr(service_provider, 'process_data')(service.id)
+                # get a timestamp of the last triggered of the service
+                datas = getattr(service_provider, 'process_data')(
+                    service.provider.token, service.id, service.date_triggered)
                 consummer = getattr(service_consummer, 'save_data')
+
                 published = ''
                 # 2) for each one
                 for data in datas:
-                    title = data.title
-                    published = to_datetime(data)
-                    if 'content' in data:
-                        content = data.content[0].value
-                    else:
-                        content = data.description
-                    # 3) check if the previous trigger is older than the
-                    #  date of the data we retreived
-                    #  if yes , process the consummer
-                    if service.date_triggered is not None and \
-                            published >= service.date_triggered:
-                        logger.debug(
-                            "date %s title %s", published, data.title)
+                    # let's try to determine the date contained in the data,
+                    # otherwise
+                    # we'll return the date_triggered of the current service
+                    published = to_datetime(data, service.date_triggered)
 
-                        extra = {'link': data.link}
-                        consummer(
-                            service.consummer.token, title, content,
-                            service.id, extra)
+                    # 3) check if the previous trigger is older than the
+                    # date of the data we retreived
+                    # if yes , process the consummer
+                    date_triggered = datetime.datetime.strptime(
+                        str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+
+                    if date_triggered is not None and published is not None and published >= date_triggered:
+                        if 'title' in data:
+                            logger.info(
+                                "date %s >= date triggered %s title %s", published, date_triggered, data['title'])
+                        else:
+                            logger.info(
+                                "date %s >= date triggered %s ", published, date_triggered)
+
+                        consummer(service.consummer.token, service.id, **data)
+
                         to_update = True
                         count_new_data += 1
                     # otherwise do nothing
                     else:
-                        logger.debug(
-                            "data outdated skiped : [%s] %s",
-                            published, data.title)
+                        if 'title' in data:
+                            logger.debug(
+                                "data outdated skiped : [%s] %s", published, data.title)
+                        else:
+                            logger.debug(
+                                "data outdated skiped : [%s] ", published)
+
             # update the date of the trigger
             if to_update:
                 logger.info(
-                "user: %s - provider: %s - consummer: %s - %s = %s new data",
-                service.user, service.provider.name,
-                service.consummer.name,
-                service.description, count_new_data)
-
+                    "user: %s - provider: %s - consummer: %s - %s = %s new data", service.user,
+                    service.provider.name, service.consummer.name, service.description, count_new_data)
                 update_trigger(service)
             else:
                 logger.info(
                     "user: %s - provider: %s - consummer: %s - %s nothing new",
-                    service.user, service.provider.name,
-                    service.consummer.name, service.description)
+                    service.user, service.provider.name, service.consummer.name, service.description)
     else:
         print "No trigger set by any user"
 
@@ -102,25 +105,32 @@ def update_trigger(service):
     """
     trigger = TriggerService.objects.get(id=service.id)
     if trigger:
-        trigger.date_triggered = datetime.datetime.now()
+        its_now = datetime.datetime.now()
+        triggered = datetime.datetime.fromtimestamp(
+            time.mktime(its_now.timetuple()))
+        trigger.date_triggered = triggered
         trigger.save()
 
 
-def to_datetime(data):
+def to_datetime(data, default_date):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
-        settings.USE_TZ has to be False otherwise
-        the compare will fail
     """
     # set a default date and time in case none of the expected
     # xml properties was here
-    my_date_time = time.time()
+    # drop the tzinfo to be able to compare offset-naive and offset-aware
+    # datetimes
+    my_date_time = default_date.replace(tzinfo=None)
+
     if 'published_parsed' in data:
-        my_date_time = data.published_parsed
+        my_date_time = datetime.datetime.fromtimestamp(
+            time.mktime(data.published_parsed))
     elif 'updated_parsed' in data:
-        my_date_time = data.updated_parsed
-    return datetime.datetime.fromtimestamp(time.mktime(my_date_time))
+        my_date_time = datetime.datetime.fromtimestamp(
+            time.mktime(data.updated_parsed))
+
+    return my_date_time
 
 
 def main():
