@@ -51,7 +51,7 @@
                 {% if trigger.status %}
                 <a class="btn btn-large btn-info" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><i class="icon-pencil icon-white"></i> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                <a class="btn btn-large btn-info" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consummer.name|service_readable|lower }}" ><i class="icon-pencil icon-white"></i> {{ trigger.consummer.name|service_readable|lower }}</a>
+                <a class="btn btn-large btn-info" href="{% url 'edit_consummerer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consummer.name|service_readable|lower }}" ><i class="icon-pencil icon-white"></i> {{ trigger.consummer.name|service_readable|lower }}</a>
 
                 <a class="btn btn-large btn-primary active" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off icon-white"></i></a>
 
