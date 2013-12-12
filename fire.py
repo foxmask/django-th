@@ -80,7 +80,7 @@ def go():
                     else:
                         if 'title' in data:
                             logger.debug(
-                                "data outdated skiped : [%s] %s", published, data.title)
+                                "data outdated skiped : [%s] %s", published, data['title'])
                         else:
                             logger.debug(
                                 "data outdated skiped : [%s] ", published)
