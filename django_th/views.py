@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render_to_response, render
-from django.shortcuts import redirect
+from django.shortcuts import render_to_response, render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
@@ -78,7 +77,7 @@ def trigger_on_off(request, trigger_id):
     """
         switch the status of the trigger then go back home
     """
-    trigger = TriggerService.objects.get(id=trigger_id)
+    trigger = get_object_or_404(TriggerService, trigger_id)
     if trigger.status:
         trigger.status = False
     else:
@@ -114,9 +113,7 @@ def list_services(request, step):
     """
         get the activated services added from the administrator
     """
-    # print request.request
     all_datas = []
-    # data = ()
 
     if step == '0':
         services = ServicesActivated.objects.filter(status=1)
@@ -124,11 +121,23 @@ def list_services(request, step):
         services = ServicesActivated.objects.filter(status=1,
                                                     id__iexact=request.id)
     for class_name in services:
-        # data = (class_name, class_name.name.rsplit('Service', 1)[1])
         all_datas.append({class_name: class_name.name.rsplit('Service', 1)[1]})
 
     return all_datas
 
+
+def renew_service(request, pk):
+    """
+        renew an existing service
+    """
+    service = get_object_or_404(ServicesActivated, pk=pk)
+    service_name = str(service.name)
+    service_object = default_provider.get_service(service_name)
+    lets_auth = getattr(service_object, 'auth')
+    #lets_callback = getattr(service_object, 'auth')
+    # print lets_callback
+    return redirect(lets_auth(request))
+    # return redirect('base')
 
 #*************************************
 #  Part I : the Triggers
@@ -320,6 +329,16 @@ class UserServiceCreateView(CreateView):
         kwargs = super(UserServiceCreateView, self).get_form_kwargs(**kwargs)
         kwargs['initial']['user'] = self.request.user
         return kwargs
+
+
+class UserServiceRenewTemplateView(TemplateView):
+    template_name = "services/thanks_service.html"
+
+    def get_context_data(self, **kw):
+        context = super(
+            UserServiceRenewTemplateView, self).get_context_data(**kw)
+        context['sentance'] = 'Your service has been successfully renewed'
+        return context
 
 
 class UserServiceDeleteView(DeleteView):

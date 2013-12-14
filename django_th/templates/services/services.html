@@ -21,9 +21,9 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <h3>{{ service.name|service_readable|safe|escape }}</h3>
-                            <p>Description</p>
+                            <p>{{ service.name.description }}</p>
                             <p>
-                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a>
+                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a> {% if service.name.auth_required == True %}<a class="btn btn-large btn-warning" href="{% url 'renew_service' service.name.id %}" title="{% trans "Renew this service ?" %}"><i class="icon-repeat icon-white"></i></a>{% endif %}
                             </p>
                         </div>
                     </div>
@@ -45,9 +45,9 @@
                     <div class="thumbnail">
                         <div class="caption">
                             <h3>{{ service.name|service_readable|safe|escape }}</h3>
-                            <p>Description</p>
+                            <p>{{ service.name.description }}</p>
                             <p>
-                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a>
+                                <a class="btn btn-large btn-danger" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i class="icon-trash icon-white"></i></a> {% if service.name.auth_required == True %} <a class="btn btn-large btn-warning" href="{% url 'renew_service' service.name.id %}" title="{% trans "Renew this service ?" %}"><i class="icon-repeat icon-white"></i></a>{% endif %}
                             </p>
                         </div>
                     </div>
