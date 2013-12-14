@@ -13,7 +13,8 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
     trigger_on_off, trigger_switch_all_to, \
-    trigger_edit_provider, trigger_edit_consummer
+    trigger_edit_provider, trigger_edit_consummer, \
+    renew_service
 
 urlpatterns = \
     patterns('',
@@ -76,6 +77,9 @@ urlpatterns = \
              url(r'^service/add/thanks',
                  UserServiceAddedTemplateView.as_view(),
                  name="service_added"),
+             url(r'^service/renew/(?P<pk>\d+)$',
+                 renew_service,
+                 name="renew_service"),
              url(r'^service/delete/$',
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
