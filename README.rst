@@ -25,10 +25,14 @@ who permits to use a manager of tasks like "cron" and, of course Python 2.7
 
 Requirements :
 ==============
-* Django 1.5.5
+* Django 1.6
+* South 0.8.2
 * batbelt 0.5.1
 * ordereddict 1.1
-* South 0.7.6
+* oauth2 1.5.211
+* django-th-rss 0.2.4
+* django-th-evernote 0.2.4
+* django-th-pocket 0.1.1
 
 Installation:
 =============
@@ -80,6 +84,7 @@ TH_SERVICES is a list of the services we, like for example,
     TH_SERVICES = (
         'th_rss.my_rss.ServiceRss',
         'th_evernote.my_evernote.ServiceEvernote',
+        'th_pocket.my_pocket.ServicePocket',
     )
 
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
