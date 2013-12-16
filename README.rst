@@ -3,8 +3,12 @@ Django Trigger Happy
 ====================
 
 it is a service like IFTTT service which will fire action when events occur elsewhere on the web
+instead of giving your credentials to external service like IFTTT, 
+you can now become the owner of yours !
 
-for example a new RSS item is published, django-trigger-happy will be able to automatically create a note on your Evernote account or publish a Twitter for (and from) your own account
+for example a new RSS item is published, django-trigger-happy will be able to 
+automatically create a note on your Evernote account or publish a Twitter for
+(and from) your own account
 
 |ImageLink|_
 
@@ -14,11 +18,13 @@ for example a new RSS item is published, django-trigger-happy will be able to au
 
 Description:
 ============
-The goal of this project is to be independant from any other solution like IFTTT, CloudWork or others.
+The goal of this project is to be independant from any other solution like 
+IFTTT, CloudWork or others.
 
-Thus you could host your own solution and manage your own triggers without depending any non-free solution.
+Thus you could host your own solution and manage your own triggers without 
+depending any non-free solution.
 
-With this project you can also host triggers for users, or just for you.
+With this project you can host triggers for you.
 
 All you need is to have a hosting provider (or simply your own server ;) 
 who permits to use a manager of tasks like "cron" and, of course Python 2.7
