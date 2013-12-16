@@ -3,6 +3,6 @@ South==0.8.2
 batbelt==0.5.1
 ordereddict==1.1
 oauth2==1.5.211
-django-th-rss==0.2.3
-django-th-evernote==0.2.3
-django-th-pocket==0.1.0
+django-th-rss==0.2.4
+django-th-evernote==0.2.4
+django-th-pocket==0.1.1
