@@ -51,12 +51,27 @@ def go():
                 consummer = getattr(service_consummer, 'save_data')
 
                 published = ''
+                which_date = ''
                 # 2) for each one
                 for data in datas:
-                    # let's try to determine the date contained in the data,
-                    # otherwise
-                    # we'll return the date_triggered of the current service
-                    published = to_datetime(data, service.date_triggered)
+                    # if in a pool of data once of them does not have
+                    # a date, will take the previous date for this one
+                    # if it's the first one, set it to 00:00:00
+
+                    # let's try to determine the date contained in the data...
+                    published = to_datetime(data)
+                    if published is not None:
+                        # store the date for the next loop
+                        # if published became 'None'
+                        which_date = published
+                    #... otherwise set it to 00:00:00 of the current date
+                    if which_date == '':
+                        # current date
+                        now = datetime.date.today()
+                        # current date at 00:00:00
+                        which_date = datetime.datetime.strptime(
+                            str(now), '%Y-%m-%d')
+                        published = which_date
 
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
@@ -67,10 +82,12 @@ def go():
                     if date_triggered is not None and published is not None and published >= date_triggered:
                         if 'title' in data:
                             logger.info(
-                                "date %s >= date triggered %s title %s", published, date_triggered, data['title'])
+                                "date %s >= date triggered %s title %s",
+                                published, date_triggered, data['title'])
                         else:
                             logger.info(
-                                "date %s >= date triggered %s ", published, date_triggered)
+                                "date %s >= date triggered %s ",
+                                published, date_triggered)
 
                         consummer(service.consummer.token, service.id, **data)
 
@@ -80,7 +97,8 @@ def go():
                     else:
                         if 'title' in data:
                             logger.debug(
-                                "data outdated skiped : [%s] %s", published, data.title)
+                                "data outdated skiped : [%s] %s",
+                                published, data['title'])
                         else:
                             logger.debug(
                                 "data outdated skiped : [%s] ", published)
@@ -88,13 +106,15 @@ def go():
             # update the date of the trigger
             if to_update:
                 logger.info(
-                    "user: %s - provider: %s - consummer: %s - %s = %s new data", service.user,
-                    service.provider.name, service.consummer.name, service.description, count_new_data)
+                    "user: %s - provider: %s - consummer: %s - %s = %s new data",
+                    service.user, service.provider.name, service.consummer.name,
+                    service.description, count_new_data)
                 update_trigger(service)
             else:
                 logger.info(
                     "user: %s - provider: %s - consummer: %s - %s nothing new",
-                    service.user, service.provider.name, service.consummer.name, service.description)
+                    service.user, service.provider.name, service.consummer.name,
+                    service.description)
     else:
         print "No trigger set by any user"
 
@@ -112,16 +132,12 @@ def update_trigger(service):
         trigger.save()
 
 
-def to_datetime(data, default_date):
+def to_datetime(data):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
     """
-    # set a default date and time in case none of the expected
-    # xml properties was here
-    # drop the tzinfo to be able to compare offset-naive and offset-aware
-    # datetimes
-    my_date_time = default_date.replace(tzinfo=None)
+    my_date_time = None
 
     if 'published_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
