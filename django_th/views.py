@@ -77,7 +77,7 @@ def trigger_on_off(request, trigger_id):
     """
         switch the status of the trigger then go back home
     """
-    trigger = get_object_or_404(TriggerService, trigger_id)
+    trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
         trigger.status = False
     else:

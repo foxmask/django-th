@@ -108,6 +108,11 @@ urlpatterns = \
                  {'service_name': 'ServicePocket', },
                  name="pocket_callback",
                  ),
+             url(r"^callbackreadability/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServiceReadability', },
+                 name="readability_callback",
+                 ),
              # dummy callback as a sample
              # url(r"^callbacktwitter/$",
              #  "django_th.views.finalcallback",
@@ -115,17 +120,4 @@ urlpatterns = \
              #  name="twitter_callback",
              #  ),
 
-             # *********************************************
-             #  Linked Account
-             # *********************************************
-             # url(r"^linked_accounts/",
-             # include("linked_accounts.urls"))
              )
-
-from django.conf import settings
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-                            url(r'^__debug__/', include(debug_toolbar.urls)),
-                            )

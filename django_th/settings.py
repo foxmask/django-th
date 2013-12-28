@@ -132,6 +132,7 @@ INSTALLED_APPS = (
     'south',
     'th_rss',
     'th_evernote',
+    'th_readability',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -225,11 +226,28 @@ CACHES = {
     }
 }
 
+
 TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
     'th_evernote.my_evernote.ServiceEvernote',
+    'th_pocket.my_pocket.ServicePocket',
+    'th_readability.my_pocket.ServiceReadability',
 )
 
+TH_EVERNOTE = {
+    'sandbox': False,
+    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
+}
+
+TH_POCKET = {
+    'consummer_key': 'abcdefghijklmnopqrstuvwxyz'
+}
+
+TH_READABILITY = {
+    'consummer_key': 'abcdef',
+    'consummer_secret': 'abcdefghijklmnopqrstuvwxyz'
+}
 
 # local settings management
 try:
