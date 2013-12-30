@@ -6,3 +6,4 @@ oauth2==1.5.211
 django-th-rss==0.2.5
 django-th-evernote==0.2.5
 django-th-pocket==0.1.2
+django-th-readability==0.1.0
