@@ -233,7 +233,7 @@ TH_SERVICES = (
     'th_evernote.my_evernote.ServiceEvernote',
     'th_pocket.my_pocket.ServicePocket',
     'th_readability.my_readability.ServiceReadability',
-    'th_twitter.my_twitter.ServiceTwitter',
+    # 'th_twitter.my_twitter.ServiceTwitter',
 )
 
 TH_EVERNOTE = {
