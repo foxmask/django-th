@@ -133,7 +133,7 @@ INSTALLED_APPS = (
     'th_rss',
     'th_evernote',
     'th_readability',
-    'th_twitter',
+    # 'th_twitter',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
