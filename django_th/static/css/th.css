@@ -97,19 +97,39 @@ h1 {
  * icon services
  */
 .icon-evernote {
-    background-image: url('/static/images/glyphicons_371_evernote.png');
+    background-image: url('/static/images/glyphicons_social_11_evernote.png');
     width: 30px;
     height: 30px;
     line-height: 30px;
     background-position: 0px 0px;
 }
 
+.icon-readability {
+    background-image: url('/static/images/glyphicons_social_29_readability.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;    
+}
+
+.icon-pocket {
+    background-image: url('/static/images/glyphicons_social_16_pocket.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;    
+}
+
 .icon-twitter {
-    background-image: url('/static/images/glyphicons_392_twitter.png');
+    background-image: url('/static/images/glyphicons_social_31_twitter.png');
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    background-position: 0px 0px;    
 }
 
 .icon-rss {
-    background-image: url('/static/images/glyphicons_397_rss.png');
+    background-image: url('/static/images/glyphicons_social_37_rss.png');
     width: 30px;
     height: 30px;
     line-height: 30px;

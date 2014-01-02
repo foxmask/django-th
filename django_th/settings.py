@@ -133,6 +133,7 @@ INSTALLED_APPS = (
     'th_rss',
     'th_evernote',
     'th_readability',
+    'th_twitter',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -232,6 +233,7 @@ TH_SERVICES = (
     'th_evernote.my_evernote.ServiceEvernote',
     'th_pocket.my_pocket.ServicePocket',
     'th_readability.my_pocket.ServiceReadability',
+    'th_twitter.my_twitter.ServiceTwitter',
 )
 
 TH_EVERNOTE = {
@@ -247,6 +249,11 @@ TH_POCKET = {
 TH_READABILITY = {
     'consummer_key': 'abcdef',
     'consummer_secret': 'abcdefghijklmnopqrstuvwxyz'
+}
+
+TH_TWITTER = {
+    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
 
 # local settings management

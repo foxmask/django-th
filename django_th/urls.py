@@ -113,6 +113,11 @@ urlpatterns = \
                  {'service_name': 'ServiceReadability', },
                  name="readability_callback",
                  ),
+             url(r"^callbacktwitter/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServiceTwitter', },
+                 name="twitter_callback",
+                 ),
              # dummy callback as a sample
              # url(r"^callbacktwitter/$",
              #  "django_th.views.finalcallback",
