@@ -2,13 +2,13 @@
 Django Trigger Happy
 ====================
 
-it is a service like IFTTT service which will fire action when events occur elsewhere on the web
-instead of giving your credentials to external service like IFTTT, 
+it is a IFTTT like service which will fire action when events occur elsewhere 
+on the web instead of giving your credentials to external service like IFTTT, 
 you can now become the owner of yours !
 
-for example a new RSS item is published, django-trigger-happy will be able to 
-automatically create a note on your Evernote account or publish a Twitter for
-(and from) your own account
+For example a new RSS item is published, django-trigger-happy will be able to 
+automatically create a note on your Evernote account or create a bookmark to
+your own Readability or Pocket account and so on
 
 |ImageLink|_
 
@@ -36,9 +36,10 @@ Requirements :
 * batbelt 0.5.1
 * ordereddict 1.1
 * oauth2 1.5.211
-* django-th-rss 0.2.4
-* django-th-evernote 0.2.4
-* django-th-pocket 0.1.1
+* django-th-rss 0.2.5
+* django-th-evernote 0.2.5
+* django-th-pocket 0.1.2
+* django-th-readability 0.1.0
 
 Installation:
 =============
@@ -91,6 +92,7 @@ TH_SERVICES is a list of the services we, like for example,
         'th_rss.my_rss.ServiceRss',
         'th_evernote.my_evernote.ServiceEvernote',
         'th_pocket.my_pocket.ServicePocket',
+        'th_readability.my_readability.ServiceReadability',
     )
 
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
@@ -110,7 +112,8 @@ also you'll need to look at the urls.py of django_th to copy a lot of existing t
 Setting up : Administration
 ===========================
 
-once the module is installed, go to the admin panel and activate the service your want. Currently there are 2 services, RSS and Evernote.
+once the module is installed, go to the admin panel and activate the service you want. 
+Currently there are 4 services, RSS, Evernote, Pocket and Readability.
 
 All you can decide here is to tell if the service requires an external authentication or not.
 
@@ -141,3 +144,8 @@ Fire the Triggers :
 ===================
 To start handling the queue of triggers you/your users configure, just set the fire.py in a crontab or any other scheduler solution of your choice.
 Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services you/your users want to reach.
+
+Blog posts : 
+===========
+You can find all details of all existing services of the blog :
+http://www.foxmask.info/tag/TriggerHappy

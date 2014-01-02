@@ -72,7 +72,8 @@ def go():
                         which_date = datetime.datetime.strptime(
                             str(now), '%Y-%m-%d')
                         published = which_date
-
+                    if published is None and which_date != '':
+                        published = which_date
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
@@ -81,13 +82,11 @@ def go():
 
                     if date_triggered is not None and published is not None and published >= date_triggered:
                         if 'title' in data:
-                            logger.info(
-                                "date %s >= date triggered %s title %s",
-                                published, date_triggered, data['title'])
+                            logger.info("date {} >= date triggered {} title {}".format(
+                                published, date_triggered, data['title']))
                         else:
                             logger.info(
-                                "date %s >= date triggered %s ",
-                                published, date_triggered)
+                                "date {} >= date triggered {} ".format(published, date_triggered))
 
                         consummer(service.consummer.token, service.id, **data)
 
@@ -97,24 +96,19 @@ def go():
                     else:
                         if 'title' in data:
                             logger.debug(
-                                "data outdated skiped : [%s] %s",
-                                published, data['title'])
+                                "data outdated skiped : [{}] {}".format(published, data['title']))
                         else:
                             logger.debug(
-                                "data outdated skiped : [%s] ", published)
+                                "data outdated skiped : [{}] ".format(published))
 
             # update the date of the trigger
             if to_update:
-                logger.info(
-                    "user: %s - provider: %s - consummer: %s - %s = %s new data",
-                    service.user, service.provider.name, service.consummer.name,
-                    service.description, count_new_data)
+                logger.info("user: {} - provider: {} - consummer: {} - {} = {} new data".format(
+                    service.user, service.provider.name, service.consummer.name, service.description, count_new_data))
                 update_trigger(service)
             else:
-                logger.info(
-                    "user: %s - provider: %s - consummer: %s - %s nothing new",
-                    service.user, service.provider.name, service.consummer.name,
-                    service.description)
+                logger.info("user: {} - provider: {} - consummer: {} - {} nothing new".format(
+                    service.user, service.provider.name, service.consummer.name, service.description))
     else:
         print "No trigger set by any user"
 
