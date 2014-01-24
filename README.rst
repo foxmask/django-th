@@ -2,9 +2,8 @@
 Django Trigger Happy
 ====================
 
-it is a IFTTT like service which will fire action when events occur elsewhere 
-on the web instead of giving your credentials to external service like IFTTT, 
-you can now become the owner of yours !
+Automatically share data between popular services you use on the web.
+And instead of giving your credentials to them, become the owner of yours !
 
 For example a new RSS item is published, django-trigger-happy will be able to 
 automatically create a note on your Evernote account or create a bookmark to
