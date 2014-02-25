@@ -6,3 +6,8 @@ run.sh
 *.sqlite3*
 *.log*
 .idea
+django_th/cache/rss/
+dist
+.coverage
+django_th.egg-info/
+*sublim*
