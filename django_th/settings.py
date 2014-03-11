@@ -239,16 +239,6 @@ TH_EVERNOTE = {
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
 
-#TH_POCKET = {
-#    'consumer_key': 'abcdefghijklmnopqrstuvwxyz'
-#}
-
-#TH_READABILITY = {
-#    'consumer_key': 'abcdef',
-#    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
-#}
-
-
 # local settings management
 try:
     from .local_settings import *
