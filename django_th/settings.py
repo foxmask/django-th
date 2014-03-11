@@ -132,8 +132,6 @@ INSTALLED_APPS = (
     'south',
     'th_rss',
     'th_evernote',
-    'th_readability',
-    # 'th_twitter',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -231,9 +229,8 @@ CACHES = {
 TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
     'th_evernote.my_evernote.ServiceEvernote',
-    'th_pocket.my_pocket.ServicePocket',
-    'th_readability.my_readability.ServiceReadability',
-    # 'th_twitter.my_twitter.ServiceTwitter',
+    # 'th_pocket.my_pocket.ServicePocket',
+    # 'th_readability.my_readability.ServiceReadability',
 )
 
 TH_EVERNOTE = {
@@ -242,19 +239,15 @@ TH_EVERNOTE = {
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
 
-TH_POCKET = {
-    'consummer_key': 'abcdefghijklmnopqrstuvwxyz'
-}
+#TH_POCKET = {
+#    'consumer_key': 'abcdefghijklmnopqrstuvwxyz'
+#}
 
-TH_READABILITY = {
-    'consummer_key': 'abcdef',
-    'consummer_secret': 'abcdefghijklmnopqrstuvwxyz'
-}
+#TH_READABILITY = {
+#    'consumer_key': 'abcdef',
+#    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
+#}
 
-TH_TWITTER = {
-    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
-}
 
 # local settings management
 try:
