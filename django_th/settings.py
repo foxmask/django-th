@@ -229,8 +229,6 @@ CACHES = {
 TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
     'th_evernote.my_evernote.ServiceEvernote',
-    # 'th_pocket.my_pocket.ServicePocket',
-    # 'th_readability.my_readability.ServiceReadability',
 )
 
 TH_EVERNOTE = {
