@@ -110,7 +110,7 @@ def go():
                 logger.info("user: {} - provider: {} - consummer: {} - {} nothing new".format(
                     service.user, service.provider.name, service.consummer.name, service.description))
     else:
-        print "No trigger set by any user"
+        print("No trigger set by any user")
 
 
 def update_trigger(service):

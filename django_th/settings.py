@@ -127,9 +127,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_th',
-    'oauth2',
+    #'oauth2',
     'evernote',
-    'south',
+    #'south',
     'th_rss',
     'th_evernote',
 )
