@@ -4,8 +4,11 @@ from __future__ import unicode_literals
 import os
 import datetime
 import time
+import arrow
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
+
+from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django.utils.log import getLogger
@@ -60,6 +63,7 @@ def go():
 
                     # let's try to determine the date contained in the data...
                     published = to_datetime(data)
+                    published = arrow.get(str(published),'YYYY-MM-DD HH:mm:ss')
                     if published is not None:
                         # store the date for the next loop
                         # if published became 'None'
@@ -67,20 +71,23 @@ def go():
                     #... otherwise set it to 00:00:00 of the current date
                     if which_date == '':
                         # current date
-                        now = datetime.date.today()
+                        #now = datetime.date.today()
+                        which_date = arrow.utcnow().replace(hour=0, minute=0, seconde=0)
                         # current date at 00:00:00
-                        which_date = datetime.datetime.strptime(
-                            str(now), '%Y-%m-%d')
+                        #which_date = datetime.datetime.strptime(
+                        #    str(now), '%Y-%m-%d')
                         published = which_date
                     if published is None and which_date != '':
                         published = which_date
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
                     # if yes , process the consummer
-                    date_triggered = datetime.datetime.strptime(
-                        str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+                    #date_triggered = datetime.datetime.strptime(
+                    #    str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
 
-                    if date_triggered is not None and published is not None and published >= date_triggered:
+                    # add the TIME_ZONE settings
+                    date_triggered = arrow.get(str(service.date_triggered),'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                    if date_triggered is not None and published is not None and published.date() >= date_triggered.date() and published.time() >= date_triggered.time():
                         if 'title' in data:
                             logger.info("date {} >= date triggered {} title {}".format(
                                 published, date_triggered, data['title']))
@@ -119,10 +126,7 @@ def update_trigger(service):
     """
     trigger = TriggerService.objects.get(id=service.id)
     if trigger:
-        its_now = datetime.datetime.now()
-        triggered = datetime.datetime.fromtimestamp(
-            time.mktime(its_now.timetuple()))
-        trigger.date_triggered = triggered
+        trigger.date_triggered = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
         trigger.save()
 
 
@@ -151,3 +155,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
