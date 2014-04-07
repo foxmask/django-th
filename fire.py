@@ -6,7 +6,7 @@ import datetime
 import time
 import arrow
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "th.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
 
 from django.conf import settings
 from django_th.services import default_provider
@@ -24,22 +24,22 @@ def go():
     trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
-            # flag to know if we have to udapte
+            # flag to know if we have to update
             to_update = False
             # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer datas
-            service_name = str(service.provider.name)
+            service_name = str(service.provider.name.name)
             service_provider = default_provider.get_service(service_name)
 
-            # consummer - the service which uses the datas
-            service_name = str(service.consummer.name)
-            service_consummer = default_provider.get_service(service_name)
+            # consumer - the service which uses the data
+            service_name = str(service.consummer.name.name)
+            service_consumer = default_provider.get_service(service_name)
 
             # check if the service has already been triggered
             if service.date_triggered is None:
                 logger.debug("first run for %s => %s " % (str(
-                    service.provider.name), str(service.consummer.name)))
+                    service.provider.name), str(service.consummer.name.name)))
                 to_update = True
             # run run run
             else:
@@ -47,7 +47,7 @@ def go():
                 # get a timestamp of the last triggered of the service
                 datas = getattr(service_provider, 'process_data')(
                     service.provider.token, service.id, service.date_triggered)
-                consummer = getattr(service_consummer, 'save_data')
+                consumer = getattr(service_consumer, 'save_data')
 
                 published = ''
                 which_date = ''
@@ -100,7 +100,7 @@ def go():
                                 logger.info(
                                     "date {} >= date triggered {} ".format(published, date_triggered))
 
-                            consummer(service.consummer.token, service.id, **data)
+                            consumer(service.consummer.token, service.id, **data)
 
                             to_update = True
                             count_new_data += 1
@@ -116,11 +116,11 @@ def go():
             # update the date of the trigger at the end of the loop
             if to_update:
                 logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
-                    service.user, service.provider.name, service.consummer.name, service.description, count_new_data))
+                    service.user, service.provider.name.name, service.consummer.name.name, service.description, count_new_data))
                 update_trigger(service)
             else:
                 logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
-                    service.user, service.provider.name, service.consummer.name, service.description))
+                    service.user, service.provider.name.name, service.consummer.name.name, service.description))
     else:
         print("No trigger set by any user")
 
