@@ -232,10 +232,10 @@ TH_EVERNOTE = {
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
 
+SECRET_KEY = 'to be defined :P'
+
 # local settings management
 try:
     from .local_settings import *
 except ImportError:
     pass
-
-SECRET_KEY = 'to be defined :P'
