@@ -237,3 +237,5 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+SECRET_KEY = 'to be defined :P'
