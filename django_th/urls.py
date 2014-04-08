@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from django_th.forms.wizard import DummyForm, ProviderForm, \
-    ConsummerForm, ServicesDescriptionForm
+    ConsumerForm, ServicesDescriptionForm
 
 from django_th.views import TriggerListView, TriggerDeleteView, \
     TriggerUpdateView, \
@@ -13,7 +13,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
     trigger_on_off, trigger_switch_all_to, \
-    trigger_edit_provider, trigger_edit_consummer, \
+    trigger_edit_provider, trigger_edit_consumer, \
     renew_service
 
 urlpatterns = \
@@ -21,16 +21,16 @@ urlpatterns = \
              # ****************************************
              # admin module
              # ****************************************
-             # url(r'^admin/', include(admin.site.urls)),
+             url(r'^admin/', include(admin.site.urls)),
              # ****************************************
              # auth module
              # ****************************************
-             # url(r'^auth/', include('django.contrib.auth.urls')),
+             url(r'^auth/', include('django.contrib.auth.urls')),
              # ****************************************
              # customized lgout action
              # ****************************************
-             # url(r'^logout/$',
-             #    'django_th.views.logout_view', name='logout'),
+             url(r'^logout/$',
+                 'django_th.views.logout_view', name='logout'),
 
              # ****************************************
              # trigger happy module
@@ -51,13 +51,15 @@ urlpatterns = \
              url(r'^th/trigger/editprovider/(?P<trigger_id>\d+)$',
                  trigger_edit_provider,
                  name='edit_provider'),
-             url(r'^th/trigger/editconsummer/(?P<trigger_id>\d+)$',
-                 trigger_edit_consummer,
-                 name='edit_consummer'),
+             url(r'^th/trigger/editconsumer/(?P<trigger_id>\d+)$',
+                 trigger_edit_consumer,
+                 name='edit_consumer'),
              url(r'^th/trigger/edit/thanks',
-                 TriggerEditedTemplateView.as_view()),
+                 TriggerEditedTemplateView.as_view(),
+                 name="trigger_edit_thanks"),
              url(r'^th/trigger/delete/thanks',
-                 TriggerDeletedTemplateView.as_view()),
+                 TriggerDeletedTemplateView.as_view(),
+                 name="trigger_delete_thanks"),
              url(r'^th/trigger/onoff/(?P<trigger_id>\d+)$',
                  trigger_on_off,
                  name="trigger_on_off"),
@@ -76,7 +78,8 @@ urlpatterns = \
                  name='delete_service'),
              url(r'^th/service/add/thanks',
                  UserServiceAddedTemplateView.as_view(),
-                 name="service_added"),
+                 name="service_add_thanks"),
+             # name="service_added"),
              url(r'^th/service/renew/(?P<pk>\d+)$',
                  renew_service,
                  name="renew_service"),
@@ -84,14 +87,16 @@ urlpatterns = \
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
              url(r'^th/service/delete/thanks',
-                 UserServiceDeletedTemplateView.as_view()),
+                 UserServiceDeletedTemplateView.as_view(),
+                 name="service_delete_thanks"
+                 ),
              # ****************************************
              # wizard
              # ****************************************
-             url(r'^service/create/$',
+             url(r'^th/service/create/$',
                  UserServiceWizard.as_view([ProviderForm,
                                             DummyForm,
-                                            ConsummerForm,
+                                            ConsumerForm,
                                             DummyForm,
                                             ServicesDescriptionForm]),
                  name='create_service'),
@@ -103,11 +108,11 @@ urlpatterns = \
                  {'service_name': 'ServiceEvernote', },
                  name="evernote_callback",
                  ),
-             # url(r"^th/callbackpocket/$",
-             #    "django_th.views.finalcallback",
-             #    {'service_name': 'ServicePocket', },
-             #    name="pocket_callback",
-             #    ),
+             url(r"^th/callbackpocket/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServicePocket', },
+                 name="pocket_callback",
+                 ),
              # url(r"^th/callbackreadability/$",
              #    "django_th.views.finalcallback",
              #    {'service_name': 'ServiceReadability', },

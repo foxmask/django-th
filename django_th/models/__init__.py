@@ -122,10 +122,10 @@ class TriggerService(models.Model):
     >>> name = ServicesActivated.objects.get(name='ServiceEvernote2')
     >>> user_service = UserService.objects.create(user=user1, token=token, name=name)
     >>> provider1 = UserService.objects.get(pk=1)
-    >>> consummer1 = UserService.objects.get(pk=2)
+    >>> consumer1 = UserService.objects.get(pk=2)
     >>> date_created1 = '20130610'
     >>> service1 = TriggerService.objects.create(provider=provider1, \
-    consummer=consummer1, description="My First Service", user=user1, \
+    consumer=consumer1, description="My First Service", user=user1, \
     date_created=date_created1, status=True)
 
     # Show them
@@ -133,7 +133,7 @@ class TriggerService(models.Model):
     'My Service ServiceRss2 ServiceEvernote2 My First Service foxmask1'
     """
     provider = models.ForeignKey(UserService, related_name='+', blank=True)
-    consummer = models.ForeignKey(UserService, related_name='+', blank=True)
+    consumer = models.ForeignKey(UserService, related_name='+', blank=True)
     description = models.CharField(max_length=200)
     user = models.ForeignKey(User)
     date_created = models.DateField(auto_now_add=True)
@@ -141,11 +141,11 @@ class TriggerService(models.Model):
     status = models.BooleanField()
 
     def show(self):
-        return "My Service %s %s %s %s" % (self.provider, self.consummer,
+        return "My Service %s %s %s %s" % (self.provider, self.consumer,
                                            self.description, self.user)
 
     def __unicode__(self):
-        return "%s %s " % (self.provider, self.consummer)
+        return "%s %s " % (self.provider, self.consumer)
 
 
 def create_user_profile(sender, instance, created, **kwargs):
@@ -156,4 +156,3 @@ def create_user_profile(sender, instance, created, **kwargs):
         UserProfile.objects.create(user=instance)
 
 post_save.connect(create_user_profile, sender=User)
-
