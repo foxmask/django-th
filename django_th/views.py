@@ -237,7 +237,7 @@ class TriggerEditedTemplateView(TemplateView):
 
     def get_context_data(self, **kw):
         context = super(TriggerEditedTemplateView, self).get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully modified'
+        context['sentence'] = 'Your trigger has been successfully modified'
         return context
 
 
@@ -257,7 +257,7 @@ class TriggerDeletedTemplateView(TemplateView):
     def get_context_data(self, **kw):
         context = super(TriggerDeletedTemplateView, self).\
             get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully deleted'
+        context['sentence'] = 'Your trigger has been successfully deleted'
         return context
 
 
