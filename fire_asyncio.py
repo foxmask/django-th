@@ -64,6 +64,9 @@ def update_trigger(service):
 
 @asyncio.coroutine
 def my_dummy_provider():
+    """
+        just a dummy provider when its the first time the trigger is handling 
+    """
     yield from q.put(1)
 
 
@@ -74,7 +77,6 @@ def my_provider(service_provider, token, service_id, date_triggered):
         token : is the token of the service provider from the database
         service_id : is the service id from the database
         date_triggered : date_triggered is the data from the database
-        :rtype provider class object
     """
     datas = getattr(service_provider, 'process_data')(
         token, service_id, date_triggered)
@@ -84,14 +86,12 @@ def my_provider(service_provider, token, service_id, date_triggered):
 
 
 @asyncio.coroutine
-def my_consumer(service_consumer, token_consumer, service_id, date_triggered):
+def my_consumer(service_consumer, token, service_id, date_triggered):
     """
-        service_provider : the name of the class to trigger the service
-        token : is the token of the service provider from the database
+        service_consumer : the name of the consumer 'service' class
+        token : is the token of the service consumer
         service_id : is the service id from the database
         date_triggered : date_triggered is the data from the database
-        service_consumer : the name of the class to trigger the target
-        :rtype boolean
     """
     count_new_data = 0
     proceed = False
@@ -152,7 +152,7 @@ def my_consumer(service_consumer, token_consumer, service_id, date_triggered):
                     logger.info(
                         "date {} >= date triggered {} ".format(published, my_date_triggered))
 
-                consumer(token_consumer, service_id, **data)
+                consumer(token, service_id, **data)
 
                 count_new_data += 1
         # otherwise do nothing
@@ -165,6 +165,7 @@ def my_consumer(service_consumer, token_consumer, service_id, date_triggered):
                     "data outdated skiped : [{}] ".format(published))
 
     else:
+        # return the number of updates ( to be displayed in the log )
         yield from q2.put(count_new_data)
 
 
