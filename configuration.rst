@@ -45,11 +45,20 @@ copy the template in your own templates directory or set the path like this :
 also you'll need to look at the urls.py of **django_th** to copy a lot of existing the mapping.
 
 
+Update the database
+~~~~~~~~~~~~~~~~~~~
+
+Once the settings is done, enter the following command to sync the database
+
+.. code-block:: bash
+
+    python manage.py syncdb
+
+
 Setting up : Administration
 ===========================
 
 once the module is installed, go to the admin panel and activate the service you want. 
-Currently there are 4 services, RSS, Evernote, Pocket and Readability.
 
 All you can decide here is to tell if the service requires an external authentication or not.
 

@@ -18,9 +18,10 @@ As it exists tools to make his blog or website or even his own cloud system, "Tr
 
 
 Automatically share data between popular services you use on the web.
-And instead of giving your credentials to them, become the owner of yours !
+And instead of giving your credentials to them, keep them with your **Trigger
+Happy** !
 
-For example a new RSS item is published, django-trigger-happy will be able to 
+For example a new RSS item is published, **Trigger Happy** will be able to 
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
@@ -46,9 +47,7 @@ who permits to use a manager of tasks like "cron" and, of course Python
 
 Blog posts: 
 -----------
-You can find all details of all existing services of the blog :
-http://www.foxmask.info/tag/TriggerHappy
-
+You can find all details of all existing services of the `blog <http://www.foxmask.info/tag/TriggerHappy>`_
 
 
 Indices and tables

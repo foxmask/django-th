@@ -14,13 +14,6 @@ or
 
     pip install django-th
 
-and at least :
-
-.. code-block:: bash
-
-    python manage.py syncdb
-
-to startup the database
 
 
 Dependencies
