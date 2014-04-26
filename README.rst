@@ -13,6 +13,7 @@ your own Readability or Pocket account and so on
 
 .. |ImageLink| image:: https://drone.io/github.com/foxmask/django-th/status.png
 .. _ImageLink: https://drone.io/github.com/foxmask/django-th/status.png
+.. |ImageLink| image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
 
 
 Description:
@@ -32,11 +33,8 @@ Requirements :
 ==============
 * Python 3.4.0
 * Django > 1.6
-* oauth2 1.5.211
 * django-th-rss > 0.2.5
 * django-th-evernote > 0.2.5
-* django-th-pocket > 0.1.2
-* django-th-readability > 0.1.0
 
 Installation:
 =============
