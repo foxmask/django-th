@@ -76,8 +76,6 @@ add the module django_th to the INSTALLED_APPS
         'django_th',
         'th_rss',
         'th_evernote',
-        'th_pocket',
-        'th_readability',
     )
 
 TH_SERVICES
@@ -90,8 +88,6 @@ TH_SERVICES is a list of the services we, like for example,
     TH_SERVICES = (
         'th_rss.my_rss.ServiceRss',
         'th_evernote.my_evernote.ServiceEvernote',
-        'th_pocket.my_pocket.ServicePocket',
-        'th_readability.my_readability.ServiceReadability',
     )
 
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
