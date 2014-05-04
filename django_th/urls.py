@@ -37,6 +37,8 @@ urlpatterns = \
              # ****************************************
              url(r'^th/$', TriggerListView.as_view(),
                  name='base'),
+             url(r'^th/trigger/by/(?P<trigger_filter_by>[a-zA-Z]+)$', TriggerListView.as_view(),
+                 name='trigger_filter_by'),
              url(r'^th/trigger/$', TriggerListView.as_view(),
                  name='home'),
              # ****************************************
@@ -120,3 +122,9 @@ urlpatterns = \
              #    ),
 
              )
+from django.conf import settings
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+                            url(r'^__debug__/', include(debug_toolbar.urls)),
+                            )

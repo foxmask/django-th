@@ -5,22 +5,25 @@
 {% load django_th_extras %}
 {% block title %}{% trans "My Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
-    <div class="span12" id="trigger-content">
+    <div class="col-md-12" id="trigger-content">
         <h3>{% trans 'Edition of your service' %}</h3>
         <form method="post" class="form-horizontal" action="">
+        <fieldset>        
         {% csrf_token %}
         {{ form.non_field_errors }}
-            <div class="control-group">
-                <label class="control-label" for="id_description">{% trans 'Service description' %}</label>
-                <div class="controls">
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="id_description">{% trans 'Service' %}</label>
                 {{ form.description.errors }}
-                {{ form.description }}
-                </div>
+                <div class="col-sm-10">{{ form.description }}</div>
             </div>
             <div class="form-actions">
                 <input type="hidden" name="id" value="{{ id }}" />
-                <button class="btn btn-primary">{% trans "Edit it" %}</button>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-10">                
+                    <button class="btn btn-primary">{% trans "Edit it" %}</button>
+                </div>
             </div>
+        </fieldset>
         </form>
     </div> 
 {% endblock %}

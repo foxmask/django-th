@@ -9,22 +9,22 @@
 {% block content %}
 
 {% if user.is_authenticated %}
-        <div class="span12">
-            <div class="span5">
+        <div class="col-md-12">
+            <div class="col-md-5">
                 <h2>{% trans "My Triggers" %}</h2>
             </div>
-            <div class="span6 trigger-summary">
+            <div class="col-md-6 trigger-summary">
                 {% trans "Summary" %} :
-                <span class="label label-info">{{ nb_services }}</span> {%  trans "activated" %} <span class="label label-inverse">{% trans "services" %}</span>
+                <span class="label label-info">{{ nb_services }}</span> {%  trans "activated" %} <span class="label label-default">{% trans "services" %}</span>
                 <span class="label label-info">{{ nb_triggers.enabled }}</span> {%  trans "enabled" %} <span class="label label-default">{% trans "triggers" %}</span>
-                <span class="label label-important">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} <span class="label label-default">{% trans "triggers" %}</span>
-                <hr>                
+                <span class="label label-warning">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} <span class="label label-default">{% trans "triggers" %}</span>
+                <hr/>
                 {% trans "Actions" %} : <a href="{% url 'trigger_switch_all_to' 'off' %}" title="{% trans "this action will set all the triggers off"%}">{% trans "Mark all Off" %}</a> - <a href="{% url 'trigger_switch_all_to' 'on' %}" title="{% trans "this action will set all the triggers on"%}">{% trans "Mark all On" %}</a>
-            </div>        
+            </div>
         </div>
     {% if triggers_list %}
         {% if is_paginated %}
-        <div class="span12 pagination">
+        <div class="col-md-12 pagination">
             <ul>
                 {% if page_obj.has_previous %}
                     <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
@@ -42,37 +42,41 @@
         {% endif %}
         {% for trigger in triggers_list %}
         <article>
-        <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} span12">
-            <div class="span7 trigger-text">
-                <a href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.provider.name|service_readable|lower }}" ><i class="icon-{{ trigger.provider.name|service_readable|lower }}"></i></a> <i class="icon-from-to"></i> <a href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.consumer.name|service_readable|lower }}" ><i class="icon-{{ trigger.consumer.name|service_readable|lower }}"></i></a>
+        <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} col-md-12">
+            <div class="col-md-7 trigger-text">
+                <a href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.provider.name|service_readable|lower }}" >{{ trigger.provider.name|service_readable }}</a> <span class="glyphicon glyphicon-chevron-right"></span> <a href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.consumer.name|service_readable|lower }}" >{{ trigger.consumer.name|service_readable }}</a>
                 <h3><a href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} ">{{ trigger.description|safe|escape }}</a></h3>
             </div>
-            <div class="span4">            
+            <div class="col-md-5">
                 {% if trigger.status %}
-                <a class="btn btn-large btn-info" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><i class="icon-pencil icon-white"></i> {{ trigger.provider.name|service_readable|lower }}</a>
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                <a class="btn btn-large btn-info" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><i class="icon-pencil icon-white"></i> {{ trigger.consumer.name|service_readable|lower }}</a>
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
-                <a class="btn btn-large btn-primary active" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><i class="icon-off icon-white"></i></a>
+                <a class="btn btn-primary btn-lg" role="button" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
                 {% else %}
-                <a class="btn btn-large btn-primary disabled" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><i class="icon-off icon-white"></i></a>
+                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{% trans 'service disabled' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                {% endif %}                    
-                <a class="btn btn-large btn-danger" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><i class="icon-trash icon-white"></i></a><br/>
-                
+                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{% trans 'service disabled' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+
+                <a class="btn btn-success btn-lg" role="button" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+
+                {% endif %}
+                <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+
             </div>
             <footer>
-            <div class="span12">
-                    <p><i class="icon-calendar"></i>{% trans "Created" %} {{ trigger.date_created }} - 
-                    <i class="icon-calendar"></i>{% trans "Triggered" %} {% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %} {% trans "Never triggered" %}{% endif %}</p>
-            </div>  
+            <div class="col-md-12">
+                    <p><span class="glyphicon glyphicon-calendar"></span>{% trans "Created" %} {{ trigger.date_created }} - 
+                    <span class="glyphicon glyphicon-calendar"></span>{% trans "Triggered" %} {% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %} {% trans "Never triggered" %}{% endif %}</p>
+            </div>
             </footer>
         </div>
         </article>
         {% endfor %}
         {% if is_paginated %}
-        <div class="span12 pagination">
+        <div class="col-md-12 pagination">
             <ul>
                 {% if page_obj.has_previous %}
                     <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
@@ -89,20 +93,20 @@
         </div>
         {% endif %}
     {% else %}
-        <div class="trigger-record span12">
+        <div class="trigger-record col-md-12">
             <div class="alert alert-info">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {% trans 'No trigger yet' %}
             </div>
             {% if nb_services < 2 %}
-            <div class="alert alert-error">{% trans "Before creating a trigger" %} <span class="label label-important">{% trans "you have to activate" %}</span> <a href="{% url 'add_service' %}">{% trans "at least 2 services" %}</a>. </div>
+            <div class="alert alert-danger">{% trans "Before creating a trigger" %} <span class="label label-danger">{% trans "you have to activate" %}</span> <a href="{% url 'add_service' %}">{% trans "at least 2 services" %}</a>. </div>
             {% else %}
-            <p>You can now proceed by creating <a href="{% url 'create_service' %}">your first trigger</a></p>
+            <p>{% trans "You can now proceed by creating" %}<a href="{% url 'create_service' %}"> {% trans "your first trigger" %}</a></p>
             {% endif %}
         </div>
     {% endif %}
 {% else %}
-            <div class="hero-unit">
+            <div class="jumbotron">
                 <p>
                     <strong>Trigger Happy</strong> is up !
                 </p>

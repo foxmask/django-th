@@ -6,6 +6,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from django.db.models import Q
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 
@@ -146,6 +147,9 @@ def renew_service(request, pk):
 
 
 def trigger_edit_provider(request, trigger_id):
+    """
+        edit the provider
+    """
     service = TriggerService.objects.get(id=trigger_id)
     service_name = str(service.provider.name.name).split('Service')[1]
     model = get_service(service.provider.name.name)
@@ -168,6 +172,9 @@ def trigger_edit_provider(request, trigger_id):
 
 
 def trigger_edit_consumer(request, trigger_id):
+    """
+        edit the consumer
+    """
     service = TriggerService.objects.get(id=trigger_id)
     service_name = str(service.consumer.name.name).split('Service')[1]
     model = get_service(service.consumer.name.name)
@@ -190,20 +197,49 @@ def trigger_edit_consumer(request, trigger_id):
 
 
 class TriggerListView(ListView):
+
+    """
+        list of Triggers
+        the list can be filtered by service
+    """
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
     template_name = "home.html"
     paginate_by = 7
 
     def get_queryset(self):
+        trigger_filter_by = None
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user).\
-                order_by('-date_created')
-        # otherwise return nothing
+            # if the user selected a filter, get its ID
+            if 'trigger_filter_by' in self.kwargs:
+                user_service = UserService.objects.filter(
+                    user=self.request.user, name=self.kwargs['trigger_filter_by'])
+                trigger_filter_by = user_service[0].id
+
+            # no filter selected : display all
+            if trigger_filter_by is None:
+                return self.queryset.filter(user=self.request.user).order_by('-date_created')
+            # filter selected : display all related trigger
+            else:
+                # here the queryset will do :
+                # 1) get trigger of the connected user AND
+                # 2) get the triggers where the provider OR the consumer match
+                # the selected service
+                return self.queryset.filter(user=self.request.user).filter(Q(provider=trigger_filter_by) | Q(consumer=trigger_filter_by)).order_by('-date_created')
+        # otherwise return nothing when user is not connected
         return TriggerService.objects.none()
 
     def get_context_data(self, **kw):
+        """
+            get the data of the view
+            
+            data are :
+            1) number of triggers enabled
+            2) number of triggers disabled
+            3) number of activated services
+            4) list of activated services by the connected user
+        """
         triggers_enabled = triggers_disabled = services_activated = ()
         if self.request.user.is_authenticated():
             # get the enabled triggers
@@ -215,13 +251,30 @@ class TriggerListView(ListView):
             # get the activated services
             services_activated = qty_services_activated(self.request.user)
         context = super(TriggerListView, self).get_context_data(**kw)
+        """
+            which triggers are enabled/disabled
+        """
         context['nb_triggers'] = {'enabled': len(triggers_enabled),
                                   'disabled': len(triggers_disabled)}
+        """
+            Number of services activated
+        """
         context['nb_services'] = len(services_activated)
+        """
+            List of triggers activated by the user
+        """
+        if self.request.user.is_authenticated():
+            context['trigger_filter_by'] = UserService.objects.filter(
+                user=self.request.user)
+
         return context
 
 
 class TriggerUpdateView(UpdateView):
+
+    """
+        Form to update description
+    """
     queryset = TriggerService.objects.all()
     fields = ['description']
     template_name = "triggers/edit_description_trigger.html"
@@ -233,6 +286,10 @@ class TriggerUpdateView(UpdateView):
 
 
 class TriggerEditedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "triggers/thanks_trigger.html"
 
     def get_context_data(self, **kw):
@@ -242,6 +299,10 @@ class TriggerEditedTemplateView(TemplateView):
 
 
 class TriggerDeleteView(DeleteView):
+
+    """
+        page to delete a trigger
+    """
     queryset = TriggerService.objects.all()
     template_name = "triggers/delete_trigger.html"
     success_url = reverse_lazy("trigger_delete_thanks")
@@ -252,6 +313,10 @@ class TriggerDeleteView(DeleteView):
 
 
 class TriggerDeletedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "triggers/thanks_trigger.html"
 
     def get_context_data(self, **kw):
@@ -265,6 +330,10 @@ class TriggerDeletedTemplateView(TemplateView):
 #  Part II : the UserServices
 #*************************************
 class UserServiceListView(ListView):
+
+    """
+        List of the services activated by the user
+    """
     context_object_name = "services_list"
     queryset = UserService.objects.all()
     template_name = "services/services.html"
@@ -278,6 +347,7 @@ class UserServiceListView(ListView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
+        services_activated = ()
         if self.request.user.is_authenticated():
             activated_qs = ServicesActivated.objects.all()
             service_list_available = UserService.objects.filter(
@@ -290,10 +360,22 @@ class UserServiceListView(ListView):
             else:
                 context['action'] = 'display'
             context['service_list_available'] = service_list_available
+
+            # get the activated services
+            services_activated = qty_services_activated(self.request.user)
+            """
+                Number of services activated
+            """
+            context['nb_services'] = len(services_activated)
+
         return context
 
 
 class UserServiceCreateView(CreateView):
+
+    """
+        Form to add a service
+    """
     form_class = UserServiceForm
     template_name = "services/add_service.html"
 
@@ -333,6 +415,11 @@ class UserServiceCreateView(CreateView):
 
 
 class UserServiceRenewTemplateView(TemplateView):
+
+    """
+        page to renew a service
+        usefull when revoking has been done or made changes
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
@@ -343,6 +430,10 @@ class UserServiceRenewTemplateView(TemplateView):
 
 
 class UserServiceDeleteView(DeleteView):
+
+    """
+        page to delete a service
+    """
     queryset = UserService.objects.all()
     template_name = "services/delete_service.html"
     success_url = reverse_lazy("service_delete_thanks")
@@ -353,6 +444,10 @@ class UserServiceDeleteView(DeleteView):
 
 
 class UserServiceAddedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
@@ -363,6 +458,10 @@ class UserServiceAddedTemplateView(TemplateView):
 
 
 class UserServiceDeletedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
