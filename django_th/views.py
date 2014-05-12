@@ -4,14 +4,16 @@ from django.shortcuts import render_to_response, render, redirect, get_object_or
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from django.db.models import Q
 
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
 from django_th.forms.base import UserServiceForm
-from django_th.forms.wizard import ConsummerForm
+from django_th.forms.wizard import ConsumerForm
 
 from django_th.services import default_provider
 
@@ -49,7 +51,7 @@ def get_service(service, model_form='models', form_name=''):
             ServiceRss
         then could call :
             Rss+ProviderForm
-            Evernote+ConsummerForm
+            Evernote+ConsumerForm
     """
     service_name = str(service).split('Service')[1]
 
@@ -70,7 +72,7 @@ def logout_view(request):
         logout the user then redirect him to the home page
     """
     logout(request)
-    return redirect('base')
+    return HttpResponseRedirect(reverse('base'))
 
 
 def trigger_on_off(request, trigger_id):
@@ -84,7 +86,7 @@ def trigger_on_off(request, trigger_id):
         trigger.status = True
     trigger.save()
 
-    return redirect('base')
+    return HttpResponseRedirect(reverse('base'))
 
 
 def trigger_switch_all_to(request, switch):
@@ -99,7 +101,7 @@ def trigger_switch_all_to(request, switch):
         trigger.status = status
         trigger.save()
 
-    return redirect('base')
+    return HttpResponseRedirect(reverse('base'))
 
 
 def qty_services_activated(user):
@@ -145,64 +147,99 @@ def renew_service(request, pk):
 
 
 def trigger_edit_provider(request, trigger_id):
+    """
+        edit the provider
+    """
     service = TriggerService.objects.get(id=trigger_id)
-    service_name = str(service.provider).split('Service')[1]
-    model = get_service(service.provider)
+    service_name = str(service.provider.name.name).split('Service')[1]
+    model = get_service(service.provider.name.name)
     data = model.objects.get(trigger_id=trigger_id)
 
     if request.method == 'POST':
-        form = get_service(service.provider, 'forms', 'ProviderForm')(
+        form = get_service(service.provider.name.name, 'forms', 'ProviderForm')(
             request.POST, instance=data)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/trigger/edit/thanks/')
+            return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
         form = get_service(
-            service.provider, 'forms', 'ProviderForm')(instance=data)
+            service.provider.name.name, 'forms', 'ProviderForm')(instance=data)
     context = {'description': service.description}
-    return render(request, service_name.lower() + 'provider/edit_provider.html', {
+    return render(request, service_name.lower() + '/edit_provider.html', {
         'form': form,
         'context': context
     })
 
 
-def trigger_edit_consummer(request, trigger_id):
+def trigger_edit_consumer(request, trigger_id):
+    """
+        edit the consumer
+    """
     service = TriggerService.objects.get(id=trigger_id)
-    service_name = str(service.consummer).split('Service')[1]
-    model = get_service(service.consummer)
+    service_name = str(service.consumer.name.name).split('Service')[1]
+    model = get_service(service.consumer.name.name)
     data = model.objects.get(trigger_id=trigger_id)
 
     if request.method == 'POST':
-        form = get_service(service.consummer, 'forms', 'ConsummerForm')(
+        form = get_service(service.consumer.name.name, 'forms', 'ConsumerForm')(
             request.POST, instance=data)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/trigger/edit/thanks/')
+            return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
         form = get_service(
-            service.consummer, 'forms', 'ConsummerForm')(instance=data)
+            service.consumer.name.name, 'forms', 'ConsumerForm')(instance=data)
     context = {'description': service.description}
-    return render(request, service_name.lower() + 'consummer/edit_consummer.html', {
+    return render(request, service_name.lower() + '/edit_consumer.html', {
         'form': form,
         'context': context
     })
 
 
 class TriggerListView(ListView):
+
+    """
+        list of Triggers
+        the list can be filtered by service
+    """
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
     template_name = "home.html"
     paginate_by = 7
 
     def get_queryset(self):
+        trigger_filter_by = None
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user).\
-                order_by('-date_created')
-        # otherwise return nothing
+            # if the user selected a filter, get its ID
+            if 'trigger_filter_by' in self.kwargs:
+                user_service = UserService.objects.filter(
+                    user=self.request.user, name=self.kwargs['trigger_filter_by'])
+                trigger_filter_by = user_service[0].id
+
+            # no filter selected : display all
+            if trigger_filter_by is None:
+                return self.queryset.filter(user=self.request.user).order_by('-date_created')
+            # filter selected : display all related trigger
+            else:
+                # here the queryset will do :
+                # 1) get trigger of the connected user AND
+                # 2) get the triggers where the provider OR the consumer match
+                # the selected service
+                return self.queryset.filter(user=self.request.user).filter(Q(provider=trigger_filter_by) | Q(consumer=trigger_filter_by)).order_by('-date_created')
+        # otherwise return nothing when user is not connected
         return TriggerService.objects.none()
 
     def get_context_data(self, **kw):
+        """
+            get the data of the view
+            
+            data are :
+            1) number of triggers enabled
+            2) number of triggers disabled
+            3) number of activated services
+            4) list of activated services by the connected user
+        """
         triggers_enabled = triggers_disabled = services_activated = ()
         if self.request.user.is_authenticated():
             # get the enabled triggers
@@ -214,17 +251,34 @@ class TriggerListView(ListView):
             # get the activated services
             services_activated = qty_services_activated(self.request.user)
         context = super(TriggerListView, self).get_context_data(**kw)
+        """
+            which triggers are enabled/disabled
+        """
         context['nb_triggers'] = {'enabled': len(triggers_enabled),
                                   'disabled': len(triggers_disabled)}
+        """
+            Number of services activated
+        """
         context['nb_services'] = len(services_activated)
+        """
+            List of triggers activated by the user
+        """
+        if self.request.user.is_authenticated():
+            context['trigger_filter_by'] = UserService.objects.filter(
+                user=self.request.user)
+
         return context
 
 
 class TriggerUpdateView(UpdateView):
+
+    """
+        Form to update description
+    """
     queryset = TriggerService.objects.all()
     fields = ['description']
     template_name = "triggers/edit_description_trigger.html"
-    success_url = '/trigger/edit/thanks/'
+    success_url = reverse_lazy("trigger_edit_thanks")
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -232,18 +286,26 @@ class TriggerUpdateView(UpdateView):
 
 
 class TriggerEditedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "triggers/thanks_trigger.html"
 
     def get_context_data(self, **kw):
         context = super(TriggerEditedTemplateView, self).get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully modified'
+        context['sentence'] = 'Your trigger has been successfully modified'
         return context
 
 
 class TriggerDeleteView(DeleteView):
+
+    """
+        page to delete a trigger
+    """
     queryset = TriggerService.objects.all()
     template_name = "triggers/delete_trigger.html"
-    success_url = '/trigger/delete/thanks/'
+    success_url = reverse_lazy("trigger_delete_thanks")
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -251,12 +313,16 @@ class TriggerDeleteView(DeleteView):
 
 
 class TriggerDeletedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "triggers/thanks_trigger.html"
 
     def get_context_data(self, **kw):
         context = super(TriggerDeletedTemplateView, self).\
             get_context_data(**kw)
-        context['sentance'] = 'Your trigger has been successfully deleted'
+        context['sentence'] = 'Your trigger has been successfully deleted'
         return context
 
 
@@ -264,6 +330,10 @@ class TriggerDeletedTemplateView(TemplateView):
 #  Part II : the UserServices
 #*************************************
 class UserServiceListView(ListView):
+
+    """
+        List of the services activated by the user
+    """
     context_object_name = "services_list"
     queryset = UserService.objects.all()
     template_name = "services/services.html"
@@ -277,6 +347,7 @@ class UserServiceListView(ListView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
+        services_activated = ()
         if self.request.user.is_authenticated():
             activated_qs = ServicesActivated.objects.all()
             service_list_available = UserService.objects.filter(
@@ -289,10 +360,22 @@ class UserServiceListView(ListView):
             else:
                 context['action'] = 'display'
             context['service_list_available'] = service_list_available
+
+            # get the activated services
+            services_activated = qty_services_activated(self.request.user)
+            """
+                Number of services activated
+            """
+            context['nb_services'] = len(services_activated)
+
         return context
 
 
 class UserServiceCreateView(CreateView):
+
+    """
+        Form to add a service
+    """
     form_class = UserServiceForm
     template_name = "services/add_service.html"
 
@@ -303,13 +386,13 @@ class UserServiceCreateView(CreateView):
     def form_valid(self, form):
         self.object = form.save(user=self.request.user)
 
-        sa = ServicesActivated.objects.get(name=form.cleaned_data['name'])
+        sa = ServicesActivated.objects.get(name=form.cleaned_data['name'].name)
         # let's build the 'call' of the auth method
         #  which owns to a ServiceXXX class
         if sa.auth_required:
             # use the default_provider to get the object from the ServiceXXX
             service_object = default_provider.get_service(
-                str(form.cleaned_data['name']))
+                str(form.cleaned_data['name'].name))
             # get the class object
             lets_auth = getattr(service_object, 'auth')
             # call the auth func from this class
@@ -318,7 +401,7 @@ class UserServiceCreateView(CreateView):
             # account details
             return redirect(lets_auth(self.request))
 
-        return HttpResponseRedirect('/service/add/thanks/')
+        return HttpResponseRedirect(reverse('service_add_thanks'))
 
     def get_context_data(self, **kw):
         context = super(UserServiceCreateView, self).get_context_data(**kw)
@@ -332,19 +415,28 @@ class UserServiceCreateView(CreateView):
 
 
 class UserServiceRenewTemplateView(TemplateView):
+
+    """
+        page to renew a service
+        usefull when revoking has been done or made changes
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
         context = super(
             UserServiceRenewTemplateView, self).get_context_data(**kw)
-        context['sentance'] = 'Your service has been successfully renewed'
+        context['sentence'] = 'Your service has been successfully renewed'
         return context
 
 
 class UserServiceDeleteView(DeleteView):
+
+    """
+        page to delete a service
+    """
     queryset = UserService.objects.all()
     template_name = "services/delete_service.html"
-    success_url = '/service/delete/thanks/'
+    success_url = reverse_lazy("service_delete_thanks")
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -352,22 +444,30 @@ class UserServiceDeleteView(DeleteView):
 
 
 class UserServiceAddedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
         context = super(UserServiceAddedTemplateView, self).\
             get_context_data(**kw)
-        context['sentance'] = 'Your service has been successfully created'
+        context['sentence'] = 'Your service has been successfully created'
         return context
 
 
 class UserServiceDeletedTemplateView(TemplateView):
+
+    """
+        just a simple form to say thanks :P
+    """
     template_name = "services/thanks_service.html"
 
     def get_context_data(self, **kw):
         context = super(UserServiceDeletedTemplateView, self).get_context_data(
             **kw)
-        context['sentance'] = 'Your service has been successfully deleted'
+        context['sentence'] = 'Your service has been successfully deleted'
         return context
 
 #*************************************
@@ -382,19 +482,19 @@ class UserServiceWizard(SessionWizardView):
         #  form_name/wz-step-form.html
         #  the form_name should be formed by the name of the service + form
         #  for example :
-        # rssform/wz-1-form.html
-        # rssform/wz-3-form.html
-        # evernoteform/wz-1-form.html
-        # evernoteform/wz-3-form.html
+        # rss/wz-1-form.html
+        # rss/wz-3-form.html
+        # evernote/wz-1-form.html
+        # evernote/wz-3-form.html
         if self.steps.current in('0', '2', '4'):
             folder = 'services_wizard'
         else:
             data = self.get_cleaned_data_for_step(self.get_prev_step(
                 self.steps.current))
             if 'provider' in data:
-                folder = str(data['provider']).split('Service')[1] + 'form'
-            elif 'consummer' in data:
-                folder = str(data['consummer']).split('Service')[1] + 'form'
+                folder = str(data['provider']).split('Service')[1]
+            elif 'consumer' in data:
+                folder = str(data['consumer']).split('Service')[1]
 
         return '%s/wz-%s-form.html' % (folder.lower(), self.steps.current)
 
@@ -417,15 +517,15 @@ class UserServiceWizard(SessionWizardView):
 
         elif step == '2':
             step0_data = self.get_cleaned_data_for_step('0')
-            form = ConsummerForm(
+            form = ConsumerForm(
                 data, initial={'provider': step0_data['provider']})
 
         elif step == '3':
 
             prev_data = self.get_cleaned_data_for_step('2')
-            service_name = str(prev_data['consummer']).split('Service')[1]
+            service_name = str(prev_data['consumer']).split('Service')[1]
             class_name = 'th_' + service_name.lower() + '.forms'
-            form_name = service_name + 'ConsummerForm'
+            form_name = service_name + 'ConsumerForm'
             form_class = class_for_name(class_name, form_name)
             form = form_class(data)
 
@@ -440,7 +540,7 @@ class UserServiceWizard(SessionWizardView):
             The process is :
             1) get the infos for the Trigger from step 0, 2, 4
             2) save it to TriggerService
-            3) get the infos from the "Provider" and "Consummer" services
+            3) get the infos from the "Provider" and "Consumer" services
             at step 1 and 3
             4) save all of them
         """
@@ -455,12 +555,12 @@ class UserServiceWizard(SessionWizardView):
                     name=data['provider'],
                     user=self.request.user)
                 model_provider = get_service(data['provider'], 'models')
-            # get the service we selected at step 2 : consummer
+            # get the service we selected at step 2 : consumer
             elif i == 2:
-                trigger_consummer = UserService.objects.get(
-                    name=data['consummer'],
+                trigger_consumer = UserService.objects.get(
+                    name=data['consumer'],
                     user=self.request.user)
-                model_consummer = get_service(data['consummer'], 'models')
+                model_consumer = get_service(data['consumer'], 'models')
             # get the description we gave for the trigger
             elif i == 4:
                 trigger_description = data['description']
@@ -468,14 +568,14 @@ class UserServiceWizard(SessionWizardView):
 
         # save the trigger
         trigger = TriggerService(
-            provider=trigger_provider, consummer=trigger_consummer,
+            provider=trigger_provider, consumer=trigger_consumer,
             user=self.request.user, status=True,
             description=trigger_description)
         trigger.save()
 
         model_fields = {}
         # get the datas from the form for Service related
-        # save the related models to provider and consummer
+        # save the related models to provider and consumer
         i = 0
         for form in form_list:
             model_fields = {}
@@ -486,15 +586,15 @@ class UserServiceWizard(SessionWizardView):
                     model_fields.update({field: data[field]})
                 model_fields.update({'trigger_id': trigger.id, 'status': True})
                 model_provider.objects.create(**model_fields)
-            # get the data for the consummer service
+            # get the data for the consumer service
             elif i == 3:
                 for field in data:
                     model_fields.update({field: data[field]})
                 model_fields.update({'trigger_id': trigger.id, 'status': True})
-                model_consummer.objects.create(**model_fields)
+                model_consumer.objects.create(**model_fields)
             i += 1
 
-        return HttpResponseRedirect('/')
+        return HttpResponseRedirect(reverse('base'))
 
 
 def finalcallback(request, **kwargs):

@@ -1,6 +1,6 @@
 body {
-	padding-top: 60px;
-	padding-bottom: 40px;
+	padding-top: 70px;
+	padding-bottom: 30px;
 }
 
 h1 {
@@ -11,11 +11,18 @@ h1 {
 	height: 30px;
 }
 
+
+li { 
+    list-style: none;
+}
+
+
 /****
  * shared propery : trigger-record-* & profile-*
  */
 
-.trigger-record, .profile-identity, .profile-stats, .service-record, .wizard-fieldset, .trigger-summary  {
+
+.trigger-record, .service-record, .wizard-fieldset, .trigger-summary  {
     background-color: white;
     border-radius: 5px 5px 5px 5px;
     color: #6B6B6B;
@@ -41,7 +48,7 @@ h1 {
 }
 
 
-.trigger-record-user, .profile-identity-head {
+.trigger-record-user {
 	background-image: url('/static/images/glyphicons_003_user.png');
 }
 
@@ -80,71 +87,6 @@ h1 {
 }
 
 /****
- * Profile
- */
-.profile-head {
-	background-position:left bottom;
-	background-repeat: no-repeat;	
-	text-indent: 30px;
-	height: 30px;
-}
-
-.profile-stats-head {
-	background-image: url('/static/images/glyphicons_040_stats.png');
-}
-
-/****
- * icon services
- */
-.icon-evernote {
-    background-image: url('/static/images/glyphicons_social_11_evernote.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;
-}
-
-.icon-readability {
-    background-image: url('/static/images/glyphicons_social_29_readability.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;    
-}
-
-.icon-pocket {
-    background-image: url('/static/images/glyphicons_social_16_pocket.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;    
-}
-
-.icon-twitter {
-    background-image: url('/static/images/glyphicons_social_31_twitter.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;    
-}
-
-.icon-rss {
-    background-image: url('/static/images/glyphicons_social_37_rss.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;    
-}
-
-.icon-from-to {
-    background-image: url('/static/images/glyphicons_223_thin_right_arrow.png');
-    width: 30px;
-    height: 30px;
-    line-height: 30px;
-    background-position: 0px 0px;    
-}
-
-/****
  * wizard 
  */
 #trigger-content fieldset {
@@ -174,3 +116,4 @@ h1 {
   border: 1px solid #ddd;
   border-bottom-color: transparent;
 }
+

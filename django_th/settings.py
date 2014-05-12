@@ -83,9 +83,6 @@ STATICFILES_FINDERS = (
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '5830tjg(^k$r@jols*fuxu4htr#yzziq@*!a%k+s)_=12s^e_0'
-
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
@@ -127,9 +124,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_th',
-    'oauth2',
     'evernote',
-    'south',
     'th_rss',
     'th_evernote',
 )
@@ -186,7 +181,7 @@ LOGGING = {
     'loggers':
     {
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['mail_admins', 'file'],
             'level': 'ERROR',
             'propagate': True,
         },
@@ -236,6 +231,8 @@ TH_EVERNOTE = {
     'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
     'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
+
+SECRET_KEY = 'to be defined :P'
 
 # local settings management
 try:

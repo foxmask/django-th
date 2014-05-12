@@ -33,15 +33,15 @@ class ProviderForm(ServiceChoiceForm):
         self.fields['provider'].choices = self.activated_services()
 
 
-class ConsummerForm(ServiceChoiceForm):
+class ConsumerForm(ServiceChoiceForm):
 
-    consummer = forms.ChoiceField()
+    consumer = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
-        super(ConsummerForm, self).__init__(*args, **kwargs)
+        super(ConsumerForm, self).__init__(*args, **kwargs)
         # get the list of service without the one selected in
         # the provider form
-        self.fields['consummer'].choices = self.activated_services(
+        self.fields['consumer'].choices = self.activated_services(
             self.initial['provider'])
 
 

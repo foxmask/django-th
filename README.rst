@@ -13,6 +13,7 @@ your own Readability or Pocket account and so on
 
 .. |ImageLink| image:: https://drone.io/github.com/foxmask/django-th/status.png
 .. _ImageLink: https://drone.io/github.com/foxmask/django-th/status.png
+.. |ImageLink| image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
 
 
 Description:
@@ -26,19 +27,14 @@ depending any non-free solution.
 With this project you can host triggers for you.
 
 All you need is to have a hosting provider (or simply your own server ;) 
-who permits to use a manager of tasks like "cron" and, of course Python 2.7
+who permits to use a manager of tasks like "cron" and, of course Python
 
 Requirements :
 ==============
-* Django 1.6
-* South 0.8.2
-* batbelt 0.5.1
-* ordereddict 1.1
-* oauth2 1.5.211
-* django-th-rss 0.2.5
-* django-th-evernote 0.2.5
-* django-th-pocket 0.1.2
-* django-th-readability 0.1.0
+* Python 3.4.0
+* Django > 1.6
+* django-th-rss > 0.2.5
+* django-th-evernote > 0.2.5
 
 Installation:
 =============
@@ -78,6 +74,8 @@ add the module django_th to the INSTALLED_APPS
 
     INSTALLED_APPS = (
         'django_th',
+        'th_rss',
+        'th_evernote',
     )
 
 TH_SERVICES
@@ -90,8 +88,6 @@ TH_SERVICES is a list of the services we, like for example,
     TH_SERVICES = (
         'th_rss.my_rss.ServiceRss',
         'th_evernote.my_evernote.ServiceEvernote',
-        'th_pocket.my_pocket.ServicePocket',
-        'th_readability.my_readability.ServiceReadability',
     )
 
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
@@ -102,7 +98,7 @@ copy the template in your own templates directory or set the path like this :
     import os
     PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
     TEMPLATE_DIRS += (
-        PROJECT_DIR + '/../../lib/python2.7/site-package/django_th/templates/',
+        PROJECT_DIR + '/../../lib/<python-version>/site-package/django_th/templates/',
     )
 
 also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.

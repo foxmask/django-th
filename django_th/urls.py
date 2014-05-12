@@ -4,7 +4,7 @@ from django.contrib import admin
 admin.autodiscover()
 
 from django_th.forms.wizard import DummyForm, ProviderForm, \
-    ConsummerForm, ServicesDescriptionForm
+    ConsumerForm, ServicesDescriptionForm
 
 from django_th.views import TriggerListView, TriggerDeleteView, \
     TriggerUpdateView, \
@@ -13,7 +13,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
     trigger_on_off, trigger_switch_all_to, \
-    trigger_edit_provider, trigger_edit_consummer, \
+    trigger_edit_provider, trigger_edit_consumer, \
     renew_service
 
 urlpatterns = \
@@ -35,94 +35,96 @@ urlpatterns = \
              # ****************************************
              # trigger happy module
              # ****************************************
-             url(r'^$', TriggerListView.as_view(),
+             url(r'^th/$', TriggerListView.as_view(),
                  name='base'),
-             url(r'^trigger/$', TriggerListView.as_view(),
+             url(r'^th/trigger/by/(?P<trigger_filter_by>[a-zA-Z]+)$', TriggerListView.as_view(),
+                 name='trigger_filter_by'),
+             url(r'^th/trigger/$', TriggerListView.as_view(),
                  name='home'),
              # ****************************************
              # * trigger
              # ****************************************
-             url(r'^trigger/delete/(?P<pk>\d+)$',
+             url(r'^th/trigger/delete/(?P<pk>\d+)$',
                  TriggerDeleteView.as_view(),
                  name='delete_trigger'),
-             url(r'^trigger/edit/(?P<pk>\d+)$',
+             url(r'^th/trigger/edit/(?P<pk>\d+)$',
                  TriggerUpdateView.as_view(),
                  name='edit_trigger'),
-             url(r'^trigger/editprovider/(?P<trigger_id>\d+)$',
+             url(r'^th/trigger/editprovider/(?P<trigger_id>\d+)$',
                  trigger_edit_provider,
                  name='edit_provider'),
-             url(r'^trigger/editconsummer/(?P<trigger_id>\d+)$',
-                 trigger_edit_consummer,
-                 name='edit_consummer'),
-             url(r'^trigger/edit/thanks',
-                 TriggerEditedTemplateView.as_view()),
-             url(r'^trigger/delete/thanks',
-                 TriggerDeletedTemplateView.as_view()),
-             url(r'^trigger/onoff/(?P<trigger_id>\d+)$',
+             url(r'^th/trigger/editconsumer/(?P<trigger_id>\d+)$',
+                 trigger_edit_consumer,
+                 name='edit_consumer'),
+             url(r'^th/trigger/edit/thanks',
+                 TriggerEditedTemplateView.as_view(),
+                 name="trigger_edit_thanks"),
+             url(r'^th/trigger/delete/thanks',
+                 TriggerDeletedTemplateView.as_view(),
+                 name="trigger_delete_thanks"),
+             url(r'^th/trigger/onoff/(?P<trigger_id>\d+)$',
                  trigger_on_off,
                  name="trigger_on_off"),
-             url(r'^trigger/all/(?P<switch>(on|off))$',
+             url(r'^th/trigger/all/(?P<switch>(on|off))$',
                  trigger_switch_all_to,
                  name="trigger_switch_all_to"),
              # ****************************************
              # * service
              # ****************************************
-             url(r'^service/$', UserServiceListView.as_view(),
+             url(r'^th/service/$', UserServiceListView.as_view(),
                  name='user_services'),
-             url(r'^service/add/$', UserServiceCreateView.as_view(),
+             url(r'^th/service/add/$', UserServiceCreateView.as_view(),
                  name='add_service'),
-             url(r'^service/delete/(?P<pk>\d+)$',
+             url(r'^th/service/delete/(?P<pk>\d+)$',
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
-             url(r'^service/add/thanks',
+             url(r'^th/service/add/thanks',
                  UserServiceAddedTemplateView.as_view(),
-                 name="service_added"),
-             url(r'^service/renew/(?P<pk>\d+)$',
+                 name="service_add_thanks"),
+             # name="service_added"),
+             url(r'^th/service/renew/(?P<pk>\d+)$',
                  renew_service,
                  name="renew_service"),
-             url(r'^service/delete/$',
+             url(r'^th/service/delete/$',
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
-             url(r'^service/delete/thanks',
-                 UserServiceDeletedTemplateView.as_view()),
+             url(r'^th/service/delete/thanks',
+                 UserServiceDeletedTemplateView.as_view(),
+                 name="service_delete_thanks"
+                 ),
              # ****************************************
              # wizard
              # ****************************************
-             url(r'^service/create/$',
+             url(r'^th/service/create/$',
                  UserServiceWizard.as_view([ProviderForm,
                                             DummyForm,
-                                            ConsummerForm,
+                                            ConsumerForm,
                                             DummyForm,
                                             ServicesDescriptionForm]),
                  name='create_service'),
              # every service will use django_th.views.finalcallback
              # and give the service_name value to use to
              # trigger the real callback
-             url(r"^callbackevernote/$",
+             url(r"^th/callbackevernote/$",
                  "django_th.views.finalcallback",
                  {'service_name': 'ServiceEvernote', },
                  name="evernote_callback",
                  ),
-             url(r"^callbackpocket/$",
+             url(r"^th/callbackpocket/$",
                  "django_th.views.finalcallback",
                  {'service_name': 'ServicePocket', },
                  name="pocket_callback",
                  ),
-             url(r"^callbackreadability/$",
-                 "django_th.views.finalcallback",
-                 {'service_name': 'ServiceReadability', },
-                 name="readability_callback",
-                 ),
-             url(r"^callbacktwitter/$",
-                 "django_th.views.finalcallback",
-                 {'service_name': 'ServiceTwitter', },
-                 name="twitter_callback",
-                 ),
-             # dummy callback as a sample
-             # url(r"^callbacktwitter/$",
-             #  "django_th.views.finalcallback",
-             #  {'service_name': 'ServiceTwitter', },
-             #  name="twitter_callback",
-             #  ),
+             # url(r"^th/callbackreadability/$",
+             #    "django_th.views.finalcallback",
+             #    {'service_name': 'ServiceReadability', },
+             #    name="readability_callback",
+             #    ),
 
              )
+from django.conf import settings
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+                            url(r'^__debug__/', include(debug_toolbar.urls)),
+                            )

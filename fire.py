@@ -4,18 +4,17 @@ from __future__ import unicode_literals
 import os
 import datetime
 import time
+import arrow
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
+
+from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django.utils.log import getLogger
 
 # create logger
 logger = getLogger('django_th.trigger_happy')
-
-
-# todo
-# 1) abstract the ".published" properties or add it to each service
 
 
 def go():
@@ -25,22 +24,22 @@ def go():
     trigger = TriggerService.objects.filter(status=True)
     if trigger:
         for service in trigger:
-            # flag to know if we have to udapte
+            # flag to know if we have to update
             to_update = False
             # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer datas
-            service_name = str(service.provider.name)
+            service_name = str(service.provider.name.name)
             service_provider = default_provider.get_service(service_name)
 
-            # consummer - the service which uses the datas
-            service_name = str(service.consummer.name)
-            service_consummer = default_provider.get_service(service_name)
+            # consumer - the service which uses the data
+            service_name = str(service.consumer.name.name)
+            service_consumer = default_provider.get_service(service_name)
 
             # check if the service has already been triggered
             if service.date_triggered is None:
                 logger.debug("first run for %s => %s " % (str(
-                    service.provider.name), str(service.consummer.name)))
+                    service.provider.name), str(service.consumer.name.name)))
                 to_update = True
             # run run run
             else:
@@ -48,10 +47,14 @@ def go():
                 # get a timestamp of the last triggered of the service
                 datas = getattr(service_provider, 'process_data')(
                     service.provider.token, service.id, service.date_triggered)
-                consummer = getattr(service_consummer, 'save_data')
+                consumer = getattr(service_consumer, 'save_data')
 
                 published = ''
                 which_date = ''
+
+                # flag to know if we can push data to the consumer
+                proceed = False
+
                 # 2) for each one
                 for data in datas:
                     # if in a pool of data once of them does not have
@@ -61,37 +64,53 @@ def go():
                     # let's try to determine the date contained in the data...
                     published = to_datetime(data)
                     if published is not None:
+                        # get the published date of the provider
+                        published = arrow.get(
+                            str(published), 'YYYY-MM-DD HH:mm:ss')
                         # store the date for the next loop
                         # if published became 'None'
                         which_date = published
                     #... otherwise set it to 00:00:00 of the current date
                     if which_date == '':
                         # current date
-                        now = datetime.date.today()
-                        # current date at 00:00:00
-                        which_date = datetime.datetime.strptime(
-                            str(now), '%Y-%m-%d')
+                        which_date = arrow.utcnow().replace(
+                            hour=0, minute=0, second=0)
                         published = which_date
                     if published is None and which_date != '':
                         published = which_date
                     # 3) check if the previous trigger is older than the
                     # date of the data we retreived
-                    # if yes , process the consummer
-                    date_triggered = datetime.datetime.strptime(
-                        str(service.date_triggered)[:-6], '%Y-%m-%d %H:%M:%S')
+                    # if yes , process the consumer
 
-                    if date_triggered is not None and published is not None and published >= date_triggered:
-                        if 'title' in data:
-                            logger.info("date {} >= date triggered {} title {}".format(
-                                published, date_triggered, data['title']))
+                    # add the TIME_ZONE settings
+                    date_triggered = arrow.get(
+                        str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+
+                    # if the published date if greater or equal to the last
+                    # triggered event ... :
+                    if date_triggered is not None and published is not None and published.date() >= date_triggered.date():
+                        # if date are the same ...
+                        if published.date() == date_triggered.date():
+                            # ... compare time and proceed if needed
+                            if published.time() >= date_triggered.time():
+                                proceed = True
+                        # not same date so proceed !
                         else:
-                            logger.info(
-                                "date {} >= date triggered {} ".format(published, date_triggered))
+                            proceed = True
 
-                        consummer(service.consummer.token, service.id, **data)
+                        if proceed:
+                            if 'title' in data:
+                                logger.info("date {} >= date triggered {} title {}".format(
+                                    published, date_triggered, data['title']))
+                            else:
+                                logger.info(
+                                    "date {} >= date triggered {} ".format(published, date_triggered))
 
-                        to_update = True
-                        count_new_data += 1
+                            consumer(
+                                service.consumer.token, service.id, **data)
+
+                            to_update = True
+                            count_new_data += 1
                     # otherwise do nothing
                     else:
                         if 'title' in data:
@@ -101,16 +120,16 @@ def go():
                             logger.debug(
                                 "data outdated skiped : [{}] ".format(published))
 
-            # update the date of the trigger
+            # update the date of the trigger at the end of the loop
             if to_update:
-                logger.info("user: {} - provider: {} - consummer: {} - {} = {} new data".format(
-                    service.user, service.provider.name, service.consummer.name, service.description, count_new_data))
+                logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
+                    service.user, service.provider.name.name, service.consumer.name.name, service.description, count_new_data))
                 update_trigger(service)
             else:
-                logger.info("user: {} - provider: {} - consummer: {} - {} nothing new".format(
-                    service.user, service.provider.name, service.consummer.name, service.description))
+                logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
+                    service.user, service.provider.name.name, service.consumer.name.name, service.description))
     else:
-        print "No trigger set by any user"
+        print("No trigger set by any user")
 
 
 def update_trigger(service):
@@ -119,10 +138,10 @@ def update_trigger(service):
     """
     trigger = TriggerService.objects.get(id=service.id)
     if trigger:
-        its_now = datetime.datetime.now()
-        triggered = datetime.datetime.fromtimestamp(
-            time.mktime(its_now.timetuple()))
-        trigger.date_triggered = triggered
+        # set the current datetime
+        now = arrow.utcnow().to(
+            settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+        trigger.date_triggered = now
         trigger.save()
 
 

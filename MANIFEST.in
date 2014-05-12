@@ -3,3 +3,5 @@ include *.txt *.rst
 recursive-include django_th *.html *.png *.css *.gif *.jpg *.jpeg
 recursive-include django_th/static *
 recursive-include django_th/templates *
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
