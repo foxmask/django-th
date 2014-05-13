@@ -16,8 +16,7 @@ install_requires = reqs('requirements.txt')
 setup(
     name='django_th',
     version=version,
-    description='Trigger Happy - micro service oriented architecture (SOA) - a
-    bridge between your internet services',
+    description='Trigger Happy - micro service oriented architecture (SOA) - a bridge between your internet services',
     author='Olivier Demah',
     author_email='olivier@foxmask.info',
     url='https://github.com/foxmask/django-th',
