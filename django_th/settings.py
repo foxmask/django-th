@@ -223,13 +223,11 @@ CACHES = {
 
 TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
-    'th_evernote.my_evernote.ServiceEvernote',
+    'th_pocket.my_pocket.ServicePocket',
 )
 
-TH_EVERNOTE = {
-    'sandbox': False,
+TH_POCKET = {
     'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
-    'consumer_secret': 'abcdefghijklmnopqrstuvwxyz'
 }
 
 SECRET_KEY = 'to be defined :P'
