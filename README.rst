@@ -31,7 +31,7 @@ who permits to use a manager of tasks like "cron" and, of course Python
 
 Requirements :
 ==============
-* Python 3.4.0
+* Python 3.4.0, sould be ok with 2.7.x
 * Django > 1.6
 * django-th-rss >= 0.3.0
 * django-th-pocket >= 0.2.0
