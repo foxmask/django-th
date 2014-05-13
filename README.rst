@@ -33,8 +33,8 @@ Requirements :
 ==============
 * Python 3.4.0
 * Django > 1.6
-* django-th-rss > 0.2.5
-* django-th-evernote > 0.2.5
+* django-th-rss >= 0.3.0
+* django-th-pocket >= 0.2.0
 
 Installation:
 =============
@@ -75,7 +75,7 @@ add the module django_th to the INSTALLED_APPS
     INSTALLED_APPS = (
         'django_th',
         'th_rss',
-        'th_evernote',
+        'th_pocket',
     )
 
 TH_SERVICES
@@ -87,7 +87,7 @@ TH_SERVICES is a list of the services we, like for example,
 
     TH_SERVICES = (
         'th_rss.my_rss.ServiceRss',
-        'th_evernote.my_evernote.ServiceEvernote',
+        'th_pocket.my_pocket.ServicePocket',
     )
 
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 

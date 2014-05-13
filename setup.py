@@ -16,7 +16,8 @@ install_requires = reqs('requirements.txt')
 setup(
     name='django_th',
     version=version,
-    description='Django Trigger Happy acts when events occur and triggers actions for your account on all the social networks',
+    description='Trigger Happy - micro service oriented architecture (SOA) - a
+    bridge between your internet services',
     author='Olivier Demah',
     author_email='olivier@foxmask.info',
     url='https://github.com/foxmask/django-th',
