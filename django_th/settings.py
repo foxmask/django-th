@@ -124,9 +124,9 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_th',
-    'evernote',
+    'pocket',
     'th_rss',
-    'th_evernote',
+    'th_pocket',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
