@@ -115,11 +115,17 @@ urlpatterns = \
                  {'service_name': 'ServicePocket', },
                  name="pocket_callback",
                  ),
-             # url(r"^th/callbackreadability/$",
-             #    "django_th.views.finalcallback",
-             #    {'service_name': 'ServiceReadability', },
-             #    name="readability_callback",
-             #    ),
+             url(r"^th/callbackreadability/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServiceReadability', },
+                 name="readability_callback",
+                 ),
+             url(r"^th/callbacktwitter/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServiceTwitter', },
+                 name="twitter_callback",
+                 ),
+
 
              )
 from django.conf import settings
