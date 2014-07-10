@@ -66,7 +66,7 @@ def go():
                     if published is not None:
                         # get the published date of the provider
                         published = arrow.get(
-                            str(published), 'YYYY-MM-DD HH:mm:ss')
+                            str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                         # store the date for the next loop
                         # if published became 'None'
                         which_date = published
@@ -158,6 +158,8 @@ def to_datetime(data):
     elif 'updated_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
             time.mktime(data.updated_parsed))
+    elif 'my_date' in data:
+        my_date_time = arrow.get(str(data['my_date']), 'YYYY-MM-DD HH:mm:ss')
 
     return my_date_time
 

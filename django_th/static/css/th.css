@@ -95,11 +95,6 @@ li {
     padding: 10px;
 }
 
-#trigger-content fieldset:hover {
-    border-radius: 5px 5px 5px 5px;
-    border: 2px solid #600;
-}
-
 
 /****
  * Menu 

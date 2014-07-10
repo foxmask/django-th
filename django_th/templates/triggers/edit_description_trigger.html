@@ -2,7 +2,6 @@
 {% load static %}
 {% load url from future %}
 {% load i18n %}
-{% load django_th_extras %}
 {% block title %}{% trans "My Services" %} - {{ user.username }} - {{ current_site.name }}{% endblock %}
 {% block content %}
     <div class="col-md-12" id="trigger-content">
@@ -16,10 +15,9 @@
                 {{ form.description.errors }}
                 <div class="col-sm-10">{{ form.description }}</div>
             </div>
-            <div class="form-actions">
-                <input type="hidden" name="id" value="{{ id }}" />
-                <div class="col-sm-2"></div>
-                <div class="col-sm-10">                
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-4 col-sm-4">
+                    <input type="hidden" name="id" value="{{ id }}" />
                     <button class="btn btn-primary">{% trans "Edit it" %}</button>
                 </div>
             </div>
