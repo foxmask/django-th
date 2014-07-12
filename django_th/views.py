@@ -12,7 +12,7 @@ from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
-from django_th.forms.base import UserServiceForm
+from django_th.forms.base import UserServiceForm, TriggerServiceForm
 from django_th.forms.wizard import ConsumerForm
 
 from django_th.services import default_provider
@@ -275,8 +275,8 @@ class TriggerUpdateView(UpdateView):
     """
         Form to update description
     """
-    queryset = TriggerService.objects.all()
-    fields = ['description']
+    model = TriggerService
+    form_class = TriggerServiceForm
     template_name = "triggers/edit_description_trigger.html"
     success_url = reverse_lazy("trigger_edit_thanks")
 

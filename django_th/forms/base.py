@@ -7,6 +7,23 @@ from django_th.models import User, UserService, \
     UserProfile, ServicesActivated, TriggerService
 
 
+class TriggerServiceForm(forms.ModelForm):
+    """
+        Form to edit the description
+    """
+    class Meta:
+
+        """
+            meta to add/override anything we need
+        """
+        model = TriggerService
+        exclude = ['provider', 'consumer', 'user', 'date_triggered', 'date_created', 'status']
+        widgets = {
+            'description': TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+
 class UserServiceForm(forms.ModelForm):
 
     """
