@@ -101,10 +101,13 @@
             {% if nb_services < 2 %}
             <div class="alert alert-danger">{% trans "Before creating a trigger" %} <span class="label label-danger">{% trans "you have to activate" %}</span> <a href="{% url 'add_service' %}">{% trans "at least 2 services" %}</a>. </div>
             {% else %}
+            <div class="alert alert-success">
             <p>{% trans "You can now proceed by creating" %}<a href="{% url 'create_service' %}"> {% trans "your first trigger" %}</a></p>
+            </div>
             {% endif %}
         </div>
     {% endif %}
+    {% block extrajs %}{% endblock %}     
 {% else %}
             <div class="jumbotron">
                 <p>

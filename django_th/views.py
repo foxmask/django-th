@@ -287,7 +287,7 @@ class TriggerDeleteView(DeleteView):
     """
         page to delete a trigger
     """
-    queryset = TriggerService.objects.all()
+    model = TriggerService
     template_name = "triggers/delete_trigger.html"
     success_url = reverse_lazy("trigger_delete_thanks")
 
@@ -387,11 +387,6 @@ class UserServiceCreateView(CreateView):
 
         return HttpResponseRedirect(reverse('service_add_thanks'))
 
-    def get_context_data(self, **kw):
-        context = super(UserServiceCreateView, self).get_context_data(**kw)
-        context['action'] = 'add_service'
-        return context
-
     def get_form_kwargs(self, **kwargs):
         kwargs = super(UserServiceCreateView, self).get_form_kwargs(**kwargs)
         kwargs['initial']['user'] = self.request.user
@@ -418,7 +413,7 @@ class UserServiceDeleteView(DeleteView):
     """
         page to delete a service
     """
-    queryset = UserService.objects.all()
+    model = UserService
     template_name = "services/delete_service.html"
     success_url = reverse_lazy("service_delete_thanks")
 

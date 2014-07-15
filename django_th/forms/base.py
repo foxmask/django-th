@@ -58,6 +58,7 @@ class UserServiceForm(forms.ModelForm):
         self.fields['token'] = forms.CharField(required=False)
         self.fields['name'].choices = self.activated_services(
             self.initial['user'])
+        self.fields['name'].widget.attrs['class'] = 'form-control'
 
     class Meta:
 
