@@ -31,6 +31,7 @@ class ProviderForm(ServiceChoiceForm):
     def __init__(self, *args, **kwargs):
         super(ProviderForm, self).__init__(*args, **kwargs)
         self.fields['provider'].choices = self.activated_services()
+        self.fields['provider'].widget.attrs['class'] = 'form-control'
 
 
 class ConsumerForm(ServiceChoiceForm):
@@ -43,6 +44,7 @@ class ConsumerForm(ServiceChoiceForm):
         # the provider form
         self.fields['consumer'].choices = self.activated_services(
             self.initial['provider'])
+        self.fields['consumer'].widget.attrs['class'] = 'form-control'
 
 
 class ServicesDescriptionForm(forms.Form):

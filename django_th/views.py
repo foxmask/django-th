@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render_to_response, render, redirect, get_object_or_404
+from django.shortcuts import render_to_response, render, redirect
+from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.views.generic import CreateView, DeleteView, ListView, TemplateView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView
+from django.views.generic import TemplateView, UpdateView
 from django.db.models import Q
 
 from django.contrib.formtools.wizard.views import SessionWizardView
@@ -136,64 +138,44 @@ def renew_service(request, pk):
     service_name = str(service.name)
     service_object = default_provider.get_service(service_name)
     lets_auth = getattr(service_object, 'auth')
-    #lets_callback = getattr(service_object, 'auth')
-    # print lets_callback
     return redirect(lets_auth(request))
-    # return redirect('base')
+
 
 #*************************************
 #  Part I : the Triggers
 #*************************************
 
 
-def trigger_edit_provider(request, trigger_id):
+def trigger_edit(request, trigger_id, edit_what):
     """
         edit the provider
     """
+    if edit_what not in ('Provider', 'Consumer'):
+        #bad request
+        return redirect('base')
+    # get the trigger object
     service = TriggerService.objects.get(id=trigger_id)
+    # get the service name
     service_name = str(service.provider.name.name).split('Service')[1]
+    # get the model of this service
     model = get_service(service.provider.name.name)
+    # get the data of this service linked to that trigger
     data = model.objects.get(trigger_id=trigger_id)
 
     if request.method == 'POST':
-        form = get_service(service.provider.name.name, 'forms', 'ProviderForm')(
+        form = get_service(
+            service.provider.name.name, 'forms', edit_what + 'Form')(
             request.POST, instance=data)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
         form = get_service(
-            service.provider.name.name, 'forms', 'ProviderForm')(instance=data)
+            service.provider.name.name, 'forms', edit_what + 'Form')(
+            instance=data)
     context = {'description': service.description}
-    return render(request, service_name.lower() + '/edit_provider.html', {
-        'form': form,
-        'context': context
-    })
-
-
-def trigger_edit_consumer(request, trigger_id):
-    """
-        edit the consumer
-    """
-    service = TriggerService.objects.get(id=trigger_id)
-    service_name = str(service.consumer.name.name).split('Service')[1]
-    model = get_service(service.consumer.name.name)
-    data = model.objects.get(trigger_id=trigger_id)
-
-    if request.method == 'POST':
-        form = get_service(service.consumer.name.name, 'forms', 'ConsumerForm')(
-            request.POST, instance=data)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect(reverse('trigger_edit_thanks'))
-    else:
-        form = get_service(
-            service.consumer.name.name, 'forms', 'ConsumerForm')(instance=data)
-    context = {'description': service.description}
-    return render(request, service_name.lower() + '/edit_consumer.html', {
-        'form': form,
-        'context': context
-    })
+    return render(request, service_name.lower() + '/edit_' + edit_what.lower()
+                  + '.html', {'form': form, 'context': context})
 
 
 class TriggerListView(ListView):
@@ -214,12 +196,14 @@ class TriggerListView(ListView):
             # if the user selected a filter, get its ID
             if 'trigger_filter_by' in self.kwargs:
                 user_service = UserService.objects.filter(
-                    user=self.request.user, name=self.kwargs['trigger_filter_by'])
+                    user=self.request.user,
+                    name=self.kwargs['trigger_filter_by'])
                 trigger_filter_by = user_service[0].id
 
             # no filter selected : display all
             if trigger_filter_by is None:
-                return self.queryset.filter(user=self.request.user).order_by('-date_created')
+                return self.queryset.filter(
+                    user=self.request.user).order_by('-date_created')
             # filter selected : display all related trigger
             else:
                 # here the queryset will do :
@@ -233,7 +217,7 @@ class TriggerListView(ListView):
     def get_context_data(self, **kw):
         """
             get the data of the view
-            
+
             data are :
             1) number of triggers enabled
             2) number of triggers disabled

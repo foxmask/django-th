@@ -13,8 +13,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
     trigger_on_off, trigger_switch_all_to, \
-    trigger_edit_provider, trigger_edit_consumer, \
-    renew_service
+    trigger_edit, renew_service
 
 urlpatterns = \
     patterns('',
@@ -37,7 +36,8 @@ urlpatterns = \
              # ****************************************
              url(r'^th/$', TriggerListView.as_view(),
                  name='base'),
-             url(r'^th/trigger/by/(?P<trigger_filter_by>[a-zA-Z]+)$', TriggerListView.as_view(),
+             url(r'^th/trigger/by/(?P<trigger_filter_by>[a-zA-Z]+)$',
+                 TriggerListView.as_view(),
                  name='trigger_filter_by'),
              url(r'^th/trigger/$', TriggerListView.as_view(),
                  name='home'),
@@ -51,10 +51,10 @@ urlpatterns = \
                  TriggerUpdateView.as_view(),
                  name='edit_trigger'),
              url(r'^th/trigger/editprovider/(?P<trigger_id>\d+)$',
-                 trigger_edit_provider,
+                 trigger_edit, {'edit_what': 'Provider'},
                  name='edit_provider'),
              url(r'^th/trigger/editconsumer/(?P<trigger_id>\d+)$',
-                 trigger_edit_consumer,
+                 trigger_edit, {'edit_what': 'Consumer'},
                  name='edit_consumer'),
              url(r'^th/trigger/edit/thanks',
                  TriggerEditedTemplateView.as_view(),
@@ -125,12 +125,10 @@ urlpatterns = \
                  {'service_name': 'ServiceTwitter', },
                  name="twitter_callback",
                  ),
-
+             url(r"^th/callbackfacebook/$",
+                 "django_th.views.finalcallback",
+                 {'service_name': 'ServiceFacebook', },
+                 name="facebook_callback",
+                 ),
 
              )
-from django.conf import settings
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-                            url(r'^__debug__/', include(debug_toolbar.urls)),
-                            )
