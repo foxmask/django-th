@@ -113,7 +113,7 @@ TEMPLATE_DIRS = (
     # or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/home/foxmask/Django-VirtualEnv/django-trigger-happy/django-th/vendors/django-js-reverse/django_js_reverse/templates/'
+    os.path.dirname(__file__) + '/../' + 'vendors/django_js_reverse/templates/'
 )
 
 INSTALLED_APPS = (
