@@ -11,3 +11,8 @@ dist
 .coverage
 django_th.egg-info/
 *sublim*
+vendors/django-js-reverse
+th_*
+*.tar.gz
+*.json
+admin

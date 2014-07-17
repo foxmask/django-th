@@ -29,22 +29,7 @@ li {
     font-size: 1.1em;
     margin: 0.2em;
     padding: 1em;
-}
-
-.trigger-enable, .service-record, .trigger-summary {
     border: 1px solid #DDDDDD;
-}
-
-.trigger-disable {
-    border: 1px solid #FF06C1;
-}
-
-.trigger-enable:hover, .service-record:hover {
-    border: 2px solid #600;
-}
-
-.trigger-disable:hover {
-    border: 2px solid #600;
 }
 
 

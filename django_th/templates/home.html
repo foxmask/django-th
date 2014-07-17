@@ -41,29 +41,30 @@
         </div>
         {% endif %}
         {% for trigger in triggers_list %}
-        <article>
-        <div class="trigger-record {% if trigger.status %}trigger-enable{% else %}trigger-disable{% endif %} col-md-12">
+        <div class="trigger-record col-md-12">
             <div class="col-md-7 trigger-text">
                 <a href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.provider.name|service_readable|lower }}" >{{ trigger.provider.name|service_readable }}</a> <span class="glyphicon glyphicon-chevron-right"></span> <a href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit' %} {{ trigger.consumer.name|service_readable|lower }}" >{{ trigger.consumer.name|service_readable }}</a>
                 <h3><a href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} ">{{ trigger.description|safe|escape }}</a></h3>
             </div>
             <div class="col-md-5">
+                <div id="all-actions{{ trigger.id }}">
                 {% if trigger.status %}
                 <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
                 <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
-                <a class="btn btn-primary btn-lg" role="button" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
                 {% else %}
-                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{% trans 'service disabled' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{{ trigger.provider.name|service_readable|lower }} {% trans 'disabled' %}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{% trans 'service disabled' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{{ trigger.consumer.name|service_readable|lower }} {% trans 'disabled' %}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
-                <a class="btn btn-success btn-lg" role="button" href="{% url 'trigger_on_off' trigger.id %}" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-lg btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
-                {% endif %}
+                {% endif %}                
                 <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+                </div>
 
             </div>
             <footer>
@@ -73,7 +74,6 @@
             </div>
             </footer>
         </div>
-        </article>
         {% endfor %}
         {% if is_paginated %}
         <div class="col-md-12 pagination">
@@ -107,7 +107,6 @@
             {% endif %}
         </div>
     {% endif %}
-    {% block extrajs %}{% endblock %}     
 {% else %}
             <div class="jumbotron">
                 <p>
@@ -117,4 +116,34 @@
                 <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
             </div>
 {% endif %}
+{% endblock %}
+{% block extrajs %}
+<script src="{% url 'js_reverse' %}" type="text/javascript"></script>
+<script type="text/javascript">
+//<![CDATA[
+$.fn.ajaxClick = function() {
+    var elmts = $(this);
+    elmts.each(function() {
+        $(this).on('click', function(e) {
+            triggerId = $(this).attr('data')
+            var request = $.ajax({
+                url: Urls.trigger_on_off(triggerId),
+                type: 'get',
+                dataType: 'html',
+                success: showResponse,
+            });
+            function showResponse(response) {
+                $('#all-actions'+triggerId).html(response);
+                $('a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success').ajaxClick();
+
+            }
+        })
+    })
+}
+
+$(document).ready(function() {
+    $('a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success').ajaxClick();
+});
+//]]>
+</script>
 {% endblock %}

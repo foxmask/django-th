@@ -17,6 +17,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
 
 urlpatterns = \
     patterns('',
+             url(r'^jsreverse/$', 'django_js_reverse.views.urls_js', name='js_reverse'),
              # ****************************************
              # admin module
              # ****************************************

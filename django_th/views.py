@@ -88,7 +88,7 @@ def trigger_on_off(request, trigger_id):
         trigger.status = True
     trigger.save()
 
-    return HttpResponseRedirect(reverse('base'))
+    return render(request, 'triggers/trigger_line.html', {'trigger': trigger})
 
 
 def trigger_switch_all_to(request, switch):
