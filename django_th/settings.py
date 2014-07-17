@@ -1,4 +1,7 @@
 # Django settings for django_th project.
+import sys
+import os
+sys.path.insert(0, os.path.join(os.path.dirname(__file__) + '/../', 'vendors'))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -102,7 +105,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'django_th.urls'
 
-# Python dotted path to the WSGI application used by Django's runserver.
+# Python dotted path to the WSGI application used by Django's runserver.'
 WSGI_APPLICATION = 'django_th.wsgi.application'
 
 TEMPLATE_DIRS = (
@@ -110,6 +113,7 @@ TEMPLATE_DIRS = (
     # or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    '/home/foxmask/Django-VirtualEnv/django-trigger-happy/django-th/vendors/django-js-reverse/django_js_reverse/templates/'
 )
 
 INSTALLED_APPS = (
@@ -127,6 +131,7 @@ INSTALLED_APPS = (
     'pocket',
     'th_rss',
     'th_pocket',
+    'django_js_reverse',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
