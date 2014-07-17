@@ -24,8 +24,8 @@
         </div>
     {% if triggers_list %}
         {% if is_paginated %}
-        <div class="col-md-12 pagination">
-            <ul>
+        <div class="col-md-12 ">
+            <ul class="pagination">
                 {% if page_obj.has_previous %}
                     <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
                 {% endif %}
@@ -76,8 +76,8 @@
         </div>
         {% endfor %}
         {% if is_paginated %}
-        <div class="col-md-12 pagination">
-            <ul>
+        <div class="col-md-12">
+            <ul class="pagination">
                 {% if page_obj.has_previous %}
                     <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
                 {% endif %}
