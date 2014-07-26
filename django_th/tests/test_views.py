@@ -2,8 +2,7 @@ import unittest
 from django.test import RequestFactory
 from django_th.views import TriggerEditedTemplateView, TriggerDeletedTemplateView, UserServiceAddedTemplateView, UserServiceDeletedTemplateView, TriggerListView, UserServiceListView
 from django.contrib.auth.models import User
-from django_th.models import UserProfile, TriggerService, UserService, ServicesActivated
-from django.core.exceptions import ObjectDoesNotExist
+from django_th.models import TriggerService, UserService
 
 
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):

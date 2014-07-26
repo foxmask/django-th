@@ -14,6 +14,9 @@ class Services(models.Model):
     def __unicode__(self):
         return "%s" % (self.name)
 
+    def show(self):
+        return "Services Model %s %s %s " % (self.name, self.status, self.description)
+
     class Meta:
         app_label = 'django_th'
         abstract = True

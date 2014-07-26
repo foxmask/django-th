@@ -187,7 +187,7 @@ class TriggerListView(ListView):
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
     template_name = "home.html"
-    paginate_by = 7
+    paginate_by = 3
 
     def get_queryset(self):
         trigger_filter_by = None
