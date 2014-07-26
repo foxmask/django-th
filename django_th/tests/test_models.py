@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django_th.models import UserProfile, TriggerService, UserService, ServicesActivated
-
+from django_th.forms.base import TriggerServiceForm, UserServiceForm
 
 class UserProfileTest(TestCase):
 
@@ -53,7 +53,7 @@ class ServicesActivatedTest(TestCase):
 class TriggerServiceTest(TestCase):
 
     """
-        TriggerService Model
+        Model
     """
     def create_triggerservice(self, date_created="20130610", description="My first Service", status=True):
         user = User.objects.create(id=333,username='foxmask')
@@ -68,3 +68,19 @@ class TriggerServiceTest(TestCase):
         self.assertTrue(isinstance(t, TriggerService))
         self.assertEqual(t.__unicode__(), "%s %s " %  (str(t.provider), t.consumer) )
         self.assertEqual(t.show(), "My Service %s %s %s %s" % (t.provider, t.consumer, t.description, t.user))
+
+    """
+        Form
+    """
+    def test_valid_form(self):
+        t = self.create_triggerservice()
+        data = {'description': t.description,}
+        form = TriggerServiceForm(data=data)
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form(self):
+        t = self.create_triggerservice()
+        t.description = ''
+        data = {'description': t.description,}
+        form = TriggerServiceForm(data=data)
+        self.assertFalse(form.is_valid())
