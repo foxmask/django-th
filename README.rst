@@ -137,8 +137,8 @@ For example :
 
 Fire the Triggers :
 ===================
-To start handling the queue of triggers you/your users configure, just set the fire.py in a crontab or any other scheduler solution of your choice.
-Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services you/your users want to reach.
+To start handling the queue of triggers you/your users configured, just set the fire.py in a crontab or any other scheduler solution of your choice.
+Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation)  you/your users want to reach.
 
 Blog posts : 
 ===========
