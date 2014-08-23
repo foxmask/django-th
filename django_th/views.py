@@ -153,29 +153,51 @@ def trigger_edit(request, trigger_id, edit_what):
     if edit_what not in ('Provider', 'Consumer'):
         #bad request
         return redirect('base')
+
     # get the trigger object
     service = TriggerService.objects.get(id=trigger_id)
-    # get the service name
-    service_name = str(service.provider.name.name).split('Service')[1]
-    # get the model of this service
-    model = get_service(service.provider.name.name)
+
+    if edit_what == 'Consumer':
+        # get the service name
+        service_name = str(service.consumer.name.name).split('Service')[1]
+        # get the model of this service
+        model = get_service(service.consumer.name.name)
+    else:
+        # get the service name
+        service_name = str(service.provider.name.name).split('Service')[1]
+        # get the model of this service
+        model = get_service(service.provider.name.name)
+
     # get the data of this service linked to that trigger
     data = model.objects.get(trigger_id=trigger_id)
 
+    template_name = service_name.lower() + '/edit_' + edit_what.lower() + ".html"
+
     if request.method == 'POST':
-        form = get_service(
-            service.provider.name.name, 'forms', edit_what + 'Form')(
-            request.POST, instance=data)
+        if edit_what == 'Consumer':
+            form = get_service(
+                service.consumer.name.name, 'forms', edit_what + 'Form')(
+                request.POST, instance=data)
+        else:
+            form = get_service(
+                service.provider.name.name, 'forms', edit_what + 'Form')(
+                request.POST, instance=data)
+
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
-        form = get_service(
-            service.provider.name.name, 'forms', edit_what + 'Form')(
-            instance=data)
-    context = {'description': service.description}
-    return render(request, service_name.lower() + '/edit_' + edit_what.lower()
-                  + '.html', {'form': form, 'context': context})
+        if edit_what == 'Consumer':
+            form = get_service(
+                service.consumer.name.name, 'forms', edit_what + 'Form')(
+                instance=data)
+        else:
+            form = get_service(
+                service.provider.name.name, 'forms', edit_what + 'Form')(
+                instance=data)
+
+    context = {'description': service.description, 'edit_what': edit_what}
+    return render(request, template_name, {'form': form, 'context': context})
 
 
 class TriggerListView(ListView):

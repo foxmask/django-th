@@ -1,17 +1,13 @@
 {% load i18n %}
 {% load url from future %}
 {% load django_th_extras %}
-                {% if trigger.status %}
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
-
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a> <span class="glyphicon glyphicon-chevron-right"></span> 
                 <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
-
+                
+                {% if trigger.status %}
                 <a class="btn btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
                 {% else %}
-                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{{ trigger.provider.name|service_readable|lower }} {% trans 'disabled' %}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
-
-                <a class="btn btn-lg btn-info disabled" role="button" href="#" title="{{ trigger.consumer.name|service_readable|lower }} {% trans 'disabled' %}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
                 <a class="btn btn-lg btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
