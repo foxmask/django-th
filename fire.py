@@ -26,6 +26,8 @@ def go():
         for service in trigger:
             # flag to know if we have to update
             to_update = False
+            # flag to get the status of a service
+            status = False
             # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer datas
@@ -106,7 +108,7 @@ def go():
                                 logger.info(
                                     "date {} >= date triggered {} ".format(published, date_triggered))
 
-                            consumer(
+                            status = consumer(
                                 service.consumer.token, service.id, **data)
 
                             to_update = True
@@ -121,13 +123,28 @@ def go():
                                 "data outdated skiped : [{}] ".format(published))
 
             # update the date of the trigger at the end of the loop
+            sentance = "user: {} - provider: {} - consumer: {} - {}"
             if to_update:
-                logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
-                    service.user, service.provider.name.name, service.consumer.name.name, service.description, count_new_data))
-                update_trigger(service)
+                if status:
+                    logger.info((sentance + " new data").format(
+                        service.user,
+                        service.provider.name.name,
+                        service.consumer.name.name,
+                        service.description,
+                        count_new_data))
+                    update_trigger(service)
+                else:
+                    logger.info((sentance + " AN ERROR OCCURS ").format(
+                        service.user,
+                        service.provider.name.name,
+                        service.consumer.name.name,
+                        service.description))
             else:
-                logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
-                    service.user, service.provider.name.name, service.consumer.name.name, service.description))
+                logger.info((sentance + " nothing new").format(
+                    service.user,
+                    service.provider.name.name,
+                    service.consumer.name.name,
+                    service.description))
     else:
         print("No trigger set by any user")
 

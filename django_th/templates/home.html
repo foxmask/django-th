@@ -56,7 +56,6 @@
                 {% endif %}                
                 <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
                 </div>
-
             </div>
             <footer>
             <div class="col-md-12">
@@ -114,7 +113,7 @@
 //<![CDATA[
 $.fn.ajaxClick = function() {
     var elmts = $(this);
-    elmts.each(function() {
+    elmts.each(function() {        
         $(this).on('click', function(e) {
             triggerId = $(this).attr('data')
             var request = $.ajax({
@@ -126,7 +125,6 @@ $.fn.ajaxClick = function() {
             function showResponse(response) {
                 $('#all-actions'+triggerId).html(response);
                 $('a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success').ajaxClick();
-
             }
         })
     })

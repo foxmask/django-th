@@ -1,6 +1,9 @@
 import unittest
 from django.test import RequestFactory
-from django_th.views import TriggerEditedTemplateView, TriggerDeletedTemplateView, UserServiceAddedTemplateView, UserServiceDeletedTemplateView, TriggerListView, UserServiceListView
+from django_th.views import TriggerEditedTemplateView, TriggerDeletedTemplateView
+from django_th.views import UserServiceAddedTemplateView, UserServiceDeletedTemplateView
+from django_th.views import TriggerListView, UserServiceListView
+from django_th.views import TriggerDeleteView
 from django.contrib.auth.models import User
 from django_th.models import TriggerService, UserService
 
@@ -20,6 +23,7 @@ class TriggerEditedTemplateViewTestCase(unittest.TestCase):
         self.assertEqual(
             response.template_name[0], 'triggers/thanks_trigger.html')
         self.assertEqual(response.context_data['sentence'], sentence)
+
 
 
 class TriggerDeletedTemplateViewTestCase(unittest.TestCase):

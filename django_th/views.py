@@ -313,7 +313,7 @@ class TriggerDeleteView(DeleteView):
     template_name = "triggers/delete_trigger.html"
     success_url = reverse_lazy("trigger_delete_thanks")
 
-    @method_decorator(login_required)
+    # @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TriggerDeleteView, self).dispatch(*args, **kwargs)
 
