@@ -26,6 +26,8 @@ def go():
         for service in trigger:
             # flag to know if we have to update
             to_update = False
+            # flag to get the status of a service
+            status = False
             # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer datas
@@ -46,11 +48,17 @@ def go():
                 # 1) get the datas from the provider service
                 # get a timestamp of the last triggered of the service
                 datas = getattr(service_provider, 'process_data')(
-                    service.provider.token, service.id, service.date_triggered)
+                    service.provider.token,
+                    service.id,
+                    arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE))
                 consumer = getattr(service_consumer, 'save_data')
 
                 published = ''
                 which_date = ''
+
+                # flag to know if we can push data to the consumer
+                proceed = False
+
                 # 2) for each one
                 for data in datas:
                     # if in a pool of data once of them does not have
@@ -61,8 +69,7 @@ def go():
                     published = to_datetime(data)
                     if published is not None:
                         # get the published date of the provider
-                        published = arrow.get(
-                            str(published), 'YYYY-MM-DD HH:mm:ss')
+                        published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                         # store the date for the next loop
                         # if published became 'None'
                         which_date = published
@@ -82,12 +89,10 @@ def go():
                     date_triggered = arrow.get(
                         str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
 
-                    # flag to know if we can push data to the consumer
-                    proceed = False
-
                     # if the published date if greater or equal to the last
                     # triggered event ... :
-                    if date_triggered is not None and published is not None and published.date() >= date_triggered.date():
+                    if date_triggered is not None and published is not None \
+                       and published.date() >= date_triggered.date():
                         # if date are the same ...
                         if published.date() == date_triggered.date():
                             # ... compare time and proceed if needed
@@ -96,6 +101,7 @@ def go():
                         # not same date so proceed !
                         else:
                             proceed = True
+
                         if proceed:
                             if 'title' in data:
                                 logger.info("date {} >= date triggered {} title {}".format(
@@ -104,7 +110,7 @@ def go():
                                 logger.info(
                                     "date {} >= date triggered {} ".format(published, date_triggered))
 
-                            consumer(
+                            status = consumer(
                                 service.consumer.token, service.id, **data)
 
                             to_update = True
@@ -119,13 +125,28 @@ def go():
                                 "data outdated skiped : [{}] ".format(published))
 
             # update the date of the trigger at the end of the loop
+            sentance = "user: {} - provider: {} - consumer: {} - {}"
             if to_update:
-                logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
-                    service.user, service.provider.name.name, service.consumer.name.name, service.description, count_new_data))
-                update_trigger(service)
+                if status:
+                    logger.info((sentance + " new data").format(
+                        service.user,
+                        service.provider.name.name,
+                        service.consumer.name.name,
+                        service.description,
+                        count_new_data))
+                    update_trigger(service)
+                else:
+                    logger.info((sentance + " AN ERROR OCCURS ").format(
+                        service.user,
+                        service.provider.name.name,
+                        service.consumer.name.name,
+                        service.description))
             else:
-                logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
-                    service.user, service.provider.name.name, service.consumer.name.name, service.description))
+                logger.info((sentance + " nothing new").format(
+                    service.user,
+                    service.provider.name.name,
+                    service.consumer.name.name,
+                    service.description))
     else:
         print("No trigger set by any user")
 
@@ -156,6 +177,8 @@ def to_datetime(data):
     elif 'updated_parsed' in data:
         my_date_time = datetime.datetime.fromtimestamp(
             time.mktime(data.updated_parsed))
+    elif 'my_date' in data:
+        my_date_time = arrow.get(str(data['my_date']), 'YYYY-MM-DD HH:mm:ss')
 
     return my_date_time
 
