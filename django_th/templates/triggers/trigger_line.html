@@ -1,15 +1,10 @@
 {% load i18n %}
 {% load url from future %}
 {% load django_th_extras %}
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a> <span class="glyphicon glyphicon-chevron-right"></span> 
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
-                
-                {% if trigger.status %}
-                <a class="btn btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                {% else %}
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{{ title }} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
-                <a class="btn btn-lg btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-lg btn-{{ btn }}" data="{{ trigger.id }}" role="button" href="#" title="{{ title_trigger }}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
-                {% endif %}                
                 <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>

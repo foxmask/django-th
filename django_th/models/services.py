@@ -8,7 +8,7 @@ class Services(models.Model):
         Main class for Services
     """
     name = models.CharField(max_length=255)
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
     description = models.CharField(max_length=255)
 
     def __unicode__(self):

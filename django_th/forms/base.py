@@ -80,6 +80,7 @@ class LoginForm(forms.ModelForm):
             'username': TextInput(attrs={'placeholder': _('Username')}),
             'password': PasswordInput(attrs={'placeholder': _('Password')}),
         }
+        exclude = ()
 
 
 class ProfileForm(forms.ModelForm):
@@ -152,3 +153,4 @@ class UserProfileForm(forms.ModelForm):
             meta to override anything about UserProfile
         """
         model = UserProfile
+        exclude = ()

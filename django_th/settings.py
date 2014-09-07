@@ -6,21 +6,16 @@ sys.path.insert(0, os.path.join(os.path.dirname(__file__) + '/../', 'vendors'))
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
-ADMINS = (
-    # ('Your Name', 'your_email@example.com'),
-)
 ALLOWED_HOSTS = ["*"]
 
-MANAGERS = ADMINS
-
-import os
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': PROJECT_DIR + '/../trigger_happy.sqlite3',
+        'NAME': BASE_DIR + '/trigger_happy.sqlite3',
         # Or path to database file if using sqlite3.
         'USER': '',  # Not used with sqlite3.
         'PASSWORD': '',  # Not used with sqlite3.
@@ -54,7 +49,7 @@ USE_TZ = True
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
-MEDIA_ROOT = os.path.join(PROJECT_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash.
@@ -65,7 +60,7 @@ MEDIA_URL = '/media/'
 # Don't put anything in this directory yourself; store your static files
 # in apps' "static/" subdirectories and in STATICFILES_DIRS.
 # Example: "/home/media/media.lawrence.com/static/"
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # URL prefix for static files.
 # Example: "http://media.lawrence.com/static/"
@@ -86,21 +81,14 @@ STATICFILES_FINDERS = (
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-# List of callables that know how to import templates from various sources.
-TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.Loader',
-    'django.template.loaders.app_directories.Loader',
-    #     'django.template.loaders.eggs.Loader',
-)
-
 MIDDLEWARE_CLASSES = (
-    'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    # Uncomment the next line for simple clickjacking protection:
-    # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
 ROOT_URLCONF = 'django_th.urls'
@@ -113,7 +101,8 @@ TEMPLATE_DIRS = (
     # or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.dirname(__file__) + '/../' + 'vendors/django_js_reverse/templates/',
+    os.path.dirname(__file__) + '/../'
+    + 'vendors/django_js_reverse/templates/',
 )
 
 INSTALLED_APPS = (
@@ -176,7 +165,7 @@ LOGGING = {
         'file': {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': PROJECT_DIR + '/../trigger_happy.log',
+            'filename': BASE_DIR + '/trigger_happy.log',
             'maxBytes': 61280,
             'backupCount': 3,
             'formatter': 'verbose',
@@ -208,7 +197,7 @@ CACHES = {
     'default':
     {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': PROJECT_DIR + '/cache/',
+        'LOCATION': BASE_DIR + '/cache/',
         'TIMEOUT': 600,
         'OPTIONS': {
             'MAX_ENTRIES': 1000
@@ -217,7 +206,7 @@ CACHES = {
     'rss':
     {
         'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': PROJECT_DIR + '/cache/rss/',
+        'LOCATION': BASE_DIR + '/cache/rss/',
         'TIMEOUT': 3600,
         'OPTIONS': {
             'MAX_ENTRIES': 1000
@@ -236,6 +225,7 @@ TH_POCKET = {
 }
 
 SECRET_KEY = 'to be defined :P'
+
 
 # local settings management
 try:

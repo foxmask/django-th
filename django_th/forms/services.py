@@ -29,6 +29,7 @@ class ServicesAdminForm(forms.ModelForm):
     """
     class Meta:
         model = ServicesActivated
+        exclude = ()
 
     status_values = ((0, 'Disabled'), (1, 'Enabled'))
     status = forms.ChoiceField(status_values)

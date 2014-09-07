@@ -31,8 +31,8 @@ who permits to use a manager of tasks like "cron" and, of course Python
 
 Requirements :
 ==============
-* Python 3.4.0, sould be ok with 2.7.x
-* Django > 1.6
+* Python 3.4.x, 2.7.x
+* Django >= 1.7
 * django-th-rss >= 0.3.0
 * django-th-pocket >= 0.2.0
 
@@ -78,6 +78,7 @@ add the module django_th to the INSTALLED_APPS
         'th_pocket',
     )
 
+
 TH_SERVICES
 ~~~~~~~~~~~
 
@@ -90,6 +91,7 @@ TH_SERVICES is a list of the services we, like for example,
         'th_pocket.my_pocket.ServicePocket',
     )
 
+
 If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
 copy the template in your own templates directory or set the path like this :
 
@@ -100,6 +102,7 @@ copy the template in your own templates directory or set the path like this :
     TEMPLATE_DIRS += (
         PROJECT_DIR + '/../../lib/<python-version>/site-package/django_th/templates/',
     )
+
 
 also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.
 
@@ -140,7 +143,8 @@ Fire the Triggers :
 To start handling the queue of triggers you/your users configured, just set the fire.py in a crontab or any other scheduler solution of your choice.
 Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation)  you/your users want to reach.
 
-Blog posts : 
-===========
+
+Blog posts :
+============
 You can find all details of all existing services of the blog :
 http://www.foxmask.info/tag/TriggerHappy

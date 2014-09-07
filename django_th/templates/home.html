@@ -47,14 +47,19 @@
             </div>
             <div class="col-md-5">            
                 <div id="all-actions{{ trigger.id }}">
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a> <span class="glyphicon glyphicon-chevron-right"></span> 
+
+                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+
                 <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+                
                 {% if trigger.status %}
                 <a class="btn btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% else %}
                 <a class="btn btn-lg btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
-                {% endif %}                
+
+                {% endif %}
                 <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+
                 </div>
             </div>
             <footer>
@@ -111,27 +116,17 @@
 <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$.fn.ajaxClick = function() {
-    var elmts = $(this);
-    elmts.each(function() {        
-        $(this).on('click', function(e) {
-            triggerId = $(this).attr('data')
-            var request = $.ajax({
-                url: Urls.trigger_on_off(triggerId),
-                type: 'get',
-                dataType: 'html',
-                success: showResponse,
-            });
-            function showResponse(response) {
-                $('#all-actions'+triggerId).html(response);
-                $('a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success').ajaxClick();
-            }
-        })
-    })
-}
-
-$(document).ready(function() {
-    $('a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success').ajaxClick();
+$(document).on("click","a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success", function () {
+    triggerId = $(this).attr('data')
+    var request = $.ajax({
+        url: Urls.trigger_on_off(triggerId),
+        type: 'get',
+        dataType: 'html',
+        success: showResponse,
+    });
+    function showResponse(response) {
+        $('#all-actions'+triggerId).html(response);
+    }
 });
 //]]>
 </script>

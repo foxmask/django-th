@@ -11,8 +11,8 @@ class ServicesActivated(models.Model):
         Services Activated from the admin
     """
     name = models.CharField(max_length=200, unique=True)
-    status = models.BooleanField()
-    auth_required = models.BooleanField()
+    status = models.BooleanField(default=False)
+    auth_required = models.BooleanField(default=True)
     description = models.CharField(max_length=200)
 
     class Meta:
@@ -69,7 +69,7 @@ class TriggerService(models.Model):
     user = models.ForeignKey(User)
     date_created = models.DateField(auto_now_add=True)
     date_triggered = models.DateTimeField(null=True)
-    status = models.BooleanField()
+    status = models.BooleanField(default=False)
 
     def show(self):
         return "My Service %s %s %s %s" % (self.provider, self.consumer, self.description, self.user)

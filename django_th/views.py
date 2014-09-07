@@ -9,7 +9,7 @@ from django.core.urlresolvers import reverse_lazy, reverse
 from django.views.generic import CreateView, DeleteView, ListView
 from django.views.generic import TemplateView, UpdateView
 from django.db.models import Q
-
+from django.utils.translation import ugettext as _
 from django.contrib.formtools.wizard.views import SessionWizardView
 
 # trigger_happy
@@ -83,12 +83,22 @@ def trigger_on_off(request, trigger_id):
     """
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
+        title = 'disabled'
+        title_trigger = _('Set this trigger on')
+        btn = 'success'
         trigger.status = False
     else:
+        title = _('Edit your service')
+        title_trigger = _('Set this trigger off')
+        btn = 'primary'
         trigger.status = True
     trigger.save()
 
-    return render(request, 'triggers/trigger_line.html', {'trigger': trigger})
+    return render(request, 'triggers/trigger_line.html',
+                           {'trigger': trigger,
+                            'title': title,
+                            'title_trigger': title_trigger,
+                            'btn': btn})
 
 
 def trigger_switch_all_to(request, switch):
