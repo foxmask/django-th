@@ -98,9 +98,9 @@ copy the template in your own templates directory or set the path like this :
 .. code:: python
 
     import os
-    PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
     TEMPLATE_DIRS += (
-        PROJECT_DIR + '/../../lib/<python-version>/site-package/django_th/templates/',
+        BASE_DIR + '/../lib/<python-version>/site-package/django_th/templates/',
     )
 
 

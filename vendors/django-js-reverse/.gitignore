@@ -1,0 +1,7 @@
+.idea/
+.DS_Store
+*.pyc
+dist/
+build/
+django_js_reverse.egg-info/
+.tox/
