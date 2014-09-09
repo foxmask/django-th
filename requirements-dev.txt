@@ -1,0 +1,6 @@
+-r requirements.txt
+WebTest==2.0.5
+django-debug-toolbar==0.9.4
+django-discover-runner==1.0
+django-webtest==1.7.7
+
