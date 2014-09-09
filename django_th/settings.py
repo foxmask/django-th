@@ -125,12 +125,13 @@ INSTALLED_APPS = (
 
     'django_js_reverse',
 
-    'evernote',
-    'th_evernote',
+    # Uncomment the next line to enable the service:
+    #'evernote', # then do pip install evernote
+    #'th_evernote',
 
     # Uncomment the next line to enable the service:
-    # 'th_twitter',
-    # 'th_readability',
+    # 'th_twitter', #then do pip install python-twitter
+    # 'th_readability', #then do pip install readability-api 
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
