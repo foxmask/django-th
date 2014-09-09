@@ -117,10 +117,21 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'django_th',
-    'pocket',
+
     'th_rss',
+
+    'pocket',
     'th_pocket',
+
     'django_js_reverse',
+
+    'evernote',
+    'th_evernote',
+
+    # Uncomment the next line to enable the service:
+    # 'th_twitter',
+    # 'th_readability',
+
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -216,19 +227,72 @@ CACHES = {
 
 
 TH_SERVICES = (
+    # comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
+    'th_evernote.my_evernote.ServiceEvernote',
+    #'th_readability.my_readability.ServiceReadability',
+    #'th_twitter.my_twitter.ServiceTwitter',
 )
 
+
 TH_POCKET = {
-    'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    # get your credential by subscribing to
+    # http://getpocket.com/developer/
+    'consumer_key': '<your pocket key>',
+}
+
+
+TH_EVERNOTE = {
+    # get your credential by subscribing to
+    # http://dev.evernote.com/
+    # for testing purpose uncoment the next line
+    # 'sandbox': True,
+    # for production purpose uncoment the next line
+    'sandbox': False,
+    'consumer_key': '<your evernote key>',
+    'consumer_secret': '<your evernote secret>',
+}
+
+# not python 3 compliant
+TH_READABILITY = {
+    # get your credential by subscribing to
+    # https://www.readability.com/settings/account
+    'consumer_key': '<your readability key>',
+    'consumer_secret': '<your readability secret>',
+}
+
+
+TH_TWITTER = {
+    # get your credential by subscribing to
+    # https://dev.twitter.com/
+    'consumer_key': '<your twitter key>',
+    'consumer_secret': '<your twitter secret>',
 }
 
 SECRET_KEY = 'to be defined :P'
 
 
-# local settings management
 try:
-    from .local_settings import *
+    import debug_toolbar
 except ImportError:
     pass
+else:
+    INSTALLED_APPS += (
+        'debug_toolbar',
+    )
+    DEBUG_TOOLBAR_PANELS = [
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'elastic_panel.panel.ElasticDebugPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+    ]

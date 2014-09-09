@@ -27,7 +27,7 @@ urlpatterns = \
              # ****************************************
              url(r'^auth/', include('django.contrib.auth.urls')),
              # ****************************************
-             # customized lgout action
+             # customized logout action
              # ****************************************
              url(r'^logout/$',
                  'django_th.views.logout_view', name='logout'),
