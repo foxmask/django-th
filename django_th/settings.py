@@ -230,7 +230,8 @@ TH_SERVICES = (
     #comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
-    'th_evernote.my_evernote.ServiceEvernote',
+    #uncomment the next lines you want, once you've uncommented the line in INSTALLED_APPS
+    #'th_evernote.my_evernote.ServiceEvernote',
     #'th_readability.my_readability.ServiceReadability',
     #'th_twitter.my_twitter.ServiceTwitter',
 )
