@@ -129,9 +129,8 @@ INSTALLED_APPS = (
     'th_evernote',
 
     # Uncomment the next line to enable the service:
-    # 'th_twitter',
+    # 'th_twitter',
     # 'th_readability',
-
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -227,7 +226,7 @@ CACHES = {
 
 
 TH_SERVICES = (
-    # comment the line to disable the service you dont want
+    #comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
     'th_evernote.my_evernote.ServiceEvernote',
@@ -237,18 +236,15 @@ TH_SERVICES = (
 
 
 TH_POCKET = {
-    # get your credential by subscribing to
-    # http://getpocket.com/developer/
+    #get your credential by subscribing to http://getpocket.com/developer/
     'consumer_key': '<your pocket key>',
 }
 
 
 TH_EVERNOTE = {
-    # get your credential by subscribing to
-    # http://dev.evernote.com/
-    # for testing purpose uncoment the next line
-    # 'sandbox': True,
-    # for production purpose uncoment the next line
+    #get your credential by subscribing to http://dev.evernote.com/
+    #for testing purpose set sandbox to True
+    #for production purpose set sandbox to False
     'sandbox': False,
     'consumer_key': '<your evernote key>',
     'consumer_secret': '<your evernote secret>',
@@ -257,15 +253,15 @@ TH_EVERNOTE = {
 # not python 3 compliant
 TH_READABILITY = {
     # get your credential by subscribing to
-    # https://www.readability.com/settings/account
+    #https://www.readability.com/settings/account
     'consumer_key': '<your readability key>',
     'consumer_secret': '<your readability secret>',
 }
 
 
 TH_TWITTER = {
-    # get your credential by subscribing to
-    # https://dev.twitter.com/
+    #get your credential by subscribing to
+    #https://dev.twitter.com/
     'consumer_key': '<your twitter key>',
     'consumer_secret': '<your twitter secret>',
 }
