@@ -7,7 +7,8 @@ import time
 import arrow
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
-
+import django
+django.setup()
 from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
@@ -49,7 +50,7 @@ def go():
                 # get a timestamp of the last triggered of the service
                 datas = getattr(service_provider, 'process_data')(
                     service.provider.token, service.id, service.date_triggered)
-                consumer = getattr(service_consumer, 'save_data')
+                #consumer = getattr(service_consumer, 'save_data')
 
                 published = ''
                 which_date = ''
@@ -108,8 +109,8 @@ def go():
                                 logger.info(
                                     "date {} >= date triggered {} ".format(published, date_triggered))
 
-                            status = consumer(
-                                service.consumer.token, service.id, **data)
+                            #status = consumer(
+                            #    service.consumer.token, service.id, **data)
 
                             to_update = True
                             count_new_data += 1
@@ -153,13 +154,8 @@ def update_trigger(service):
     """
         update the date when occurs the trigger
     """
-    trigger = TriggerService.objects.get(id=service.id)
-    if trigger:
-        # set the current datetime
-        now = arrow.utcnow().to(
-            settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
-        trigger.date_triggered = now
-        trigger.save()
+    now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+    TriggerService.objects.filter(id=service.id).update(date_triggered=now)
 
 
 def to_datetime(data):

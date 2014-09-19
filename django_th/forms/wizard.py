@@ -18,7 +18,7 @@ class ServiceChoiceForm(forms.Form):
             services = services.exclude(name__exact=provider)
 
         for class_name in services:
-            datas = (class_name, class_name.name.rsplit('Service', 1)[1])
+            datas = (class_name.name, class_name.name.rsplit('Service', 1)[1])
             choices.append(datas)
 
         return choices

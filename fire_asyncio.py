@@ -8,7 +8,8 @@ import arrow
 import asyncio
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "django_th.settings")
-
+import django
+django.setup()
 from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
@@ -49,13 +50,8 @@ def update_trigger(service):
         logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
             service.user, service.provider.name.name, service.consumer.name.name, service.description, my_count))
 
-        trigger = TriggerService.objects.get(id=service.id)
-        if trigger:
-            # set the current datetime
-            now = arrow.utcnow().to(
-                settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
-            trigger.date_triggered = now
-            trigger.save()
+        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+        TriggerService.objects.filter(id=service.id).update(date_triggered=now)
     else:
         logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
             service.user, service.provider.name.name, service.consumer.name.name, service.description))
@@ -67,7 +63,7 @@ def my_dummy_provider():
     """
         just a dummy provider when its the first time the trigger is handling 
     """
-    yield from q.put(1)
+    yield from q2.put(1)
 
 
 @asyncio.coroutine
@@ -113,7 +109,7 @@ def my_consumer(service_consumer, token, service_id, date_triggered):
         published = to_datetime(data)
         if published is not None:
             # get the published date of the provider
-            published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss')
+            published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
             # store the date for the next loop
             # if published became 'None'
             which_date = published
@@ -164,9 +160,8 @@ def my_consumer(service_consumer, token, service_id, date_triggered):
                 logger.debug(
                     "data outdated skiped : [{}] ".format(published))
 
-    else:
-        # return the number of updates ( to be displayed in the log )
-        yield from q2.put(count_new_data)
+    # return the number of updates ( to be displayed in the log )
+    yield from q2.put(count_new_data)
 
 
 default_provider.load_services()
@@ -187,16 +182,15 @@ if trigger:
             logger.debug("first run for %s => %s " % (str(
                 service.provider.name), str(service.consumer.name.name)))
 
-            asyncio.get_event_loop().run_until_complete(my_dummy_provider)
+            asyncio.get_event_loop().run_until_complete(my_dummy_provider())
 
         # another run
         else:
             asyncio.get_event_loop().run_until_complete(
                 my_provider(service_provider, service.provider.token, service.id, service.date_triggered))
+            asyncio.get_event_loop().run_until_complete(
+                my_consumer(service_consumer, service.consumer.token, service.id, service.date_triggered))
 
-        # process done in every case
-        asyncio.get_event_loop().run_until_complete(
-            my_consumer(service_consumer, service.consumer.token, service.id, service.date_triggered))
         asyncio.get_event_loop().run_until_complete(update_trigger(service))
         asyncio.get_event_loop().run_forever()
 

@@ -564,13 +564,13 @@ class UserServiceWizard(SessionWizardView):
             if i == 0:
                 trigger_provider = UserService.objects.get(
                     name=data['provider'],
-                    user=self.request.user)
+                    user=self.request.user.id)
                 model_provider = get_service(data['provider'], 'models')
             # get the service we selected at step 2 : consumer
             elif i == 2:
                 trigger_consumer = UserService.objects.get(
                     name=data['consumer'],
-                    user=self.request.user)
+                    user=self.request.user.id)
                 model_consumer = get_service(data['consumer'], 'models')
             # get the description we gave for the trigger
             elif i == 4:
