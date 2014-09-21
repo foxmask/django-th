@@ -140,8 +140,35 @@ For example :
 
 Fire the Triggers :
 ===================
-To start handling the queue of triggers you/your users configured, just set the fire.py in a crontab or any other scheduler solution of your choice.
-Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation)  you/your users want to reach.
+Here are the available management commands :
+
+.. code:: python
+
+    Available subcommands:
+
+    [django_th]
+        fire_th
+        fire_th_as
+
+
+To start handling the queue of triggers you/your users configured, just set the management commands fire_th in a crontab or any other scheduler solution of your choice.
+
+e.g. : 
+
+.. code:: python
+
+    manage.py fire_th 
+
+or if you use python 3.4.x
+
+.. code:: python
+
+    manage.py fire_th_as
+
+
+which will use asyncio
+
+Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
 
 
 Blog posts :
