@@ -3,7 +3,6 @@ from django.db import models
 
 
 class Services(models.Model):
-
     """
         Main class for Services
     """

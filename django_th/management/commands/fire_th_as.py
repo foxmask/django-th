@@ -57,14 +57,13 @@ class Command(BaseCommand):
                 service.user, service.provider.name.name, service.consumer.name.name, service.description))
         asyncio.get_event_loop().stop()
 
-
     @asyncio.coroutine
     def my_dummy_provider():
         """
-            just a dummy provider when its the first time the trigger is handling
+            just a dummy provider when its the first time
+            the trigger is handling
         """
         yield from q2.put(1)
-
 
     @asyncio.coroutine
     def my_provider(self, service_provider, token, service_id, date_triggered):
@@ -79,7 +78,6 @@ class Command(BaseCommand):
 
         for data in datas:
             yield from q.put(data)
-
 
     @asyncio.coroutine
     def my_consumer(self, service_consumer, token, service_id, date_triggered):

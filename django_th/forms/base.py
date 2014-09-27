@@ -12,7 +12,6 @@ class TriggerServiceForm(forms.ModelForm):
         Form to edit the description
     """
     class Meta:
-
         """
             meta to add/override anything we need
         """
@@ -23,13 +22,10 @@ class TriggerServiceForm(forms.ModelForm):
         }
 
 
-
 class UserServiceForm(forms.ModelForm):
-
     """
         Form to deal with my own activated service
     """
-
     def save(self, user=None):
         self.myobject = super(UserServiceForm, self).save(commit=False)
         self.myobject.user = user
@@ -61,7 +57,6 @@ class UserServiceForm(forms.ModelForm):
         self.fields['name'].widget.attrs['class'] = 'form-control'
 
     class Meta:
-
         """
             meta to add/override anything we need
         """
@@ -70,7 +65,6 @@ class UserServiceForm(forms.ModelForm):
 
 
 class LoginForm(forms.ModelForm):
-
     """
         Form to manage the login page
     """
@@ -84,14 +78,12 @@ class LoginForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
-
     """
         Form to manage the User profile
     """
     class Meta:
-
         """
-        meta to override anything about UserProfile
+            meta to override anything about UserProfile
         """
         model = UserProfile
         exclude = ('user',)
@@ -128,7 +120,6 @@ class ProfileForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
-
     """
         Form to deal with the fields of the User Model
     """
@@ -148,7 +139,6 @@ class UserProfileForm(forms.ModelForm):
         self.instance.user.save()
 
     class Meta:
-
         """
             meta to override anything about UserProfile
         """

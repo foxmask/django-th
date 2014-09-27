@@ -18,21 +18,24 @@ class ServiceProvider(OrderedDict):
     def register(self, class_name, service):
         self[class_name] = service
 
-
     def get_service(self, class_name):
         """
             get the service (class instance) from its name
         """
         return self[class_name]
 
+
 def import_from_path(path):
     """
-    Import a class dynamically, given it's dotted path.
+        Import a class dynamically, given it's dotted path.
+        :param path: the path of the module
+        :type path: string
+        :return: Return the value of the named attribute of object.
+        :rtype: object
     """
     module_name, class_name = path.rsplit('.', 1)
     try:
-        return getattr(__import__(module_name,
-        fromlist=[class_name]), class_name)
+        return getattr(__import__(module_name, fromlist=[class_name]), class_name)
     except AttributeError:
         raise ImportError('Unable to import %s' % path)
 

@@ -26,7 +26,9 @@ class ServicesManagedAdmin(admin.ModelAdmin):
 
 
 class UserServiceAdmin(admin.ModelAdmin):
-
+    """
+        get the list of the User Service
+    """
     list_display = ('user', 'name', 'token')
     list_filter = ['user', 'name']
 

@@ -36,6 +36,15 @@ import importlib
 
 
 def class_for_name(module_name, class_name):
+    """
+        Import a class dynamically
+        :param module_name: the name of a module
+        :param class_name: the name of a class
+        :type module_name: string
+        :type class_name: string
+        :return: Return the value of the named attribute of object.
+        :rtype: object
+    """
     # load the module, will raise ImportError if module cannot be loaded
     m = importlib.import_module(module_name)
     # get the class, will raise AttributeError if class cannot be found
@@ -46,6 +55,17 @@ def class_for_name(module_name, class_name):
 def get_service(service, model_form='models', form_name=''):
     """
         get the service name then load the model
+        :param service: the service name
+        :param model_form: could be 'models' or 'forms'
+        :param form_name: the name of the form is model_form is 'forms'
+        :type service: string
+        :type model_form: string
+        :type form_name: string
+        :return: the object of the spotted Class.
+        :rtype: object
+
+        :Example:
+
         class_name could be :
             th_rss.models
             th_rss.forms
@@ -79,7 +99,9 @@ def logout_view(request):
 
 def trigger_on_off(request, trigger_id):
     """
-        switch the status of the trigger then go back home
+        enable/disable the staus of the trigger then go back home
+        :param trigger_id: the trigger ID to switch the status to True or False
+        :type trigger_id: int         
     """
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
@@ -104,6 +126,8 @@ def trigger_on_off(request, trigger_id):
 def trigger_switch_all_to(request, switch):
     """
         switch the status of all the triggers then go back home
+        :param switch: the switch value
+        :type switch: string off or on
     """
     status = True
     if switch == 'off':
@@ -143,6 +167,8 @@ def list_services(request, step):
 def renew_service(request, pk):
     """
         renew an existing service
+        :param pk: the primary key of the service to renew
+        :type pk: int
     """
     service = get_object_or_404(ServicesActivated, pk=pk)
     service_name = str(service.name)
@@ -159,6 +185,10 @@ def renew_service(request, pk):
 def trigger_edit(request, trigger_id, edit_what):
     """
         edit the provider
+        :param trigger_id: ID of the trigger to edit
+        :param edit_what: edit a 'Provider' or 'Consumer' ?
+        :type trigger_id: int
+        :type edit_what: string
     """
     if edit_what not in ('Provider', 'Consumer'):
         #bad request
@@ -211,7 +241,6 @@ def trigger_edit(request, trigger_id, edit_what):
 
 
 class TriggerListView(ListView):
-
     """
         list of Triggers
         the list can be filtered by service
@@ -287,7 +316,6 @@ class TriggerListView(ListView):
 
 
 class TriggerUpdateView(UpdateView):
-
     """
         Form to update description
     """
@@ -302,7 +330,6 @@ class TriggerUpdateView(UpdateView):
 
 
 class TriggerEditedTemplateView(TemplateView):
-
     """
         just a simple form to say thanks :P
     """
@@ -315,7 +342,6 @@ class TriggerEditedTemplateView(TemplateView):
 
 
 class TriggerDeleteView(DeleteView):
-
     """
         page to delete a trigger
     """
@@ -329,7 +355,6 @@ class TriggerDeleteView(DeleteView):
 
 
 class TriggerDeletedTemplateView(TemplateView):
-
     """
         just a simple form to say thanks :P
     """
@@ -346,7 +371,6 @@ class TriggerDeletedTemplateView(TemplateView):
 #  Part II : the UserServices
 #*************************************
 class UserServiceListView(ListView):
-
     """
         List of the services activated by the user
     """
@@ -388,7 +412,6 @@ class UserServiceListView(ListView):
 
 
 class UserServiceCreateView(CreateView):
-
     """
         Form to add a service
     """
@@ -426,7 +449,6 @@ class UserServiceCreateView(CreateView):
 
 
 class UserServiceRenewTemplateView(TemplateView):
-
     """
         page to renew a service
         usefull when revoking has been done or made changes
@@ -441,7 +463,6 @@ class UserServiceRenewTemplateView(TemplateView):
 
 
 class UserServiceDeleteView(DeleteView):
-
     """
         page to delete a service
     """
@@ -455,7 +476,6 @@ class UserServiceDeleteView(DeleteView):
 
 
 class UserServiceAddedTemplateView(TemplateView):
-
     """
         just a simple form to say thanks :P
     """
@@ -469,7 +489,6 @@ class UserServiceAddedTemplateView(TemplateView):
 
 
 class UserServiceDeletedTemplateView(TemplateView):
-
     """
         just a simple form to say thanks :P
     """

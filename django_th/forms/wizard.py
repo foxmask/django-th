@@ -8,6 +8,10 @@ class ServiceChoiceForm(forms.Form):
     def activated_services(self, provider=None):
         """
             get the activated services added from the administrator
+            :param provider: the selected provider
+            :type provider: string
+            :return: list of activated services
+            :rtype: list
         """
         services = ServicesActivated.objects.filter(status=1)
 
@@ -25,7 +29,9 @@ class ServiceChoiceForm(forms.Form):
 
 
 class ProviderForm(ServiceChoiceForm):
-
+    """
+        Set some HTML class to the Provider form
+    """
     provider = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
@@ -35,7 +41,9 @@ class ProviderForm(ServiceChoiceForm):
 
 
 class ConsumerForm(ServiceChoiceForm):
-
+    """
+        Set some HTML class to the Consumer form
+    """
     consumer = forms.ChoiceField()
 
     def __init__(self, *args, **kwargs):
@@ -48,7 +56,9 @@ class ConsumerForm(ServiceChoiceForm):
 
 
 class ServicesDescriptionForm(forms.Form):
-
+    """
+        Set some HTML class to the Service form
+    """
     description = forms.CharField(
         widget=forms.TextInput(attrs={'placeholder':
                                       _('A description for your new service')})

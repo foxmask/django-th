@@ -2,11 +2,9 @@
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
-from django.conf import settings
 
 
 class ServicesActivated(models.Model):
-
     """
         Services Activated from the admin
     """
@@ -28,7 +26,6 @@ class ServicesActivated(models.Model):
 
 
 class UserProfile(models.Model):
-
     """
         Related user to handle his profile
     """
@@ -42,7 +39,6 @@ class UserProfile(models.Model):
 
 
 class UserService(models.Model):
-
     """
         UserService a model to link service and user
     """
@@ -59,7 +55,6 @@ class UserService(models.Model):
 
 
 class TriggerService(models.Model):
-
     """
         TriggerService
     """
