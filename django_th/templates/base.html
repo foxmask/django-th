@@ -48,6 +48,14 @@
                     {% block filter_trigger %}
                     {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
                     {% endblock %}
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" title="{% trans "Order by..." %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
+                        <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">                        
+                            <li role="presentation"><a role="menuitem" title="{% trans "Sort by " %}" href="{% url 'trigger_order_by' 'provider' %}">{% trans "Service Provider" %}</a></li>
+                            <li role="presentation"><a role="menuitem" title="{% trans "Sort by " %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
+                        </ul>
+                    </li>
+
                     {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                     <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><span class="glyphicon glyphicon-off"></span></a></li>
                 </ul>

@@ -101,7 +101,7 @@ def trigger_on_off(request, trigger_id):
     """
         enable/disable the staus of the trigger then go back home
         :param trigger_id: the trigger ID to switch the status to True or False
-        :type trigger_id: int         
+        :type trigger_id: int
     """
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
@@ -138,13 +138,6 @@ def trigger_switch_all_to(request, switch):
         trigger.save()
 
     return HttpResponseRedirect(reverse('base'))
-
-
-def qty_services_activated(user):
-    """
-        get the quantity of activated services
-    """
-    return UserService.objects.filter(user=user)
 
 
 def list_services(request, step):
@@ -251,27 +244,40 @@ class TriggerListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        trigger_filter_by = None
+        trigger_filtered_by = None
+        # by default, sort by date_created
+        trigger_ordered_by = (str('-date_created'), )
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
             # if the user selected a filter, get its ID
-            if 'trigger_filter_by' in self.kwargs:
+            if 'trigger_filtered_by' in self.kwargs:
                 user_service = UserService.objects.filter(
                     user=self.request.user,
-                    name=self.kwargs['trigger_filter_by'])
-                trigger_filter_by = user_service[0].id
+                    name=self.kwargs['trigger_filtered_by'])
+                trigger_filtered_by = user_service[0].id
 
-            # no filter selected : display all
-            if trigger_filter_by is None:
-                return self.queryset.filter(
-                    user=self.request.user).order_by('-date_created')
-            # filter selected : display all related trigger
+            if 'trigger_ordered_by' in self.kwargs:
+                """
+                    sort by 'name' property in the related model UserService
+                """
+                order_by = str(self.kwargs['trigger_ordered_by'] + "__name")
+                # append to the tuple, the selected 'trigger_ordered_by'
+                # choosen in the dropdown
+                trigger_ordered_by = (order_by, ) + trigger_ordered_by
+
+            # no filter selected
+            if trigger_filtered_by is None:
+                return self.queryset.filter(user=self.request.user).order_by(*trigger_ordered_by).select_related('consumer__name', 'provider__name')
+
+            # filter selected : display all related triggers
             else:
                 # here the queryset will do :
                 # 1) get trigger of the connected user AND
                 # 2) get the triggers where the provider OR the consumer match
                 # the selected service
-                return self.queryset.filter(user=self.request.user).filter(Q(provider=trigger_filter_by) | Q(consumer=trigger_filter_by)).order_by('-date_created')
+                return self.queryset.filter(user=self.request.user).filter(
+                    Q(provider=trigger_filtered_by) |
+                    Q(consumer=trigger_filtered_by)).order_by(*trigger_ordered_by).select_related('consumer__name', 'provider__name')
         # otherwise return nothing when user is not connected
         return TriggerService.objects.none()
 
@@ -286,31 +292,35 @@ class TriggerListView(ListView):
             4) list of activated services by the connected user
         """
         triggers_enabled = triggers_disabled = services_activated = ()
+
+        context = super(TriggerListView, self).get_context_data(**kw)
         if self.request.user.is_authenticated():
             # get the enabled triggers
             triggers_enabled = TriggerService.objects.filter(
-                user=self.request.user, status=1)
+                user=self.request.user, status=1).count()
             # get the disabled triggers
             triggers_disabled = TriggerService.objects.filter(
-                user=self.request.user, status=0)
+                user=self.request.user, status=0).count()
             # get the activated services
-            services_activated = qty_services_activated(self.request.user)
-        context = super(TriggerListView, self).get_context_data(**kw)
+            user_service = UserService.objects.filter(user=self.request.user)
+            """
+                List of triggers activated by the user
+            """
+            context['trigger_filter_by'] = user_service
+            """
+                number of service activated for the current user
+            """
+            services_activated = user_service.count()
+
         """
             which triggers are enabled/disabled
         """
-        context['nb_triggers'] = {'enabled': len(triggers_enabled),
-                                  'disabled': len(triggers_disabled)}
+        context['nb_triggers'] = {'enabled': triggers_enabled,
+                                  'disabled': triggers_disabled}
         """
             Number of services activated
         """
-        context['nb_services'] = len(services_activated)
-        """
-            List of triggers activated by the user
-        """
-        if self.request.user.is_authenticated():
-            context['trigger_filter_by'] = UserService.objects.filter(
-                user=self.request.user)
+        context['nb_services'] = services_activated
 
         return context
 
@@ -387,7 +397,6 @@ class UserServiceListView(ListView):
 
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
-        services_activated = ()
         if self.request.user.is_authenticated():
             activated_qs = ServicesActivated.objects.all()
             service_list_available = UserService.objects.filter(
@@ -402,11 +411,10 @@ class UserServiceListView(ListView):
             context['service_list_available'] = service_list_available
 
             # get the activated services
-            services_activated = qty_services_activated(self.request.user)
             """
                 Number of services activated
             """
-            context['nb_services'] = len(services_activated)
+            context['nb_services'] = UserService.objects.filter(user=self.request.user).count()
 
         return context
 

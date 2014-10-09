@@ -37,9 +37,12 @@ urlpatterns = \
              # ****************************************
              url(r'^th/$', TriggerListView.as_view(),
                  name='base'),
-             url(r'^th/trigger/by/(?P<trigger_filter_by>[a-zA-Z]+)$',
+             url(r'^th/trigger/filter_by/(?P<trigger_filtered_by>[a-zA-Z]+)$',
                  TriggerListView.as_view(),
                  name='trigger_filter_by'),
+             url(r'^th/trigger/order_by/(?P<trigger_ordered_by>[a-zA-Z_]+)$',
+                 TriggerListView.as_view(),
+                 name='trigger_order_by'),
              url(r'^th/trigger/$', TriggerListView.as_view(),
                  name='home'),
              # ****************************************

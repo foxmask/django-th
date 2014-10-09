@@ -131,7 +131,7 @@ INSTALLED_APPS = (
 
     # Uncomment the next line to enable the service:
     # 'th_twitter', #then do pip install python-twitter
-    # 'th_readability', #then do pip install readability-api 
+    # 'th_readability', #then do pip install readability-api
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -270,14 +270,16 @@ TH_TWITTER = {
 
 SECRET_KEY = 'to be defined :P'
 
-
 try:
     import debug_toolbar
 except ImportError:
     pass
 else:
     INSTALLED_APPS += (
-        'debug_toolbar',
+        # If you're using Django 1.7.x or later
+        'debug_toolbar.apps.DebugToolbarConfig',
+        # If you're using Django 1.6.x or earlier
+        # 'debug_toolbar',
     )
     DEBUG_TOOLBAR_PANELS = [
         'debug_toolbar.panels.versions.VersionsPanel',
@@ -286,7 +288,7 @@ else:
         'debug_toolbar.panels.headers.HeadersPanel',
         'debug_toolbar.panels.request.RequestPanel',
         'debug_toolbar.panels.sql.SQLPanel',
-        'elastic_panel.panel.ElasticDebugPanel',
+#        'elastic_panelpanel.ElasticDebugPanel',
         'debug_toolbar.panels.staticfiles.StaticFilesPanel',
         'debug_toolbar.panels.templates.TemplatesPanel',
         'debug_toolbar.panels.cache.CachePanel',

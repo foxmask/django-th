@@ -5,8 +5,7 @@
                 <a class="dropdown-toggle" title="{% trans "Filter by one of the service you have activated" %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-filter"></span> <b class="caret"></b></a>
                 <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                 {% for trigger_filter in trigger_filter_by %}
-                    <li role="presentation"><a role="menuitem" title="{% trans
-                        "Filter by " %}" href="{% url 'trigger_filter_by' trigger_filter.name.name %}">{{ trigger_filter.name|service_readable }}</a></li>
+                    <li role="presentation"><a role="menuitem" title="{% trans "Filter by " %}" href="{% url 'trigger_filter_by' trigger_filter.name.name %}">{{ trigger_filter.name|service_readable }}</a></li>
                 {% endfor %}
                 </ul>
             </li>
