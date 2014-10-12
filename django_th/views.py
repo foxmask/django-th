@@ -99,7 +99,7 @@ def logout_view(request):
 
 def trigger_on_off(request, trigger_id):
     """
-        enable/disable the staus of the trigger then go back home
+        enable/disable the status of the trigger then go back home
         :param trigger_id: the trigger ID to switch the status to True or False
         :type trigger_id: int
     """
@@ -121,6 +121,25 @@ def trigger_on_off(request, trigger_id):
                             'title': title,
                             'title_trigger': title_trigger,
                             'btn': btn})
+
+
+def service_related_triggers_switch_to(request, user_service_id, switch):
+    """
+        switch the status of all the triggers related to the service, then go back home
+        :param service_id: the service ID to switch the status to True or False of all the related trigger
+        :type service_id: int
+        :param switch: the switch value
+        :type switch: string off or on
+    """
+    status = True
+    if switch == 'off':
+        status = False
+
+    TriggerService.objects.filter(provider__id=user_service_id).update(status=status)
+    TriggerService.objects.filter(consumer__id=user_service_id).update(status=status)
+
+    return HttpResponseRedirect(reverse('user_services'))
+
 
 
 def trigger_switch_all_to(request, switch):
@@ -414,7 +433,7 @@ class UserServiceListView(ListView):
             """
                 Number of services activated
             """
-            context['nb_services'] = UserService.objects.filter(user=self.request.user).count()
+            context['nb_services'] = nb_user_service
 
         return context
 

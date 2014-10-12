@@ -13,7 +13,7 @@ from django_th.views import TriggerListView, TriggerDeleteView, \
     UserServiceCreateView, UserServiceDeleteView, \
     UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
     trigger_on_off, trigger_switch_all_to, \
-    trigger_edit, renew_service
+    trigger_edit, renew_service, service_related_triggers_switch_to
 
 urlpatterns = \
     patterns('',
@@ -96,6 +96,9 @@ urlpatterns = \
                  UserServiceDeletedTemplateView.as_view(),
                  name="service_delete_thanks"
                  ),
+             url(r'^th/service/onoff/(?P<user_service_id>\d+)/(?P<switch>(on|off))$',
+                 service_related_triggers_switch_to,
+                 name="service_related_triggers_switch_to"),
              # ****************************************
              # wizard
              # ****************************************

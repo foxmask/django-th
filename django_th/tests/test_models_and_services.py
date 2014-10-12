@@ -49,7 +49,7 @@ class UserServiceTest(TestCase):
         self.assertEqual(u.__unicode__(), str(u.name))
 
     """
-        Form
+        Form - works with python 2.7.x - fails with python 3.4.0
     """
     def test_valid_form(self):
         u = self.create_userservice()
