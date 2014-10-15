@@ -166,7 +166,7 @@ class Command(BaseCommand):
             run the main process
         """
         default_provider.load_services()
-        trigger = TriggerService.objects.filter(status=True)
+        trigger = TriggerService.objects.filter(status=True).select_related('consummer__name', 'provider__name')
         if trigger:
             for service in trigger:
 

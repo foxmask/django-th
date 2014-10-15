@@ -48,7 +48,7 @@ class Command(BaseCommand):
         """
             run the main process
         """
-        trigger = TriggerService.objects.filter(status=True)
+        trigger = TriggerService.objects.filter(status=True).select_related('consummer__name', 'provider__name')
         if trigger:
             for service in trigger:
                 # flag to know if we have to update
