@@ -58,7 +58,7 @@ class Command(BaseCommand):
         asyncio.get_event_loop().stop()
 
     @asyncio.coroutine
-    def my_dummy_provider():
+    def my_dummy_provider(self):
         """
             just a dummy provider when its the first time
             the trigger is handling
@@ -183,7 +183,7 @@ class Command(BaseCommand):
                     logger.debug("first run for %s => %s " % (str(
                         service.provider.name), str(service.consumer.name.name)))
 
-                    asyncio.get_event_loop().run_until_complete(my_dummy_provider())
+                    asyncio.get_event_loop().run_until_complete(self.my_dummy_provider())
 
                 # another run
                 else:
