@@ -6,7 +6,7 @@ import datetime
 import time
 import arrow
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
@@ -23,7 +23,8 @@ class Command(BaseCommand):
         """
             update the date when occurs the trigger
         """
-        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+        now = arrow.utcnow().to(settings.TIME_ZONE).format(
+            'YYYY-MM-DD HH:mm:ss')
         TriggerService.objects.filter(id=service.id).update(date_triggered=now)
 
     def to_datetime(self, data):
@@ -40,7 +41,8 @@ class Command(BaseCommand):
             my_date_time = datetime.datetime.fromtimestamp(
                 time.mktime(data.updated_parsed))
         elif 'my_date' in data:
-            my_date_time = arrow.get(str(data['my_date']), 'YYYY-MM-DD HH:mm:ss')
+            my_date_time = arrow.get(str(data['my_date']),
+                                     'YYYY-MM-DD HH:mm:ss')
 
         return my_date_time
 
@@ -66,16 +68,20 @@ class Command(BaseCommand):
                 service_consumer = default_provider.get_service(service_name)
 
                 # check if the service has already been triggered
+                # if date_triggered is None, then it's the first run
                 if service.date_triggered is None:
                     logger.debug("first run for %s => %s " % (str(
-                        service.provider.name), str(service.consumer.name.name)))
+                        service.provider.name),
+                        str(service.consumer.name.name)))
                     to_update = True
+                    status = True
                 # run run run
                 else:
                     # 1) get the datas from the provider service
                     # get a timestamp of the last triggered of the service
                     datas = getattr(service_provider, 'process_data')(
-                        service.provider.token, service.id, service.date_triggered)
+                        service.provider.token, service.id,
+                        service.date_triggered)
                     consumer = getattr(service_consumer, 'save_data')
 
                     published = ''
@@ -90,12 +96,12 @@ class Command(BaseCommand):
                         # a date, will take the previous date for this one
                         # if it's the first one, set it to 00:00:00
 
-                        # let's try to determine the date contained in the data...
+                        # let's try to determine the date contained in
+                        # the data...
                         published = self.to_datetime(data)
                         if published is not None:
                             # get the published date of the provider
-                            published = arrow.get(
-                                str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                            published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                             # store the date for the next loop
                             # if published became 'None'
                             which_date = published
@@ -112,12 +118,14 @@ class Command(BaseCommand):
                         # if yes , process the consumer
 
                         # add the TIME_ZONE settings
-                        date_triggered = arrow.get(
-                            str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                        # to localize the current date
+                        date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
 
                         # if the published date if greater or equal to the last
                         # triggered event ... :
-                        if date_triggered is not None and published is not None and published.date() >= date_triggered.date():
+                        if date_triggered is not None and \
+                           published is not None and \
+                           published.date() >= date_triggered.date():
                             # if date are the same ...
                             if published.date() == date_triggered.date():
                                 # ... compare time and proceed if needed
@@ -129,11 +137,9 @@ class Command(BaseCommand):
 
                             if proceed:
                                 if 'title' in data:
-                                    logger.info("date {} >= date triggered {} title {}".format(
-                                        published, date_triggered, data['title']))
+                                    logger.info("date {} >= date triggered {} title {}".format(published, date_triggered, data['title']))
                                 else:
-                                    logger.info(
-                                        "date {} >= date triggered {} ".format(published, date_triggered))
+                                    logger.info("date {} >= date triggered {} ".format(published, date_triggered))
 
                                 status = consumer(
                                     service.consumer.token, service.id, **data)
@@ -143,11 +149,9 @@ class Command(BaseCommand):
                         # otherwise do nothing
                         else:
                             if 'title' in data:
-                                logger.debug(
-                                    "data outdated skiped : [{}] {}".format(published, data['title']))
+                                logger.debug("data outdated skiped : [{}] {}".format(published, data['title']))
                             else:
-                                logger.debug(
-                                    "data outdated skiped : [{}] ".format(published))
+                                logger.debug("data outdated skiped : [{}] ".format(published))
 
                 # update the date of the trigger at the end of the loop
                 sentance = "user: {} - provider: {} - consumer: {} - {}"
