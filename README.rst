@@ -32,9 +32,11 @@ who permits to use a manager of tasks like "cron" and, of course Python
 Requirements :
 ==============
 * Python 3.4.x, 2.7.x
-* Django >= 1.7
-* django-th-rss >= 0.3.0
-* django-th-pocket >= 0.2.0
+* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.7
+* `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
+* `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
+
+
 
 Installation:
 =============
