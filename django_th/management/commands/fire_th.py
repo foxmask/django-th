@@ -87,9 +87,6 @@ class Command(BaseCommand):
                     published = ''
                     which_date = ''
 
-                    # flag to know if we can push data to the consumer
-                    proceed = False
-
                     # 2) for each one
                     for data in datas:
                         # if in a pool of data once of them does not have
@@ -99,6 +96,7 @@ class Command(BaseCommand):
                         # let's try to determine the date contained in
                         # the data...
                         published = self.to_datetime(data)
+
                         if published is not None:
                             # get the published date of the provider
                             published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
@@ -108,8 +106,7 @@ class Command(BaseCommand):
                         #... otherwise set it to 00:00:00 of the current date
                         if which_date == '':
                             # current date
-                            which_date = arrow.utcnow().replace(
-                                hour=0, minute=0, second=0)
+                            which_date = arrow.utcnow().replace(hour=0, minute=0, second=0).to(settings.TIME_ZONE)
                             published = which_date
                         if published is None and which_date != '':
                             published = which_date
@@ -125,27 +122,18 @@ class Command(BaseCommand):
                         # triggered event ... :
                         if date_triggered is not None and \
                            published is not None and \
-                           published.date() >= date_triggered.date():
-                            # if date are the same ...
-                            if published.date() == date_triggered.date():
-                                # ... compare time and proceed if needed
-                                if published.time() >= date_triggered.time():
-                                    proceed = True
-                            # not same date so proceed !
+                           published >= date_triggered:
+
+                            if 'title' in data:
+                                logger.info("date {} >= date triggered {} title {}".format(published, date_triggered, data['title']))
                             else:
-                                proceed = True
+                                logger.info("date {} >= date triggered {} ".format(published, date_triggered))
 
-                            if proceed:
-                                if 'title' in data:
-                                    logger.info("date {} >= date triggered {} title {}".format(published, date_triggered, data['title']))
-                                else:
-                                    logger.info("date {} >= date triggered {} ".format(published, date_triggered))
+                            status = consumer(
+                                service.consumer.token, service.id, **data)
 
-                                status = consumer(
-                                    service.consumer.token, service.id, **data)
-
-                                to_update = True
-                                count_new_data += 1
+                            to_update = True
+                            count_new_data += 1
                         # otherwise do nothing
                         else:
                             if 'title' in data:

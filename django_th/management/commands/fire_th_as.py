@@ -88,7 +88,6 @@ class Command(BaseCommand):
             date_triggered : date_triggered is the data from the database
         """
         count_new_data = 0
-        proceed = False
         while q.empty() is not True:
             data = yield from q.get()
 
@@ -129,26 +128,20 @@ class Command(BaseCommand):
 
             # if the published date if greater or equal to the last
             # triggered event ... :
-            if my_date_triggered is not None and published is not None and published.date() >= my_date_triggered.date():
-                # if date are the same ...
-                if published.date() == my_date_triggered.date():
-                    # ... compare time and proceed if needed
-                    if published.time() >= my_date_triggered.time():
-                        proceed = True
-                # not same date so proceed !
+            if date_triggered is not None and \
+               published is not None and \
+               published >= date_triggered:
+
+                if 'title' in data:
+                    logger.info("date {} >= date triggered {} title {}".format(
+                        published, date_triggered, data['title']))
                 else:
-                    proceed = True
-                if proceed:
-                    if 'title' in data:
-                        logger.info("date {} >= date triggered {} title {}".format(
-                            published, date_triggered, data['title']))
-                    else:
-                        logger.info(
-                            "date {} >= date triggered {} ".format(published, my_date_triggered))
+                    logger.info(
+                        "date {} >= date triggered {} ".format(published, my_date_triggered))
 
-                    consumer(token, service_id, **data)
+                consumer(token, service_id, **data)
 
-                    count_new_data += 1
+                count_new_data += 1
             # otherwise do nothing
             else:
                 if 'title' in data:
