@@ -146,7 +146,7 @@ class Command(BaseCommand):
                 sentance = "user: {} - provider: {} - consumer: {} - {}"
                 if to_update:
                     if status:
-                        logger.info((sentance + " new data").format(
+                        logger.info((sentance + " - {} new data").format(
                             service.user,
                             service.provider.name.name,
                             service.consumer.name.name,
