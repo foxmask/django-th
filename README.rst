@@ -40,13 +40,13 @@ Requirements
 
 Installation
 ============
-To get the project up and running, from your virtualenv, do :
+To get the project up and running, from your virtualenv, do:
 
-.. code: system
+.. code:: system
 
     git clone https://github.com/foxmask/django-th.git
 
-To install the required modules, do :
+To install the required modules, do:
 
 .. code:: python
 
