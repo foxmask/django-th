@@ -16,8 +16,8 @@ your own Readability or Pocket account and so on
 .. |ImageLink| image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
 
 
-Description:
-============
+Description
+===========
 The goal of this project is to be independant from any other solution like 
 IFTTT, CloudWork or others.
 
@@ -26,11 +26,11 @@ depending any non-free solution.
 
 With this project you can host triggers for you.
 
-All you need is to have a hosting provider (or simply your own server ;) 
-who permits to use a manager of tasks like "cron" and, of course Python
+All you need is to have a hosting provider (or simply your own server ;) )
+who permits to use a manager of tasks like "cron" and, of course Python.
 
-Requirements :
-==============
+Requirements
+============
 * Python 3.4.x, 2.7.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.7
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
@@ -38,19 +38,19 @@ Requirements :
 
 
 
-Installation:
-=============
-to get the project, from your virtualenv, do :
+Installation
+============
+To get the project up and running, from your virtualenv, do :
 
 .. code: system
 
     git clone https://github.com/foxmask/django-th.git
 
-to add the needed modules , do :
+To install the required modules, do :
 
 .. code:: python
 
-    pip install -r https://github.com/foxmask/django-th/blob/master/django_th/requirements.txt
+    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements.txt
 
 and at least :
 
@@ -60,13 +60,13 @@ and at least :
 
 to startup the database
 
-Parameters :
-============
+Parameters
+==========
 As usual you will setup the database parameters.
 
 Important parts are the settings of the available services :
 
-Settings.py 
+settings.py 
 -----------
 
 add the module django_th to the INSTALLED_APPS
