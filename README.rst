@@ -43,20 +43,24 @@ Installation
 To get the project up and running, from your virtualenv, do:
 
 .. code:: system
-
+    
     git clone https://github.com/foxmask/django-th.git
+    
 
 To install the required modules, do:
 
-.. code:: python
+.. code:: system
 
     pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements.txt
 
 and at least :
 
-.. code:: python
-
+.. code:: system
+    
+    cd django-th 
     python manage.py syncdb
+    python manage.py runserver
+    
 
 to startup the database
 
