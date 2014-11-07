@@ -32,8 +32,6 @@ TIME_ZONE = 'Europe/Paris'
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en'
 
-SITE_ID = 1
-
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
 USE_I18N = True
@@ -132,8 +130,6 @@ INSTALLED_APPS = (
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
-    # get the Site information anywhere arround the page
-    'django_th.context_processors.current_site',
     'django.core.context_processors.request'
 )
 

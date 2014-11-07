@@ -4,7 +4,7 @@
 {% load i18n %}
 {% load django_th_extras %}
 
-{% block title %}{% if user.is_authenticated %}{% trans "My Triggers" %} - {{ user.username }} - {{ current_site.name }}{% else %}{% trans "Home" %} - {{ current_site.name }}{% endif %}{% endblock %}
+{% block title %}{% if user.is_authenticated %}{% trans "My Triggers" %} - {{ user.username }} - {% else %}{% trans "Home" %} - {% endif %}Trigger Happy{% endblock %}
 
 {% block content %}
 
