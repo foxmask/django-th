@@ -1,9 +1,7 @@
 # Django settings for django_th project.
-import sys
 import os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__) + '/../', 'vendors'))
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ["*"]
@@ -101,8 +99,6 @@ TEMPLATE_DIRS = (
     # or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    os.path.dirname(__file__) + '/../'
-    + 'vendors/django_js_reverse/templates/',
 )
 
 INSTALLED_APPS = (
