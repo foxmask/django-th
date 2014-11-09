@@ -6,7 +6,8 @@ Welcome to Trigger Happy's documentation!
 Contents:
 ---------
 
-As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy" is a free software that provides a micro `service oriented architecture (SOA) <http://fr.wikipedia.org/wiki/Service_Oriented_Architecture>`_
+As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy" is a free software that provides a `micro enterprise service bus (ESB) <http://fr.wikipedia.org/wiki/Enterprise_service_bus>`_
+
 
 .. toctree::
    :maxdepth: 2
@@ -25,10 +26,7 @@ For example a new RSS item is published, **Trigger Happy** will be able to
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
-|ImageLink|_
-
-.. |ImageLink| image:: https://drone.io/github.com/foxmask/django-th/status.png
-.. _ImageLink: https://drone.io/github.com/foxmask/django-th/status.png
+.. image:: https://drone.io/github.com/foxmask/django-th/status.png
 
 
 Description:

@@ -2,13 +2,17 @@
 Installation
 =============
 
-to get the project do :
+To get the project do :
+
+From GitHub 
+===========
 
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th.git
 
-or 
+From Pypi
+=========
 
 .. code-block:: bash
 
@@ -18,7 +22,9 @@ or
 
 Dependencies
 ------------
-* Python 3.4.0
-* Django > 1.6
+* Python 3.4
+* Python 2.7
+* Django >= 1.7
 * django-th-rss >= 0.3.0
 * django-th-pocket >= 0.2.0
+* django-js-reverse == 0.3.3

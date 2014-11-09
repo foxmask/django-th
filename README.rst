@@ -35,7 +35,7 @@ Requirements
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.7
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
 * `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
-
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse/>`_ == 0.3.3
 
 
 Installation
@@ -78,11 +78,20 @@ add the module django_th to the INSTALLED_APPS
 
 .. code:: python
 
-    INSTALLED_APPS = (
-        'django_th',
+   INSTALLED_APPS = (
+        ...
+        'django_th', 
         'th_rss',
-        'th_pocket',
-    )
+        'django_js_reverse',
+
+
+then complet with its companion
+
+.. code:: python
+
+        'pocket',     #if you own your own pocket account
+        'th_pocket',  #if you own your own pocket account
+
 
 
 TH_SERVICES
@@ -108,6 +117,38 @@ copy the template in your own templates directory or set the path like this :
     TEMPLATE_DIRS += (
         BASE_DIR + '/../lib/<python-version>/site-package/django_th/templates/',
     )
+
+
+
+in your urls.py : 
+
+```python
+from django.conf.urls import patterns, include, url
+from django.contrib import admin
+
+urlpatterns = patterns('',
+    # Examples:
+    # url(r'^$', 'th.views.home', name='home'),
+    # url(r'^blog/', include('blog.urls')),
+
+    url(r'^admin/', include(admin.site.urls)),
+    url(r'', include('django_th.urls')),
+)
+```
+in your settings , add the application as usual 
+```python
+INSTALLED_APPS = (
+    ...
+    'django_th', 
+    'th_rss',
+    'django_js_reverse',
+```
+then complet with its companion
+```python
+    'pocket',     #if you own your own pocket account
+    'th_pocket',  #if you own your own pocket account
+```
+
 
 
 also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.
