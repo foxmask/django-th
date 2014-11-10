@@ -116,38 +116,38 @@ copy the template in your own templates directory or set the path like this :
         BASE_DIR + '/../lib/<python-version>/site-package/django_th/templates/',
     )
 
+in your **urls.py** : 
 
+.. code:: python
 
-in your urls.py : 
+    from django.conf.urls import patterns, include, url
+    from django.contrib import admin
 
-```python
-from django.conf.urls import patterns, include, url
-from django.contrib import admin
+    urlpatterns = patterns('',
+         # Examples:
+         # url(r'^$', 'th.views.home', name='home'),
+         # url(r'^blog/', include('blog.urls')),
+  
+         url(r'^admin/', include(admin.site.urls)),
+         url(r'', include('django_th.urls')),
+    )
 
-urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'th.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
+in your **settings.py** , add the application as usual 
 
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'', include('django_th.urls')),
-)
-```
-in your settings , add the application as usual 
-```python
-INSTALLED_APPS = (
-    ...
-    'django_th', 
-    'th_rss',
-    'django_js_reverse',
-```
+.. code:: python
+
+    INSTALLED_APPS = (
+         ...
+         'django_th', 
+         'th_rss',
+         'django_js_reverse',
+
 then complet with its companion
-```python
-    'pocket',     #if you own your own pocket account
-    'th_pocket',  #if you own your own pocket account
-```
 
+.. code:: python
 
+         'pocket',     #if you own your own pocket account
+         'th_pocket',  #if you own your own pocket account
 
 also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.
 
@@ -160,7 +160,14 @@ Currently there are 4 services, RSS, Evernote, Pocket and Readability.
 
 All you can decide here is to tell if the service requires an external authentication or not.
 
-Once they are activated. User can use them.
+
+.. image:: http://foxmask.info/public/trigger_happy/th_admin_pocket_activated.png
+
+Once they are activated....
+
+.. image:: http://foxmask.info/public/trigger_happy/admin_service_list.png
+
+... User can use them
 
 
 Usage :
