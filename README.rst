@@ -116,7 +116,8 @@ copy the template in your own templates directory or set the path like this :
         BASE_DIR + '/../lib/<python-version>/site-package/django_th/templates/',
     )
 
-in your **urls.py** : 
+urls.py
+-------
 
 .. code:: python
 
