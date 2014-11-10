@@ -9,11 +9,9 @@ For example a new RSS item is published, django-trigger-happy will be able to
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
-|ImageLink|_
+.. image:: https://drone.io/github.com/foxmask/django-th/status.png
 
-.. |ImageLink| image:: https://drone.io/github.com/foxmask/django-th/status.png
-.. _ImageLink: https://drone.io/github.com/foxmask/django-th/status.png
-.. |ImageLink| image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
+.. image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
 
 
 Description
@@ -216,6 +214,16 @@ or if you use python 3.4.x
 which will use asyncio
 
 Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
+
+
+Complete Documentation
+======================
+
+http://trigger-happy.readthedocs.org/
+
+.. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
+   :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
+   :alt: Documentation Status
 
 
 Blog posts :
