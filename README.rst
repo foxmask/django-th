@@ -157,7 +157,10 @@ Usage :
 Activating services : 
 ---------------------
 
-The user activates the service for their own need. If the service requires an external authentication, he will be redirected to the service which will ask him the authorization to acces the user's account. Once it's done, goes back to django-trigger-happy to finish and record the "auth token".
+The user activates the service for their own need. If the service requires an external authentication, he will be redirected to the service which will ask him the authorization to acces the user's account. 
+Once it's done, goes back to django-trigger-happy to finish and record the "auth token".
+
+.. image:: http://foxmask.info/public/trigger_happy/public_services_activated.png
 
 Using the activated services :
 ------------------------------
@@ -181,8 +184,8 @@ Here are the available management commands :
 
     [django_th]
         fire_th
-        fire_th_as
-
+        fire_th_as          #use asyncio
+        fire_th_trollius    #use asyncio backported named "trollius" for python 2.7
 
 To start handling the queue of triggers you/your users configured, just set the management commands fire_th in a crontab or any other scheduler solution of your choice.
 
