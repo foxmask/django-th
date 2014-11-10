@@ -132,25 +132,6 @@ in your **urls.py** :
          url(r'', include('django_th.urls')),
     )
 
-in your **settings.py** , add the application as usual 
-
-.. code:: python
-
-    INSTALLED_APPS = (
-         ...
-         'django_th', 
-         'th_rss',
-         'django_js_reverse',
-
-then complet with its companion
-
-.. code:: python
-
-         'pocket',     #if you own your own pocket account
-         'th_pocket',  #if you own your own pocket account
-
-also you'll need to look at the urls.py of django_th to copy a lot of existing the mapping.
-
 
 Setting up : Administration
 ===========================
