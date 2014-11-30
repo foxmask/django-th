@@ -10,7 +10,7 @@ The user activates the service for their own need. If the service requires an ex
 Using the activated services :
 ------------------------------
 
-a set of 3 pages will ask to the user information that will permit to trigger data from a service "provider" to a service "consummer".
+a set of 3 pages will ask to the user information that will permit to trigger data from a service "provider" to a service "consumer".
 
 For example : 
 

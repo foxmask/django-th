@@ -6,7 +6,8 @@ Welcome to Trigger Happy's documentation!
 Contents:
 ---------
 
-As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy" is a free software that provides a `micro enterprise service bus (ESB) <http://fr.wikipedia.org/wiki/Enterprise_service_bus>`_
+As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy"
+is a free software that provides a `micro enterprise service bus (ESB) <http://fr.wikipedia.org/wiki/Enterprise_service_bus>`_
 
 
 .. toctree::
@@ -15,7 +16,7 @@ As it exists tools to make his blog or website or even his own cloud system, "Tr
    installation
    configuration
    usage
-
+   new_module
 
 
 Automatically share data between popular services you use on the web.
@@ -28,6 +29,7 @@ your own Readability or Pocket account and so on
 
 .. image:: https://drone.io/github.com/foxmask/django-th/status.png
 
+.. image:: http://trigger-happy.eu/static/th_esb.png
 
 Description:
 ------------
