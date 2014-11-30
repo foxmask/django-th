@@ -11,7 +11,7 @@ your own Readability or Pocket account and so on
 
 .. image:: https://drone.io/github.com/foxmask/django-th/status.png
 
-.. image:: http://foxmask.info/public/trigger_happy/trigger_happy_small.png
+.. image:: http://trigger-happy.eu/static/th_esb.png
 
 
 Description
