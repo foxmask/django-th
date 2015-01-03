@@ -6,9 +6,10 @@
 {% block content %}
 <div class="col-md-12">
     <h1 class="page-header">{% trans "Log in" %}</h1>
-    {% if form.errors %}
-    <div class="alert alert-error">
-        <p>{{ form.errors }}</p>
+        
+    {% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        <p>{{ form.non_field_errors }}</p>
     </div>
     {% endif %}
     
@@ -18,12 +19,18 @@
             <label class="form-label col-md-2" for="id_username">{% trans 'Username' %}</label>
             <div class="col-md-10">
             {{ form.username }}
+            {% if form.username.errors %}
+                <p class="help-block">{{ form.username.errors.as_text }}</p>
+            {% endif %}
             </div>
         </div>
         <div class="form-group">
             <label class="form-label col-md-2" for="id_password">{% trans 'Password' %}</label>
             <div class="col-md-10">
             {{ form.password }}
+            {% if form.username.errors %}
+                <p class="help-block">{{ form.username.errors.as_text }}</p>
+            {% endif %}
             </div>
         </div>
         <div class="form-group">
