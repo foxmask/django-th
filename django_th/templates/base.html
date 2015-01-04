@@ -28,7 +28,7 @@
 <body role="document">
     {% block navbar %}
     <!-- Fixed navbar -->
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -42,11 +42,22 @@
             <div class="navbar-collapse collapse">            
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'base' %}" title="{% trans "Home" %}"><span class="glyphicon glyphicon-home"></span></a></li>
-                    <li>{% if nb_services > 1 %}<a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}">{% else %}<a href="#" title="You can't create a new trigger until 2 services are activated">{% endif %}<span class="glyphicon glyphicon-plus"></span></a></li>
-                    <li><a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><span class="glyphicon glyphicon-tasks"></span></a></li>
+                    <li>
+                        <a href="{% url 'base' %}" title="{% trans "Home" %}"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a>
+                    </li>
+                    <li>
+                        {% if nb_services > 1 %}
+                            <a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}">
+                        {% else %}
+                            <a href="#" title="You can't create a new trigger until 2 services are activated">
+                        {% endif %}
+                        <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add trigger</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
+                    </li>
                     {% block filter_trigger %}
-                    {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
+                        {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
                     {% endblock %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" title="{% trans "Order by..." %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
@@ -55,14 +66,17 @@
                             <li role="presentation"><a role="menuitem" title="{% trans "Sort by " %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
                         </ul>
                     </li>
-
                     {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
-                    <li><a href="{% url 'logout' %}" title="{% trans "log out" %}"><span class="glyphicon glyphicon-off"></span></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'logout' %}" title="{% trans "log out" %}"><span class="glyphicon glyphicon-off"></span></a>
+                    </li>
                 </ul>
                 {% endif %}
-            </div><!--/.nav-collapse -->
+            </div>
         </div>
-    </div>    
+    </nav>    
     {% endblock navbar %}
     <div class="container">
         <div class="row">
