@@ -48,12 +48,28 @@ li {
 
 .trigger-record footer {
 	font-size: small;
-    vertical-align: text-bottom;
+  display: block;
+  padding-top: 55px;
+}
+
+.trigger-record footer p {
+  padding-top: 5px;
 }
 
 .trigger-record .trigger-text {
     word-wrap: break-word;
 }
+
+.trigger-record .trigger-button {
+  padding-top: 25px;
+}
+
+@media (max-width: 768px) {
+  .trigger-record .trigger-button {
+    padding-top: 0px;
+  }
+}
+
 
 .trigger-summary {
     text-align: right;
