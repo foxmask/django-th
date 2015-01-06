@@ -147,10 +147,10 @@ class Command(BaseCommand):
             else:
                 if 'title' in data:
                     logger.debug(
-                        "data outdated skiped : [{}] {}".format(published, data['title']))
+                        "data outdated skipped : [{}] {}".format(published, data['title']))
                 else:
                     logger.debug(
-                        "data outdated skiped : [{}] ".format(published))
+                        "data outdated skipped : [{}] ".format(published))
 
         # return the number of updates ( to be displayed in the log )
         yield From(q2.put(count_new_data))
@@ -160,11 +160,11 @@ class Command(BaseCommand):
             run the main process
         """
         default_provider.load_services()
-        trigger = TriggerService.objects.filter(status=True).select_related('consummer__name', 'provider__name')
+        trigger = TriggerService.objects.filter(status=True).select_related('consumer__name', 'provider__name')
         if trigger:
             for service in trigger:
 
-                # provider - the service that offer datas
+                # provider - the service that offer data
                 service_name = str(service.provider.name.name)
                 service_provider = default_provider.get_service(service_name)
 

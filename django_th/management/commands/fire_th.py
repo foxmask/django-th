@@ -51,7 +51,7 @@ class Command(BaseCommand):
             run the main process
         """
         default_provider.load_services()
-        trigger = TriggerService.objects.filter(status=True).select_related('consummer__name', 'provider__name')
+        trigger = TriggerService.objects.filter(status=True).select_related('consumer__name', 'provider__name')
         if trigger:
             for service in trigger:
                 # flag to know if we have to update
@@ -60,7 +60,7 @@ class Command(BaseCommand):
                 status = False
                 # counting the new data to store to display them in the log
                 count_new_data = 0
-                # provider - the service that offer datas
+                # provider - the service that offer data
                 service_name = str(service.provider.name.name)
                 service_provider = default_provider.get_service(service_name)
 
@@ -78,7 +78,7 @@ class Command(BaseCommand):
                     status = True
                 # run run run
                 else:
-                    # 1) get the datas from the provider service
+                    # 1) get the data from the provider service
                     # get a timestamp of the last triggered of the service
                     datas = getattr(service_provider, 'process_data')(
                         service.provider.token, service.id,
@@ -112,7 +112,7 @@ class Command(BaseCommand):
                         if published is None and which_date != '':
                             published = which_date
                         # 3) check if the previous trigger is older than the
-                        # date of the data we retreived
+                        # date of the data we retrieved
                         # if yes , process the consumer
 
                         # add the TIME_ZONE settings
@@ -138,15 +138,15 @@ class Command(BaseCommand):
                         # otherwise do nothing
                         else:
                             if 'title' in data:
-                                logger.debug("data outdated skiped : [{}] {}".format(published, data['title']))
+                                logger.debug("data outdated skipped : [{}] {}".format(published, data['title']))
                             else:
-                                logger.debug("data outdated skiped : [{}] ".format(published))
+                                logger.debug("data outdated skipped : [{}] ".format(published))
 
                 # update the date of the trigger at the end of the loop
-                sentance = "user: {} - provider: {} - consumer: {} - {}"
+                sentence = "user: {} - provider: {} - consumer: {} - {}"
                 if to_update:
                     if status:
-                        logger.info((sentance + " - {} new data").format(
+                        logger.info((sentence + " - {} new data").format(
                             service.user,
                             service.provider.name.name,
                             service.consumer.name.name,
@@ -154,13 +154,13 @@ class Command(BaseCommand):
                             count_new_data))
                         self.update_trigger(service)
                     else:
-                        logger.info((sentance + " AN ERROR OCCURS ").format(
+                        logger.info((sentence + " AN ERROR OCCURS ").format(
                             service.user,
                             service.provider.name.name,
                             service.consumer.name.name,
                             service.description))
                 else:
-                    logger.info((sentance + " nothing new").format(
+                    logger.info((sentence + " nothing new").format(
                         service.user,
                         service.provider.name.name,
                         service.consumer.name.name,
