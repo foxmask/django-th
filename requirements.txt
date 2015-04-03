@@ -1,4 +1,5 @@
-Django>=1.7
+Django>=1.8
+formtools==1.0
 django-th-rss>=0.3.0
 django-th-pocket>=0.2.0
 arrow==0.4.2

@@ -30,7 +30,7 @@ who permits to use a manager of tasks like "cron" and, of course Python.
 Requirements
 ============
 * Python 3.4.x, 2.7.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.7
+* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
 * `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse/>`_ == 0.3.3
@@ -78,6 +78,7 @@ add the module django_th to the INSTALLED_APPS
 
    INSTALLED_APPS = (
         ...
+        'formtools',
         'django_th', 
         'th_rss',
         'django_js_reverse',

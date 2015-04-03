@@ -109,6 +109,7 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
+    'formtools',
     'django_th',
 
     'th_rss',

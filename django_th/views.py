@@ -10,7 +10,7 @@ from django.views.generic import CreateView, DeleteView, ListView
 from django.views.generic import TemplateView, UpdateView
 from django.db.models import Q
 from django.utils.translation import ugettext as _
-from django.contrib.formtools.wizard.views import SessionWizardView
+from formtools.wizard.views import SessionWizardView
 
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
