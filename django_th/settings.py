@@ -126,6 +126,10 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable the service:
     # 'th_twitter', #then do pip install python-twitter
     # 'th_readability', #then do pip install readability-api
+
+    # Uncomment the next line to enable the feature
+    # 'th_holidays',
+    # then do pip install django-th-holidays
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

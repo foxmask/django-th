@@ -132,10 +132,4 @@ urlpatterns = \
                  {'service_name': 'ServiceTwitter', },
                  name="twitter_callback",
                  ),
-             url(r"^th/callbackfacebook/$",
-                 "django_th.views.finalcallback",
-                 {'service_name': 'ServiceFacebook', },
-                 name="facebook_callback",
-                 ),
-
              )

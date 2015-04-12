@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load url from future %}
 {% load django_th_extras %}
                 <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
