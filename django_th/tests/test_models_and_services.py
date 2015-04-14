@@ -46,7 +46,6 @@ class UserServiceTest(TestCase):
         self.assertTrue(isinstance(u, UserService))
         self.assertEqual(u.show(), "User Service %s %s %s" %
                         (u.user, u.token, u.name))
-        self.assertEqual(u.__unicode__(), str(u.name))
 
     """
         Form - works with python 2.7.x - fails with python 3.4.0
@@ -85,7 +84,6 @@ class ServicesActivatedTest(TestCase):
         self.assertTrue(isinstance(s, ServicesActivated))
         self.assertEqual(s.show(), "Service Activated %s %s %s %s" %
                          (s.name, s.status, s.auth_required, s.description))
-        self.assertEqual(s.__unicode__(), s.name)
 
 
 class TriggerServiceTest(TestCase):
@@ -125,8 +123,6 @@ class TriggerServiceTest(TestCase):
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
-        self.assertEqual(t.__unicode__(), "%s %s " %
-                        (str(t.provider), t.consumer))
         self.assertEqual(t.show(), "My Service %s %s %s %s" %
                         (t.provider, t.consumer, t.description, t.user))
 

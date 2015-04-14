@@ -1,9 +1,11 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from django.db import models
 from django.db.models.signals import post_save
 from django.contrib.auth.models import User
+from django.utils.encoding import python_2_unicode_compatible
 
 
+@python_2_unicode_compatible
 class ServicesActivated(models.Model):
     """
         Services Activated from the admin
@@ -21,10 +23,11 @@ class ServicesActivated(models.Model):
         return "Service Activated %s %s %s %s" % (self.name, self.status,
                                                   self.auth_required, self.description)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.name)
 
 
+@python_2_unicode_compatible
 class UserProfile(models.Model):
     """
         Related user to handle his profile
@@ -34,10 +37,11 @@ class UserProfile(models.Model):
     def show(self):
         return "User profile %s" % (self.user_id)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.user)
 
 
+@python_2_unicode_compatible
 class UserService(models.Model):
     """
         UserService a model to link service and user
@@ -50,10 +54,11 @@ class UserService(models.Model):
     def show(self):
         return "User Service %s %s %s" % (self.user, self.token, self.name)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.name)
 
 
+@python_2_unicode_compatible
 class TriggerService(models.Model):
     """
         TriggerService
@@ -69,7 +74,7 @@ class TriggerService(models.Model):
     def show(self):
         return "My Service %s %s %s %s" % (self.provider, self.consumer, self.description, self.user)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s %s " % (self.provider, self.consumer)
 
 
