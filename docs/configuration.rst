@@ -80,7 +80,9 @@ Once the settings is done, enter the following command to sync the database
 
 .. code-block:: bash
 
-    python manage.py syncdb
+    python manage.py makemigrations django_th
+    python manage.py migrate
+
 
 
 Activate the services

@@ -25,6 +25,6 @@ Dependencies
 * Python 3.4
 * Python 2.7
 * Django >= 1.7
-* django-th-rss >= 0.3.0
-* django-th-pocket >= 0.2.0
+* django-th-rss >= 0.3.2
+* django-th-pocket >= 0.2.2
 * django-js-reverse == 0.3.3
