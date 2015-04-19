@@ -1,7 +1,7 @@
 Django>=1.8
 django-formtools==1.0
-django-th-rss>=0.3.0
-django-th-pocket>=0.2.0
+django-th-rss>=0.3.2
+django-th-pocket>=0.2.2
 arrow==0.4.2
 django-js-reverse==0.3.3
 trollius==1.0.2
