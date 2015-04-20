@@ -33,6 +33,7 @@ the model **th_dummy/models.py** :
 
 .. code-block:: python
 
+    @python_2_unicode_compatible
     class Dummy(Services):
 
         # put whatever you need  here
@@ -44,7 +45,7 @@ the model **th_dummy/models.py** :
         class Meta:
             app_label = 'django_th'
 
-        def __unicode__(self):
+        def __str__(self):
             return "%s" % (self.name)
 
         def show(self):
