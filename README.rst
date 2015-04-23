@@ -16,6 +16,7 @@ your own Readability or Pocket account and so on
 
 Description
 ===========
+
 The goal of this project is to be independant from any other solution like 
 IFTTT, CloudWork or others.
 
@@ -29,6 +30,7 @@ who permits to use a manager of tasks like "cron" and, of course Python.
 
 Requirements
 ============
+
 * Python 3.4.x, 2.7.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
@@ -38,6 +40,7 @@ Requirements
 
 Installation
 ============
+
 To get the project up and running, from your virtualenv, do:
 
 .. code:: system
@@ -64,6 +67,7 @@ to startup the database
 
 Parameters
 ==========
+
 As usual you will setup the database parameters.
 
 Important parts are the settings of the available services :
@@ -178,6 +182,7 @@ For example :
 
 Fire the Triggers :
 ===================
+
 Here are the available management commands :
 
 .. code:: python
@@ -221,5 +226,6 @@ http://trigger-happy.readthedocs.org/
 
 Blog posts :
 ============
+
 You can find all details of all existing services of the blog :
 http://www.foxmask.info/tag/TriggerHappy
