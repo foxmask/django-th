@@ -1,3 +1,29 @@
+.. image:: https://drone.io/github.com/foxmask/django-th/status.png
+    :target: https://drone.io/github.com/foxmask/django-th
+    :alt: DroneIo Status
+
+
+.. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
+    :target: https://travis-ci.org/foxmask/django-th
+    :alt: Travis Status
+
+.. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
+    :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
+    :alt: Documentation status
+
+.. image:: https://pypip.in/version/django-th/badge.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: Latest version
+
+.. image:: https://pypip.in/py_versions/django-th/badge.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: Supported Python versions
+
+.. image:: https://pypip.in/license/django-th/badge.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: License
+
+
 ====================
 Django Trigger Happy
 ====================
@@ -8,8 +34,6 @@ And instead of giving your credentials to them, become the owner of yours !
 For example a new RSS item is published, django-trigger-happy will be able to 
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
-
-.. image:: https://drone.io/github.com/foxmask/django-th/status.png
 
 .. image:: http://trigger-happy.eu/static/th_esb.png
 
@@ -218,10 +242,6 @@ Complete Documentation
 ======================
 
 http://trigger-happy.readthedocs.org/
-
-.. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
-   :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
-   :alt: Documentation Status
 
 
 Blog posts :
