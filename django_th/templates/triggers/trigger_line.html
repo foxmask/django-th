@@ -1,9 +1,9 @@
 {% load i18n %}
 {% load django_th_extras %}
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
-                <a class="btn btn-lg btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{{ title }} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{{ title }} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
-                <a class="btn btn-lg btn-{{ btn }}" data="{{ trigger.id }}" role="button" href="#" title="{{ title_trigger }}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-sm btn-{{ btn }}" data="{{ trigger.id }}" role="button" href="#" title="{{ title_trigger }}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
-                <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+                <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>

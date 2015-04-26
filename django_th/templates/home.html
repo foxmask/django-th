@@ -118,7 +118,7 @@
 <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).on("click","a.btn.btn-lg.btn-primary, a.btn.btn-lg.btn-success", function () {
+$(document).on("click","a.btn.btn-sm.btn-primary, a.btn.btn-sm.btn-success", function () {
     triggerId = $(this).attr('data')
     var request = $.ajax({
         url: Urls.trigger_on_off(triggerId),

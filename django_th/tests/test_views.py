@@ -1,10 +1,13 @@
 import unittest
 from django.test import RequestFactory
-from django_th.views import TriggerEditedTemplateView, TriggerDeletedTemplateView
-from django_th.views import UserServiceAddedTemplateView, UserServiceDeletedTemplateView
-from django_th.views import TriggerListView, UserServiceListView
-from django_th.views import TriggerDeleteView
 from django.contrib.auth.models import User
+
+from django_th.views import TriggerEditedTemplateView
+from django_th.views import TriggerDeletedTemplateView
+from django_th.views import TriggerListView
+from django_th.views_userservices import UserServiceAddedTemplateView
+from django_th.views_userservices import UserServiceDeletedTemplateView
+from django_th.views_userservices import UserServiceListView
 from django_th.models import TriggerService, UserService
 
 
@@ -23,7 +26,6 @@ class TriggerEditedTemplateViewTestCase(unittest.TestCase):
         self.assertEqual(
             response.template_name[0], 'triggers/thanks_trigger.html')
         self.assertEqual(response.context_data['sentence'], sentence)
-
 
 
 class TriggerDeletedTemplateViewTestCase(unittest.TestCase):
@@ -110,24 +112,18 @@ class UserServiceListViewTestCase(unittest.TestCase):
             nb_user_service = nb_service = 20
             if nb_user_service == nb_service:
                 context['action'] = 'hide'
-            else:
-                context['action'] = 'display'
-
-            if nb_user_service == nb_service:
                 self.assertEqual(context['action'], 'hide')
             else:
+                context['action'] = 'display'
                 self.assertEqual(context['action'], 'display')
 
             nb_user_service = 19
             nb_service = 20
             if nb_user_service == nb_service:
                 context['action'] = 'hide'
-            else:
-                context['action'] = 'display'
-
-            if nb_user_service == nb_service:
                 self.assertEqual(context['action'], 'hide')
             else:
+                context['action'] = 'display'
                 self.assertEqual(context['action'], 'display')
 
 
@@ -144,7 +140,7 @@ class TriggerListViewTestCase(unittest.TestCase):
 
     def test_context_data(self):
         """
-        TriggerListView.get_context_data() sets 
+        TriggerListView.get_context_data() sets
         'triggers_enabled', 'triggers_disabled', 'services_activated'
         in context.
         """

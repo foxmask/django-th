@@ -1,11 +1,16 @@
 language: python
-
 python:
-  - "2.7"
-  - "3.4"
-
+- '2.7'
+- '3.4'
 script:
-  - python manage.py test
-
+- python manage.py test
 install:
-  - pip install -r requirements.txt
+- pip install -r requirements.txt
+deploy:
+  provider: pypi
+  user: foxmask
+  password:
+    secure: SMBRrjUZ2kngOV89YkMyIh8W21CGa+9l6cvlnBXhmmuTt/jlx4sT2HHSzmIFAAsGYkatGj66AVibVsUaqoch2kIH75IOgww38PSgHP4KuqsDIm7xWCcHPSZfXSC3hi89/RwSzFeHCapVXKTW+EKO6FS9hesG6pSMYVTF6WCXnoQ=
+  on:
+    tags: true
+    repo: foxmask/django-th

@@ -1,19 +1,23 @@
 from django.conf.urls import patterns, include, url
+from django_th.forms.wizard import DummyForm, ProviderForm
+from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
+
+from django_th.views import TriggerListView, TriggerDeleteView
+from django_th.views import TriggerUpdateView, TriggerEditedTemplateView
+from django_th.views import TriggerDeletedTemplateView, trigger_on_off
+from django_th.views import trigger_switch_all_to, trigger_edit
+from django_th.views import service_related_triggers_switch_to
+
+from django_th.views_userservices import UserServiceListView
+from django_th.views_userservices import UserServiceCreateView
+from django_th.views_userservices import UserServiceDeleteView
+from django_th.views_userservices import UserServiceAddedTemplateView
+from django_th.views_userservices import UserServiceDeletedTemplateView
+from django_th.views_userservices import renew_service
+from django_th.views_wizard import UserServiceWizard
 
 from django.contrib import admin
 admin.autodiscover()
-
-from django_th.forms.wizard import DummyForm, ProviderForm, \
-    ConsumerForm, ServicesDescriptionForm
-
-from django_th.views import TriggerListView, TriggerDeleteView, \
-    TriggerUpdateView, \
-    TriggerEditedTemplateView, TriggerDeletedTemplateView, \
-    UserServiceWizard, UserServiceListView, \
-    UserServiceCreateView, UserServiceDeleteView, \
-    UserServiceAddedTemplateView, UserServiceDeletedTemplateView, \
-    trigger_on_off, trigger_switch_all_to, \
-    trigger_edit, renew_service, service_related_triggers_switch_to
 
 urlpatterns = \
     patterns('',
@@ -113,22 +117,22 @@ urlpatterns = \
              # and give the service_name value to use to
              # trigger the real callback
              url(r"^th/callbackevernote/$",
-                 "django_th.views.finalcallback",
+                 "django_th.views_wizard.finalcallback",
                  {'service_name': 'ServiceEvernote', },
                  name="evernote_callback",
                  ),
              url(r"^th/callbackpocket/$",
-                 "django_th.views.finalcallback",
+                 "django_th.views_wizard.finalcallback",
                  {'service_name': 'ServicePocket', },
                  name="pocket_callback",
                  ),
              url(r"^th/callbackreadability/$",
-                 "django_th.views.finalcallback",
+                 "django_th.views_wizard.finalcallback",
                  {'service_name': 'ServiceReadability', },
                  name="readability_callback",
                  ),
              url(r"^th/callbacktwitter/$",
-                 "django_th.views.finalcallback",
+                 "django_th.views_wizard.finalcallback",
                  {'service_name': 'ServiceTwitter', },
                  name="twitter_callback",
                  ),
