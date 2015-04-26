@@ -156,24 +156,19 @@ def trigger_edit(request, trigger_id, edit_what):
     template_name = service_name.lower() + '/edit_' + \
         edit_what.lower() + ".html"
 
+    if edit_what == 'Consumer':
+        my_service = service.consumer.name.name
+    else:
+        my_service = service.provider.name.name
+
     if request.method == 'POST':
-        if edit_what == 'Consumer':
-            form = get_service(
-                service.consumer.name.name, 'forms', edit_what + 'Form')(
-                request.POST, instance=data)
-        else:
-            form = get_service(
-                service.provider.name.name, 'forms', edit_what + 'Form')(
-                request.POST, instance=data)
+        form = get_service(my_service, 'forms', edit_what + 'Form')(
+            request.POST, instance=data)
 
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
-        if edit_what == 'Consumer':
-            my_service = service.consumer.name.name
-        else:
-            my_service = service.provider.name.name
         form = get_service(my_service, 'forms',
                            edit_what + 'Form')(instance=data)
 
