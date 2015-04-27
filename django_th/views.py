@@ -136,44 +136,37 @@ def trigger_edit(request, trigger_id, edit_what):
         #bad request
         return redirect('base')
 
+    form_name = edit_what + 'Form'
+
     # get the trigger object
     service = TriggerService.objects.get(id=trigger_id)
-
-    if edit_what == 'Consumer':
-        # get the service name
-        service_name = str(service.consumer.name.name).split('Service')[1]
-        # get the model of this service
-        model = get_service(service.consumer.name.name)
-    else:
-        # get the service name
-        service_name = str(service.provider.name.name).split('Service')[1]
-        # get the model of this service
-        model = get_service(service.provider.name.name)
-
-    # get the data of this service linked to that trigger
-    data = model.objects.get(trigger_id=trigger_id)
-
-    template_name = service_name.lower() + '/edit_' + \
-        edit_what.lower() + ".html"
 
     if edit_what == 'Consumer':
         my_service = service.consumer.name.name
     else:
         my_service = service.provider.name.name
 
-    if request.method == 'POST':
-        form = get_service(my_service, 'forms', edit_what + 'Form')(
-            request.POST, instance=data)
+    # get the service name
+    service_name = str(my_service).split('Service')[1]
+    # get the model of this service
+    model = get_service(my_service)
 
+    # get the data of this service linked to that trigger
+    data = model.objects.get(trigger_id=trigger_id)
+
+    template = service_name.lower() + '/edit_' + edit_what.lower() + ".html"
+
+    if request.method == 'POST':
+        form = get_service(my_service, 'forms', form_name)(request.POST,
+                                                           instance=data)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))
     else:
-        form = get_service(my_service, 'forms',
-                           edit_what + 'Form')(instance=data)
+        form = get_service(my_service, 'forms', form_name)(instance=data)
 
     context = {'description': service.description, 'edit_what': edit_what}
-    return render(request, template_name, {'form': form, 'context': context})
+    return render(request, template, {'form': form, 'context': context})
 
 
 class TriggerListView(ListView):
@@ -187,17 +180,16 @@ class TriggerListView(ListView):
     paginate_by = 3
 
     def get_queryset(self):
-        trigger_filtered_by = None
+        filtered_by = None
         # by default, sort by date_created
-        trigger_ordered_by = (str('-date_created'), )
+        ordered_by = (str('-date_created'), )
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
             # if the user selected a filter, get its ID
             if 'trigger_filtered_by' in self.kwargs:
-                user_service = UserService.objects.filter(
+                filtered_by = UserService.objects.filter(
                     user=self.request.user,
-                    name=self.kwargs['trigger_filtered_by'])
-                trigger_filtered_by = user_service[0].id
+                    name=self.kwargs['trigger_filtered_by'])[0].id
 
             if 'trigger_ordered_by' in self.kwargs:
                 """
@@ -206,13 +198,13 @@ class TriggerListView(ListView):
                 order_by = str(self.kwargs['trigger_ordered_by'] + "__name")
                 # append to the tuple, the selected 'trigger_ordered_by'
                 # choosen in the dropdown
-                trigger_ordered_by = (order_by, ) + trigger_ordered_by
+                ordered_by = (order_by, ) + ordered_by
 
             # no filter selected
-            if trigger_filtered_by is None:
+            if filtered_by is None:
                 return self.queryset.filter(user=self.request.user).order_by(
-                    *trigger_ordered_by).select_related('consumer__name',
-                                                        'provider__name')
+                    *ordered_by).select_related('consumer__name',
+                                                'provider__name')
 
             # filter selected : display all related triggers
             else:
@@ -221,10 +213,10 @@ class TriggerListView(ListView):
                 # 2) get the triggers where the provider OR the consumer match
                 # the selected service
                 return self.queryset.filter(user=self.request.user).filter(
-                    Q(provider=trigger_filtered_by) |
-                    Q(consumer=trigger_filtered_by)).order_by(
-                    *trigger_ordered_by).select_related('consumer__name',
-                                                        'provider__name')
+                    Q(provider=filtered_by) |
+                    Q(consumer=filtered_by)).order_by(
+                    *ordered_by).select_related('consumer__name',
+                                                'provider__name')
         # otherwise return nothing when user is not connected
         return TriggerService.objects.none()
 

@@ -5,6 +5,7 @@ import importlib
     Simple utility functions
 """
 
+
 def class_for_name(module_name, class_name):
     """
         Import a class dynamically
