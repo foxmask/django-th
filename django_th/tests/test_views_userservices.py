@@ -8,14 +8,14 @@ from django_th.views_userservices import UserServiceListView
 from django_th.models import UserService
 from django_th.tests.test_views import setup_view
 
+
 class UserServiceAddedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template_name = 'services/thanks_service.html'
+        template = 'services/thanks_service.html'
         # Setup request and view.
         request = RequestFactory().get('/th/service/add/thanks')
-        view = UserServiceAddedTemplateView.as_view(
-            template_name=template_name)
+        view = UserServiceAddedTemplateView.as_view(template_name=template)
         sentence = 'Your service has been successfully created'
         # Run.
         response = view(request)
@@ -29,11 +29,10 @@ class UserServiceAddedTemplateViewTestCase(unittest.TestCase):
 class UserServiceDeletedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template_name = 'services/thanks_service.html'
+        template = 'services/thanks_service.html'
         # Setup request and view.
         request = RequestFactory().get('/th/service/delete/thanks')
-        view = UserServiceDeletedTemplateView.as_view(
-            template_name=template_name)
+        view = UserServiceDeletedTemplateView.as_view(template_name=template)
         sentence = 'Your service has been successfully deleted'
         # Run.
         response = view(request)
@@ -72,12 +71,16 @@ class UserServiceListViewTestCase(unittest.TestCase):
 
         if request.user.is_authenticated():
             nb_user_service = nb_service = 20
-            context, action = self.get_action_context(context, nb_user_service, nb_service)
+            context, action = self.get_action_context(context,
+                                                      nb_user_service,
+                                                      nb_service)
             self.assertEqual(context['action'], action)
 
             nb_user_service = 19
             nb_service = 20
-            context, action = self.get_action_context(context, nb_user_service, nb_service)
+            context, action = self.get_action_context(context,
+                                                      nb_user_service,
+                                                      nb_service)
             self.assertEqual(context['action'], action)
 
     def get_action_context(self, context, nb_user_service, nb_service):

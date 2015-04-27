@@ -11,35 +11,34 @@ from django_th.models import TriggerService
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template_name = "triggers/thanks_trigger.html"
+        template = "triggers/thanks_trigger.html"
         # Setup request and view.
         request = RequestFactory().get('/th/trigger/edit/thanks')
-        view = TriggerEditedTemplateView.as_view(template_name=template_name)
+        view = TriggerEditedTemplateView.as_view(template_name=template)
         sentence = 'Your trigger has been successfully modified'
         # Run.
         response = view(request)
         # Check.
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.template_name[0], 'triggers/thanks_trigger.html')
+        self.assertEqual(response.template_name[0],
+                         'triggers/thanks_trigger.html')
         self.assertEqual(response.context_data['sentence'], sentence)
 
 
 class TriggerDeletedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template_name = "triggers/thanks_trigger.html"
+        template = "triggers/thanks_trigger.html"
         # Setup request and view.
         request = RequestFactory().get('/th/trigger/delete/thanks')
-        view = TriggerDeletedTemplateView.as_view(
-            template_name=template_name)
+        view = TriggerDeletedTemplateView.as_view(template_name=template)
         sentence = 'Your trigger has been successfully deleted'
         # Run.
         response = view(request)
         # Check.
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.template_name[0], 'triggers/thanks_trigger.html')
+        self.assertEqual(response.template_name[0],
+                         'triggers/thanks_trigger.html')
         self.assertEqual(response.context_data['sentence'], sentence)
 
 
@@ -61,9 +60,7 @@ class TriggerListViewTestCase(unittest.TestCase):
         in context.
         """
         # Setup name.
-        triggers_enabled = 0
-        triggers_disabled = 0
-        services_activated = 0
+        triggers_enabled = triggers_disabled = services_activated = 0
         queryset = TriggerService.objects.all()
 
         # Setup request and view.

@@ -44,8 +44,8 @@ class UserServiceTest(TestCase):
     def test_userservice(self):
         u = self.create_userservice()
         self.assertTrue(isinstance(u, UserService))
-        self.assertEqual(u.show(), "User Service %s %s %s" %
-                        (u.user, u.token, u.name))
+        self.assertEqual(u.show(), "User Service %s %s %s" % (u.user, u.token,
+                                                              u.name))
 
     """
         Form - works with python 2.7.x - fails with python 3.4.0
@@ -72,9 +72,11 @@ class ServicesActivatedTest(TestCase):
     """
         ServicesActivated Model
     """
-    def create_servicesactivated(self, name='ServiceRss', status=True,
-                                 auth_required=False,
-                                 description='RSS Feeds Service'):
+    def create_servicesactivated(self):
+        name = 'ServiceRss'
+        status = True
+        auth_required = False
+        description = 'RSS Feeds Service'
         return ServicesActivated.objects.create(name=name, status=status,
                                                 auth_required=auth_required,
                                                 description=description)
@@ -123,8 +125,10 @@ class TriggerServiceTest(TestCase):
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
-        self.assertEqual(t.show(), "My Service %s %s %s %s" %
-                        (t.provider, t.consumer, t.description, t.user))
+        self.assertEqual(t.show(), "My Service %s %s %s %s" % (t.provider,
+                                                               t.consumer,
+                                                               t.description,
+                                                               t.user))
 
     """
         Form
