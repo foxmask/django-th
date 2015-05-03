@@ -18,7 +18,8 @@ class HtmlEntities:
             decode html entity into one of the html char
         """
         try:
-            return "&" + defs[m.group(1)] + ";"
+            char = defs[m.group(1)] + ";"
+            return "&{char};".format(char=char)
         except KeyError:
             return m.group(0)
 
@@ -28,7 +29,8 @@ class HtmlEntities:
             decode html entity into one of the codepoint2name
         """
         try:
-            return "&" + defs[int(m.group(1))] + ";"
+            char = defs[m.group(1)] + ";"
+            return "&{char};".format(char=char)
         except KeyError:
             return m.group(0)
 
