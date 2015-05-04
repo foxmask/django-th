@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from __future__ import unicode_literals
 
 import datetime
@@ -35,10 +35,10 @@ class Command(BaseCommand):
         my_date_time = None
 
         if 'published_parsed' in data:
-            my_date_time = datetime.datetime.fromtimestamp(
+            my_date_time = datetime.datetime.utcfromtimestamp(
                 time.mktime(data.published_parsed))
         elif 'updated_parsed' in data:
-            my_date_time = datetime.datetime.fromtimestamp(
+            my_date_time = datetime.datetime.utcfromtimestamp(
                 time.mktime(data.updated_parsed))
         elif 'my_date' in data:
             my_date_time = arrow.get(str(data['my_date']),
