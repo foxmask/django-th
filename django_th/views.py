@@ -29,9 +29,9 @@ default_provider.load_services()
    Part I : Trigger Part
 """
 
-#************************
-# FBV : simple actions  *
-#************************
+# ************************
+#  FBV : simple actions  *
+# ************************
 
 
 def logout_view(request):
@@ -133,7 +133,7 @@ def trigger_edit(request, trigger_id, edit_what):
         :type edit_what: string
     """
     if edit_what not in ('Provider', 'Consumer'):
-        #bad request
+        # bad request
         return redirect('base')
 
     form_name = edit_what + 'Form'
@@ -146,7 +146,7 @@ def trigger_edit(request, trigger_id, edit_what):
     else:
         my_service = service.provider.name.name
 
-    # get the service name
+    # get the service name
     service_name = str(my_service).split('Service')[1]
     # get the model of this service
     model = get_service(my_service)
@@ -181,7 +181,7 @@ class TriggerListView(ListView):
 
     def get_queryset(self):
         filtered_by = None
-        # by default, sort by date_created
+        # by default, sort by date_created
         ordered_by = (str('-date_created'), )
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
@@ -209,7 +209,7 @@ class TriggerListView(ListView):
             # filter selected : display all related triggers
             else:
                 # here the queryset will do :
-                # 1) get trigger of the connected user AND
+                # 1) get trigger of the connected user AND
                 # 2) get the triggers where the provider OR the consumer match
                 # the selected service
                 return self.queryset.filter(user=self.request.user).filter(
@@ -314,4 +314,3 @@ class TriggerDeletedTemplateView(TemplateView):
             get_context_data(**kw)
         context['sentence'] = 'Your trigger has been successfully deleted'
         return context
-

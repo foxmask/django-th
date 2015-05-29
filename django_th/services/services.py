@@ -9,7 +9,7 @@ class ServicesMgr(object):
     data = {}
 
     def __unicode__(self):
-        return "%s" % (self.name)
+        return "%s" % self.name
 
     def set_title(self, string):
         self.title = string

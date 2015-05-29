@@ -16,7 +16,6 @@ logger = getLogger('django_th.trigger_happy')
 
 
 class Command(BaseCommand):
-
     help = 'Trigger all the services'
 
     def update_trigger(self, service):
@@ -69,7 +68,7 @@ class Command(BaseCommand):
                 service_consumer = default_provider.get_service(service_name)
 
                 # check if the service has already been triggered
-                # if date_triggered is None, then it's the first run
+                # if date_triggered is None, then it's the first run
                 if service.date_triggered is None:
                     logger.debug("first run for %s => %s " % (str(
                         service.provider.name),
@@ -90,9 +89,9 @@ class Command(BaseCommand):
 
                     # 2) for each one
                     for data in datas:
-                        # if in a pool of data once of them does not have
-                        # a date, will take the previous date for this one
-                        # if it's the first one, set it to 00:00:00
+                        #  if in a pool of data once of them does not have
+                        #  a date, will take the previous date for this one
+                        #  if it's the first one, set it to 00:00:00
 
                         # let's try to determine the date contained in
                         # the data...
@@ -102,9 +101,9 @@ class Command(BaseCommand):
                             # get the published date of the provider
                             published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                             # store the date for the next loop
-                            # if published became 'None'
+                            #  if published became 'None'
                             which_date = published
-                        #... otherwise set it to 00:00:00 of the current date
+                        # ... otherwise set it to 00:00:00 of the current date
                         if which_date == '':
                             # current date
                             which_date = arrow.utcnow().replace(hour=0, minute=0, second=0).to(settings.TIME_ZONE)
@@ -112,21 +111,21 @@ class Command(BaseCommand):
                         if published is None and which_date != '':
                             published = which_date
                         # 3) check if the previous trigger is older than the
-                        # date of the data we retrieved
-                        # if yes , process the consumer
+                        #  date of the data we retrieved
+                        #  if yes , process the consumer
 
                         # add the TIME_ZONE settings
                         # to localize the current date
-                        date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                        date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(
+                            settings.TIME_ZONE)
 
                         # if the published date if greater or equal to the last
                         # triggered event ... :
-                        if date_triggered is not None and \
-                           published is not None and \
-                           published >= date_triggered:
+                        if date_triggered is not None and published is not None and published >= date_triggered:
 
                             if 'title' in data:
-                                logger.info("date {} >= date triggered {} title {}".format(published, date_triggered, data['title']))
+                                logger.info("date {} >= date triggered {} title {}".format(published, date_triggered,
+                                                                                           data['title']))
                             else:
                                 logger.info("date {} >= date triggered {} ".format(published, date_triggered))
 

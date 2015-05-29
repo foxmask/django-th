@@ -26,11 +26,6 @@ class UserServiceForm(forms.ModelForm):
     """
         Form to deal with my own activated service
     """
-    def save(self, user=None):
-        self.myobject = super(UserServiceForm, self).save(commit=False)
-        self.myobject.user = user
-        self.myobject.save()
-
     def activated_services(self, user):
         """
             get the activated services added from the administrator
@@ -43,8 +38,8 @@ class UserServiceForm(forms.ModelForm):
             if UserService.objects.filter(name__exact=class_name.name,
                                           user__exact=user):
                 continue
-            else:
             # 2nd array position contains the name of the service
+            else:
                 data = (class_name.name, class_name.name.rsplit('Service', 1)[1])
                 all_datas = (data,) + all_datas
         return all_datas
@@ -55,6 +50,11 @@ class UserServiceForm(forms.ModelForm):
         self.fields['name'].choices = self.activated_services(
             self.initial['user'])
         self.fields['name'].widget.attrs['class'] = 'form-control'
+
+    def save(self, user=None):
+        self.myobject = super(UserServiceForm, self).save(commit=False)
+        self.myobject.user = user
+        self.myobject.save()
 
     class Meta:
         """

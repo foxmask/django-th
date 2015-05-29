@@ -17,6 +17,7 @@ default_provider.load_services()
    Part II : User Service
 """
 
+
 def renew_service(request, pk):
     """
         renew an existing service
@@ -99,8 +100,8 @@ class UserServiceCreateView(CreateView):
 
         return HttpResponseRedirect(reverse('service_add_thanks'))
 
-    def get_form_kwargs(self, **kwargs):
-        kwargs = super(UserServiceCreateView, self).get_form_kwargs(**kwargs)
+    def get_form_kwargs(self):
+        kwargs = super(UserServiceCreateView, self).get_form_kwargs()
         kwargs['initial']['user'] = self.request.user
         return kwargs
 

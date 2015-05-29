@@ -14,7 +14,7 @@
     <!-- Optional theme -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <!--link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}" type="text/css" media="screen" /-->
-    <link rel="stylesheet" href="{% static "css/th.css" %}" type="text/css" media="screen" />
+    <link rel="stylesheet" href="{% static 'css/th.css' %}" type="text/css" media="screen" />
     <!--link rel="stylesheet" href="{% static "bootstrap/css/bootstrap-responsive.min.css" %}" type="text/css" media="screen" /-->
     <meta name="author" content="FoxMaSk">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -36,40 +36,39 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'base' %}" title="{% trans "Home" %}">Trigger Happy</a>
+                <a class="navbar-brand" href="{% url 'base' %}" title="{% trans 'Home' %}">Trigger Happy</a>
             </div>
             <div class="navbar-collapse collapse">            
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
                     <li>
-                        <a href="{% url 'base' %}" title="{% trans "Home" %}"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a>
+                        <a href="{% url 'base' %}" title="{% trans 'Home' %}"><span class="glyphicon glyphicon-home"></span>&nbsp;&nbsp;Home</a>
                     </li>
                     <li>
                         {% if nb_services > 1 %}
-                            <a href="{% url 'create_service' %}" title="{% trans "Create a new trigger" %}">
+                            <a href="{% url 'create_service' %}" title="{% trans 'Create a new trigger' %}"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add trigger</a>
                         {% else %}
-                            <a href="#" title="You can't create a new trigger until 2 services are activated">
+                            <a href="#" title="{% trans 'You can not create a new trigger until 2 services are activated' %}"><span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add trigger</a>
                         {% endif %}
-                        <span class="glyphicon glyphicon-plus"></span>&nbsp;&nbsp;Add trigger</a>
                     </li>
                     <li>
-                        <a href="{% url 'user_services' %}" title="{% trans "List of your own activated services" %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
+                        <a href="{% url 'user_services' %}" title="{% trans 'List of your own activated services' %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
                     </li>
                     {% block filter_trigger %}
                         {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
                     {% endblock %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" title="{% trans "Order by..." %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
+                        <a class="dropdown-toggle" title="{% trans 'Order by...' %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
                         <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">                        
-                            <li role="presentation"><a role="menuitem" title="{% trans "Sort by " %}" href="{% url 'trigger_order_by' 'provider' %}">{% trans "Service Provider" %}</a></li>
-                            <li role="presentation"><a role="menuitem" title="{% trans "Sort by " %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
+                            <li role="presentation"><a role="menuitem" title="{% trans 'Sort by ' %}" href="{% url 'trigger_order_by' 'provider' %}">{% trans "Service Provider" %}</a></li>
+                            <li role="presentation"><a role="menuitem" title="{% trans 'Sort by ' %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
                         </ul>
                     </li>
                     {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'logout' %}" title="{% trans "log out" %}"><span class="glyphicon glyphicon-off"></span></a>
+                        <a href="{% url 'logout' %}" title="{% trans 'log out' %}"><span class="glyphicon glyphicon-off"></span></a>
                     </li>
                 </ul>
                 {% endif %}

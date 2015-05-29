@@ -16,17 +16,16 @@ default_provider.load_services()
 
 
 class UserServiceWizard(SessionWizardView):
-
     def get_template_names(self):
         # name to find template :
-        #form_name/wz-step-form.html
-        #the form_name should be formed by the name of the service + form
-        #for example :
-        #rss/wz-1-form.html
-        #rss/wz-3-form.html
-        #evernote/wz-1-form.html
-        #evernote/wz-3-form.html
-        if self.steps.current in('0', '2', '4'):
+        # form_name/wz-step-form.html
+        # the form_name should be formed by the name of the service + form
+        # for example :
+        # rss/wz-1-form.html
+        # rss/wz-3-form.html
+        # evernote/wz-1-form.html
+        # evernote/wz-3-form.html
+        if self.steps.current in ('0', '2', '4'):
             folder = 'services_wizard'
         else:
             data = self.get_cleaned_data_for_step(self.get_prev_step(

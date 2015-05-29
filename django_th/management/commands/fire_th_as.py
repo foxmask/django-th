@@ -38,7 +38,6 @@ def to_datetime(data):
 
 
 class Command(BaseCommand):
-
     @asyncio.coroutine
     def update_trigger(self, service):
         """
@@ -99,18 +98,18 @@ class Command(BaseCommand):
             # flag to know if we can push data to the consumer
 
             # 2) for each one
-            # if in a pool of data once of them does not have
-            # a date, will take the previous date for this one
-            # if it's the first one, set it to 00:00:00
+            #  if in a pool of data once of them does not have
+            #  a date, will take the previous date for this one
+            #  if it's the first one, set it to 00:00:00
             # let's try to determine the date contained in the data...
             published = to_datetime(data)
             if published is not None:
                 # get the published date of the provider
                 published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                 # store the date for the next loop
-                # if published became 'None'
+                #  if published became 'None'
                 which_date = published
-            #... otherwise set it to 00:00:00 of the current date
+            # ... otherwise set it to 00:00:00 of the current date
             if which_date == '':
                 # current date
                 which_date = arrow.utcnow().replace(
@@ -119,8 +118,8 @@ class Command(BaseCommand):
             if published is None and which_date != '':
                 published = which_date
             # 3) check if the previous trigger is older than the
-            # date of the data we retreived
-            # if yes , process the consumer
+            #  date of the data we retreived
+            #  if yes , process the consumer
 
             # add the TIME_ZONE settings
             my_date_triggered = arrow.get(
@@ -128,9 +127,7 @@ class Command(BaseCommand):
 
             # if the published date if greater or equal to the last
             # triggered event ... :
-            if date_triggered is not None and \
-               published is not None and \
-               published >= date_triggered:
+            if date_triggered is not None and published is not None and published >= date_triggered:
 
                 if 'title' in data:
                     logger.info("date {} >= date triggered {} title {}".format(

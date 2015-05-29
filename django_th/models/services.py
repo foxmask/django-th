@@ -11,7 +11,7 @@ class Services(models.Model):
     description = models.CharField(max_length=255)
 
     def __unicode__(self):
-        return "%s" % (self.name)
+        return "%s" % self.name
 
     def show(self):
         return "Services Model %s %s %s " % (self.name, self.status, self.description)

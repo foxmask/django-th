@@ -24,7 +24,7 @@ class ServicesActivated(models.Model):
                                                   self.auth_required, self.description)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s" % self.name
 
 
 @python_2_unicode_compatible
@@ -35,10 +35,10 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User)
 
     def show(self):
-        return "User profile %s" % (self.user_id)
+        return "User profile %s" % self.user_id
 
     def __str__(self):
-        return "%s" % (self.user)
+        return "%s" % self.user
 
 
 @python_2_unicode_compatible
@@ -55,7 +55,7 @@ class UserService(models.Model):
         return "User Service %s %s %s" % (self.user, self.token, self.name)
 
     def __str__(self):
-        return "%s" % (self.name)
+        return "%s" % self.name
 
 
 @python_2_unicode_compatible

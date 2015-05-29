@@ -12,7 +12,7 @@
             {% if services_list %}
                 {% if action == 'display' %}
                 <div class="col-md-11">
-                    <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans "Activate a new service" %}">{% trans 'Activate a new service' %}</a> 
+                    <a class="btn btn-primary" href="{% url 'add_service' %}" title="{% trans 'Activate a new service' %}">{% trans 'Activate a new service' %}</a>
                 </div>
                 {% endif %}
                 <div class="row-fluid">
@@ -25,11 +25,11 @@
                                     <p>{{ service.name.description }}</p>
                                     <p>
                                         {% if service.name.auth_required == True %}
-                                            <a class="btn btn-xs btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans "Renew this service ?" %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a>
+                                            <a class="btn btn-xs btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans 'Renew this service ?' %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a>
                                         {% endif %}
-                                        <a class="btn btn-xs btn-success" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'off' %}" title="{% trans "Disable all the triggers of this service" %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
-                                        <a class="btn btn-xs btn-info" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'on' %}" title="{% trans "Enable all the triggers of this service" %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
-                                        <a class="btn btn-xs btn-danger" role="button" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a>
+                                        <a class="btn btn-xs btn-success" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'off' %}" title="{% trans 'Disable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                                        <a class="btn btn-xs btn-info" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'on' %}" title="{% trans 'Enable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                                        <a class="btn btn-xs btn-danger" role="button" href="{% url 'delete_service' service.id %}" title="{% trans 'Delete this service ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a>
                                     </p>
                                 </div>
                             </div>
@@ -41,7 +41,7 @@
                 <article>
                     <div class="col-md-8">
                         {% trans 'No service activated yet, you can now start by' %} 
-                        <a href="{% url 'add_service' %}" title="{% trans "Activate a service" %}">{% trans 'Activate one' %}</a> 
+                        <a href="{% url 'add_service' %}" title="{% trans 'Activate a service' %}">{% trans 'Activate one' %}</a>
                     </div>
                 </article>
                 <div class="row-fluid">
@@ -53,7 +53,7 @@
                                     <h3>{{ service.name|service_readable|safe|escape }}</h3>
                                     <p>{{ service.name.description }}</p>
                                     <p>
-                                        <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_service' service.id %}" title="{% trans "Delete this service ?" %}"><i span class="glyphicon glyphicon-trash icon-white"></span>/a> {% if service.name.auth_required == True %} <a class="btn btn-lg btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans "Renew this service ?" %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a> {% endif %}
+                                        <a class="btn btn-lg btn-danger" role="button" href="{% url 'delete_service' service.id %}" title="{% trans 'Delete this service ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a> {% if service.name.auth_required == True %} <a class="btn btn-lg btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans 'Renew this service ?' %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a> {% endif %}
                                     </p>
                                 </div>
                             </div>

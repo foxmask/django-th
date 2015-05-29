@@ -1,6 +1,6 @@
 # sample for dev purpose
-# to be used by the command :
-# python manage.py --settings=my_app.local_settings
+# to be used by the command :
+# python manage.py --settings=my_app.local_settings
 from .settings import *
 
 DEBUG = True

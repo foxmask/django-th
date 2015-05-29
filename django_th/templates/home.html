@@ -18,7 +18,7 @@
                 <span class="label label-info">{{ nb_triggers.enabled }}</span> {%  trans "enabled" %} <span class="label label-default">{% trans "triggers" %}</span>
                 <span class="label label-warning">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} <span class="label label-default">{% trans "triggers" %}</span>
                 <hr/>
-                {% trans "Actions" %} : <a href="{% url 'trigger_switch_all_to' 'off' %}" title="{% trans "this action will set all the triggers off"%}">{% trans "Mark all Off" %}</a> - <a href="{% url 'trigger_switch_all_to' 'on' %}" title="{% trans "this action will set all the triggers on"%}">{% trans "Mark all On" %}</a>
+                {% trans "Actions" %} : <a href="{% url 'trigger_switch_all_to' 'off' %}" title="{% trans 'this action will set all the triggers off' %}">{% trans "Mark all Off" %}</a> - <a href="{% url 'trigger_switch_all_to' 'on' %}" title="{% trans 'this action will set all the triggers on' %}">{% trans 'Mark all On' %}</a>
             </div>
         </div>
     {% if triggers_list %}
@@ -57,7 +57,7 @@
                 <a class="btn btn-sm btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
                 {% endif %}
-                <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans "Delete this trigger ?" %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+                <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
 
                 </div>
             </div>

@@ -18,7 +18,7 @@ class UserProfileTest(TestCase):
     def test_userprofile(self):
         u = self.create_userprofile()
         self.assertTrue(isinstance(u, UserProfile))
-        self.assertEqual(u.show(), "User profile %s" % (u.user_id))
+        self.assertEqual(u.show(), "User profile %s" % u.user_id)
 
 
 class UserServiceTest(TestCase):
