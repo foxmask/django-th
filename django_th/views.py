@@ -233,6 +233,18 @@ class TriggerListView(ListView):
         triggers_enabled = triggers_disabled = services_activated = ()
 
         context = super(TriggerListView, self).get_context_data(**kw)
+
+        if 'trigger_filtered_by' in self.kwargs:
+            page_link = reverse('trigger_filter_by',
+                                kwargs={'trigger_filtered_by':
+                                        self.kwargs['trigger_filtered_by']})
+        elif 'trigger_ordered_by' in self.kwargs:
+            page_link = reverse('trigger_order_by',
+                                kwargs={'trigger_ordered_by':
+                                        self.kwargs['trigger_ordered_by']})
+        else:
+            page_link = reverse('home')
+
         if self.request.user.is_authenticated():
             # get the enabled triggers
             triggers_enabled = TriggerService.objects.filter(
@@ -260,6 +272,8 @@ class TriggerListView(ListView):
             Number of services activated
         """
         context['nb_services'] = services_activated
+
+        context['page_link'] = page_link
 
         return context
 
