@@ -40,12 +40,11 @@
         </div>
         {% endif %}
         {% for trigger in triggers_list %}
-        <div class="trigger-record col-md-12">
+        <div id="trigger-record-{{ trigger.id }}"class="trigger-record col-md-12">
             <div class="col-md-8 col-sm-6 trigger-text">
                 <h3><a href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} ">{{ trigger.description|safe|escape }}</a></h3>
             </div>
             <div class="col-md-4 col-sm-6 trigger-button">            
-                <div id="all-actions{{ trigger.id }}">
 
                 <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
@@ -59,7 +58,6 @@
                 {% endif %}
                 <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
 
-                </div>
             </div>
             <footer>
                 <div class="col-md-12">
@@ -127,7 +125,7 @@ $(document).on("click","a.btn.btn-sm.btn-primary, a.btn.btn-sm.btn-success", fun
         success: showResponse,
     });
     function showResponse(response) {
-        $('#all-actions'+triggerId).html(response);
+        $('#trigger-record-'+triggerId).html(response);
     }
 });
 //]]>

@@ -1,9 +1,39 @@
 {% load i18n %}
 {% load django_th_extras %}
-                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+                <!--a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{{ title }} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
                 <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{{ title }} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
 
                 <a class="btn btn-sm btn-{{ btn }}" data="{{ trigger.id }}" role="button" href="#" title="{{ title_trigger }}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
+                <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/-->
+
+
+            <div class="col-md-8 col-sm-6 trigger-text">
+                <h3><a href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} ">{{ trigger.description|safe|escape }}</a></h3>
+            </div>
+            <div class="col-md-4 col-sm-6 trigger-button">
+
+                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+
+                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+                
+                {% if trigger.status %}
+                <a class="btn btn-sm btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                {% else %}
+                <a class="btn btn-sm btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+
+                {% endif %}
                 <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+
+            </div>
+            <footer>
+                <div class="col-md-12">
+                    <p>
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Created" %}&nbsp;{{ trigger.date_created }}
+                        &nbsp;-&nbsp;
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
+                    </p>
+                </div>
+            </footer>
+

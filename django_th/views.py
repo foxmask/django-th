@@ -1,5 +1,8 @@
 # coding: utf-8
 from __future__ import unicode_literals
+
+import arrow
+from django.conf import settings
 from django.shortcuts import render, redirect
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
@@ -48,6 +51,7 @@ def trigger_on_off(request, trigger_id):
         :param trigger_id: the trigger ID to switch the status to True or False
         :type trigger_id: int
     """
+    now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
         title = 'disabled'
@@ -59,6 +63,9 @@ def trigger_on_off(request, trigger_id):
         title_trigger = _('Set this trigger off')
         btn = 'primary'
         trigger.status = True
+        # set the trigger to the current date when the
+        # the trigger is back online
+        trigger.date_triggered = now
     trigger.save()
 
     return render(request, 'triggers/trigger_line.html',
@@ -96,12 +103,17 @@ def trigger_switch_all_to(request, switch):
         :param switch: the switch value
         :type switch: string off or on
     """
+    now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
     status = True
     if switch == 'off':
         status = False
     triggers = TriggerService.objects.all()
     for trigger in triggers:
         trigger.status = status
+        # set the trigger to the current date when the
+        # the trigger is back online
+        if status:
+            trigger.date_triggered = now
         trigger.save()
 
     return HttpResponseRedirect(reverse('base'))
