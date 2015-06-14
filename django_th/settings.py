@@ -1,5 +1,6 @@
 # Django settings for django_th project.
 import os
+from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -118,10 +119,11 @@ INSTALLED_APPS = (
     'th_pocket',
 
     'django_js_reverse',
+    'redisboard',
 
     # Uncomment the next line to enable the service:
-    #'evernote', # then do pip install evernote
-    #'th_evernote',
+    # 'evernote', # then do pip install evernote
+    # 'th_evernote',
 
     # Uncomment the next line to enable the service:
     # 'th_twitter', #then do pip install python-twitter
@@ -197,7 +199,6 @@ LOGGING = {
 AUTH_PROFILE_MODULE = 'django_th.UserProfile'
 
 # go back on home page after logged in
-from django.core.urlresolvers import reverse_lazy
 LOGIN_REDIRECT_URL = reverse_lazy('base')
 
 CACHES = {
@@ -210,39 +211,85 @@ CACHES = {
             'MAX_ENTRIES': 1000
         }
     },
-    'rss':
+    # Evernote Cache
+    'th_evernote':
     {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': BASE_DIR + '/cache/rss/',
-        'TIMEOUT': 3600,
-        'OPTIONS': {
-            'MAX_ENTRIES': 1000
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 1,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
         }
-    }
+    },
+    # Pocket Cache
+    'th_pocket':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 2,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
+    # Readablity Cache
+    'th_readability':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 6,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
+    # RSS Cache
+    'th_rss':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 3,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
+    # Twitter Cache
+    'th_twitter':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 4,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
 }
 
-
 TH_SERVICES = (
-    #comment the line to disable the service you dont want
+    # comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
-    #uncomment the next lines you want, once you've uncommented the line in INSTALLED_APPS
-    #'th_evernote.my_evernote.ServiceEvernote',
-    #'th_readability.my_readability.ServiceReadability',
-    #'th_twitter.my_twitter.ServiceTwitter',
+    # uncomment the next lines you want,
+    # once you've uncommented the line in INSTALLED_APPS
+    # 'th_evernote.my_evernote.ServiceEvernote',
+    # 'th_readability.my_readability.ServiceReadability',
+    # 'th_twitter.my_twitter.ServiceTwitter',
 )
 
 
 TH_POCKET = {
-    #get your credential by subscribing to http://getpocket.com/developer/
+    # get your credential by subscribing to http://getpocket.com/developer/
     'consumer_key': '<your pocket key>',
 }
 
 
 TH_EVERNOTE = {
-    #get your credential by subscribing to http://dev.evernote.com/
-    #for testing purpose set sandbox to True
-    #for production purpose set sandbox to False
+    # get your credential by subscribing to http://dev.evernote.com/
+    # for testing purpose set sandbox to True
+    # for production purpose set sandbox to False
     'sandbox': False,
     'consumer_key': '<your evernote key>',
     'consumer_secret': '<your evernote secret>',
@@ -251,44 +298,17 @@ TH_EVERNOTE = {
 # not python 3 compliant
 TH_READABILITY = {
     # get your credential by subscribing to
-    #https://www.readability.com/settings/account
+    # https://www.readability.com/settings/account
     'consumer_key': '<your readability key>',
     'consumer_secret': '<your readability secret>',
 }
 
 
 TH_TWITTER = {
-    #get your credential by subscribing to
-    #https://dev.twitter.com/
+    # get your credential by subscribing to
+    # https://dev.twitter.com/
     'consumer_key': '<your twitter key>',
     'consumer_secret': '<your twitter secret>',
 }
 
 SECRET_KEY = 'to be defined :P'
-
-try:
-    import debug_toolbar
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS += (
-        # If you're using Django 1.7.x or later
-        'debug_toolbar.apps.DebugToolbarConfig',
-        # If you're using Django 1.6.x or earlier
-        # 'debug_toolbar',
-    )
-    DEBUG_TOOLBAR_PANELS = [
-        'debug_toolbar.panels.versions.VersionsPanel',
-        'debug_toolbar.panels.timer.TimerPanel',
-        'debug_toolbar.panels.settings.SettingsPanel',
-        'debug_toolbar.panels.headers.HeadersPanel',
-        'debug_toolbar.panels.request.RequestPanel',
-        'debug_toolbar.panels.sql.SQLPanel',
-#        'elastic_panelpanel.ElasticDebugPanel',
-        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-        'debug_toolbar.panels.templates.TemplatesPanel',
-        'debug_toolbar.panels.cache.CachePanel',
-        'debug_toolbar.panels.signals.SignalsPanel',
-        'debug_toolbar.panels.logging.LoggingPanel',
-        'debug_toolbar.panels.redirects.RedirectsPanel',
-    ]

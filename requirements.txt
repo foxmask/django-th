@@ -4,5 +4,6 @@ django-th-rss>=0.3.2
 django-th-pocket>=0.2.2
 arrow==0.4.2
 django-js-reverse==0.3.3
-trollius==1.0.2
-
+celery==3.1.18
+django-redis-cache==0.13.1
+django-redisboard==1.2.0

@@ -55,12 +55,14 @@ who permits to use a manager of tasks like "cron" and, of course Python.
 Requirements
 ============
 
-* Python 3.4.x, 2.7.x
+* Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+* `Celery <http://www.celeryproject.org/>` == 3.1.18
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
 * `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse/>`_ == 0.3.3
-
+* `django-redis-cache <https://pypi.python.org/pypi/django-redis-cache/>` == 0.13.1
+* `django-redisboard <https://pypi.python.org/pypi/django-redisboard/>` == 1.2.0
 
 Installation
 ============
@@ -134,17 +136,6 @@ TH_SERVICES is a list of the services we, like for example,
     )
 
 
-If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
-copy the template in your own templates directory or set the path like this :
-
-.. code:: python
-
-    import os
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    TEMPLATE_DIRS += (
-        BASE_DIR + '/../lib/<python-version>/site-package/django_th/templates/',
-    )
-
 urls.py
 -------
 
@@ -161,6 +152,39 @@ urls.py
          url(r'^admin/', include(admin.site.urls)),
          url(r'', include('django_th.urls')),
     )
+
+
+CACHE 
+~~~~~
+
+For each TriggerHappy component, define one cache like below 
+
+.. code:: python
+
+    # RSS Cache
+    'th_rss':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 2,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
+
+    # Twitter Cache
+    'th_twitter':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "redis_cache.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 3,
+            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+        }
+    },
+
 
 
 Setting up : Administration
@@ -215,25 +239,15 @@ Here are the available management commands :
 
     [django_th]
         fire_th
-        fire_th_as          #use asyncio
-        fire_th_trollius    #use asyncio backported named "trollius" for python 2.7
+
 
 To start handling the queue of triggers you/your users configured, just set the management commands fire_th in a crontab or any other scheduler solution of your choice.
 
-e.g. : 
-
 .. code:: python
 
-    manage.py fire_th 
-
-or if you use python 3.4.x
-
-.. code:: python
-
-    manage.py fire_th_as
-
-
-which will use asyncio
+    manage.py fire_th             # will the enchain both read and publish
+    manage.py fire_read_data      # will get the data from any service and put them in cache
+    manage.py fire_publish_data   # will read the data from the cache and put them to another service
 
 Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
 
