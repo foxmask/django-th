@@ -24,3 +24,9 @@ TH_TWITTER = {
     'consumer_key': 'my key',
     'consumer_secret': 'my secret'
 }
+
+# CELERY
+BROKER_URL = 'redis://localhost:6379/0'
+
+# REDISBOARD
+REDISBOARD_DETAIL_FILTERS = ['.*']

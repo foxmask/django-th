@@ -1,18 +1,16 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from __future__ import unicode_literals
-import os
 import datetime
 import time
 import arrow
 import asyncio
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 from django.conf import settings
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django.utils.log import getLogger
-
 # create logger
 logger = getLogger('django_th.trigger_happy')
 
@@ -28,16 +26,21 @@ def to_datetime(data):
     my_date_time = None
 
     if 'published_parsed' in data:
-        my_date_time = datetime.datetime.fromtimestamp(
+        my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.published_parsed))
     elif 'updated_parsed' in data:
-        my_date_time = datetime.datetime.fromtimestamp(
+        my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.updated_parsed))
+    elif 'my_date' in data:
+        my_date_time = arrow.get(str(data['my_date']),
+                                 'YYYY-MM-DD HH:mm:ss')
 
     return my_date_time
 
 
 class Command(BaseCommand):
+    help = 'Trigger all the services'
+
     @asyncio.coroutine
     def update_trigger(self, service):
         """
@@ -45,15 +48,22 @@ class Command(BaseCommand):
         """
         my_count = yield from q2.get()
         if my_count > 0:
+            sentence = "user: {} - provider: {} - consumer: {} - {} = {} new data"
+            logger.info(sentence.format(service.user,
+                                        service.provider.name.name,
+                                        service.consumer.name.name,
+                                        service.description, my_count))
 
-            logger.info("user: {} - provider: {} - consumer: {} - {} = {} new data".format(
-                service.user, service.provider.name.name, service.consumer.name.name, service.description, my_count))
-
-            now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
-            TriggerService.objects.filter(id=service.id).update(date_triggered=now)
+            now = arrow.utcnow().to(settings.TIME_ZONE).format(
+                'YYYY-MM-DD HH:mm:ss')
+            TriggerService.objects.filter(id=service.id).update(
+                date_triggered=now)
         else:
-            logger.info("user: {} - provider: {} - consumer: {} - {} nothing new".format(
-                service.user, service.provider.name.name, service.consumer.name.name, service.description))
+            sentence = "user: {} - provider: {} - consumer: {} - {} nothing new"
+            logger.info(sentence.format(service.user,
+                                        service.provider.name.name,
+                                        service.consumer.name.name,
+                                        service.description))
         asyncio.get_event_loop().stop()
 
     @asyncio.coroutine
@@ -86,6 +96,8 @@ class Command(BaseCommand):
             service_id : is the service id from the database
             date_triggered : date_triggered is the data from the database
         """
+        now = arrow.utcnow().to(settings.TIME_ZONE).format(
+            'YYYY-MM-DD HH:mm:ss')
         count_new_data = 0
         while q.empty() is not True:
             data = yield from q.get()
@@ -105,7 +117,9 @@ class Command(BaseCommand):
             published = to_datetime(data)
             if published is not None:
                 # get the published date of the provider
-                published = arrow.get(str(published), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                published = arrow.get(
+                    str(published), 'YYYY-MM-DD HH:mm:ss').to(
+                    settings.TIME_ZONE)
                 # store the date for the next loop
                 #  if published became 'None'
                 which_date = published
@@ -123,18 +137,22 @@ class Command(BaseCommand):
 
             # add the TIME_ZONE settings
             my_date_triggered = arrow.get(
-                str(date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                str(date_triggered), 'YYYY-MM-DD HH:mm:ss').to(
+                settings.TIME_ZONE)
 
             # if the published date if greater or equal to the last
             # triggered event ... :
-            if date_triggered is not None and published is not None and published >= date_triggered:
+            if date_triggered is not None and \
+               published is not None and \
+               now >= published and \
+               published >= date_triggered:
 
                 if 'title' in data:
                     logger.info("date {} >= date triggered {} title {}".format(
                         published, date_triggered, data['title']))
                 else:
-                    logger.info(
-                        "date {} >= date triggered {} ".format(published, my_date_triggered))
+                    sentence = "date {} >= date triggered {} "
+                    logger.info(sentence.format(published, my_date_triggered))
 
                 consumer(token, service_id, **data)
 
@@ -142,8 +160,8 @@ class Command(BaseCommand):
             # otherwise do nothing
             else:
                 if 'title' in data:
-                    logger.debug(
-                        "data outdated skipped : [{}] {}".format(published, data['title']))
+                    sentence = "data outdated skipped : [{}] {}"
+                    logger.debug(sentence.format(published, data['title']))
                 else:
                     logger.debug(
                         "data outdated skipped : [{}] ".format(published))
@@ -156,7 +174,8 @@ class Command(BaseCommand):
             run the main process
         """
         default_provider.load_services()
-        trigger = TriggerService.objects.filter(status=True).select_related('consumer__name', 'provider__name')
+        trigger = TriggerService.objects.filter(status=True).select_related(
+            'consumer__name', 'provider__name')
         if trigger:
             for service in trigger:
 
@@ -173,16 +192,24 @@ class Command(BaseCommand):
                     logger.debug("first run for %s => %s " % (str(
                         service.provider.name), str(service.consumer.name.name)))
 
-                    asyncio.get_event_loop().run_until_complete(self.my_dummy_provider())
+                    asyncio.get_event_loop().run_until_complete(
+                        self.my_dummy_provider())
 
                 # another run
                 else:
                     asyncio.get_event_loop().run_until_complete(
-                        self.my_provider(service_provider, service.provider.token, service.id, service.date_triggered))
+                        self.my_provider(service_provider,
+                                         service.provider.token,
+                                         service.id,
+                                         service.date_triggered))
                     asyncio.get_event_loop().run_until_complete(
-                        self.my_consumer(service_consumer, service.consumer.token, service.id, service.date_triggered))
+                        self.my_consumer(service_consumer,
+                                         service.consumer.token,
+                                         service.id,
+                                         service.date_triggered))
 
-                asyncio.get_event_loop().run_until_complete(self.update_trigger(service))
+                asyncio.get_event_loop().run_until_complete(
+                    self.update_trigger(service))
                 asyncio.get_event_loop().run_forever()
 
         else:

@@ -1,5 +1,8 @@
 # coding: utf-8
 import importlib
+import datetime
+import time
+import arrow
 
 """
     Simple utility functions
@@ -54,3 +57,23 @@ def get_service(service, model_form='models', form_name=''):
         return class_for_name(class_name, service_name + form_name)
     else:
         return class_for_name(class_name, service_name)
+
+
+def to_datetime(data):
+    """
+        convert Datetime 9-tuple to the date and time format
+        feedparser provides this 9-tuple
+    """
+    my_date_time = None
+
+    if 'published_parsed' in data:
+        my_date_time = datetime.datetime.utcfromtimestamp(
+            time.mktime(data.published_parsed))
+    elif 'updated_parsed' in data:
+        my_date_time = datetime.datetime.utcfromtimestamp(
+            time.mktime(data.updated_parsed))
+    elif 'my_date' in data:
+        my_date_time = arrow.get(str(data['my_date']),
+                                 'YYYY-MM-DD HH:mm:ss')
+
+    return my_date_time
