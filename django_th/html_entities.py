@@ -20,6 +20,8 @@ class HtmlEntities:
         try:
             char = defs[m.group(1)]
             return "&{char};".format(char=char)
+        except ValueError:
+            return m.group(0)
         except KeyError:
             return m.group(0)
 
@@ -31,6 +33,8 @@ class HtmlEntities:
         try:
             char = defs[m.group(1)]
             return "&{char};".format(char=char)
+        except ValueError:
+            return m.group(0)
         except KeyError:
             return m.group(0)
 
