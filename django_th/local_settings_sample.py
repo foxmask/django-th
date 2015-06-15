@@ -2,6 +2,7 @@
 # to be used by the command :
 # python manage.py --settings=my_app.local_settings
 from .settings import *
+from celery.schedules import crontab
 
 DEBUG = True
 
