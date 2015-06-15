@@ -186,6 +186,59 @@ For each TriggerHappy component, define one cache like below
     },
 
 
+CELERY 
+~~~~~~
+
+Celery will handle tasks itself to populate the cache from provider services
+and then exploit it to publish the data to the expected consumer services
+
+From Settings
+-------------
+
+Define the broker then the scheduler
+
+.. code:: python
+
+    BROKER_URL = 'redis://localhost:6379/0'
+
+    CELERYBEAT_SCHEDULE = {
+        'add-read-data': {
+            'task': 'django_th.tasks.read_data',
+            'schedule': crontab(minute='*/27'),
+        },
+        'add-publish-data': {
+            'task': 'django_th.tasks.publish_data',
+            'schedule': crontab(minute='*/59'),
+        },
+    }
+
+
+From SUPERVISORD
+----------------
+
+.. code:: python
+
+    [program:django_th_worker]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A th worker --autoscale=10,3 -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+    [program:django_th_beat]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A th beat -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+
 
 Setting up : Administration
 ===========================
@@ -228,26 +281,21 @@ For example :
 * page 3 : the user gives a description
 
 
-Fire the Triggers :
-===================
+Fire the Triggers by hands :
+============================
 
-Here are the available management commands :
+Here are the available management commands to use if you dont plan to use Celery :
 
 .. code:: python
 
     Available subcommands:
 
     [django_th]
-        fire_th
+        fire_th          # will read cache and publish data 
+        fire_read_data   # will put date in cache
+ 
 
-
-To start handling the queue of triggers you/your users configured, just set the management commands fire_th in a crontab or any other scheduler solution of your choice.
-
-.. code:: python
-
-    manage.py fire_th             # will the enchain both read and publish
-    manage.py fire_read_data      # will get the data from any service and put them in cache
-    manage.py fire_publish_data   # will read the data from the cache and put them to another service
+To start handling the queue of triggers you/your users configured, just set those 2 management commands in a crontab or any other scheduler solution of your choice, if you dont want to use Celery
 
 Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
 

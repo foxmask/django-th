@@ -1,6 +1,7 @@
 # Django settings for django_th project.
 import os
 from django.core.urlresolvers import reverse_lazy
+from celery.schedules import crontab
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
