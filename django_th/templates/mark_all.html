@@ -1,0 +1,7 @@
+{% load i18n %}
+<li>
+    <a href="{% url 'trigger_switch_all_to' 'off' %}" title="{% trans 'this action will set all the triggers off' %}"><span class="glyphicon glyphicon-pause"></span>&nbsp;&nbsp;{% trans "Disable all Triggers" %}</a>
+</li>
+<li>
+    <a href="{% url 'trigger_switch_all_to' 'on' %}" title="{% trans 'this action will set all the triggers on' %}"><span class="glyphicon glyphicon-play"></span>&nbsp;&nbsp;{% trans 'Enable all Triggers' %}</a>
+</li>

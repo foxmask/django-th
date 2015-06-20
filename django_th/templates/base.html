@@ -53,10 +53,10 @@
                     </li>
                     <li>
                         <a href="{% url 'user_services' %}" title="{% trans 'List of your own activated services' %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
-                    </li>
+                    </li>                    
                     {% block filter_trigger %}
                         {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
-                    {% endblock %}
+                    {% endblock %}                  
                     <li class="dropdown">
                         <a class="dropdown-toggle" title="{% trans 'Order by...' %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
                         <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">                        
@@ -64,6 +64,9 @@
                             <li role="presentation"><a role="menuitem" title="{% trans 'Sort by ' %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
                         </ul>
                     </li>
+                    {% block mark_all %}
+                        {% include "mark_all.html" %}
+                    {% endblock %}                          
                     {% url 'profiles_profile_detail' request.user.username as profiles_profile_detail %}
                 </ul>
                 <ul class="nav navbar-nav navbar-right">

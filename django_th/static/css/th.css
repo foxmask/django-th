@@ -22,7 +22,7 @@ li {
  */
 
 
-.trigger-record, .service-record, .wizard-fieldset, .trigger-summary  {
+.trigger-record, .service-record, .wizard-fieldset  {
     background-color: white;
     border-radius: 5px 5px 5px 5px;
     color: #6B6B6B;
@@ -47,9 +47,9 @@ li {
  */
 
 .trigger-record footer {
-	font-size: small;
-  display: block;
-  padding-top: 55px;
+    font-size: small;
+    display: block;
+    /*padding-top: 55px;*/
 }
 
 .trigger-record footer p {
@@ -60,9 +60,9 @@ li {
     word-wrap: break-word;
 }
 
-.trigger-record .trigger-button {
+/*.trigger-record .trigger-button {
   padding-top: 25px;
-}
+}*/
 
 @media (max-width: 768px) {
   .trigger-record .trigger-button {
@@ -70,8 +70,14 @@ li {
   }
 }
 
-
-.trigger-summary {
+.trigger-summary  {
+    background-color: white;
+    /*border-radius: 5px 5px 5px 5px;*/
+    color: #6B6B6B;
+    /*font-size: 1.1em;*/
+    /*margin: 0.2em;*/
+    /*padding: 1em;*/
+    border: 1px solid #DDDDDD;
     text-align: right;
 }
 
