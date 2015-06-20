@@ -12,7 +12,7 @@
             <div class="col-md-7">
                 <span class="glyphicon glyphicon-flash"></span>{% trans "My Triggers" %}
             </div>
-            <div class="col-md-5 trigger-button">
+            <div class="col-md-5">
                     <span class="badge">{{ nb_services }}</span> {%  trans "activated" %} {% trans "services" %} - <span class="badge">{{ nb_triggers.enabled }}</span> {%  trans "enabled" %} {% trans "triggers" %} - <span class="badge">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} {% trans "triggers" %}
             </div>
         </div>
@@ -36,21 +36,21 @@
         {% endif %}
         {% for trigger in triggers_list %}
         <div id="trigger-record-{{ trigger.id }}"class="trigger-record col-md-12">
-            <div class="col-md-10 trigger-text">
-                <a class="btn btn-sm btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
-            
-                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+            <div class="col-md-12 trigger-text">
 
-                <a class="btn btn-sm btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
-            </div>
-            <div class="col-md-2 trigger-button">
+                <a class="btn btn-md btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
+            
+                <a class="btn btn-md btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
+
+                <a class="btn btn-md btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
+
                 {% if trigger.status %}
-                <a class="btn btn-sm btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-md btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% else %}
-                <a class="btn btn-sm btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
+                <a class="btn btn-md btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
 
                 {% endif %}
-                <a class="btn btn-sm btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+                <a class="btn btn-md btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
 
             </div>
             <footer>
@@ -110,7 +110,7 @@
 <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
-$(document).on("click","a.btn.btn-sm.btn-primary, a.btn.btn-sm.btn-success", function () {
+$(document).on("click","a.btn.btn-md.btn-primary, a.btn.btn-md.btn-success", function () {
     triggerId = $(this).attr('data')
     var request = $.ajax({
         url: Urls.trigger_on_off(triggerId),
