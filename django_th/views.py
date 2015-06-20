@@ -189,13 +189,18 @@ class TriggerListView(ListView):
     context_object_name = "triggers_list"
     queryset = TriggerService.objects.all()
     template_name = "home.html"
+    paginate_by = 3
 
     def get_paginate_by(self, queryset):
         """
             Get the number of items to paginate by,
             from the settings
         """
-        return settings.DJANGO_TH['paginate_by']
+        paginate_by = 3
+        if hasattr(settings, 'DJANGO_TH'):
+            if 'paginate_by' in settings.DJANGO_TH:
+                paginate_by = settings.DJANGO_TH['paginate_by']
+        return paginate_by
 
     def get_queryset(self):
         filtered_by = None
