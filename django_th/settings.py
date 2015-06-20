@@ -267,7 +267,9 @@ CACHES = {
         }
     },
 }
-
+DJANGO_TH = {
+    'paginate_by': 5,
+}
 TH_SERVICES = (
     # comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
