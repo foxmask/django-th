@@ -12,7 +12,7 @@ class ServicesMgr(object):
         def __init__(self, arg):
             self.val = arg
 
-        def __unicode__(self):
+        def __str__(self):
             return repr(self) + self.val
 
     instance = None
@@ -26,7 +26,7 @@ class ServicesMgr(object):
     def __getattr__(self, name):
         return getattr(self.instance, name)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % self.name
 
     def set_title(self, string):

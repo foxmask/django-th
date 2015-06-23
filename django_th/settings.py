@@ -195,9 +195,6 @@ LOGGING = {
     }
 }
 
-
-AUTH_PROFILE_MODULE = 'django_th.UserProfile'
-
 # go back on home page after logged in
 LOGIN_REDIRECT_URL = reverse_lazy('base')
 

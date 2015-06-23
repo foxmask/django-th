@@ -1,24 +1,10 @@
 # coding: utf-8
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django_th.models import UserProfile, TriggerService
+from django_th.models import TriggerService
 from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import TriggerServiceForm
 from django_th.forms.base import UserServiceForm
-
-
-class UserProfileTest(TestCase):
-
-    """
-        UserProfile Model
-    """
-    def create_userprofile(self, user_id=111):
-        return UserProfile.objects.create(user_id=user_id)
-
-    def test_userprofile(self):
-        u = self.create_userprofile()
-        self.assertTrue(isinstance(u, UserProfile))
-        self.assertEqual(u.show(), "User profile %s" % u.user_id)
 
 
 class UserServiceTest(TestCase):
