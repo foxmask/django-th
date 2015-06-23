@@ -8,6 +8,24 @@ class ServicesMgr(object):
     body = ''
     data = {}
 
+    class __ServicesMgr:
+        def __init__(self, arg):
+            self.val = arg
+
+        def __unicode__(self):
+            return repr(self) + self.val
+
+    instance = None
+
+    def __init__(self, arg):
+        if not ServicesMgr.instance:
+            ServicesMgr.instance = ServicesMgr.__ServicesMgr(arg)
+        else:
+            ServicesMgr.instance.val = arg
+
+    def __getattr__(self, name):
+        return getattr(self.instance, name)
+
     def __unicode__(self):
         return "%s" % self.name
 

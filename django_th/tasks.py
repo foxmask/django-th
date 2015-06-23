@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
@@ -73,6 +73,7 @@ def put_in_cache(service):
     else:
         # 1) get the data from the provider service
         # get a timestamp of the last triggered of the service
+        datas = getattr(service_provider, '__init__')(service.provider.token)
         datas = getattr(service_provider, 'read_data')(
             service.provider.token,
             service.id,
@@ -155,11 +156,11 @@ def publish_data():
             else:
                 # 1) get the data from the provider service
                 # get a timestamp of the last triggered of the service
-                datas = getattr(service_provider, 'process_data')(
-                    service.provider.token, service.id,
-                    service.date_triggered)
-                if datas is None:
+                datas = getattr(service_provider, 'process_data')(service.id)
+                if datas is None or len(datas) == 0:
                     continue
+                consumer = getattr(service_consumer, '__init__')(
+                    service.consumer.token)
                 consumer = getattr(service_consumer, 'save_data')
 
                 published = ''

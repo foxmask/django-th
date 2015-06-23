@@ -118,8 +118,8 @@ then complet with its companion
 
 .. code:: python
 
-        'pocket',     #if you own your own pocket account
-        'th_pocket',  #if you own your own pocket account
+        'pocket',     # if you own your own pocket account
+        'th_pocket',  # if you own your own pocket account
 
 
 
@@ -202,13 +202,13 @@ Define the broker then the scheduler
     BROKER_URL = 'redis://localhost:6379/0'
 
     CELERYBEAT_SCHEDULE = {
-        'add-read-data': {
+        'read-data': {
             'task': 'django_th.tasks.read_data',
-            'schedule': crontab(minute='*/27'),
+            'schedule': crontab(minute='27,54'),
         },
-        'add-publish-data': {
+        'publish-data': {
             'task': 'django_th.tasks.publish_data',
-            'schedule': crontab(minute='*/59'),
+            'schedule': crontab(minute='59'),
         },
     }
 
@@ -284,18 +284,18 @@ For example :
 Fire the Triggers by hands :
 ============================
 
-Here are the available management commands to use if you dont plan to use Celery :
+Here are the available management commands you can use by hand when you need to bypass the beat of Celery :
 
 .. code:: python
 
     Available subcommands:
 
     [django_th]
-        fire_th          # will read cache and publish data 
-        fire_read_data   # will put date in cache
+        fire_read_data     # will put date in cache
+        fire_publish_data  # will read cache and publish data
  
 
-To start handling the queue of triggers you/your users configured, just set those 2 management commands in a crontab or any other scheduler solution of your choice, if you dont want to use Celery
+To start handling the queue of triggers you/your users configured, just set those 2 management commands in a crontab or any other scheduler solution of your choice, if you dont want to use the beat of Celery
 
 Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
 

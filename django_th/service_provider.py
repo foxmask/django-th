@@ -12,7 +12,7 @@ class ServiceProvider(OrderedDict):
         for class_path in services:
             module_name, class_name = class_path.rsplit('.', 1)
             klass = import_from_path(class_path)
-            service = klass()
+            service = klass(None)
             self.register(class_name, service)
 
     def register(self, class_name, service):
