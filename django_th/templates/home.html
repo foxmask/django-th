@@ -31,7 +31,7 @@
         {% endif %}
         {% for trigger in triggers_list %}
         <div id="trigger-record-{{ trigger.id }}"class="trigger-record col-xs-12 col-md-12">
-			<div class="col-xs-7 col-md-xxi512">
+			<div class="col-xs-7 col-md-7">
                 <a class="btn btn-sm btn-md btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
             
                 <a class="btn btn-sm btn-md btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
