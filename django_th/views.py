@@ -205,7 +205,7 @@ class TriggerListView(ListView):
     def get_queryset(self):
         filtered_by = None
         # by default, sort by date_created
-        ordered_by = (str('-date_created'), )
+        ordered_by = (str('-date_triggered'), )
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
             # if the user selected a filter, get its ID
