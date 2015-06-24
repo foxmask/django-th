@@ -43,8 +43,7 @@ def to_datetime(data):
         my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.updated_parsed))
     elif 'my_date' in data:
-        my_date_time = arrow.get(str(data['my_date']),
-                                 'YYYY-MM-DD HH:mm:ss')
+        my_date_time = arrow.get(data['my_date'])
 
     return my_date_time
 
@@ -177,10 +176,7 @@ def publish_data():
 
                     if published is not None:
                         # get the published date of the provider
-                        published = arrow.get(
-                            str(published),
-                            'YYYY-MM-DD HH:mm:ss').to(
-                            settings.TIME_ZONE)
+                        published = arrow.get(published).to(settings.TIME_ZONE)
                         # store the date for the next loop
                         #  if published became 'None'
                         which_date = published
