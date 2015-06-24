@@ -212,55 +212,55 @@ CACHES = {
     'th_evernote':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 1,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     # Pocket Cache
     'th_pocket':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 2,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     # Readablity Cache
     'th_readability':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 6,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     # RSS Cache
     'th_rss':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 3,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     # Twitter Cache
     'th_twitter':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 4,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 }

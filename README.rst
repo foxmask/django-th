@@ -165,11 +165,11 @@ For each TriggerHappy component, define one cache like below
     'th_rss':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 2,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 
@@ -177,11 +177,11 @@ For each TriggerHappy component, define one cache like below
     'th_twitter':
     {
         'TIMEOUT': 500,
-        "BACKEND": "redis_cache.cache.RedisCache",
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
             "DB": 3,
-            "CLIENT_CLASS": "redis_cache.client.DefaultClient",
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
 

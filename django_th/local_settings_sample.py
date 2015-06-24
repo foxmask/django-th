@@ -32,11 +32,11 @@ BROKER_URL = 'redis://localhost:6379/0'
 CELERYBEAT_SCHEDULE = {
     'add-read-data': {
         'task': 'django_th.tasks.read_data',
-        'schedule': crontab(minute='*/27'),
+        'schedule': crontab(minute='27,54'),
     },
     'add-publish-data': {
         'task': 'django_th.tasks.publish_data',
-        'schedule': crontab(minute='*/59'),
+        'schedule': crontab(minute='59'),
     },
 }
 
