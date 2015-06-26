@@ -57,12 +57,12 @@ Requirements
 
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
-* `Celery <http://www.celeryproject.org/>` == 3.1.18
+* `Celery <http://www.celeryproject.org/>`_ == 3.1.18
 * `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
 * `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse/>`_ == 0.3.3
-* `django-redis-cache <https://pypi.python.org/pypi/django-redis-cache/>` == 0.13.1
-* `django-redisboard <https://pypi.python.org/pypi/django-redisboard/>` == 1.2.0
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
+* `django-redis <https://pypi.python.org/pypi/django-redis>` == 4.1.0
+* `django-redisboard <https://pypi.python.org/pypi/django-redisboard>` == 1.2.0
 
 Installation
 ============
