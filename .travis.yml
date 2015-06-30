@@ -3,12 +3,12 @@ language: python
 python:
   - '3.4'
 
-
 env:
   - TOXENV=coverage
   - TOXENV=django_th
 
 install:
+  - cd foxmask/django-th
   - pip install tox 
 
 script:
