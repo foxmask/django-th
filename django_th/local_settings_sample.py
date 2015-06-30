@@ -1,7 +1,3 @@
-# sample for dev purpose
-# to be used by the command :
-# python manage.py --settings=my_app.local_settings
-from .settings import *
 from celery.schedules import crontab
 
 DEBUG = True
@@ -22,6 +18,8 @@ TH_READABILITY = {
 }
 
 TH_TWITTER = {
+    # get your credential by subscribing to
+    # https://dev.twitter.com/
     'consumer_key': 'my key',
     'consumer_secret': 'my secret'
 }
@@ -42,3 +40,12 @@ CELERYBEAT_SCHEDULE = {
 
 # REDISBOARD
 REDISBOARD_DETAIL_FILTERS = ['.*']
+
+# needed to th_search and haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}

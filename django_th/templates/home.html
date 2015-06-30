@@ -75,9 +75,9 @@
             </ul>
         </div>
         {% endif %}
-        <div class="col-xs-12 col-md-5 col-md-offset-8">
+        <div class="col-xs-12 col-md-12 col-md-offset-6">
                 <span class="badge">{{ nb_services }}</span> {%  trans "activated" %} {% trans "services" %} - <span class="badge">{{ nb_triggers.enabled }}</span> {%  trans "enabled" %} {% trans "triggers" %} - <span class="badge">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} {% trans "triggers" %}
-        </div>
+        </div>        
     {% else %}
         <div class="trigger-record col-md-12">
             <div class="alert alert-info">

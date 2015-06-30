@@ -11,7 +11,7 @@ dist
 .coverage
 django_th.egg-info/
 *sublim*
-th_*
 *.tar.gz
 *.json
 admin
+.tox

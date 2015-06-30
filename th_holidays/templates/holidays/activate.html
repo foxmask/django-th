@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Holidays !" %} - {{ user.username }}{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3>{% trans 'Holidays !' %}</h3>
+        {% if context.description %}
+        <h4>{% trans context.description %}</h4>
+        {% endif %}
+        <div class="alert alert-warning">
+        {% trans context.title  %}
+        </div>
+        <form role="form" method="post" class="form-horizontal" action="{% url 'holidays' %}">
+        {% csrf_token %}
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">        
+                    <input type="submit" class="btn btn-primary"  value="{% trans "Yes" %}" />
+                    <input type="hidden" name="next" value="{{ next }}" />
+                    <a href="{% url 'home' %}" class="btn btn-warning">{% trans "No" %}</a>
+                </div>
+            </div>
+        </form>
+    </div> 
+{% endblock %}

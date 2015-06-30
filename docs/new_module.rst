@@ -33,7 +33,6 @@ the model **th_dummy/models.py** :
 
 .. code-block:: python
 
-    @python_2_unicode_compatible
     class Dummy(Services):
 
         # put whatever you need  here
@@ -155,7 +154,12 @@ The complete code of this class :
 
     class ServiceDummy(ServicesMgr):
 
-        def process_data(self, token, trigger_id, date_triggered):
+
+        def __init__(self, ):
+            self.dummy_instance = external_api.CallOfApi(
+                    settings.TH_DUMMY['consumer_key'], token)        
+
+        def read_data(self, token, trigger_id, date_triggered):
             """
                 get the data from the service
                 :param trigger_id: trigger ID to process
@@ -165,8 +169,16 @@ The complete code of this class :
                 :return: list of data found from the date_triggered filter
                 :rtype: list
             """
-            datas = list()
-            return datas
+            data = list()
+            return cache.set('th_dummy_' + str(trigger_id), data)
+
+
+        def process_data(self, trigger_id):
+            """
+                get the data from the service
+                :param trigger_id: trigger ID to process
+            """
+            return cache.get('th_dummy_' + str(trigger_id))
 
         def save_data(self, token, trigger_id, **data):
             """
@@ -189,14 +201,10 @@ The complete code of this class :
                 # our stored token and token secret then I do
                 # token_key, token_secret = token.split('#TH#')
 
-                    # get the token of the external service for example
-                dummy_instance = external_api.CallOfApi(
-                    settings.TH_DUMMY['consumer_key'], token)
-
                 title = ''
                 title = (data['title'] if 'title' in data else '')
                     # add data to the external service
-                item_id = dummy_instance .add(
+                item_id = self.dummy_instance.add(
                     url=data['link'], title=title, tags=(trigger.tag.lower()))
 
                 sentance = str('dummy {} created').format(data['link'])

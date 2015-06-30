@@ -38,12 +38,23 @@ add the module django_th, and its friends, to the INSTALLED_APPS
 
 .. code-block:: python
 
-    INSTALLED_APPS = (
+   INSTALLED_APPS = (
+        ...
+        'formtools',
+        'django_js_reverse',
+        'redisboard',
         'django_th',
         'th_rss',
         'th_pocket',
-        'django_js_reverse',
+        'th_readability',
+        'th_evernote',
+        'th_twitter',
+        'th_holidays',
+        'haystack',  # mandatory  if you plan to use th_search
+        'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
+
     )
+
 
 this setting supposes you already own a Pocket account
 
@@ -55,22 +66,17 @@ TH_SERVICES is a list of the services, like for example,
 .. code-block:: python
 
     TH_SERVICES = (
+        # comment the line to disable the service you dont want
         'th_rss.my_rss.ServiceRss',
         'th_pocket.my_pocket.ServicePocket',
+        'th_evernote.my_evernote.ServiceEvernote',
+        'th_readability.my_readability.ServiceReadability',
+        'th_twitter.my_twitter.ServiceTwitter',
     )
+
 
 this setting supposes you already own a Pocket account
 
-If you plan to integrate django_th in an existing project then, to deal with the templates and avoid the TemplateDoesNotExist error you can 
-copy the template in your own templates directory or set the path like this :
-
-.. code-block:: python
-
-    import os
-    PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-    TEMPLATE_DIRS += (
-        PROJECT_DIR + '/../../lib/<python-version>/site-package/django_th/templates/',
-    )
 
 
 Update the database
@@ -78,9 +84,21 @@ Update the database
 
 Once the settings is done, enter the following command to sync the database
 
+
+
+if you start from scratch and dont have created a django application yet, you should do :
+
+
 .. code-block:: bash
 
-    python manage.py makemigrations django_th
+    python manage.py syncdb
+
+
+otherwise do :
+
+
+.. code-block:: bash
+
     python manage.py migrate
 
 
@@ -166,58 +184,70 @@ Others settings
 
 They are necessary if you want to be able to follow the log, cache rss and use the site framework
 
-Site Framework
-~~~~~~~~~~~~~~
 
-the site framework will be deprecated for the next release, anyway, for the current one (0.9.1) the required settings are :
+CACHE 
+~~~~~
 
+For each TriggerHappy component, define one cache like below 
 
-.. code-block:: python
+.. code:: python
 
-    SITE_ID = 1
-
-in INSTALLED_APPS add 
-
-.. code-block:: python
-
-    'django.contrib.sites',
-
-add to TEMPLATE_CONTEXT_PROCESSORS the context processor like this :
-
-.. code-block:: python
-
-
-    TEMPLATE_CONTEXT_PROCESSORS = (
-        'django.contrib.auth.context_processors.auth',
-        # get the Site information anywhere arround the page
-        'django_th.context_processors.current_site',
-        'django.core.context_processors.request'
-
-The Cache 
-~~~~~~~~~
-
-.. code-block:: python
-
-    CACHES = {
-        'default':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/',
-            'TIMEOUT': 600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
-        },
-        'rss':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/rss/',
-            'TIMEOUT': 3600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
+    # Evernote Cache
+    'th_evernote':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 1,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
-    }
+    },
+    # Pocket Cache
+    'th_pocket':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 2,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # RSS Cache
+    'th_rss':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 3,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Readability
+    'th_readability':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 4,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Twitter Cache
+    'th_twitter':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 5,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+
 
 
 The Log 
@@ -249,3 +279,55 @@ in the LOGGING add to loggers
     }
 
 
+
+CELERY 
+~~~~~~
+
+Celery will handle tasks itself to populate the cache from provider services
+and then exploit it to publish the data to the expected consumer services
+
+* From Settings
+
+
+Define the broker then the scheduler
+
+.. code:: python
+
+    BROKER_URL = 'redis://localhost:6379/0'
+
+    CELERYBEAT_SCHEDULE = {
+        'read-data': {
+            'task': 'django_th.tasks.read_data',
+            'schedule': crontab(minute='27,54'),
+        },
+        'publish-data': {
+            'task': 'django_th.tasks.publish_data',
+            'schedule': crontab(minute='59'),
+        },
+    }
+
+
+* From SUPERVISORD
+
+
+.. code:: python
+
+    [program:django_th_worker]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A django_th worker --autoscale=10,3 -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+    [program:django_th_beat]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A django_th beat -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log

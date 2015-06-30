@@ -1,7 +1,5 @@
 Django>=1.8
 django-formtools==1.0
-django-th-rss>=0.3.2
-django-th-pocket>=0.2.2
 arrow==0.5.4
 django-js-reverse==0.5.1
 celery==3.1.18

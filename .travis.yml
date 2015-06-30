@@ -3,11 +3,14 @@ language: python
 python:
 - '3.4'
 
-script:
-- python manage.py test
-
 install:
-- pip install -r requirements.txt
+  - pip install tox 
+
+script:
+  - tox
+
+env:
+  - TOXENV=django_th
 
 deploy:
   provider: pypi

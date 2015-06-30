@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3>{% trans 'Edition of your trigger' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <div class="form-group{% if form.tag.errors %} has-error{% endif %}">
+                {% if form.tag.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.tag.errors }}</div>
+                {% endif %}
+                <label class="col-sm-2 control-label" for="id_tag">{% trans 'Tag' %}</label>
+                <div class="col-sm-6">{{ form.tag }}</div>
+            </div>        
+            <div class="form-group{% if form.notebook.errors %} has-error{% endif %}">
+                {% if form.notebook.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.notebook.errors }}</div>
+                {% endif %}
+                <label class="col-sm-2 control-label" for="id_notebook">{% trans 'Notebook' %}</label>
+                <div class="col-sm-6">{{ form.notebook }}</div>
+            </div>
+            <div class="form-group form-actions">
+                <input type="hidden" name="trigger_id" value="{{ trigger_id }}" />
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}

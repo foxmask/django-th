@@ -20,6 +20,7 @@ DATABASES = {
         'PASSWORD': '',  # Not used with sqlite3.
         'HOST': '',  # Set to empty string for localhost. Not used with sqlite3
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
+        'TEST_NAME': BASE_DIR + '/test_django_th.sqlite3',
     }
 }
 
@@ -111,27 +112,17 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'formtools',
-    'django_th',
-
-    'th_rss',
-
-    'pocket',
-    'th_pocket',
-
     'django_js_reverse',
     'redisboard',
-
-    # Uncomment the next line to enable the service:
-    # 'evernote', # then do pip install evernote
-    # 'th_evernote',
-
-    # Uncomment the next line to enable the service:
-    # 'th_twitter', #then do pip install python-twitter
-    # 'th_readability', #then do pip install readability-api
-
-    # Uncomment the next line to enable the feature
-    # 'th_holidays',
-    # then do pip install django-th-holidays
+    'django_th',
+    'th_rss',
+    'th_pocket',
+    'th_evernote',
+    'th_twitter',
+    #  'th_readability',  # uncomment if you want to use it 
+    'th_holidays',
+    # 'haystack',
+    # 'th_search',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -230,17 +221,6 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Readablity Cache
-    'th_readability':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 6,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
     # RSS Cache
     'th_rss':
     {
@@ -252,8 +232,8 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Twitter Cache
-    'th_twitter':
+    # Readability
+    'th_readability':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -263,19 +243,30 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Twitter Cache
+    'th_twitter':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 5,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 }
+
 DJANGO_TH = {
     'paginate_by': 5,
 }
+
 TH_SERVICES = (
     # comment the line to disable the service you dont want
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
-    # uncomment the next lines you want,
-    # once you've uncommented the line in INSTALLED_APPS
-    # 'th_evernote.my_evernote.ServiceEvernote',
-    # 'th_readability.my_readability.ServiceReadability',
-    # 'th_twitter.my_twitter.ServiceTwitter',
+    'th_evernote.my_evernote.ServiceEvernote',
+    # 'th_readability.my_readability.ServiceReadability',  # uncomment if you want to use it 
+    'th_twitter.my_twitter.ServiceTwitter',
 )
 
 
@@ -311,3 +302,9 @@ TH_TWITTER = {
 }
 
 SECRET_KEY = 'to be defined :P'
+
+# local settings management
+try:
+    from .local_settings import *
+except ImportError:
+    pass

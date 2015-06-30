@@ -1,0 +1,1 @@
+-e git://github.com/evernote/evernote-sdk-python3.git#egg=evernote

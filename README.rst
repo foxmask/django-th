@@ -57,12 +57,40 @@ Requirements
 
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+
+for celery
+
 * `Celery <http://www.celeryproject.org/>`_ == 3.1.18
-* `django-th-rss <https://github.com/foxmask/django-th-rss>`_ == 0.3.0
-* `django-th-pocket <https://github.com/foxmask/django-th-pocket>`_ == 0.2.0
+
+for evernote support
+
+* `pytidylib6 <https://pypi.python.org/pypi/pytidylib6>`_ == 0.2.2
+* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ from `github <https://github.com/evernote/evernote-sdk-python3>`_ as the version from `pypi 
+
+for pocket support
+
+* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
+
+for readability support
+
+* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.0
+
+for rss support
+
+* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.1.3
+
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
+
+for redis support 
+
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
 * `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
+
+for search engine
+
+* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.3.1
+
 
 Installation
 ============
@@ -78,18 +106,9 @@ To install the required modules, do:
 
 .. code:: system
 
+    pip install -e git://github.com/evernote/evernote-sdk-python3.git#egg=evernote
     pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements.txt
 
-and at least :
-
-.. code:: system
-    
-    cd django-th 
-    python manage.py syncdb
-    python manage.py runserver
-    
-
-to startup the database
 
 Parameters
 ==========
@@ -109,31 +128,240 @@ add the module django_th to the INSTALLED_APPS
    INSTALLED_APPS = (
         ...
         'formtools',
-        'django_th', 
-        'th_rss',
         'django_js_reverse',
+        'redisboard',
+        'django_th',
+        'th_rss',
+        'th_pocket',
+        'th_readability',
+        'th_evernote',
+        'th_twitter',
+        'th_holidays',
+        'haystack',  # mandatory  if you plan to use th_search
+        'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
-
-then complet with its companion
-
-.. code:: python
-
-        'pocket',     # if you own your own pocket account
-        'th_pocket',  # if you own your own pocket account
-
+    )
 
 
 TH_SERVICES
 ~~~~~~~~~~~
 
-TH_SERVICES is a list of the services we, like for example,  
+TH_SERVICES is a list of the supported services
 
 .. code:: python
 
     TH_SERVICES = (
+        # comment the line to disable the service you dont want
         'th_rss.my_rss.ServiceRss',
         'th_pocket.my_pocket.ServicePocket',
+        'th_evernote.my_evernote.ServiceEvernote',
+        'th_readability.my_readability.ServiceReadability',
+        'th_twitter.my_twitter.ServiceTwitter',
     )
+
+
+
+TH_EVERNOTE
+~~~~~~~~~~~
+
+TH_EVERNOTE is the settings you will need to be able to add/read data in/from Evernote.
+
+To be able to use Evernote see official FAQ :
+
+* `How do I create an API key? <https://dev.evernote.com/support/faq.php#createkey>`_
+* `How do I copy my API key from Sandbox to www (production)? <https://dev.evernote.com/support/faq.php#activatekey>`_
+
+.. code:: python
+
+    TH_EVERNOTE = {
+        'sandbox': True, #set to False in production - to be able to use it with trigger happy of course ;)
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+        'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
+
+TH_POCKET
+~~~~~~~~~
+
+TH_POCKET is the settings you will need to be able to add/read data in/from Pocket.
+
+To be able to use Pocket :
+
+* you will need to grad the pocket consumer key `by creating a new application <http://getpocket.com/developer/apps/>`_ with the rights access as below
+
+.. image:: http://foxmask.info/public/trigger_happy/pocket_account_settings.png 
+
+* then copy the "consumer key" of your application to the settings.py
+
+.. code:: python
+
+    TH_POCKET = {
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
+
+TH_READABILITY
+~~~~~~~~~~~~~~
+
+TH_READABILITY is the settings you will need, to be able to add/read data in/from readability Service.
+
+To be able to use readability :
+
+* you will need to `grad the readability keys <https://readability.com/developers/api>`_
+* create a new application at readability website, then
+
+.. image:: http://foxmask.info/public/trigger_happy/readability_account_settings.png 
+
+* copy the "keys & secret" of your application to the settings.py
+ 
+.. code:: python
+
+    TH_READABILITY = {
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+        'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
+
+TH_TWITTER
+~~~~~~~~~~
+
+TH_TWITTER is the settings you will need to be able to add/read data in/from Twitter.
+
+To be able to use Twitter:
+
+* you will need to create an account at https://apps.twitter.com/
+* then create an application
+* then on the Application Settings tab set the rights to "read and write permission"
+* then on Keys tab copy the infomartion and fill the settings.py with them
+
+.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png 
+
+.. code:: python
+
+    TH_TWITTER = {
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+        'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
+CACHE 
+~~~~~
+
+For each TriggerHappy component, define one cache like below 
+
+.. code:: python
+
+    # Evernote Cache
+    'th_evernote':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 1,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Pocket Cache
+    'th_pocket':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 2,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # RSS Cache
+    'th_rss':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 3,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Readability
+    'th_readability':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 4,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Twitter Cache
+    'th_twitter':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 5,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+
+
+CELERY 
+~~~~~~
+
+Celery will handle tasks itself to populate the cache from provider services
+and then exploit it to publish the data to the expected consumer services
+
+
+* From Settings
+
+
+Define the broker then the scheduler
+
+.. code:: python
+
+    BROKER_URL = 'redis://localhost:6379/0'
+
+    CELERYBEAT_SCHEDULE = {
+        'read-data': {
+            'task': 'django_th.tasks.read_data',
+            'schedule': crontab(minute='27,54'),
+        },
+        'publish-data': {
+            'task': 'django_th.tasks.publish_data',
+            'schedule': crontab(minute='59'),
+        },
+    }
+
+
+* From SUPERVISORD
+
+.. code:: python
+
+    [program:django_th_worker]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A django_th worker --autoscale=10,3 -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+    [program:django_th_beat]
+    user = foxmask
+    directory=/home/projects/trigger-happy/th
+    command=/home/projects/trigger-happy/bin/celery -A django_th beat -l info
+    autostart=true
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
+    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
 
 
 urls.py
@@ -154,108 +382,68 @@ urls.py
     )
 
 
-CACHE 
-~~~~~
 
-For each TriggerHappy component, define one cache like below 
+Update the database
+-------------------
 
-.. code:: python
-
-    # RSS Cache
-    'th_rss':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 2,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-
-    # Twitter Cache
-    'th_twitter':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 3,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
+Once the settings is done, enter the following command to sync the database
 
 
-CELERY 
-~~~~~~
-
-Celery will handle tasks itself to populate the cache from provider services
-and then exploit it to publish the data to the expected consumer services
-
-From Settings
--------------
-
-Define the broker then the scheduler
-
-.. code:: python
-
-    BROKER_URL = 'redis://localhost:6379/0'
-
-    CELERYBEAT_SCHEDULE = {
-        'read-data': {
-            'task': 'django_th.tasks.read_data',
-            'schedule': crontab(minute='27,54'),
-        },
-        'publish-data': {
-            'task': 'django_th.tasks.publish_data',
-            'schedule': crontab(minute='59'),
-        },
-    }
+if you start from scratch and dont have created a django application yet, you should do :
 
 
-From SUPERVISORD
-----------------
+.. code-block:: bash
 
-.. code:: python
+    python manage.py syncdb 
 
-    [program:django_th_worker]
-    user = foxmask
-    directory=/home/projects/trigger-happy/th
-    command=/home/projects/trigger-happy/bin/celery -A th worker --autoscale=10,3 -l info
-    autostart=true
-    autorestart=true
-    redirect_stderr=true
-    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
-    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
 
-    [program:django_th_beat]
-    user = foxmask
-    directory=/home/projects/trigger-happy/th
-    command=/home/projects/trigger-happy/bin/celery -A th beat -l info
-    autostart=true
-    autorestart=true
-    redirect_stderr=true
-    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
-    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+otherwise do :
+
+
+.. code-block:: bash
+
+    python manage.py migrate
+
+
+Starting the application
+------------------------
+
+.. code-block:: bash
+
+    python manage.py runserver
+
+
+Now that everything is in place, Celery will do our job in background 
+in the meantime you will be able to manage your triggers from the front part
 
 
 
 Setting up : Administration
 ===========================
 
-once the module is installed, go to the admin panel and activate the service you want. 
-Currently there are 4 services, RSS, Evernote, Pocket and Readability.
+Once the module is installed, go to the admin panel and activate the service you want. 
 
-All you can decide here is to tell if the service requires an external authentication or not.
+Currently there are 4 services, Evernote, Pocket, RSS and Twitter.
 
+.. image:: http://foxmask.info/public/trigger_happy/th_admin_evernote_activated.png
 
 .. image:: http://foxmask.info/public/trigger_happy/th_admin_pocket_activated.png
+
+.. image:: http://foxmask.info/public/trigger_happy/th_admin_readability_activated.png
+
+.. image:: http://foxmask.info/public/trigger_happy/th_admin_rss_activated1.png
+
+.. image:: http://foxmask.info/public/trigger_happy/th_admin_twitter_activated.png
+
+
 
 Once they are activated....
 
 .. image:: http://foxmask.info/public/trigger_happy/admin_service_list.png
 
+
 ... User can use them
+
 
 
 Usage :

@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Holidays !" %} - {{ user.username }}{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3>{% trans 'Holidays !' %}</h3>
+        <div class="alert alert-success">
+        {% trans context.title %}
+        </div>
+        <a href="{% url 'home' %}" class="btn btn-primary">{% trans "Home" %}</a>
+    </div> 
+{% endblock %}

@@ -35,7 +35,8 @@ def import_from_path(path):
     """
     module_name, class_name = path.rsplit('.', 1)
     try:
-        return getattr(__import__(module_name, fromlist=[class_name]), class_name)
+        return getattr(__import__(module_name,
+                                  fromlist=[class_name]), class_name)
     except AttributeError:
         raise ImportError('Unable to import %s' % path)
 

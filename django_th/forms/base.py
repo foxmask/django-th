@@ -41,7 +41,8 @@ class UserServiceForm(forms.ModelForm):
                 continue
             # 2nd array position contains the name of the service
             else:
-                data = (class_name.name, class_name.name.rsplit('Service', 1)[1])
+                data = (class_name.name,
+                        class_name.name.rsplit('Service', 1)[1])
                 all_datas = (data,) + all_datas
         return all_datas
 

@@ -1,0 +1,1 @@
+from .feedsservice import Feeds

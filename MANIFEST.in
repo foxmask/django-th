@@ -1,7 +1,30 @@
 exclude django_th/local_settings.py manage.py
 include *.txt *.rst 
+
 recursive-include django_th *.html *.png *.css *.gif *.jpg *.jpeg
 recursive-include django_th/static *
 recursive-include django_th/templates *
+
+recursive-include th_evernote *.html
+recursive-include th_evernote/templates *
+
+recursive-include th_pocket *.html
+recursive-include th_pocket/templates *
+
+recursive-include th_rss *.html
+recursive-include th_rss/templates *
+
+recursive-include th_readability *.html
+recursive-include th_readability/templates *
+
+recursive-include th_twitter *.html
+recursive-include th_twitter/templates *
+
+recursive-include th_holidays *.html
+recursive-include th_holidays/templates *
+
+recursive-include th_search *.html
+recursive-include th_search/templates *
+
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

@@ -1,0 +1,1 @@
+django-haystack==2.3.1

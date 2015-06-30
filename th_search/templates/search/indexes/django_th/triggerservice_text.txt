@@ -1,0 +1,6 @@
+{{ object.consumer.get_full_name }}
+{{ object.provider.get_full_name }}
+{{ object.description }}
+{{ object.user.get_full_name }}
+{{ object.status }}
+{{ object.body }}
