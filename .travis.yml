@@ -4,13 +4,14 @@ python:
   - '3.4'
 
 env:
-  - TOXENV=django_th
+  - DJANGO_SETTINGS_MODULE=django_th.test_settings
 
 install:
-  - pip install tox 
+  - pip -r requirements-all.txt
+  - pip install coverage
 
 script:
-  - tox
+  - coverage run --source='.,th_evernote,th_rss,th_pocket,th_twitter,th_search,th_holidays' manage.py test -v2
 
 deploy:
   provider: pypi
