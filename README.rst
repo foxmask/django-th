@@ -1,8 +1,3 @@
-.. image:: https://drone.io/github.com/foxmask/django-th/status.png
-    :target: https://drone.io/github.com/foxmask/django-th
-    :alt: DroneIo Status
-
-
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
     :alt: Travis Status
