@@ -3,6 +3,11 @@ language: python
 python:
   - '3.4'
 
+
+env:
+  - TOXENV=coverage
+  - TOXENV=django_th
+
 install:
   - pip install tox 
 
