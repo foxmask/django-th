@@ -1,16 +1,13 @@
 language: python
 
 python:
-- '3.4'
+  - '3.4'
 
 install:
   - pip install tox 
 
 script:
   - tox
-
-env:
-  - TOXENV=django_th
 
 deploy:
   provider: pypi
