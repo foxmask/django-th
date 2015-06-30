@@ -7,12 +7,10 @@ env:
   - DJANGO_SETTINGS_MODULE=django_th.test_settings
 
 install:
-  - aptitude install libtidy-0.99-0 
   - pip install -r requirements-all.txt
-  - pip install coverage
 
 script:
-  - coverage run --source='.,th_evernote,th_rss,th_pocket,th_twitter,th_search,th_holidays' manage.py test -v2
+  - python manage.py test -v2
 
 deploy:
   provider: pypi
