@@ -7,7 +7,7 @@ env:
   - DJANGO_SETTINGS_MODULE=django_th.test_settings
 
 install:
-  - pip -r requirements-all.txt
+  - pip install -r requirements-all.txt
   - pip install coverage
 
 script:
