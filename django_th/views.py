@@ -18,7 +18,6 @@ from django.utils.translation import ugettext as _
 
 # trigger_happy
 from django_th.models import TriggerService, UserService, ServicesActivated
-from django_th.services import default_provider
 from django_th.tools import get_service
 from django_th.forms.base import TriggerServiceForm
 
@@ -26,7 +25,6 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 
-default_provider.load_services()
 
 """
    Part I : Trigger Part
