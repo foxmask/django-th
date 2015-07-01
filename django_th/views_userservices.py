@@ -11,7 +11,6 @@ from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import UserServiceForm
 from django_th.services import default_provider
 
-default_provider.load_services()
 
 """
    Part II : User Service
@@ -24,6 +23,7 @@ def renew_service(request, pk):
         :param pk: the primary key of the service to renew
         :type pk: int
     """
+    default_provider.load_services()
     service = get_object_or_404(ServicesActivated, pk=pk)
     service_name = str(service.name)
     service_object = default_provider.get_service(service_name)
@@ -82,6 +82,7 @@ class UserServiceCreateView(CreateView):
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
+        default_provider.load_services()
         self.object = form.save(user=self.request.user)
 
         sa = ServicesActivated.objects.get(name=form.cleaned_data['name'].name)

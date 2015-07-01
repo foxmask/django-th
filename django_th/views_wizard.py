@@ -8,7 +8,6 @@ from django_th.forms.wizard import ConsumerForm
 from django_th.tools import get_service, class_for_name
 from django_th.services import default_provider
 
-default_provider.load_services()
 
 """
    Part III : Service Wizard
@@ -141,6 +140,7 @@ def finalcallback(request, **kwargs):
         let's do the callback of the related service after
         the auth request from UserServiceCreateView
     """
+    default_provider.load_services()
     service_name = kwargs['service_name']
     service_object = default_provider.get_service(service_name)
     lets_callback = getattr(service_object, 'callback')
