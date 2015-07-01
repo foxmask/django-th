@@ -1,13 +1,13 @@
 language: python
 
 python:
-  - '3.4'
-
-install:
-  - pip install tox
+- '3.4'
 
 script:
-  - tox
+- tox
+
+install:
+- pip install tox
 
 deploy:
   provider: pypi
