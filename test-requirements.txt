@@ -1,6 +1,0 @@
-pep8>=1.6.2
-pytest>=2.7.0
-pytest-cov>=1.8.1
-# PyPi version of pytest-benchmark is broken in python3
--e git://github.com/ionelmc/pytest-benchmark.git@ba35eee4592ad6b9607d1277b52d49ea7558d9bb#egg=pytest-benchmark
-
