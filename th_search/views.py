@@ -10,4 +10,4 @@ class TriggerHappySearchView(SearchView):
 
     def get_queryset(self):
         queryset = super(TriggerHappySearchView, self).get_queryset()
-        return queryset.filter(user=self.request.user)
+        return queryset.filter(user=self.request.user.id)

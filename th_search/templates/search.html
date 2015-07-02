@@ -3,7 +3,7 @@
 
 {% block content %}
     <div class="col-xs-12 col-md-12">
-        <form method="post" class="form-horizontal" action="">
+        <form method="get" class="form-horizontal" action="">
         {{ form.non_field_errors }}
         <fieldset>
         <legend><span class="glyphicon glyphicon-search"></span> {% trans "Search in my triggers" %}</legend>
@@ -20,11 +20,10 @@
             </div>
         </fieldset>
         </form>
-
+    
         {% if query %}
             <h2>Results</h2>
-            {{ page }}
-            {% for result in page.object_list %}
+            {% for result in object_list %}
                 <p>
                     <a href="{{ result.object.get_absolute_url }}">{{ result.object.description }}</a>
                 </p>

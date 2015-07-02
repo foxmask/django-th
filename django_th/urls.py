@@ -139,6 +139,6 @@ urlpatterns = \
                  ),
 
              # url(r'^th/search/', include('th_search.urls')),
-             url(r'^th/holidays/', include('th_holidays.urls')),
+             # url(r'^th/holidays/', include('th_holidays.urls')),
 
              )
