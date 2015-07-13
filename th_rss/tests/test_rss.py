@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from th_rss.models import Rss
 from django_th.models import TriggerService, UserService, ServicesActivated
 from th_rss.forms import RssProviderForm
+import uuid
 
 
 class RssTest(TestCase):
@@ -45,7 +46,8 @@ class RssTest(TestCase):
         name = 'Foobar RSS'
         url = 'http://foobar.com/somewhere/in/the/rainbow.rss'
         status = True
-        return Rss.objects.create(url=url,
+        return Rss.objects.create(uuid=uuid.uuid4(),
+                                  url=url,
                                   name=name,
                                   trigger=trigger,
                                   status=status)

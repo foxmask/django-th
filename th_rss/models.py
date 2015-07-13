@@ -1,12 +1,14 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+import uuid
 
 
 class Rss(Services):
     """
         Model for RSS Service
     """
+    uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     url = models.URLField(max_length=255)
     trigger = models.ForeignKey('TriggerService')
 
