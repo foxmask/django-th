@@ -53,17 +53,17 @@ def remove_prohibited_attributes(element):
     """
         To fit the Evernote DTD need, drop this attribute name
     """
-    prohibited_attributes = ["id", "class", "onclick", "ondblclick", "onload",
-                             "accesskey", "data", "dynsrc", "tabindex",
-                             "onmouseover", "onmouseout", "onblur",
-                             "frame", "rules", "width",  "data-shortcode"]
-    # FIXME All on* attributes are prohibited. How to use a regular expression
-    # as argument to remove_attribute?
-    for attribute in prohibited_attributes:
-        try:
-            element.removeAttribute(attribute)
-        except xml.dom.NotFoundErr:
-            pass
+    filter_term = lambda att: att.startswith("on") or\
+                              att.startswith("data-") or\
+                              att in ["id", "class", "accesskey",
+                                      "data",  "dynsrc", "tabindex",
+                                      "frame", "rules", "width"]
+
+    to_be_removed_atts = [att for att in element.attributes.keys()
+                          if filter_term(att.lower())]
+
+    for attribute in to_be_removed_atts:
+        element.removeAttribute(attribute)
     try:
         if element.hasAttribute("href"):
             t = element.toxml()
