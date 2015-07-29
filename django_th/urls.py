@@ -137,7 +137,7 @@ urlpatterns = \
                  {'service_name': 'ServiceTwitter', },
                  name="twitter_callback",
                  ),
-
+             url(r'^th/myfeeds/', include('th_rss.urls')),
              # url(r'^th/search/', include('th_search.urls')),
              # url(r'^th/holidays/', include('th_holidays.urls')),
 
