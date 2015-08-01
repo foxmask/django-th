@@ -1,1 +1,1 @@
-django-haystack==2.3.1
+django-haystack==2.4.0
