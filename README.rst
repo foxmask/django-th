@@ -67,6 +67,10 @@ for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
 
+for twitter support
+
+* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
+
 for readability support
 
 * `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.0
@@ -102,7 +106,7 @@ To install the required modules, do:
 .. code:: system
 
     pip install -e git://github.com/evernote/evernote-sdk-python3.git#egg=evernote
-    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements.txt
+    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-all.txt
 
 
 Parameters
