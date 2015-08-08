@@ -70,6 +70,7 @@ class ServiceRss(ServicesMgr):
            published >= date_triggered:
             my_feeds = feeds.entries
             cache.set('th_rss_' + str(trigger_id), my_feeds)
+            cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)
         # return the data
         return my_feeds
 

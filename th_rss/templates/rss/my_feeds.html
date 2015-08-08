@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load django_th_extras %}
+
+{% block title %}{% if user.is_authenticated %}{% trans "My RSS feeds generators" %} - {{ user.username }} - {% else %}{% trans "Home" %} - {% endif %}Trigger Happy{% endblock %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+        <div class="col-xs-12 col-md-12">
+            <span class="glyphicon glyphicon-flash"></span>{% trans "My RSS feeds generators" %}
+        </div>
+    {% if rss_list %}
+        {% if is_paginated %}
+        <div class="col-xs-12 col-md-12">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="{{ page_link }}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
+                {% endif %}
+                    <li class="active"><a >
+                    {% blocktrans with page_number=page_obj.number total_of_pages=page_obj.paginator.num_pages %}
+                    Page {{ page_number }} of {{ total_of_pages }}
+                    {% endblocktrans %}</a>
+                    </li>
+                {% if page_obj.has_next %}
+                    <li><a href="{{ page_link }}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+        {% for rss in rss_list %}
+        <div id="trigger-record-{{ trigger.id }}"class="trigger-record col-xs-12 col-md-12">
+            <div class="col-xs-7 col-md-7">
+                <a class="btn btn-sm btn-md btn-info" href="{% url 'my_feed' rss.uuid %}" title="{% trans 'See this RSS' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{rss.name|safe|escape }}</a>
+            </div>
+        </div>
+        {% endfor %}
+        {% if is_paginated %}
+        <div class="col-xs-12 col-md-12">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a href="{{ page_link }}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
+                {% endif %}
+                    <li class="active"><a >
+                    {% blocktrans with page_number=page_obj.number total_of_pages=page_obj.paginator.num_pages %}
+                    Page {{ page_number }} of {{ total_of_pages }}
+                    {% endblocktrans %}</a>
+                    </li>
+                {% if page_obj.has_next %}
+                    <li><a href="{{ page_link }}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% endif %}
+    {% else %}
+        <div class="trigger-record col-md-12">
+            <div class="alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">&times;</button>
+                {% trans 'No RSS feed generator yet' %}
+            </div>
+        </div>
+    {% endif %}
+{% else %}
+            <div class="jumbotron">
+                <p>
+                    <strong>Trigger Happy</strong> is up !
+                </p>
+                <p>Have Fun</p>
+                <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
+            </div>
+{% endif %}
+{% endblock %}
+

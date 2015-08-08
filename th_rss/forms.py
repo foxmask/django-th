@@ -12,8 +12,15 @@ class RssForm(forms.ModelForm):
 
     class Meta:
         model = Rss
-        fields = ('name', 'url', )
+        fields = ('name', 'url')
 
 
 class RssProviderForm(RssForm):
     pass
+
+
+class RssConsumerForm(RssForm):
+
+    class Meta:
+        model = Rss
+        fields = ('name', )
