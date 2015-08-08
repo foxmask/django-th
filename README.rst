@@ -52,6 +52,14 @@ Requirements
 
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
+
+The latest should be installed with your operating system package manager, not from pip.
+On a Ubuntu system: 
+ 
+.. code:: system
+	apt-get install libtidy-dev
+
 
 for celery
 
@@ -66,6 +74,10 @@ for evernote support
 for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
+
+for twitter support
+
+* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
 
 for readability support
 
@@ -101,8 +113,7 @@ To install the required modules, do:
 
 .. code:: system
 
-    pip install -e git://github.com/evernote/evernote-sdk-python3.git#egg=evernote
-    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements.txt
+    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-all.txt
 
 
 Parameters
