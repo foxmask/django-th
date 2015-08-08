@@ -20,7 +20,10 @@ DATABASES = {
         'PASSWORD': '',  # Not used with sqlite3.
         'HOST': '',  # Set to empty string for localhost. Not used with sqlite3
         'PORT': '',  # Set to empty string for default. Not used with sqlite3.
-        'TEST_NAME': BASE_DIR + '/test_django_th.sqlite3',
+    },
+    'TEST': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR + '/test_django_th.sqlite3',
     }
 }
 
@@ -304,7 +307,7 @@ TH_TWITTER = {
 SECRET_KEY = 'to be defined :P'
 
 # local settings management
-try:
-    from .local_settings import *
-except ImportError:
-    pass
+#try:
+#    from .local_settings import *
+#except ImportError:
+#    pass
