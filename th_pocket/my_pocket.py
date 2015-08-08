@@ -17,6 +17,7 @@ from django.core.cache import caches
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
 from django_th.html_entities import HtmlEntities
+from django_th.publishing_limit import PublishingLimit
 
 """
     handle process with pocket
@@ -96,7 +97,8 @@ class ServicePocket(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        return cache.get('th_pocket_' + str(trigger_id))
+        cache_data = cache.get('th_pocket_' + str(trigger_id))
+        return PublishingLimit.get_data('th_pocket', cache_data, trigger_id)
 
     def save_data(self, token, trigger_id, **data):
         """

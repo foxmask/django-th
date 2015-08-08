@@ -260,7 +260,14 @@ CACHES = {
 }
 
 DJANGO_TH = {
+    # paginating
     'paginate_by': 5,
+
+    # this permits to avoid "flood" effect when publishing
+    # to the target service - when limit is reached
+    # the cache is kept until next time
+    # set it to 0 to drop that limit
+    'publishing_limit': 0,
 }
 
 TH_SERVICES = (
