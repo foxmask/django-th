@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'th_holidays',
     # 'haystack',
     # 'th_search',
+    'th_trello',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

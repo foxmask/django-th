@@ -44,12 +44,18 @@ class TrelloTest(TestCase):
         trigger = self.create_triggerservice()
         name = 'Trello'
         status = True
-        return Trello.objects.create(trigger=trigger, name=name, status=status)
+        return Trello.objects.create(trigger=trigger,
+                                     board_name='Trigger Happy',
+                                     list_name='To-Do',
+                                     name=name,
+                                     card_title='Install it',
+                                     card_description='Have Fun with it!',
+                                     status=status)
 
     def test_trello(self):
         t = self.create_trello()
         self.assertTrue(isinstance(t, Trello))
-        self.assertEqual(t.show(), "My Trello %s" % (t.board_name, t.list_name, t.card_title))
+        self.assertEqual(t.show(), "My Trello %s %s %s" % (t.board_name, t.list_name, t.card_title))
 
     """
         Form
@@ -57,8 +63,7 @@ class TrelloTest(TestCase):
     # provider
     def test_valid_provider_form(self):
         t = self.create_trello()
-        data = {'board_name': t.board_name, 'list_name': t.list_name, 
-                'card_title': t.card_title, 'card_description': t.card_description}
+        data = {'board_name': t.board_name, 'list_name': t.list_name}
         form = TrelloProviderForm(data=data)
         self.assertTrue(form.is_valid())
 
@@ -69,8 +74,7 @@ class TrelloTest(TestCase):
     # consumer
     def test_valid_consumer_form(self):
         t = self.create_trello()
-        data = {'board_name': t.board_name, 'list_name': t.list_name, 
-                'card_title': t.card_title, 'card_description': t.card_description}
+        data = {'board_name': t.board_name, 'list_name': t.list_name}
 
         form = TrelloConsumerForm(data=data)
         self.assertTrue(form.is_valid())
