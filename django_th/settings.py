@@ -257,6 +257,19 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Trello
+    'th_trello':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 8,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+
+
 }
 
 DJANGO_TH = {
@@ -270,6 +283,7 @@ TH_SERVICES = (
     'th_evernote.my_evernote.ServiceEvernote',
     #'th_readability.my_readability.ServiceReadability',  # uncomment if you want to use it 
     'th_twitter.my_twitter.ServiceTwitter',
+    'th_trello.my_trello.ServiceTrello',
 )
 
 
@@ -303,6 +317,12 @@ TH_TWITTER = {
     'consumer_key': '<your twitter key>',
     'consumer_secret': '<your twitter secret>',
 }
+
+TH_TRELLO = {
+    'consumer_key': '<your twitter key>',
+    'consumer_secret': '<your twitter secret>',
+}
+
 
 SECRET_KEY = 'to be defined :P'
 

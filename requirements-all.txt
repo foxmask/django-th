@@ -4,4 +4,5 @@
 -r requirements-pocket.txt
 -r requirements-rss.txt
 -r requirements-search.txt
+-r requirements-trello.txt
 -r requirements-twitter.txt

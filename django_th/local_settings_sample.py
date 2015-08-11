@@ -24,6 +24,12 @@ TH_TWITTER = {
     'consumer_secret': 'my secret'
 }
 
+TH_TRELLO = {
+    'consumer_key': 'my key',
+    'consumer_secret': 'my secret'
+
+}
+
 # CELERY
 BROKER_URL = 'redis://localhost:6379/0'
 
