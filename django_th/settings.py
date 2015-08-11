@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'th_holidays',
     # 'haystack',
     # 'th_search',
+    'th_email',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -270,6 +271,7 @@ TH_SERVICES = (
     'th_evernote.my_evernote.ServiceEvernote',
     #'th_readability.my_readability.ServiceReadability',  # uncomment if you want to use it 
     'th_twitter.my_twitter.ServiceTwitter',
+    'th_email.my_email.ServiceEmail',
 )
 
 
