@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of your trigger' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <div class="form-group{% if form.tag.errors %} has-error{% endif %}">
+                {% if form.tag.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.tag.errors }}</div>
+                {% endif %}
+                <label for="id_tag" class="col-sm-2 control-label">{% trans "Tag" %}</label>
+                <div class="col-sm-6">{{ form.tag }}</div>
+            </div>
+
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}
