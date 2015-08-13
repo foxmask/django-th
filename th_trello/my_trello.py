@@ -4,8 +4,6 @@ from requests_oauthlib import OAuth1Session
 
 # Trello API
 from trello import TrelloClient
-from trello.trellolist import List
-from trello.board import Board
 
 # django classes
 from django.conf import settings
@@ -17,6 +15,7 @@ from django.core.cache import caches
 from django_th.apps import DjangoThConfig
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
+from django_th.publishing_limit import PublishingLimit
 
 """
     handle process with Trello
@@ -88,7 +87,8 @@ class ServiceTrello(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        return cache.get('th_trello_' + str(trigger_id))
+        cache_data = cache.get('th_trello_' + str(trigger_id))
+        return PublishingLimit.get_data('th_trello_', cache_data, trigger_id)
 
     def save_data(self, token, trigger_id, **data):
         """
@@ -135,20 +135,22 @@ class ServiceTrello(ServicesMgr):
                 lists = my_board.open_lists()
                 # just get the open list ; not all the archive ones
                 for list_in_board in lists:
-                    # search the name of the list we set in the form
+                    # search the name of the list we set in the form
                     if t.list_name == list_in_board.name.decode('utf-8'):
-                        # return the (trello) list object to be able to add card at step 3  
+                        # return the (trello) list object
+                        # to be able to add card at step 3
                         my_list = my_board.get_list(list_in_board.id)
                         break
-                # we didnt find the list in that board
-                # create it
+                # we didnt find the list in that board
+                # create it
                 if my_list == '':
-                   my_list = my_board.add_list(t.list_name)
+                    my_list = my_board.add_list(t.list_name)
 
             else:
                 # 2 if board_id and/or list_id does not exist, create it/them
                 my_board = self.trello_instance.add_board(t.board_name)
-                # add the list that didnt exists and return a (trello) list object
+                # add the list that didnt exists and
+                # return a (trello) list object
                 my_list = my_board.add_list(t.list_name)
 
             # 3 create the card
