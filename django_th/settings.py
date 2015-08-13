@@ -122,7 +122,7 @@ INSTALLED_APPS = (
     'th_pocket',
     'th_evernote',
     'th_twitter',
-    #  'th_readability',  # uncomment if you want to use it 
+    'th_readability',
     'th_holidays',
     # 'haystack',
     # 'th_search',
