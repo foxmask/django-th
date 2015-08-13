@@ -21,9 +21,11 @@ class Trello(Services):
         db_table = 'django_th_trello'
 
     def __str__(self):
-        return "%s %s %s" % (self.board_name, self.list_name,
+        return "%s %s %s" % (self.board_name,
+                             self.list_name,
                              self.card_title)
 
     def show(self):
-        return "My Trello %s %s %s" % (self.board_name, self.list_name,
+        return "My Trello %s %s %s" % (self.board_name,
+                                       self.list_name,
                                        self.card_title)

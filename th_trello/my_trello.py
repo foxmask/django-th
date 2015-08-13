@@ -14,6 +14,7 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
+from django_th.apps import DjangoThConfig
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
 
@@ -120,28 +121,39 @@ class ServiceTrello(ServicesMgr):
             # by retreiving all the boards
             boards = self.trello_instance.list_boards()
 
-            board_id = 0
+            board_id = ''
+            my_board = ''
+            my_list = ''
             for board in boards:
-                if t.board_name == str(board.name):
-                    board_id = int(board.id)
+                if t.board_name == board.name.decode('utf-8'):
+                    board_id = board.id
+                    break
 
-            if board_id > 0:
+            if board_id:
                 # 1.b search the list_id by its name
-                b = Board("TriggerHappy", board_id)
+                my_board = self.trello_instance.get_board(board_id)
+                lists = my_board.open_lists()
                 # just get the open list ; not all the archive ones
-                lists = b.open_lists()
-                list_id = lists.id if t.list_name in lists.values() else 0
+                for list_in_board in lists:
+                    # search the name of the list we set in the form
+                    if t.list_name == list_in_board.name.decode('utf-8'):
+                        # return the (trello) list object to be able to add card at step 3  
+                        my_list = my_board.get_list(list_in_board.id)
+                        break
+                # we didnt find the list in that board
+                # create it
+                if my_list == '':
+                   my_list = my_board.add_list(t.list_name)
+
             else:
                 # 2 if board_id and/or list_id does not exist, create it/them
-                board_id = self.trello_instance.add_board(t.board_name)
-                b = Board("TriggerHappy", board_id)
-                list_id = b.add_list(t.list_name)
+                my_board = self.trello_instance.add_board(t.board_name)
+                # add the list that didnt exists and return a (trello) list object
+                my_list = my_board.add_list(t.list_name)
 
             # 3 create the card
-            # point on the target board and list
-            my_board = List(board_id, list_id)
             # create the Trello card
-            my_board.add_card(title, content)
+            my_list.add_card(title, content)
 
             sentance = str('trello {} created').format(data['link'])
             logger.debug(sentance)

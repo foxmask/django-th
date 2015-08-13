@@ -42,20 +42,20 @@ class TrelloTest(TestCase):
 
     def create_trello(self):
         trigger = self.create_triggerservice()
-        name = 'Trello'
+        board_name = 'Trigger Happy'
+        list_name = 'To Do'
         status = True
         return Trello.objects.create(trigger=trigger,
-                                     board_name='Trigger Happy',
-                                     list_name='To-Do',
-                                     name=name,
-                                     card_title='Install it',
-                                     card_description='Have Fun with it!',
+                                     board_name=board_name,
+                                     list_name=list_name,
                                      status=status)
 
     def test_trello(self):
         t = self.create_trello()
         self.assertTrue(isinstance(t, Trello))
-        self.assertEqual(t.show(), "My Trello %s %s %s" % (t.board_name, t.list_name, t.card_title))
+        self.assertEqual(t.show(), "My Trello %s %s %s" % (t.board_name,
+                                                           t.list_name,
+                                                           t.card_title))
 
     """
         Form
