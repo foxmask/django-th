@@ -13,6 +13,7 @@ from django_th.services.services import ServicesMgr
 # th_rss classes
 from th_rss.models import Rss
 from th_rss.lib.feedsservice import Feeds
+from django_th.publishing_limit import PublishingLimit
 
 logger = getLogger('django_th.trigger_happy')
 
@@ -80,4 +81,5 @@ class ServiceRss(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        return cache.get('th_rss_' + str(trigger_id))
+        cache_data = cache.get('th_rss_' + str(trigger_id))
+        return PublishingLimit.get_data('th_rss', cache_data, trigger_id)
