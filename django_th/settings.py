@@ -1,5 +1,6 @@
 # Django settings for django_th project.
 import os
+from celery.schedules import crontab
 from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
@@ -333,6 +334,21 @@ TH_TRELLO = {
 
 
 SECRET_KEY = 'to be defined :P'
+
+
+# CELERY
+BROKER_URL = 'redis://localhost:6379/0'
+
+CELERYBEAT_SCHEDULE = {
+    'add-read-data': {
+        'task': 'django_th.tasks.read_data',
+        'schedule': crontab(minute='27,54'),
+    },
+    'add-publish-data': {
+        'task': 'django_th.tasks.publish_data',
+        'schedule': crontab(minute='59'),
+    },
+}
 
 # local settings management
 try:
