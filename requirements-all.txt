@@ -1,9 +1,0 @@
--r requirements.txt
--r requirements-evernote.txt
--r requirements-holidays.txt
--r requirements-pocket.txt
--r requirements-readability.txt
--r requirements-rss.txt
--r requirements-search.txt
--r requirements-trello.txt
--r requirements-twitter.txt

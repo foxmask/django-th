@@ -15,7 +15,10 @@ if the migration complains  that you've already created the table django_th_twit
 check that you dont have those record in the django_migrations table
 
 
+.. code-block:: sql
+
     11|django_th|0001_initial|a date
+
     12|th_twitter|0001_initial|a date
 
 

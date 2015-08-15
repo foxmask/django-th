@@ -1,2 +1,1 @@
-pytidylib6==0.2.2
 -e git://github.com/evernote/evernote-sdk-python3.git#egg=evernote

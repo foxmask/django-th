@@ -11,12 +11,12 @@ def reqs(*f):
     return list(filter(None, [strip_comments(l) for l in open(
         os.path.join(os.getcwd(), *f)).readlines()]))
 
-install_requires = reqs('requirements-all.txt')
+install_requires = reqs('requirements.txt')
 
 setup(
     name='django_th',
     version=version,
-    description='Trigger Happy - micro enterprise service bus (ESB) - a bridge between your internet services',
+    description='Trigger Happy - take the control of your data with this micro enterprise service bus (ESB) - a bridge between your internet services',
     author='Olivier Demah',
     author_email='olivier@foxmask.info',
     url='https://github.com/foxmask/django-th',

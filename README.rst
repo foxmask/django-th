@@ -120,6 +120,19 @@ To install the required modules, do:
 
     pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-all.txt
 
+Or from Pypi in 2 steps :
+
+.. code:: system
+
+    pip install django-th
+
+and you will have to finish by 
+
+.. code:: system
+
+    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-evernote.txt
+
+this is because Evernote SDK for Python 3 is not yet available on pypi
 
 Parameters
 ==========

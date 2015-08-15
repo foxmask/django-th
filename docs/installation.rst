@@ -15,9 +15,21 @@ From GitHub
 From Pypi
 =========
 
+in 2 steps :
+
+
 .. code-block:: bash
 
     pip install django-th
+
+and you will have to finish by 
+
+.. code-block:: bash
+
+    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-evernote.txt
+
+this is because Evernote SDK for Python 3 is not yet available on pypi
+
 
 
 Dependencies
