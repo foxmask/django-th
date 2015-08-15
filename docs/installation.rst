@@ -10,7 +10,7 @@ From GitHub
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th.git
-    pip install -r requirements.txt
+    pip install -r requirements-all.txt
 
 From Pypi
 =========
@@ -20,41 +20,56 @@ From Pypi
     pip install django-th
 
 
-
 Dependencies
 ------------
-* Python 3.4
-* Django >= 1.8
-* arrow==0.5.4
-* django-js-reverse==0.5.1
+* Python 3.4.x
+* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
+* django-formtools == 1.0
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
+* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
-for formwizard 
+The latest libtidy-dev should be installed with your operating system package manager, not from pip.
+On a Ubuntu system: 
+ 
+.. code:: system
+    apt-get install libtidy-dev
 
-* django-formtools==1.0
 
 for celery
 
-* celery==3.1.18
-
-for redis
-
-* django-redis==4.1.0
-* django-redisboard==1.2.0
+* `Celery <http://www.celeryproject.org/>`_ == 3.1.18
 
 for evernote support
 
-* pytidylib6==0.2.2
-* -e git+https://github.com/evernote/evernote-sdk-python3#egg=evernote
-* feedparser==5.1.3
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ 
 
 for pocket support
 
-* pocket==0.3.5
+* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
 
-for twitter support
+for readability support
 
-* twython==3.2.0
+* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.0
+
+for rss support
+
+* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.1.3
 
 for search engine
 
-* django-haystack==2.3.1
+* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.3.1
+
+for trello support
+
+* `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
+
+for twitter support
+
+* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
+
+
+for redis support 
+
+* `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
+* `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0

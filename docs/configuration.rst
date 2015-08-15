@@ -50,6 +50,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'th_evernote',
         'th_twitter',
         'th_holidays',
+        'th_trello',
         'haystack',  # mandatory  if you plan to use th_search
         'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
@@ -71,6 +72,7 @@ TH_SERVICES is a list of the services, like for example,
         'th_pocket.my_pocket.ServicePocket',
         'th_evernote.my_evernote.ServiceEvernote',
         'th_readability.my_readability.ServiceReadability',
+        'th_trello.my_trello.ServiceTrello',        
         'th_twitter.my_twitter.ServiceTwitter',
     )
 
@@ -102,6 +104,8 @@ otherwise do :
     python manage.py migrate
 
 
+if you meet some errors with this last command, have a look at MIGRATION_0.10.x_to_0.11.x.rst file
+
 
 Activate the services
 ---------------------
@@ -109,7 +113,7 @@ Activate the services
 to activate a service, you will need to follow those steps
 
 * Requesting a key to the Services
-* Adding the key to the settings
+* Adding the key to your settings file
 * Adding the service from the Admin
 * Activating the service from your account from the public part of the website
 * Why this process ?
@@ -176,7 +180,7 @@ Why this process ?
 ~~~~~~~~~~~~~~~~~~
 
 * it is simple : actually, to use Trigger Happy you need to install and host it by yourself, and so, you need to "declare" for each service your instance of TriggerHappy. 
-* Other details : you need to activate the service from the admin panel, BECAUSE, TriggerHappy is planed to be used by many other users soon. So the admin of the instance of TriggerHappy will decide if he want to offer the possibility to use this service of this other one. Once the admin has done his job, the end user, from the "public part" can go to the list of service and add the new one etc.
+* Other details : you need to activate the service from the admin panel, BECAUSE, TriggerHappy is planed to be used by many other users soon. So the admin of the instance of TriggerHappy will decide if he wants to offer the possibility to use this service of this other one. Once the admin has done his job, the end user, from the "public part" can go to the list of services and add the new one etc.
 
 
 Others settings
@@ -236,6 +240,17 @@ For each TriggerHappy component, define one cache like below
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Trello Cache
+    'th_trello':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 5,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
     # Twitter Cache
     'th_twitter':
     {
@@ -243,7 +258,7 @@ For each TriggerHappy component, define one cache like below
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
-            "DB": 5,
+            "DB": 6,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },

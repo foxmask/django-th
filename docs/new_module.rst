@@ -220,19 +220,21 @@ The complete code of this class :
             """
                 let's auth the user to the Service
             """
-            callbackUrl = 'http://%s%s' % (
+            callback_url = 'http://%s%s' % (
                 request.get_host(), reverse('dummy_callback'))
 
-            request_token = CallOfApi.get_request_token(
-                consumer_key=settings.TH_DUMMY['consumer_key'],
-                redirect_uri=callbackUrl)
+            request_token = self.get_request_token()
 
             # Save the request token information for later
-            request.session['request_token'] = request_token
+            request.session['oauth_token'] = request_token['oauth_token']
+            request.session['oauth_token_secret'] = request_token[
+                'oauth_token_secret']
 
             # URL to redirect user to, to authorize your app
-            auth_url = CallOfApi.get_auth_url(
-                code=request_token, redirect_uri=callbackUrl)
+            auth_url_str = '%s?oauth_token=%s&oauth_callback=%s'
+            auth_url = auth_url_str % (self.AUTH_URL,
+                                       request_token['oauth_token'],
+                                       callback_url)
 
             return auth_url
 
@@ -250,28 +252,38 @@ The complete code of this class :
                 us = UserService.objects.get(
                     user=request.user,
                     name=ServicesActivated.objects.get(name='ServiceDummy'))
-                # 2) then get the token
-                access_token = CallOfApi.get_access_token(
-                    consumer_key=settings.TH_DUMMY['consumer_key'],
-                    code=request.session['request_token'])
-
+                # 2) Readability API require to use 4 parms consumer_key/secret +
+                # token_key/secret instead of usually get just the token
+                # from an access_token request. So we need to add a string
+                # seperator for later use to slpit on this one
+                access_token = self.get_access_token(
+                    request.session['oauth_token'],
+                    request.session['oauth_token_secret'],
+                    request.GET.get('oauth_verifier', '')
+                )
+                # us.token = access_token.get('oauth_token') + \
+                #    '#TH#' + access_token.get('oauth_token_secret')
                 us.token = access_token
-
-                # if the service require us to provide
-                # the access token +  access token secret then
-                # here is the way I do
-                # access_token = self.get_access_token(
-                #    request.session['oauth_token'],
-                #    request.session['oauth_token_secret'],
-                #    request.GET.get('oauth_verifier', '')
-                #)
-                # us.token = access_token['oauth_token'] + \
-                # '#TH#' + access_token['oauth_token_secret']
-                # then in process_data I split on #TH# to get each one
-
                 # 3) and save everything
                 us.save()
             except KeyError:
                 return '/'
 
             return 'dummy/callback.html'
+
+        def get_request_token(self):
+            oauth = OAuth1Session(self.consumer_key,
+                                  client_secret=self.consumer_secret)
+            return oauth.fetch_request_token(self.REQ_TOKEN)
+
+        def get_access_token(self, oauth_token, oauth_token_secret,
+                             oauth_verifier):
+            # Using OAuth1Session
+            oauth = OAuth1Session(self.consumer_key,
+                                  client_secret=self.consumer_secret,
+                                  resource_owner_key=oauth_token,
+                                  resource_owner_secret=oauth_token_secret,
+                                  verifier=oauth_verifier)
+            oauth_tokens = oauth.fetch_access_token(self.ACC_TOKEN)
+
+            return oauth_tokens

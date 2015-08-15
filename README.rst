@@ -52,13 +52,16 @@ Requirements
 
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
+* django-formtools == 1.0
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
-The latest should be installed with your operating system package manager, not from pip.
+The latest libtidy-dev should be installed with your operating system package manager, not from pip.
 On a Ubuntu system: 
  
 .. code:: system
-	apt-get install libtidy-dev
+    apt-get install libtidy-dev
 
 
 for celery
@@ -67,17 +70,11 @@ for celery
 
 for evernote support
 
-* `pytidylib6 <https://pypi.python.org/pypi/pytidylib6>`_ == 0.2.2
-* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
-* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ from `github <https://github.com/evernote/evernote-sdk-python3>`_ as the version from `pypi 
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ 
 
 for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
-
-for twitter support
-
-* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
 
 for readability support
 
@@ -87,16 +84,24 @@ for rss support
 
 * `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.1.3
 
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
+for search engine
+
+* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.3.1
+
+for trello support
+
+* `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
+
+for twitter support
+
+* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
+
 
 for redis support 
 
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
 * `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
 
-for search engine
-
-* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.3.1
 
 
 Installation
@@ -143,6 +148,7 @@ add the module django_th to the INSTALLED_APPS
         'th_evernote',
         'th_twitter',
         'th_holidays',
+        'th_trello',
         'haystack',  # mandatory  if you plan to use th_search
         'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
@@ -162,6 +168,7 @@ TH_SERVICES is a list of the supported services
         'th_pocket.my_pocket.ServicePocket',
         'th_evernote.my_evernote.ServiceEvernote',
         'th_readability.my_readability.ServiceReadability',
+        'th_trello.my_trello.ServiceTrello',
         'th_twitter.my_twitter.ServiceTwitter',
     )
 
@@ -231,6 +238,26 @@ To be able to use readability :
 
 
 
+TH_TRELLO
+~~~~~~~~~~
+
+TH_TRELLO is the settings you will need to be able to add/read data in/from Trello.
+
+To be able to use Trello:
+
+* you will need to create an account at https://trello.com/docs/
+* then create an application and adding to the URL request "scope=read,write"
+
+.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png 
+
+.. code:: python
+
+    TH_TRELLO = {
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+        'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
 TH_TWITTER
 ~~~~~~~~~~
 
@@ -241,7 +268,7 @@ To be able to use Twitter:
 * you will need to create an account at https://apps.twitter.com/
 * then create an application
 * then on the Application Settings tab set the rights to "read and write permission"
-* then on Keys tab copy the infomartion and fill the settings.py with them
+* then on Keys tab copy the information and fill the settings.py with them
 
 .. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png 
 
@@ -251,7 +278,6 @@ To be able to use Twitter:
         'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
         'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
     }
-
 
 CACHE 
 ~~~~~
@@ -304,6 +330,17 @@ For each TriggerHappy component, define one cache like below
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Trello Cache
+    'th_trello':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 5,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
     # Twitter Cache
     'th_twitter':
     {
@@ -311,7 +348,7 @@ For each TriggerHappy component, define one cache like below
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "127.0.0.1:6379",
         "OPTIONS": {
-            "DB": 5,
+            "DB": 6,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -410,6 +447,8 @@ otherwise do :
 
     python manage.py migrate
 
+if you meet some errors with this last command, have a look at MIGRATION_0.10.x_to_0.11.x.rst file
+
 
 Starting the application
 ------------------------
@@ -429,7 +468,7 @@ Setting up : Administration
 
 Once the module is installed, go to the admin panel and activate the service you want. 
 
-Currently there are 4 services, Evernote, Pocket, RSS and Twitter.
+Currently there are 5 services, Evernote, Pocket, RSS, Trello and Twitter.
 
 .. image:: http://foxmask.info/public/trigger_happy/th_admin_evernote_activated.png
 
