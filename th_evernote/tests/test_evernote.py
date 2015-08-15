@@ -155,20 +155,27 @@ class ServiceEvernoteTest(TestCase):
 
         return the_return
 
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_EVERNOTE)
+        self.assertIn('consumer_key', settings.TH_EVERNOTE)
+        self.assertIn('consumer_secret', settings.TH_EVERNOTE)
+        self.assertIn('sandbox', settings.TH_EVERNOTE)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_evernote', settings.CACHES)
+
     def test_get_evernote_client(self, token=None):
         """
             get the token from evernote
         """
-
-        self.assertIn('sandbox', settings.TH_EVERNOTE)
         sandbox = settings.TH_EVERNOTE['sandbox']
         client = mock.Mock(return_value=True)
         client.method(token=token, sandbox=sandbox)
         client.method.assert_called_with(token=token, sandbox=sandbox)
 
-        self.assertIn('consumer_key', settings.TH_EVERNOTE)
-        self.assertIn('consumer_secret', settings.TH_EVERNOTE)
-        self.assertIn('sandbox', settings.TH_EVERNOTE)
         sandbox = settings.TH_EVERNOTE['sandbox']
         consumer_key = settings.TH_EVERNOTE['consumer_key']
         consumer_secret = settings.TH_EVERNOTE['consumer_secret']
@@ -182,8 +189,8 @@ class ServiceEvernoteTest(TestCase):
 
         return client
 
-    def auth(self):
+    def test_auth(self):
         pass
 
-    def callback(self):
+    def test_callback(self):
         pass

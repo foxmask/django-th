@@ -289,7 +289,7 @@ TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
     'th_pocket.my_pocket.ServicePocket',
     'th_evernote.my_evernote.ServiceEvernote',
-    #'th_readability.my_readability.ServiceReadability',  # uncomment if you want to use it 
+    'th_readability.my_readability.ServiceReadability',
     'th_twitter.my_twitter.ServiceTwitter',
     'th_trello.my_trello.ServiceTrello',
 )
@@ -335,7 +335,7 @@ TH_TRELLO = {
 SECRET_KEY = 'to be defined :P'
 
 # local settings management
-#try:
-#    from .local_settings import *
-#except ImportError:
-#    pass
+try:
+    from .local_settings import *
+except ImportError:
+    pass

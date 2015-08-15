@@ -3,6 +3,7 @@ import datetime
 import time
 
 from django.test import TestCase
+from django.conf import settings
 from django.contrib.auth.models import User
 from th_pocket.models import Pocket
 from django_th.models import TriggerService, UserService, ServicesActivated
@@ -123,6 +124,16 @@ class ServicePocketTest(TestCase):
             the_return = True
 
         return the_return
+
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_POCKET)
+        self.assertIn('consumer_key', settings.TH_POCKET)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_pocket', settings.CACHES)
 
     def test_auth(self):
         pass

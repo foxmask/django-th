@@ -1,3 +1,4 @@
+# coding: utf-8
 import unittest
 from django.test import RequestFactory
 from django.contrib.auth.models import User

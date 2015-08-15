@@ -1,5 +1,6 @@
 # coding: utf-8
 from django.test import TestCase
+from django.conf import settings
 from django.contrib.auth.models import User
 from th_twitter.models import Twitter
 from django_th.models import TriggerService, UserService, ServicesActivated
@@ -17,6 +18,17 @@ class TwitterTest(TestCase):
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
+
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_TWITTER)
+        self.assertIn('consumer_key', settings.TH_TWITTER)
+        self.assertIn('consumer_secret', settings.TH_TWITTER)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_twitter', settings.CACHES)
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -45,7 +57,8 @@ class TwitterTest(TestCase):
         tag = 'twitter'
         screen = '@johndoe'
         status = True
-        return Twitter.objects.create(tag=tag, screen=screen, trigger=trigger, status=status)
+        return Twitter.objects.create(tag=tag, screen=screen,
+                                      trigger=trigger, status=status)
 
     def test_twitter(self):
         t = self.create_twitter()

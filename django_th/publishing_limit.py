@@ -7,7 +7,7 @@ class PublishingLimit(object):
     """
         this class permits to reduce the quantity of data to be pulibshed
         get the limit from settings.DJANGO_TH['publishing_limit']
-        if the limit does not exist, it return everything
+        if the limit does not exist, it returns everything
     """
     @staticmethod
     def get_data(service, cache_data, trigger_id):
@@ -34,14 +34,16 @@ class PublishingLimit(object):
                 if 'publishing_limit' in settings.DJANGO_TH:
                     limit = settings.DJANGO_TH['publishing_limit']
 
+                    # publishing of all the data
                     if limit == 0:
                         return cache_data
-
+                    # or just a set of them
                     if len(cache_data) > limit:
                         for data in cache_data[limit:]:
                             service_str = ''.join((service, '_',
                                                    str(trigger_id)))
                             cache.set(service_str, data)
+                        # put in cache unpublished data
                         cache_data = cache_data[:limit]
 
         return cache_data

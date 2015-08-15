@@ -78,10 +78,19 @@ class ServiceReadabilityTest(TestCase):
         self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
-        self.assertIn('consumer_key', settings.TH_READABILITY)
-        self.assertIn('consumer_secret', settings.TH_READABILITY)
         self.consumer_key = settings.TH_READABILITY['consumer_key']
         self.consumer_secret = settings.TH_READABILITY['consumer_secret']
+
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_READABILITY)
+        self.assertIn('consumer_key', settings.TH_READABILITY)
+        self.assertIn('consumer_secret', settings.TH_READABILITY)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_readability', settings.CACHES)
 
     def test_process_data(self, token='AZERTY123#TH#AZERTY123', trigger_id=1):
         since = int(
