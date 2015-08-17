@@ -37,3 +37,12 @@ just clone [django-th-dummy](https://github.com/foxmask) and change 'dummy' to t
 1. make a Pull Request
 1. wait patiently ;)
 
+## Issue labels
+
+some explanation on the labels of the issues 
+
+* **start-with-label** : this label tells you that you can start the module by cloning the django-th-dummy moduly
+* **easy** : this label tells you this issue is easy to fix
+* **middle** : this label tells you this issue is not complicate to fix, just take a little more time
+* **hard** : this label tells you this issue need you to know the core of the projet or a knwoledge of a new lib
+
