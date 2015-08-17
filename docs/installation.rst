@@ -10,7 +10,8 @@ From GitHub
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th.git
-    pip install -r requirements-all.txt
+    pip install -r requirements.txt
+    pip install -r requirements-evernote.txt
 
 From Pypi
 =========
