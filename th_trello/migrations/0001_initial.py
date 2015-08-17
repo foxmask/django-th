@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_th', '0004_rss_uuid_remove_uuid_null'),
+        ('django_th', '__first__'),
     ]
 
     operations = [

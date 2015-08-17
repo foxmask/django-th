@@ -7,24 +7,34 @@ recursive-include django_th/templates *
 
 recursive-include th_evernote *.html
 recursive-include th_evernote/templates *
+recursive-include th_evernote/migrations *
+
+recursive-include th_holidays *.html
+recursive-include th_holidays/templates *
+recursive-include th_holidays/migrations *
 
 recursive-include th_pocket *.html
 recursive-include th_pocket/templates *
+recursive-include th_pocket/migrations *
+
+recursive-include th_readability *.html
+recursive-include th_readability/templates *
+recursive-include th_readability/migrations *
 
 recursive-include th_rss *.html
 recursive-include th_rss/templates *
 
-recursive-include th_readability *.html
-recursive-include th_readability/templates *
+recursive-include th_search *.html
+recursive-include th_search/templates *
+
+recursive-include th_trello *.html
+recursive-include th_trello/templates *
+recursive-include th_trello/migrations *
 
 recursive-include th_twitter *.html
 recursive-include th_twitter/templates *
+recursive-include th_twitter/migrations *
 
-recursive-include th_holidays *.html
-recursive-include th_holidays/templates *
-
-recursive-include th_search *.html
-recursive-include th_search/templates *
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]

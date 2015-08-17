@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_th', '0006_trello'),
+        ('django_th', '__first__'),
     ]
 
     operations = [

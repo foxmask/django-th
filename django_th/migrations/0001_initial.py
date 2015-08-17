@@ -13,48 +13,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Evernote',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('status', models.BooleanField(default=False)),
-                ('description', models.CharField(max_length=255)),
-                ('tag', models.CharField(max_length=80, blank=True)),
-                ('notebook', models.CharField(max_length=80)),
-                ('title', models.CharField(max_length=80)),
-                ('text', models.TextField()),
-            ],
-            options={
-                'db_table': 'django_th_evernote',
-            },
-        ),
-        migrations.CreateModel(
-            name='Holidays',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('status', models.BooleanField()),
-            ],
-            options={
-                'db_table': 'django_th_holidays',
-            },
-        ),
-        migrations.CreateModel(
-            name='Pocket',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('status', models.BooleanField(default=False)),
-                ('description', models.CharField(max_length=255)),
-                ('tag', models.CharField(max_length=80, blank=True)),
-                ('url', models.URLField(max_length=255)),
-                ('title', models.CharField(max_length=80, blank=True)),
-                ('tweet_id', models.CharField(max_length=80, blank=True)),
-            ],
-            options={
-                'db_table': 'django_th_pocket',
-            },
-        ),
-        migrations.CreateModel(
             name='Rss',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
@@ -92,24 +50,6 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Twitter',
-            fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
-                ('name', models.CharField(max_length=255)),
-                ('status', models.BooleanField(default=False)),
-                ('description', models.CharField(max_length=255)),
-                ('tag', models.CharField(max_length=80, blank=True, null=True)),
-                ('screen', models.CharField(max_length=80, blank=True, null=True)),
-                ('since_id', models.BigIntegerField(blank=True, null=True)),
-                ('max_id', models.BigIntegerField(blank=True, null=True)),
-                ('count', models.IntegerField(blank=True, null=True)),
-                ('trigger', models.ForeignKey(to='django_th.TriggerService')),
-            ],
-            options={
-                'db_table': 'django_th_twitter',
-            },
-        ),
-        migrations.CreateModel(
             name='UserService',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
@@ -135,26 +75,6 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='rss',
-            name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
-        ),
-        migrations.AddField(
-            model_name='pocket',
-            name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
-        ),
-        migrations.AddField(
-            model_name='holidays',
-            name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
-        ),
-        migrations.AddField(
-            model_name='holidays',
-            name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
-        ),
-        migrations.AddField(
-            model_name='evernote',
             name='trigger',
             field=models.ForeignKey(to='django_th.TriggerService'),
         ),
