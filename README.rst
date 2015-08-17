@@ -61,6 +61,7 @@ The latest libtidy-dev should be installed with your operating system package ma
 On a Ubuntu system: 
  
 .. code:: system
+
     apt-get install libtidy-dev
 
 
@@ -109,18 +110,30 @@ Installation
 
 To get the project up and running, from your virtualenv, do:
 
-.. code:: system
-    
+
+
+From GitHub 
+-----------
+
+
+.. code-block:: bash
+
     git clone https://github.com/foxmask/django-th.git
-    
 
-To install the required modules, do:
+then continue by installing :
 
-.. code:: system
+.. code-block:: bash
 
-    pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-all.txt
+    cd django-th
+    python setup install
+    cd ..
+    pip install -r requirements-evernote.txt
 
-Or from Pypi in 2 steps :
+
+From Pypi
+---------
+
+in 2 steps :
 
 .. code:: system
 
@@ -300,73 +313,74 @@ For each TriggerHappy component, define one cache like below
 
 .. code:: python
 
-    # Evernote Cache
-    'th_evernote':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 1,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Pocket Cache
-    'th_pocket':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 2,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # RSS Cache
-    'th_rss':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 3,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Readability
-    'th_readability':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 4,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Trello Cache
-    'th_trello':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 5,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Twitter Cache
-    'th_twitter':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 6,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-
+    CACHES = {
+        # Evernote Cache
+        'th_evernote':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 1,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Pocket Cache
+        'th_pocket':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 2,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # RSS Cache
+        'th_rss':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 3,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Readability
+        'th_readability':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 4,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Trello Cache
+        'th_trello':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 5,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Twitter Cache
+        'th_twitter':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 6,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+    }
 
 CELERY 
 ~~~~~~
@@ -382,6 +396,7 @@ Define the broker then the scheduler
 
 .. code:: python
 
+    from celery.schedules import crontab
     BROKER_URL = 'redis://localhost:6379/0'
 
     CELERYBEAT_SCHEDULE = {
@@ -419,6 +434,33 @@ Define the broker then the scheduler
     redirect_stderr=true
     stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
     stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+
+REDISBOARD
+~~~~~~~~~~
+
+.. code:: python
+
+    # REDISBOARD
+    REDISBOARD_DETAIL_FILTERS = ['.*']
+
+
+HAYSTACK 
+~~~~~~~~~
+
+if you plan to use the search feature, put the engine of your choice, for example : 
+
+.. code:: python
+
+    # needed to th_search and haystack
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'haystack',
+        },
+    }
+    
 
 
 urls.py

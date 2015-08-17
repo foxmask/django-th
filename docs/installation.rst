@@ -10,7 +10,14 @@ From GitHub
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th.git
-    pip install -r requirements.txt
+
+then continue by installing :
+
+.. code-block:: bash
+
+    cd django-th
+    python setup install
+    cd ..
     pip install -r requirements-evernote.txt
 
 From Pypi

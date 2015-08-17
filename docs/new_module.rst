@@ -101,7 +101,7 @@ auth and callback :
 -------------------
 If your service need an authentication, you'll need 2 new functions `auth` and `callback`
 
-* `auth` will trigger the authentication to the third party application
+* `auth` will trigger the authentication to the third party application, the Oauth process in fact
 * `callback` is triggered when the authentication is done and call by the third party application.
 At this step the callback function store the oauth token to the dedicated dummy model as follow :
 
@@ -118,7 +118,7 @@ The complete code of this class :
 
 .. code-block:: python
 
-    # -*- coding: utf-8 -*-
+    # coding: utf-8
     # add here the call of any native lib of python like datetime etc.
     #
     # add the python API here if needed

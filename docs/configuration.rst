@@ -47,6 +47,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'th_rss',
         'th_pocket',
         'th_readability',
+        'evernote',
         'th_evernote',
         'th_twitter',
         'th_holidays',
@@ -195,74 +196,74 @@ CACHE
 For each TriggerHappy component, define one cache like below 
 
 .. code:: python
-
-    # Evernote Cache
-    'th_evernote':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 1,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Pocket Cache
-    'th_pocket':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 2,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # RSS Cache
-    'th_rss':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 3,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Readability
-    'th_readability':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 4,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Trello Cache
-    'th_trello':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 5,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Twitter Cache
-    'th_twitter':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
-        "OPTIONS": {
-            "DB": 6,
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-
+    CACHES = {
+        # Evernote Cache
+        'th_evernote':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 1,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Pocket Cache
+        'th_pocket':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 2,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # RSS Cache
+        'th_rss':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 3,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Readability
+        'th_readability':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 4,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Trello Cache
+        'th_trello':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 5,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Twitter Cache
+        'th_twitter':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 6,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+    }
 
 
 The Log 
@@ -272,27 +273,28 @@ in the LOGGING add to loggers
 
 .. code-block:: python
 
-    'handlers': {
-        ...
-        'file': {
-            'level': 'INFO',
-            'class': 'logging.handlers.RotatingFileHandler',
-            'filename': BASE_DIR + '/trigger_happy.log',
-            'maxBytes': 61280,
-            'backupCount': 3,
-            'formatter': 'verbose',
+    LOGGING = {
+        'handlers': {
+            ...
+            'file': {
+                'level': 'INFO',
+                'class': 'logging.handlers.RotatingFileHandler',
+                'filename': BASE_DIR + '/trigger_happy.log',
+                'maxBytes': 61280,
+                'backupCount': 3,
+                'formatter': 'verbose',
 
-        },
-    }
-    'loggers':
-    {
-        ...
-        'django_th.trigger_happy': {
-            'handlers': ['console', 'file'],
-            'level': 'INFO',
+            },
+        }
+        'loggers':
+        {
+            ...
+            'django_th.trigger_happy': {
+                'handlers': ['console', 'file'],
+                'level': 'INFO',
+            }
         }
     }
-
 
 
 CELERY 
@@ -307,6 +309,8 @@ and then exploit it to publish the data to the expected consumer services
 Define the broker then the scheduler
 
 .. code:: python
+
+    from celery.schedules import crontab
 
     BROKER_URL = 'redis://localhost:6379/0'
 
@@ -346,3 +350,30 @@ Define the broker then the scheduler
     redirect_stderr=true
     stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
     stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
+
+
+
+REDISBOARD
+~~~~~~~~~~
+
+.. code:: python
+
+    # REDISBOARD
+    REDISBOARD_DETAIL_FILTERS = ['.*']
+
+
+HAYSTACK 
+~~~~~~~~~
+
+if you plan to use the search feature, put the engine of your choice, for example : 
+
+.. code:: python
+
+    # needed to th_search and haystack
+    HAYSTACK_CONNECTIONS = {
+        'default': {
+            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+            'URL': 'http://127.0.0.1:9200/',
+            'INDEX_NAME': 'haystack',
+        },
+    }
