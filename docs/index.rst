@@ -17,6 +17,7 @@ is a free software that provides a `micro enterprise service bus (ESB) <http://f
    configuration
    usage
    new_module
+   migration
 
 
 Automatically share data between popular services you use on the web.
