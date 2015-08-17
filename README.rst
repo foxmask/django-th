@@ -158,6 +158,7 @@ add the module django_th to the INSTALLED_APPS
         'th_rss',
         'th_pocket',
         'th_readability',
+        'evernote',
         'th_evernote',
         'th_twitter',
         'th_holidays',
