@@ -6,17 +6,25 @@
     :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
     :alt: Documentation status
 
-.. image:: https://pypip.in/version/django-th/badge.svg
+
+.. image:: http://img.shields.io/pypi/v/django-th.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: Latest version
 
-.. image:: https://pypip.in/py_versions/django-th/badge.svg
-    :target: https://pypi.python.org/pypi/django-th/
-    :alt: Supported Python versions
 
-.. image:: https://pypip.in/license/django-th/badge.svg
+.. image:: http://img.shields.io/badge/python-3.4-orange.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: Python version supported
+
+
+.. image:: http://img.shields.io/badge/license-BSD-blue.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: License
+
+
+.. image:: http://img.shields.io/pypi/dm/django-th.svg
+   :target: https://pypi.python.org/pypi/django-th/
+   :alt: Downloads per month
 
 
 ====================
@@ -60,7 +68,7 @@ Requirements
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
 On a Ubuntu system: 
  
-.. code:: system
+.. code:: bash
 
     apt-get install libtidy-dev
 
@@ -135,13 +143,13 @@ From Pypi
 
 in 2 steps :
 
-.. code:: system
+.. code:: bash
 
     pip install django-th
 
 and you will have to finish by 
 
-.. code:: system
+.. code:: bash
 
     pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-evernote.txt
 
@@ -177,7 +185,7 @@ add the module django_th to the INSTALLED_APPS
         'th_holidays',
         'th_trello',
         'haystack',  # mandatory  if you plan to use th_search
-        'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
+        'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
     )
 
@@ -580,7 +588,7 @@ Here are the available management commands you can use by hand when you need to 
     Available subcommands:
 
     [django_th]
-        fire_read_data     # will put date in cache
+        fire_read_data     # will put date in cache
         fire_publish_data  # will read cache and publish data
  
 
