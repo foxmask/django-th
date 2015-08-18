@@ -16,4 +16,3 @@ deploy:
     secure: SMBRrjUZ2kngOV89YkMyIh8W21CGa+9l6cvlnBXhmmuTt/jlx4sT2HHSzmIFAAsGYkatGj66AVibVsUaqoch2kIH75IOgww38PSgHP4KuqsDIm7xWCcHPSZfXSC3hi89/RwSzFeHCapVXKTW+EKO6FS9hesG6pSMYVTF6WCXnoQ=
   on:
     tags: true
-    repo: foxmask/django-th
