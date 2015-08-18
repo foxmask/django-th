@@ -17,7 +17,7 @@ just clone [django-th-dummy](https://github.com/foxmask) and change 'dummy' to t
 
 ## Bug Fixing
 
-:exclamation: You can pick [one of the issue](https://github.com/foxmask/django-th/issues) . The sort order can be in priority, the issues that remain to be closed for a given milestone, then the issues tagged as "bug". 
+:exclamation: You can pick [one of the issue](https://github.com/foxmask/django-th/issues). The sort order can be in priority, the issues that remain to be closed for a given milestone, then the issues tagged as "bug".
 
 
 ## Pull Request
@@ -46,3 +46,19 @@ some explanation on the labels of the issues
 * **middle** : this label tells you this issue is not complicate to fix, just take a little more time
 * **hard** : this label tells you this issue need you to know the core of the projet or a knwoledge of a new lib
 
+## Unit Test
+
+those are great to help to test how your code is working, and most of this, to check that your improvements dont break the existing code.
+All of them are in a test.py module on in a folder test/ that hosts several testing modules
+
+To avoid to commit things that could fail, in the **.git/hooks/pre-commit** add this 
+
+```shell
+#!/bin/bash
+python manage.py test -v2
+RESULT=$?
+[ $RESULT -ne 0 ] && exit 1
+exit 0
+```
+
+Thus, if the tests pass, the commit will be done and you could push without any problem.
