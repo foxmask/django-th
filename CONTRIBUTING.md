@@ -14,6 +14,9 @@ Quick start :
 
 just clone [django-th-dummy](https://github.com/foxmask) and change 'dummy' to the name of your new module
 
+or even faster :
+
+just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run it and here you are !!! Your new module is ready 
 
 ## Bug Fixing
 
