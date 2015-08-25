@@ -16,6 +16,7 @@ from django.core.cache import caches
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
+from django_th.publishing_limit import PublishingLimit
 from th_readability.models import Readability
 
 """
@@ -103,7 +104,10 @@ class ServiceReadability(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        return cache.get('th_readability_' + str(trigger_id))
+        cache_data = cache.get('th_readability_' + str(trigger_id))
+        return PublishingLimit.get_data('th_readability_',
+                                        cache_data,
+                                        trigger_id)
 
     def save_data(self, token, trigger_id, **data):
         """

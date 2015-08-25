@@ -163,7 +163,7 @@ class ServiceEvernote(ServicesMgr):
                         msg=e.rateLimitDuration))
                     # put again in cache the data that could not be
                     # published in Evernote yet
-                    cache.set('th_evernote_' + str(trigger_id), data)
+                    cache.set('th_evernote_' + str(trigger_id), data, version=2)
                     return True
                 else:
                     logger.critical(e)
@@ -220,7 +220,7 @@ class ServiceEvernote(ServicesMgr):
                         msg=e.rateLimitDuration))
                     # put again in cache the data that could not be
                     # published in Evernote yet
-                    cache.set('th_evernote_' + str(trigger_id), data)
+                    cache.set('th_evernote_' + str(trigger_id), data, version=2)
                     return True
                 else:
                     logger.critical(e)

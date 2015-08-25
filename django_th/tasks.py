@@ -9,8 +9,10 @@ import arrow
 from celery import shared_task
 
 from django.conf import settings
+from django.core.cache import caches
 from django_th.services import default_provider
 from django_th.models import TriggerService
+from django_th.my_services import MyService
 
 from django.utils.log import getLogger
 # create logger
@@ -254,3 +256,20 @@ def publish_data():
                     service.provider.name.name,
                     service.consumer.name.name,
                     service.description))
+
+
+@shared_task
+def get_outside_cache():
+    """
+        the purpose of this tasks is to recycle the data from the cache
+        with version=2 in the main cache
+    """
+    all_packages = MyService.all_packages()
+    for package in all_packages:
+        cache = caches[package]
+        # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
+        for service in cache.iter_keys('th_*'):
+            try:
+                cache.get(service, version=2)
+            except ValueError:
+                pass

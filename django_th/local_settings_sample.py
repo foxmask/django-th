@@ -42,6 +42,10 @@ CELERYBEAT_SCHEDULE = {
         'task': 'django_th.tasks.publish_data',
         'schedule': crontab(minute='59'),
     },
+    'add-outside-data': {
+        'task': 'django_th.tasks.get_outside_cache',
+        'schedule': crontab(minute='45'),
+    },
 }
 
 # REDISBOARD

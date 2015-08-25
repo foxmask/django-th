@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.conf import settings
 from django.core.cache import caches
+from django_th.my_services import MyService
 
 
 class PublishingLimit(object):
@@ -23,9 +24,10 @@ class PublishingLimit(object):
         # rebuild the string
         # th_<service>.my_<service>.Service<Service>
         if service.startswith('th_'):
-            service_name = service.split('_')[1]
-            service_long = ''.join((service, ".my_", service_name, ".Service",
-                                    service_name.title()))
+            service_long = MyService.service_long(service)
+            # service_name = service.split('_')[1]
+            # service_long = ''.join((service, ".my_", service_name, ".Service",
+            #                        service_name.title()))
             # ... and check it
             if service_long in settings.TH_SERVICES:
 
@@ -38,11 +40,12 @@ class PublishingLimit(object):
                     if limit == 0:
                         return cache_data
                     # or just a set of them
-                    if len(cache_data) > limit:
+                    if cache_data is not None and len(cache_data) > limit:
                         for data in cache_data[limit:]:
                             service_str = ''.join((service, '_',
                                                    str(trigger_id)))
-                            cache.set(service_str, data)
+                            # put that data in a version 2 of the cache
+                            cache.set(service_str, data, version=2)
                         # put in cache unpublished data
                         cache_data = cache_data[:limit]
 
