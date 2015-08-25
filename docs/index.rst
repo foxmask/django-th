@@ -7,7 +7,9 @@ Contents:
 ---------
 
 As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy"
-is a free software that provides a `micro enterprise service bus (ESB) <http://fr.wikipedia.org/wiki/Enterprise_service_bus>`_
+is a free software that provides a bridge to automatically share data between popular services you use on the web.
+And instead of giving your credentials to them, keep them with your own **Trigger Happy** to keep the control of your data !
+
 
 
 .. toctree::
@@ -20,15 +22,41 @@ is a free software that provides a `micro enterprise service bus (ESB) <http://f
    migration
 
 
-Automatically share data between popular services you use on the web.
-And instead of giving your credentials to them, keep them with your **Trigger
-Happy** !
 
 For example a new RSS item is published, **Trigger Happy** will be able to 
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
-.. image:: https://drone.io/github.com/foxmask/django-th/status.png
+.. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
+    :target: https://travis-ci.org/foxmask/django-th
+    :alt: Travis Status
+
+.. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
+    :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
+    :alt: Documentation status
+
+
+.. image:: http://img.shields.io/pypi/v/django-th.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: Latest version
+
+
+.. image:: http://img.shields.io/badge/python-3.4-orange.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: Python version supported
+
+
+.. image:: http://img.shields.io/badge/license-BSD-blue.svg
+    :target: https://pypi.python.org/pypi/django-th/
+    :alt: License
+
+
+.. image:: http://img.shields.io/pypi/dm/django-th.svg
+   :target: https://pypi.python.org/pypi/django-th/
+   :alt: Downloads per month
+
+
+
 
 .. image:: http://trigger-happy.eu/static/th_esb.png
 
