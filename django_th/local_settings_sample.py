@@ -34,19 +34,20 @@ TH_TRELLO = {
 BROKER_URL = 'redis://localhost:6379/0'
 
 CELERYBEAT_SCHEDULE = {
-    'add-read-data': {
+    'every-put-in-cache': {
         'task': 'django_th.tasks.read_data',
-        'schedule': crontab(minute='27,54'),
+        'schedule': crontab(minute='12,24,36,48'),
     },
     'add-publish-data': {
         'task': 'django_th.tasks.publish_data',
-        'schedule': crontab(minute='59'),
+        'schedule': crontab(minute='15,30,45'),
     },
     'add-outside-data': {
         'task': 'django_th.tasks.get_outside_cache',
-        'schedule': crontab(minute='45'),
+        'schedule': crontab(minute='20,40'),
     },
 }
+
 
 # REDISBOARD
 REDISBOARD_DETAIL_FILTERS = ['.*']

@@ -68,7 +68,7 @@ class ServiceEvernote(ServicesMgr):
 
         self.client = EvernoteClient(**kwargs)
 
-    def read_data(self, trigger_id, date_triggered):
+    def read_data(self, token, trigger_id, date_triggered):
         """
             get the data from the service
             :param trigger_id: trigger ID to process
@@ -79,19 +79,25 @@ class ServiceEvernote(ServicesMgr):
             :rtype: list
         """
         data = []
-
         # get the data from the last time the trigger has been started
         # the filter will use the DateTime format in standard
-        new_date_triggered = arrow.get(
-            str(date_triggered), 'YYYYMMDDTHHmmss')
-
+        new_date_triggered = arrow.get(str(date_triggered)[:-6], 'YYYY-MM-DD HH:mm:ss')
         new_date_triggered = str(new_date_triggered).replace(
-            ':', '').replace('-', '')
-        date_filter = "created:{}".format(new_date_triggered[:-6])
+            ':', '').replace('-', '').replace(' ', '')
+        date_filter = "created:{} ".format(new_date_triggered[:-6])
+
+        trigger = Evernote.objects.get(trigger_id=trigger_id)
+
+        notebook_filter = "notebook:{} ".format(trigger.notebook) if trigger.notebook != '' else ''
+        tag_filter = "tag:{} ".format(trigger.tag) if trigger.tag != '' else ''
+
+        complet_filter = ''.join((notebook_filter, tag_filter, date_filter))
+        logger.info(complet_filter)
 
         # filter
         my_filter = NoteStore.NoteFilter()
-        my_filter.words = date_filter
+        my_filter.words = complet_filter
+
 
         # result spec to tell to evernote
         # what information to include in the response
@@ -99,13 +105,18 @@ class ServiceEvernote(ServicesMgr):
         spec.includeTitle = True
         spec.includeAttributes = True
 
-        our_note_list = self.note_store.findNotesMetadata(
-            self.token, my_filter, 0, 100, spec)
+        note_store = self.client.get_note_store()
+        our_note_list = note_store.findNotesMetadata(token, my_filter, 0, 100, spec)
 
         whole_note = ''
         for note in our_note_list.notes:
-            whole_note = self.note_store.getNote(
-                self.token, note.guid, True, False, False, False)
+            logger.info(note)
+            whole_note = note_store.getNote(token,
+                                            note.guid,
+                                            True,
+                                            False,
+                                            False,
+                                            False)
             data.append(
                 {'title': note.title,
                  'link': whole_note.attributes.sourceURL,
