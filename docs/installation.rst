@@ -64,6 +64,10 @@ for evernote support
 
 * `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ 
 
+for github support
+
+* `github <https://pypi.python.org/pypi/github3.py>`_ == 1.0.0a2
+
 for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
