@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     # 'haystack',
     # 'th_search',
     'th_trello',
+    'th_github',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -270,7 +271,17 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-
+    # GitHub
+    'th_github':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "127.0.0.1:6379",
+        "OPTIONS": {
+            "DB": 9,
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
 
 }
 
@@ -293,6 +304,7 @@ TH_SERVICES = (
     'th_readability.my_readability.ServiceReadability',
     'th_twitter.my_twitter.ServiceTwitter',
     'th_trello.my_trello.ServiceTrello',
+    'th_github.my_github.ServiceGithub',
 )
 
 
@@ -330,6 +342,13 @@ TH_TWITTER = {
 TH_TRELLO = {
     'consumer_key': '<your twitter key>',
     'consumer_secret': '<your twitter secret>',
+}
+
+TH_GITHUB = {
+    'username': 'username',
+    'password': 'password',
+    'consumer_key': 'my key',
+    'consumer_secret': 'my secret'
 }
 
 

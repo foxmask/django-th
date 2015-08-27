@@ -27,7 +27,13 @@ TH_TWITTER = {
 TH_TRELLO = {
     'consumer_key': 'my key',
     'consumer_secret': 'my secret'
+}
 
+TH_GITHUB = {
+    'username': 'username',
+    'password': 'password',
+    'consumer_key': 'my key',
+    'consumer_secret': 'my secret'
 }
 
 # CELERY
