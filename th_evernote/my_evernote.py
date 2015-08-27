@@ -92,12 +92,10 @@ class ServiceEvernote(ServicesMgr):
         tag_filter = "tag:{} ".format(trigger.tag) if trigger.tag != '' else ''
 
         complet_filter = ''.join((notebook_filter, tag_filter, date_filter))
-        logger.info(complet_filter)
 
         # filter
         my_filter = NoteStore.NoteFilter()
         my_filter.words = complet_filter
-
 
         # result spec to tell to evernote
         # what information to include in the response
@@ -106,21 +104,26 @@ class ServiceEvernote(ServicesMgr):
         spec.includeAttributes = True
 
         note_store = self.client.get_note_store()
-        our_note_list = note_store.findNotesMetadata(token, my_filter, 0, 100, spec)
+        our_note_list = note_store.findNotesMetadata(token,
+                                                     my_filter,
+                                                     0,
+                                                     100,
+                                                     spec)
 
         whole_note = ''
         for note in our_note_list.notes:
-            logger.info(note)
             whole_note = note_store.getNote(token,
                                             note.guid,
                                             True,
-                                            False,
+                                            True,
                                             False,
                                             False)
+            content = self.cleaning_content(whole_note.content)
             data.append(
                 {'title': note.title,
+                 'my_date': arrow.get(note.created),  # translate timestamp to a full datetime
                  'link': whole_note.attributes.sourceURL,
-                 'content': whole_note.content})
+                 'content': content})
 
         cache.set('th_evernote_' + str(trigger_id), data)
 
@@ -481,3 +484,11 @@ class ServiceEvernote(ServicesMgr):
             return '/'
 
         return 'evernote/callback.html'
+
+    def cleaning_content(self, data):
+
+        data = data.replace('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">\n<en-note>', '')
+        data = data.replace('</en-note>', '')
+
+        return data
+
