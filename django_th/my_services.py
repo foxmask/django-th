@@ -19,11 +19,11 @@ class MyService(object):
 
     @staticmethod
     def module_name(package):
-        return "".join("my_", package.split('_')[1])
+        return "".join(("my_", package.split('_')[1]))
 
     @staticmethod
     def service_name(package):
-        return "".join("Service", package.split('_')[1].title())
+        return "".join(("Service", package.split('_')[1].title()))
 
     @staticmethod
     def all_packages():

@@ -24,7 +24,7 @@ class PublishingLimit(object):
         # rebuild the string
         # th_<service>.my_<service>.Service<Service>
         if service.startswith('th_'):
-            service_long = MyService.service_long(service)
+            service_long = MyService.full_name(service)
             # service_name = service.split('_')[1]
             # service_long = ''.join((service, ".my_", service_name, ".Service",
             #                        service_name.title()))
