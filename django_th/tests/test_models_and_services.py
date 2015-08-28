@@ -5,6 +5,7 @@ from django_th.models import TriggerService
 from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import TriggerServiceForm
 from django_th.forms.base import UserServiceForm
+from django_th.tests.test_main import MainTest
 
 
 class UserServiceTest(TestCase):
@@ -74,40 +75,11 @@ class ServicesActivatedTest(TestCase):
                          (s.name, s.status, s.auth_required, s.description))
 
 
-class TriggerServiceTest(TestCase):
+class TriggerServiceTest(MainTest):
 
     """
         TriggerService Model
     """
-    def setUp(self):
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
-    def create_triggerservice(self, date_created="20130610",
-                              description="My first Service", status=True):
-        user = self.user
-        service_provider = ServicesActivated.objects.create(
-            name='ServiceRss2', status=True,
-            auth_required=False, description='Service RSS2')
-        service_consumer = ServicesActivated.objects.create(
-            name='ServiceEvernote2', status=True,
-            auth_required=True, description='Service Evernote2')
-        provider = UserService.objects.create(user=user,
-                                              token="",
-                                              name=service_provider)
-        consumer = UserService.objects.create(user=user,
-                                              token="AZERTY1234",
-                                              name=service_consumer)
-        return TriggerService.objects.create(provider=provider,
-                                             consumer=consumer,
-                                             user=user,
-                                             date_created=date_created,
-                                             description=description,
-                                             status=status)
-
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
@@ -115,7 +87,6 @@ class TriggerServiceTest(TestCase):
                                                                t.consumer,
                                                                t.description,
                                                                t.user))
-
     """
         Form
     """
