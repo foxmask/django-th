@@ -57,7 +57,8 @@ def remove_prohibited_attributes(element):
                               att.startswith("data-") or\
                               att in ["id", "class", "accesskey",
                                       "data",  "dynsrc", "tabindex",
-                                      "frame", "rules", "width"]
+                                      "frame", "rules", "width",
+                                      "imageanchor", "trbidi"]
 
     to_be_removed_atts = [att for att in element.attributes.keys()
                           if filter_term(att.lower())]
