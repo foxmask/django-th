@@ -8,7 +8,7 @@ import arrow
 from evernote.api.client import EvernoteClient
 from evernote.edam.notestore import NoteStore
 import evernote.edam.type.ttypes as Types
-from evernote.edam.error.ttypes import EDAMSystemException
+from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 
 # django classes
@@ -239,6 +239,13 @@ class ServiceEvernote(ServicesMgr):
                 else:
                     logger.critical(e)
                     return False
+            except EDAMUserException as e:
+                if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
+                    sentance = "Data ignored due to : Attribute error {code} {msg}"
+                    logger.warn(sentance.format(
+                        code=e.errorCode,
+                        msg=e.parameter))
+                    return True
             except Exception as e:
                 logger.critical(e)
                 return False
