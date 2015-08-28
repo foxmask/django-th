@@ -40,17 +40,17 @@ TH_GITHUB = {
 BROKER_URL = 'redis://localhost:6379/0'
 
 CELERYBEAT_SCHEDULE = {
-    'every-put-in-cache': {
+    'read-data': {
         'task': 'django_th.tasks.read_data',
         'schedule': crontab(minute='12,24,36,48'),
     },
-    'add-publish-data': {
+    'publish-data': {
         'task': 'django_th.tasks.publish_data',
-        'schedule': crontab(minute='15,30,45'),
+        'schedule': crontab(minute='20,40,59'),
     },
-    'add-outside-data': {
+    'outside-cache': {
         'task': 'django_th.tasks.get_outside_cache',
-        'schedule': crontab(minute='20,40'),
+        'schedule': crontab(minute='15,30,45'),
     },
 }
 

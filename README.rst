@@ -188,6 +188,7 @@ add the module django_th to the INSTALLED_APPS
         'th_twitter',
         'th_holidays',
         'th_trello',
+        'th_github',
         'haystack',  # mandatory  if you plan to use th_search
         'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
@@ -209,7 +210,15 @@ TH_SERVICES is a list of the supported services
         'th_readability.my_readability.ServiceReadability',
         'th_trello.my_trello.ServiceTrello',
         'th_twitter.my_twitter.ServiceTwitter',
+        'th_github.my_github.ServiceGithub',
     )
+
+
+IMPORTANT : 
+
+With all the service you will enable, to avoid to share your key by accident, I strongly recommand that you put all of them in a seperate local_settings.py that you include at the end of the main settings.py 
+
+So below, when I speak about settings.py think about local_settings.py.
 
 
 
@@ -233,6 +242,30 @@ To be able to use Evernote see official FAQ :
 
 
 
+TH_GITHUB
+~~~~~~~~~~
+
+TH_GITHUB is the setting you will need to be abel to add/read data in/from GitHub
+
+To be able to user Github
+
+* you will need to grab the consumer key and consumer secret from `"the application" from your account page <https://github.com/settings/developers>`_ 
+
+.. image:: http://foxmask.info/public/trigger_happy/github_account_settings.png 
+
+* then copy the client id and client secret to the settings.py plus add your github login&password 
+
+.. code:: python
+
+    TH_GITHUB = {
+        'login': 'foobar',
+        'password': 'foobar',
+        'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
+        'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
+    }
+
+
+
 TH_POCKET
 ~~~~~~~~~
 
@@ -240,7 +273,7 @@ TH_POCKET is the settings you will need to be able to add/read data in/from Pock
 
 To be able to use Pocket :
 
-* you will need to grad the pocket consumer key `by creating a new application <http://getpocket.com/developer/apps/>`_ with the rights access as below
+* you will need to grab the pocket consumer key `by creating a new application <http://getpocket.com/developer/apps/>`_ with the rights access as below
 
 .. image:: http://foxmask.info/public/trigger_happy/pocket_account_settings.png 
 
@@ -392,6 +425,17 @@ For each TriggerHappy component, define one cache like below
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
+        # Github Cache
+        'th_github':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 7,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
     }
 
 CELERY 
@@ -414,11 +458,15 @@ Define the broker then the scheduler
     CELERYBEAT_SCHEDULE = {
         'read-data': {
             'task': 'django_th.tasks.read_data',
-            'schedule': crontab(minute='27,54'),
+            'schedule': crontab(minute='12,24,36,48'),
         },
         'publish-data': {
             'task': 'django_th.tasks.publish_data',
-            'schedule': crontab(minute='59'),
+            'schedule': crontab(minute='20,40,59'),
+        },
+        'outside-cache': {
+            'task': 'django_th.tasks.get_outside_cache',
+            'schedule': crontab(minute='15,30,45'),
         },
     }
 
@@ -594,6 +642,7 @@ Here are the available management commands you can use by hand when you need to 
     [django_th]
         fire_read_data     # will put date in cache
         fire_publish_data  # will read cache and publish data
+        fire_get_outside_data  # will move cache version 2 to 1
  
 
 To start handling the queue of triggers you/your users configured, just set those 2 management commands in a crontab or any other scheduler solution of your choice, if you dont want to use the beat of Celery

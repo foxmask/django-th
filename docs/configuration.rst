@@ -52,6 +52,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'th_twitter',
         'th_holidays',
         'th_trello',
+        'th_github',
         'haystack',  # mandatory  if you plan to use th_search
         'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
@@ -75,10 +76,8 @@ TH_SERVICES is a list of the services, like for example,
         'th_readability.my_readability.ServiceReadability',
         'th_trello.my_trello.ServiceTrello',        
         'th_twitter.my_twitter.ServiceTwitter',
+        'th_github.my_github.ServiceGithub',
     )
-
-
-this setting supposes you already own a Pocket account
 
 
 
@@ -147,6 +146,14 @@ For example for Twitter :
         'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
         'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
     }
+
+
+IMPORTANT : 
+
+With all the service you will enable, to avoid to share your key by accident, I strongly recommand that you put all of them in a seperate local_settings.py that you include at the end of the main settings.py 
+
+So, when I speak about settings.py think about local_settings.py
+
 
 
 Adding the service from the Admin
@@ -263,6 +270,17 @@ For each TriggerHappy component, define one cache like below
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
+        # Github Cache
+        'th_github':
+        {
+            'TIMEOUT': 500,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "127.0.0.1:6379",
+            "OPTIONS": {
+                "DB": 7,
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },        
     }
 
 
@@ -317,11 +335,15 @@ Define the broker then the scheduler
     CELERYBEAT_SCHEDULE = {
         'read-data': {
             'task': 'django_th.tasks.read_data',
-            'schedule': crontab(minute='27,54'),
+            'schedule': crontab(minute='12,24,36,48'),
         },
         'publish-data': {
             'task': 'django_th.tasks.publish_data',
-            'schedule': crontab(minute='59'),
+            'schedule': crontab(minute='20,40,59'),
+        },
+        'outside-cache': {
+            'task': 'django_th.tasks.get_outside_cache',
+            'schedule': crontab(minute='15,30,45'),
         },
     }
 
