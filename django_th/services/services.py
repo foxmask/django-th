@@ -29,6 +29,29 @@ class ServicesMgr(object):
     def __str__(self):
         return "%s" % self.name
 
+    def _get_content(self, data, which_content):
+        """
+            get the content that could be hidden
+            in the middle of "content" or "summary detail"
+            from the data of the provider
+        """
+        content = ''
+        if which_content in data:
+            if type(data[which_content]) is list or\
+               type(data[which_content]) is tuple or\
+               type(data[which_content]) is dict:
+                if 'value' in data[which_content][0]:
+                    content = data[which_content][0].value
+            else:
+                if type(data[which_content]) is str:
+                    content = data[which_content]
+                else:
+                    # if not str or list or tuple
+                    # or dict it could be feedparser.FeedParserDict
+                    # so get the item value
+                    content = data[which_content]['value']
+        return content
+
     def set_title(self, data):
         """
             handle the title from the data
@@ -43,37 +66,14 @@ class ServicesMgr(object):
             handle the content from the data
         """
         content = ''
-        if 'content' in data:
-            if type(data['content']) is list or type(data['content']) is tuple\
-               or type(data['content']) is dict:
-                if 'value' in data['content'][0]:
-                    content = data['content'][0].value
-            else:
-                if type(data['content']) is str:
-                    content = data['content']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['content']['value']
+        content = self._get_content(data, 'content')
 
-        elif 'summary_detail' in data:
-            if type(data['summary_detail']) is list or\
-               type(data['summary_detail']) is tuple or\
-               type(data['summary_detail']) is dict:
-                if 'value' in data['summary_detail'][0]:
-                    content = data['summary_detail'][0].value
-            else:
-                if type(data['summary_detail']) is str:
-                    content = data['summary_detail']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['summary_detail']['value']
+        if content == '':
+            content = self._get_content(data, 'summary_detail')
 
-        elif 'description' in data:
-            content = data['description']
+        if content == '':
+            if 'description' in data:
+                content = data['description']
 
         return content
 
@@ -95,3 +95,4 @@ class ServicesMgr(object):
             get the auth of the services
         """
         pass
+
