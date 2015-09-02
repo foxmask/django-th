@@ -156,8 +156,10 @@ class ServiceEvernote(ServicesMgr):
         content = ''
         status = False
 
-        title = self.set_note_title(data)
-        content = self.set_note_content(data)
+        title = self.set_title(data)
+        title = HtmlEntities(title).html_entity_decode
+        content = self.set_content(data)
+        content = HtmlEntities(content).html_entity_decode
 
         if len(title):
             # get the evernote data of this trigger
@@ -338,64 +340,6 @@ class ServiceEvernote(ServicesMgr):
             return enml.encode('ascii', 'xmlcharrefreplace')
         else:
             return str(enml)
-
-    def set_note_title(self, data):
-        """
-            handle the title from the data
-        """
-        title = ''
-        # if no title provided, fallback to the URL which should be provided
-        # by any exiting service
-        title = (data['title'] if 'title' in data else data['link'])
-        # decode html entities if any
-        title = HtmlEntities(title).html_entity_decode
-
-        # python 2
-        if sys.version_info.major == 2:
-            title = title.encode('utf8', 'xmlcharrefreplace')
-
-        return title
-
-    def set_note_content(self, data):
-        """
-            handle the content from the data
-        """
-        content = ''
-        if 'content' in data:
-            if type(data['content']) is list or type(data['content']) is tuple\
-               or type(data['content']) is dict:
-                if 'value' in data['content'][0]:
-                    content = data['content'][0].value
-            else:
-                if type(data['content']) is str:
-                    content = data['content']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['content']['value']
-
-        elif 'summary_detail' in data:
-            if type(data['summary_detail']) is list or\
-               type(data['summary_detail']) is tuple or\
-               type(data['summary_detail']) is dict:
-                if 'value' in data['summary_detail'][0]:
-                    content = data['summary_detail'][0].value
-            else:
-                if type(data['summary_detail']) is str:
-                    content = data['summary_detail']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['summary_detail']['value']
-
-        elif 'description' in data:
-            content = data['description']
-
-        content = HtmlEntities(content).html_entity_decode
-
-        return content
 
     def set_note_attribute(self, data):
         """

@@ -107,8 +107,8 @@ class ServiceTrello(ServicesMgr):
         content = ''
         status = False
 
-        title = self.set_card_title(data)
-        content = self.set_card_content(data)
+        title = self.set_title(data)
+        content = self.set_content(data)
 
         if len(title):
             # get the data of this trigger
@@ -166,55 +166,6 @@ class ServiceTrello(ServicesMgr):
             status = False
 
         return status
-
-    def set_card_title(self, data):
-        """
-            handle the title from the data
-        """
-        title = ''
-        # if no title provided, fallback to the URL which should be provided
-        # by any exiting service
-        title = (data['title'] if 'title' in data else data['link'])
-        return title
-
-    def set_card_content(self, data):
-        """
-            handle the content from the data
-        """
-        content = ''
-        if 'content' in data:
-            if type(data['content']) is list or type(data['content']) is tuple\
-               or type(data['content']) is dict:
-                if 'value' in data['content'][0]:
-                    content = data['content'][0].value
-            else:
-                if type(data['content']) is str:
-                    content = data['content']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['content']['value']
-
-        elif 'summary_detail' in data:
-            if type(data['summary_detail']) is list or\
-               type(data['summary_detail']) is tuple or\
-               type(data['summary_detail']) is dict:
-                if 'value' in data['summary_detail'][0]:
-                    content = data['summary_detail'][0].value
-            else:
-                if type(data['summary_detail']) is str:
-                    content = data['summary_detail']
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data['summary_detail']['value']
-
-        elif 'description' in data:
-            content = data['description']
-
-        return content
 
     def auth(self, request):
         """

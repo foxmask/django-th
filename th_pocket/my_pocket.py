@@ -121,7 +121,7 @@ class ServicePocket(ServicesMgr):
             trigger = PocketModel.objects.get(trigger_id=trigger_id)
 
             title = ''
-            title = (data['title'] if 'title' in data else '')
+            title = self.set_title(data)
             # convert htmlentities
             title = HtmlEntities(title).html_entity_decode
 
