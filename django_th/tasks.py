@@ -22,6 +22,19 @@ logger = getLogger('django_th.trigger_happy')
 default_provider.load_services()
 
 
+def track(service, to_update, status, count):
+    """
+        lets log everything at the end
+    """
+    if to_update:
+        if status:
+            logger.info("{}- {} new data".format(service, count))
+        else:
+            logger.info("{}AN ERROR OCCURS ".format(service))
+    else:
+        logger.info("{}nothing new ".format(service))
+
+
 def update_trigger(service):
     """
         update the date when occurs the trigger
@@ -66,8 +79,7 @@ def put_in_cache(service):
     # check if the service has already been triggered
     # if date_triggered is None, then it's the first run
     if service.date_triggered is None:
-        logger.debug("first run for %s => %s " % (
-            str(service.provider.name), str(service.consumer.name.name)))
+        logger.debug("first time {}".format(service))
         to_update = True
         status = True
         # run run run
@@ -83,25 +95,7 @@ def put_in_cache(service):
             to_update = True
             status = True
 
-        # update the date of the trigger at the end of the loop
-        sentence = "user: {} - provider: {} - {}"
-        if to_update:
-            if status:
-                logger.info((sentence + " - {} data put in cache").format(
-                    service.user,
-                    service.provider.name.name,
-                    service.description,
-                    len(datas)))
-            else:
-                logger.info((sentence + " AN ERROR OCCURS ").format(
-                    service.user,
-                    service.provider.name.name,
-                    service.description))
-        else:
-            logger.info((sentence + " nothing new").format(
-                        service.user,
-                        service.provider.name.name,
-                        service.description))
+        track(service, to_update, status, len(datas))
 
 
 @shared_task
@@ -148,9 +142,7 @@ def publish_data():
             # check if the service has already been triggered
             # if date_triggered is None, then it's the first run
             if service.date_triggered is None:
-                logger.debug("first run for %s => %s " % (str(
-                    service.provider.name),
-                    str(service.consumer.name.name)))
+                logger.debug("first run {}".format(service))
                 to_update = True
                 status = True
             # run run run
@@ -233,29 +225,9 @@ def publish_data():
                             sentence = "data outdated skipped : [{}] "
                             logger.debug(sentence.format(published))
 
-            # update the date of the trigger at the end of the loop
-            sentence = "user: {} - provider: {} - consumer: {} - {}"
-            if to_update:
-                if status:
-                    logger.info((sentence + " - {} new data").format(
-                        service.user,
-                        service.provider.name.name,
-                        service.consumer.name.name,
-                        service.description,
-                        count_new_data))
-                    update_trigger(service)
-                else:
-                    logger.info((sentence + " AN ERROR OCCURS ").format(
-                        service.user,
-                        service.provider.name.name,
-                        service.consumer.name.name,
-                        service.description))
-            else:
-                logger.info((sentence + " nothing new").format(
-                    service.user,
-                    service.provider.name.name,
-                    service.consumer.name.name,
-                    service.description))
+            track(service, to_update, status, count_new_data)
+            if to_update and status:
+                update_trigger(service)
 
 
 @shared_task
