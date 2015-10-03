@@ -4,9 +4,11 @@ from django.conf import settings
 
 
 class TriggerSettingsTestCase(unittest.TestCase):
+
     """
       check that all the needed config is present
     """
+
     def test_get_config_service(self):
         self.assertTrue(settings.TH_SERVICES)
 

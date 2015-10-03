@@ -5,6 +5,7 @@ from django_th.my_services import MyService
 
 
 class PublishingLimit(object):
+
     """
         this class permits to reduce the quantity of data to be pulibshed
         get the limit from settings.DJANGO_TH['publishing_limit']
@@ -46,6 +47,9 @@ class PublishingLimit(object):
                                                    str(trigger_id)))
                             # put that data in a version 2 of the cache
                             cache.set(service_str, data, version=2)
+                            # delete data from cache version=1
+                            # https://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
+                            cache.delete_pattern(service_str)
                         # put in cache unpublished data
                         cache_data = cache_data[:limit]
 

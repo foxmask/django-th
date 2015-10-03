@@ -26,5 +26,3 @@ class MyServiceTest(TestCase):
     def test_service_name(self):
         service_name = "".join(("Service", self.package.split('_')[1].title()))
         self.assertEqual(self.service_name, service_name)
-
-

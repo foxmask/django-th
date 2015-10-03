@@ -9,6 +9,7 @@ class ServicesMgr(object):
     data = {}
 
     class __ServicesMgr:
+
         def __init__(self, arg):
             self.val = arg
 
@@ -89,10 +90,8 @@ class ServicesMgr(object):
         """
         pass
 
-
     def auth(self):
         """
             get the auth of the services
         """
         pass
-

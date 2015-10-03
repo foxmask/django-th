@@ -29,6 +29,7 @@ class ServiceChoiceForm(forms.Form):
 
 
 class ProviderForm(ServiceChoiceForm):
+
     """
         Set some HTML class to the Provider form
     """
@@ -41,6 +42,7 @@ class ProviderForm(ServiceChoiceForm):
 
 
 class ConsumerForm(ServiceChoiceForm):
+
     """
         Set some HTML class to the Consumer form
     """
@@ -56,6 +58,7 @@ class ConsumerForm(ServiceChoiceForm):
 
 
 class ServicesDescriptionForm(forms.Form):
+
     """
         Set some HTML class to the Service form
     """

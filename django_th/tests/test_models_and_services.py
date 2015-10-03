@@ -13,6 +13,7 @@ class UserServiceTest(TestCase):
     """
         UserService Model
     """
+
     def setUp(self):
         try:
             self.user = User.objects.get(username='john')
@@ -37,6 +38,7 @@ class UserServiceTest(TestCase):
     """
         Form - works with python 2.7.x - fails with python 3.4.0
     """
+
     def test_valid_form(self):
         u = self.create_userservice()
         if u.name.auth_required:
@@ -59,6 +61,7 @@ class ServicesActivatedTest(TestCase):
     """
         ServicesActivated Model
     """
+
     def create_servicesactivated(self):
         name = 'ServiceRss'
         status = True
@@ -80,6 +83,7 @@ class TriggerServiceTest(MainTest):
     """
         TriggerService Model
     """
+
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
@@ -90,6 +94,7 @@ class TriggerServiceTest(MainTest):
     """
         Form
     """
+
     def test_valid_form(self):
         t = self.create_triggerservice()
         data = {'description': t.description, }

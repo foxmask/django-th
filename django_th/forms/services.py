@@ -23,6 +23,7 @@ def available_services():
 
 
 class ServicesAdminForm(forms.ModelForm):
+
     """
         get the list of the available services (the activated one)
     """

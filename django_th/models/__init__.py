@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 
 
 class ServicesActivated(models.Model):
+
     """
         Services Activated from the admin
     """
@@ -26,6 +27,7 @@ class ServicesActivated(models.Model):
 
 
 class UserService(models.Model):
+
     """
         UserService a model to link service and user
     """
@@ -42,6 +44,7 @@ class UserService(models.Model):
 
 
 class TriggerService(models.Model):
+
     """
         TriggerService
     """
@@ -58,4 +61,8 @@ class TriggerService(models.Model):
                                            self.description, self.user)
 
     def __str__(self):
-        return "%s %s " % (self.provider, self.consumer)
+        string = "{user} - {provider} - {consumer} - {description}"
+        return string.format(user=self.user,
+                             provider=self.provider,
+                             consumer=self.consumer,
+                             description=self.description)

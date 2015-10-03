@@ -34,7 +34,7 @@ def remove_prohibited_elements(document_element):
         "ilayer", "input", "isindex", "label", "layer", "legend", "link",
         "marquee", "menu", "meta", "noframes", "noscript", "object",
         "optgroup", "option", "param", "plaintext", "script", "select",
-        "style", "textarea", "xml", ]
+        "style", "textarea", "xml", 'wbr']
     for tag_name in prohibited_tag_names:
         remove_prohibited_element(tag_name, document_element)
 
@@ -57,8 +57,8 @@ def remove_prohibited_attributes(element):
                               att.startswith("data-") or\
                               att in ["id", "class", "accesskey",
                                       "data",  "dynsrc", "tabindex",
-                                      "frame", "rules", "width",
-                                      "imageanchor", "trbidi"]
+                                      "frame", "rules", "width","trbidi",
+                                      "imageanchor"]
 
     to_be_removed_atts = [att for att in element.attributes.keys()
                           if filter_term(att.lower())]

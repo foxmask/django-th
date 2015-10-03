@@ -8,10 +8,12 @@ from django_th.models import User, UserService, \
 
 
 class TriggerServiceForm(forms.ModelForm):
+
     """
         Form to edit the description
     """
     class Meta:
+
         """
             meta to add/override anything we need
         """
@@ -24,9 +26,11 @@ class TriggerServiceForm(forms.ModelForm):
 
 
 class UserServiceForm(forms.ModelForm):
+
     """
         Form to deal with my own activated service
     """
+
     def activated_services(self, user):
         """
             get the activated services added from the administrator
@@ -59,6 +63,7 @@ class UserServiceForm(forms.ModelForm):
         self.myobject.save()
 
     class Meta:
+
         """
             meta to add/override anything we need
         """
@@ -67,6 +72,7 @@ class UserServiceForm(forms.ModelForm):
 
 
 class LoginForm(forms.ModelForm):
+
     """
         Form to manage the login page
     """

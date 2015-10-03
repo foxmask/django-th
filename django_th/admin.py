@@ -3,9 +3,11 @@ from django.contrib import admin
 from django_th.forms.services import ServicesAdminForm
 from django_th.models import ServicesActivated
 from django_th.models import UserService
+from django_th.models import TriggerService
 
 
 class ServicesManagedAdmin(admin.ModelAdmin):
+
     """
         get the list of the available services (the activated one)
     """
@@ -26,6 +28,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
 
 
 class UserServiceAdmin(admin.ModelAdmin):
+
     """
         get the list of the User Service
     """
@@ -33,5 +36,16 @@ class UserServiceAdmin(admin.ModelAdmin):
     list_filter = ['user', 'name']
 
 
+class TriggerServiceAdmin(admin.ModelAdmin):
+
+    """
+        get the list of the User Service
+    """
+    list_display = ('user', 'provider', 'consumer', 'description',
+                    'date_created', 'date_triggered', 'status')
+    list_filter = ['user', 'provider', 'consumer', 'status']
+
+
 admin.site.register(ServicesActivated, ServicesManagedAdmin)
 admin.site.register(UserService, UserServiceAdmin)
+admin.site.register(TriggerService, TriggerServiceAdmin)

@@ -22,17 +22,46 @@ logger = getLogger('django_th.trigger_happy')
 default_provider.load_services()
 
 
-def track(service, to_update, status, count):
+def publish_log_outdated(published, data):
+    """
+        lets log things about outdated data
+        or data from the future... (a date from the future)
+    """
+    if 'title' in data:
+        sentence = "data outdated skipped : [{}] {}"
+        logger.debug(sentence.format(published,
+                                     data['title']))
+    else:
+        sentence = "data outdated skipped : [{}] "
+        logger.debug(sentence.format(published))
+
+
+def publish_log_data(published, date_triggered, data):
+    """
+        lets log everything linked to the data
+    """
+    if 'title' in data:
+        sentence = "date {} >= triggered {} title {}"
+        logger.info(sentence.format(published,
+                                    date_triggered,
+                                    data['title']))
+    else:
+        sentence = "date {} >= date triggered {}"
+        logger.info(sentence.format(published,
+                                    date_triggered))
+
+
+def log_update(service, to_update, status, count):
     """
         lets log everything at the end
     """
     if to_update:
         if status:
-            logger.info("{}- {} new data".format(service, count))
+            logger.info("{} - {} new data".format(service, count))
         else:
-            logger.info("{}AN ERROR OCCURS ".format(service))
+            logger.info("{} AN ERROR OCCURS ".format(service))
     else:
-        logger.info("{}nothing new ".format(service))
+        logger.info("{} nothing new ".format(service))
 
 
 def update_trigger(service):
@@ -63,6 +92,30 @@ def to_datetime(data):
     return my_date_time
 
 
+def get_published(published='', which_date=''):
+    """
+       get the published date from the provider
+       or set a default date (today in fact) if this service runs
+       for the first time
+    """
+    if published is not None:
+        # get the published date of the provider
+        published = arrow.get(published).to(settings.TIME_ZONE)
+        # store the date for the next loop
+        #  if published became 'None'
+        which_date = published
+    # ... otherwise set it to 00:00:00 of the current date
+    if which_date == '':
+        # current date
+        which_date = arrow.utcnow().replace(
+            hour=0, minute=0, second=0).to(
+            settings.TIME_ZONE)
+        published = which_date
+    if published is None and which_date != '':
+        published = which_date
+    return published, which_date
+
+
 @shared_task
 def put_in_cache(service):
     # flag to know if we have to update
@@ -71,10 +124,8 @@ def put_in_cache(service):
     status = False
     # counting the new data to store to display them in the log
     # provider - the service that offer data
-    service_name = str(service.provider.name.name)
-    service_provider = default_provider.get_service(service_name)
-
-    service_name = str(service.consumer.name.name)
+    service_provider = default_provider.get_service(
+        str(service.provider.name.name))
 
     # check if the service has already been triggered
     # if date_triggered is None, then it's the first run
@@ -95,7 +146,7 @@ def put_in_cache(service):
             to_update = True
             status = True
 
-        track(service, to_update, status, len(datas))
+        log_update(service, to_update, status, len(datas))
 
 
 @shared_task
@@ -132,12 +183,12 @@ def publish_data():
             # counting the new data to store to display them in the log
             count_new_data = 0
             # provider - the service that offer data
-            service_name = str(service.provider.name.name)
-            service_provider = default_provider.get_service(service_name)
+            service_provider = default_provider.get_service(
+                str(service.provider.name.name))
 
             # consumer - the service which uses the data
-            service_name = str(service.consumer.name.name)
-            service_consumer = default_provider.get_service(service_name)
+            service_consumer = default_provider.get_service(
+                str(service.consumer.name.name))
 
             # check if the service has already been triggered
             # if date_triggered is None, then it's the first run
@@ -160,32 +211,18 @@ def publish_data():
                 which_date = ''
                 # 2) for each one
                 for data in datas:
-                    #  if in a pool of data once of them does not have
-                    #  a date, will take the previous date for this one
-                    #  if it's the first one, set it to 00:00:00
+                    # if in a pool of data once of them does not have
+                    # a date, will take the previous date for this one
+                    # if it's the first one, set it to 00:00:00
 
                     # let's try to determine the date contained in
                     # the data...
                     published = to_datetime(data)
-
-                    if published is not None:
-                        # get the published date of the provider
-                        published = arrow.get(published).to(settings.TIME_ZONE)
-                        # store the date for the next loop
-                        #  if published became 'None'
-                        which_date = published
-                    # ... otherwise set it to 00:00:00 of the current date
-                    if which_date == '':
-                        # current date
-                        which_date = arrow.utcnow().replace(
-                            hour=0, minute=0, second=0).to(
-                            settings.TIME_ZONE)
-                        published = which_date
-                    if published is None and which_date != '':
-                        published = which_date
+                    published, which_date = get_published(published,
+                                                          which_date)
                     # 3) check if the previous trigger is older than the
-                    #  date of the data we retrieved
-                    #  if yes , process the consumer
+                    # date of the data we retrieved
+                    # if yes , process the consumer
 
                     # add the TIME_ZONE settings
                     # to localize the current date
@@ -193,22 +230,14 @@ def publish_data():
                         str(service.date_triggered),
                         'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
 
-                    # if the published date if greater or equal to the last
+                    # if the published date is greater or equal to the last
                     # triggered event ... :
                     if date_triggered is not None and \
                        published is not None and \
                        now >= published and \
                        published >= date_triggered:
 
-                        if 'title' in data:
-                            sentence = "date {} >= triggered {} title {}"
-                            logger.info(sentence.format(published,
-                                                        date_triggered,
-                                                        data['title']))
-                        else:
-                            sentence = "date {} >= date triggered {}"
-                            logger.info(sentence.format(published,
-                                                        date_triggered))
+                        publish_log_data(published, date_triggered, data)
 
                         status = consumer(
                             service.consumer.token, service.id, **data)
@@ -217,15 +246,9 @@ def publish_data():
                         count_new_data += 1
                     # otherwise do nothing
                     else:
-                        if 'title' in data:
-                            sentence = "data outdated skipped : [{}] {}"
-                            logger.debug(sentence.format(published,
-                                                         data['title']))
-                        else:
-                            sentence = "data outdated skipped : [{}] "
-                            logger.debug(sentence.format(published))
+                        publish_log_outdated(published, data)
 
-            track(service, to_update, status, count_new_data)
+            log_update(service, to_update, status, count_new_data)
             if to_update and status:
                 update_trigger(service)
 
@@ -242,6 +265,11 @@ def get_outside_cache():
         # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
         for service in cache.iter_keys('th_*'):
             try:
-                cache.get(service, version=2)
+                # get the value from the cache version=2
+                service_value = cache.get(service, version=2)
+                # put it in the version=1
+                cache.set(service, service_value)
+                # remote version=2
+                cache.delete_pattern(service, version=2)
             except ValueError:
                 pass

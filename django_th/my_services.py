@@ -3,6 +3,7 @@ from django.conf import settings
 
 
 class MyService(object):
+
     """
         build the name of the package, module, class
         on that model:
