@@ -3,7 +3,7 @@
 {% load static %}
 {% load staticfiles %}
 {% load i18n %}
-{% load django_th_extras %}    
+{% load django_th_extras %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -38,7 +38,7 @@
                 </button>
                 <a class="navbar-brand" href="{% url 'base' %}" title="{% trans 'Home' %}">Trigger Happy</a>
             </div>
-            <div class="navbar-collapse collapse">            
+            <div class="navbar-collapse collapse">
                 {% if user.is_authenticated %}
                 <ul class="nav navbar-nav">
                     <li>
@@ -53,13 +53,13 @@
                     </li>
                     <li>
                         <a href="{% url 'user_services' %}" title="{% trans 'List of your own activated services' %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
-                    </li>                    
+                    </li>
                     {% block filter_trigger %}
                         {% include "filter.html" with trigger_filter_by=trigger_filter_by %}
-                    {% endblock %}                  
+                    {% endblock %}
                     <li class="dropdown">
                         <a class="dropdown-toggle" title="{% trans 'Order by...' %}" data-toggle="dropdown" href="#"><span class="glyphicon glyphicon-sort-by-attributes"></span> <b class="caret"></b></a>
-                        <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">                        
+                        <ul class="dropdown dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
                             <li role="presentation"><a role="menuitem" title="{% trans 'Sort by ' %}" href="{% url 'trigger_order_by' 'provider' %}">{% trans "Service Provider" %}</a></li>
                             <li role="presentation"><a role="menuitem" title="{% trans 'Sort by ' %}" href="{% url 'trigger_order_by' 'consumer' %}">{% trans "Service Consumer" %}</a></li>
                         </ul>
@@ -67,7 +67,7 @@
                     {% block mark_all %}
                         {% include "mark_all.html" %}
                     {% endblock %}
-                </ul>                
+                </ul>
                 <ul class="nav navbar-nav navbar-right">
                     <!-- li>
                         <a href="{# url 'haystack_search' #}" title="{% trans 'Search' %}"><span class="glyphicon glyphicon-search"></span></a>
@@ -79,7 +79,7 @@
                 {% endif %}
             </div>
         </div>
-    </nav>    
+    </nav>
     {% endblock navbar %}
     <div class="container">
         <div class="row">
@@ -109,6 +109,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <!-- Latest compiled and minified JavaScript -->
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-    {% block extrajs %}{% endblock %} 
+    {% block extrajs %}{% endblock %}
 </body>
 </html>

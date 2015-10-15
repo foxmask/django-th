@@ -32,8 +32,8 @@
         {% for trigger in triggers_list %}
         <div id="trigger-record-{{ trigger.id }}"class="trigger-record col-xs-12 col-md-12">
 			<div class="col-xs-7 col-md-7">
-                <a class="btn btn-sm btn-md btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
-            
+                <a class="btn btn-sm btn-md btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
+
                 <a class="btn btn-sm btn-md btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
                 <a class="btn btn-sm btn-md btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
@@ -62,7 +62,7 @@
         <div class="col-xs-12 col-md-12">
             <ul class="pagination">
                 {% if page_obj.has_previous %}
-                    <li><a href="{% url 'home' %}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
+                    <li><a href="{{ page_link }}?page={{ page_obj.previous_page_number }}">{% trans "previous" %}</a></li>
                 {% endif %}
                     <li class="active"><a >
                     {% blocktrans with page_number=page_obj.number total_of_pages=page_obj.paginator.num_pages %}
@@ -70,14 +70,14 @@
                     {% endblocktrans %}</a>
                     </li>
                 {% if page_obj.has_next %}
-                    <li><a href="{% url 'home' %}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
+                    <li><a href="{{ page_link }}?page={{ page_obj.next_page_number }}">{% trans "next" %}</a></li>
                 {% endif %}
             </ul>
         </div>
         {% endif %}
         <div class="col-xs-12 col-md-12 col-md-offset-6">
                 <span class="badge">{{ nb_services }}</span> {%  trans "activated" %} {% trans "services" %} - <span class="badge">{{ nb_triggers.enabled }}</span> {%  trans "enabled" %} {% trans "triggers" %} - <span class="badge">{{ nb_triggers.disabled }}</span> {%  trans "disabled" %} {% trans "triggers" %}
-        </div>        
+        </div>
     {% else %}
         <div class="trigger-record col-md-12">
             <div class="alert alert-info">
@@ -99,7 +99,7 @@
                     <strong>Trigger Happy</strong> is up !
                 </p>
                 <p>Have Fun</p>
-                <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>        
+                <a class="btn btn-primary" href="{% url 'login' %}">{% trans "Log in" %}</a>
             </div>
 {% endif %}
 {% endblock %}
