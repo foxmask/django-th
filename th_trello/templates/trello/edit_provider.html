@@ -10,12 +10,19 @@
         <fieldset>
         <legend>{{ context.description }}</legend>
         {% csrf_token %}
-            <div class="form-group{% if form.tag.errors %} has-error{% endif %}">
-                {% if form.tag.errors %}
-                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.tag.errors }}</div>
+            <div class="form-group{% if form.board_name.errors %} has-error{% endif %}">
+                {% if form.board_name.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.board_name.errors }}</div>
                 {% endif %}
-                <label for="id_tag" class="col-sm-2 control-label">{% trans "Tag" %}</label>
-                <div class="col-sm-10">{{ form.tag }}</div>
+                <label for="id_board_name" class="col-sm-2 control-label">{% trans "Board Name" %}</label>
+                <div class="col-sm-10">{{ form.board_name }}</div>
+            </div>
+            <div class="form-group{% if form.list_name.errors %} has-error{% endif %}">
+                {% if form.list_name.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.list_name.errors }}</div>
+                {% endif %}
+                <label for="id_list_name" class="col-sm-2 control-label">{% trans "List Name" %}</label>
+                <div class="col-sm-10">{{ form.list_name }}</div>
             </div>
 
             <div class="form-group form-actions">
@@ -25,5 +32,5 @@
             </div>
         </fieldset>
         </form>
-    </div> 
+    </div>
 {% endblock %}

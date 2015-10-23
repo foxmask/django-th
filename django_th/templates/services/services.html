@@ -40,12 +40,12 @@
             {% else %}
                 <article>
                     <div class="col-md-8">
-                        {% trans 'No service activated yet, you can now start by' %} 
+                        {% trans 'No service activated yet, you can now start by' %}
                         <a href="{% url 'add_service' %}" title="{% trans 'Activate a service' %}">{% trans 'Activate one' %}</a>
                     </div>
                 </article>
                 <div class="row-fluid">
-                    <ul class="thumbnails">        
+                    <ul class="thumbnails">
                 {% for service in service_list_available %}
                         <li class="col-md-3">
                             <div class="thumbnail">

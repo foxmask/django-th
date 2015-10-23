@@ -7,7 +7,7 @@ Nota : in the SQL queries below, I use CURRENT_TIMESTAMP because of Postgresql. 
 Django Trigger Happy tables :
 =============================
 
-To migrate enter, 
+To migrate enter,
 
 .. code-block:: bash
 
@@ -16,10 +16,10 @@ To migrate enter,
 if the migration complains  that you've already created the table django_th_rss then check the follow :
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-to find 
+to find
 
     11 | django_th         | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
@@ -30,7 +30,7 @@ if you dont have it then do :
     insert into django_migrations (app,name,applied) values('django_th','0001_initial',CURRENT_TIMESTAMP);
 
 
-then replay 
+then replay
 
 .. code-block:: bash
 
@@ -54,10 +54,10 @@ if the migration complains that you've already created the table django_th_evern
 check that you dont have those record in the django_migrations table
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-    13 | th_evernote       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
+    13 | th_evernote       | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
 
 if its not the case, then add the following by hand like that :
@@ -80,10 +80,10 @@ if the migration complains that you've already created the table django_th_holid
 check that you dont have those record in the django_migrations table
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-    13 | th_holidays       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
+    13 | th_holidays       | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
 if its not the case, then add the following by hand like that :
 
@@ -105,10 +105,10 @@ if the migration complains that you've already created the table django_th_pocke
 check that you dont have those record in the django_migrations table
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-    13 | th_pocket       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
+    13 | th_pocket       | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
 if its not the case, then add the following by hand like that :
 
@@ -130,10 +130,10 @@ if the migration complains that you've already created the table django_th_reada
 check that you dont have those record in the django_migrations table
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-    13 | th_readability  | 0001_initial        | 2015-06-10 10:00:00.977958+02 
+    13 | th_readability  | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
 
 if its not the case, then add the following by hand like that :
@@ -156,10 +156,10 @@ if the migration complains that you've already created the table django_th_twitt
 check that you dont have those record in the django_migrations table
 
 .. code-block:: sql
-    
+
     select * from django_migrations ;
 
-    13 | th_twitter     | 0001_initial        | 2015-06-10 10:00:00.977958+02 
+    13 | th_twitter     | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
 
 if its not the case, then add the following by hand like that :
@@ -188,7 +188,7 @@ otherwise add this too
 Table to drop :
 ---------------
 
-with the last 
+with the last
 
 .. code-block:: bash
 

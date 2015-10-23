@@ -1,14 +1,14 @@
 {% load i18n %}
 {% load django_th_extras %}
-			<div class="col-xs-7 col-md-7">
+            <div class="col-xs-7 col-md-7">
 
                 <a class="btn btn-sm btn-md btn-info" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.description|safe|escape }}</a>
-            
+
                 <a class="btn btn-sm btn-md btn-info" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.provider.name|service_readable|lower }}</a>
 
                 <a class="btn btn-sm btn-md btn-info" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" ><span class="glyphicon glyphicon-pencil icon-white"></span> {{ trigger.consumer.name|service_readable|lower }}</a>
-			</div>
-			<div class="col-xs-5 col-md-5">
+            </div>
+            <div class="col-xs-5 col-md-5">
                 {% if trigger.status %}
                 <a class="btn btn-sm btn-md btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% else %}

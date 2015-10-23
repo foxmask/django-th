@@ -12,18 +12,14 @@ from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 
 # django classes
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.conf import settings
 from django.utils.log import getLogger
 from django.core.cache import caches
 
-
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
-from django_th.html_entities import HtmlEntities
-from django_th.publishing_limit import PublishingLimit
 from th_evernote.models import Evernote
 from th_evernote.sanitize import sanitize
 
@@ -78,15 +74,17 @@ class ServiceEvernote(ServicesMgr):
             :return: list of data found from the date_triggered filter
             :rtype: list
         """
+        trigger = super(ServiceEvernote, self).read_data('Evernote',
+                                                         trigger_id)
+
         data = []
         # get the data from the last time the trigger has been started
         # the filter will use the DateTime format in standard
-        new_date_triggered = arrow.get(str(date_triggered)[:-6], 'YYYY-MM-DD HH:mm:ss')
+        new_date_triggered = arrow.get(str(date_triggered)[:-6],
+                                       'YYYY-MM-DD HH:mm:ss')
         new_date_triggered = str(new_date_triggered).replace(
             ':', '').replace('-', '').replace(' ', '')
         date_filter = "created:{} ".format(new_date_triggered[:-6])
-
-        trigger = Evernote.objects.get(trigger_id=trigger_id)
 
         notebook_filter = "notebook:{} ".format(trigger.notebook) if trigger.notebook != '' else ''
         tag_filter = "tag:{} ".format(trigger.tag) if trigger.tag != '' else ''
@@ -121,7 +119,7 @@ class ServiceEvernote(ServicesMgr):
             content = self.cleaning_content(whole_note.content)
             data.append(
                 {'title': note.title,
-                 'my_date': arrow.get(note.created),  # translate timestamp to a full datetime
+                 'my_date': arrow.get(note.created),
                  'link': whole_note.attributes.sourceURL,
                  'content': content})
 
@@ -135,8 +133,8 @@ class ServiceEvernote(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        cache_data = cache.get('th_evernote_' + str(trigger_id))
-        return PublishingLimit.get_data('th_evernote', cache_data, trigger_id)
+        return super(ServiceEvernote, self).process_data('th_evernote',
+                                                         str(trigger_id))
 
     def save_data(self, token, trigger_id, **data):
         """
@@ -155,11 +153,9 @@ class ServiceEvernote(ServicesMgr):
         title = ''
         content = ''
         status = False
-
-        title = self.set_title(data)
-        title = HtmlEntities(title).html_entity_decode
-        content = self.set_content(data)
-        content = HtmlEntities(content).html_entity_decode
+        kwargs = {}
+        # set the title and content of the data
+        title, content = super(ServiceEvernote, self).save_data(data, **kwargs)
 
         if len(title):
             # get the evernote data of this trigger
@@ -400,9 +396,8 @@ class ServiceEvernote(ServicesMgr):
             let's auth the user to the Service
         """
         client = self.get_evernote_client()
-        callback_url = 'http://%s%s' % (
-            request.get_host(), reverse('evernote_callback'))
-        request_token = client.get_request_token(callback_url)
+        request_token = client.get_request_token(
+            self.callback_url(request, 'evernote'))
 
         # Save the request token information for later
         request.session['oauth_token'] = request_token['oauth_token']
@@ -447,4 +442,3 @@ class ServiceEvernote(ServicesMgr):
         data = data.replace('</en-note>', '')
 
         return data
-

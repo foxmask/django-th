@@ -4,7 +4,7 @@ Installation
 
 To get the project do :
 
-From GitHub 
+From GitHub
 ===========
 
 .. code-block:: bash
@@ -30,7 +30,7 @@ in 2 steps :
 
     pip install django-th
 
-and you will have to finish by 
+and you will have to finish by
 
 .. code-block:: bash
 
@@ -40,8 +40,9 @@ this is because Evernote SDK for Python 3 is not yet available on pypi
 
 
 
-Dependencies
-------------
+Requirements
+============
+
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
 * `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
@@ -50,9 +51,10 @@ Dependencies
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
-On a Ubuntu system: 
- 
-.. code:: system
+On a Debian/Ubuntu system:
+
+.. code:: bash
+
     apt-get install libtidy-dev
 
 
@@ -62,7 +64,7 @@ for celery
 
 for evernote support
 
-* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ 
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_
 
 for github support
 
@@ -87,13 +89,21 @@ for search engine
 for trello support
 
 * `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
+* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.0.5
+
+Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
+
+.. code:: bash
+
+    apt-get install pandoc
+
 
 for twitter support
 
 * `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
 
 
-for redis support 
+for redis support
 
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
 * `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0

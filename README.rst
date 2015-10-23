@@ -27,14 +27,14 @@
    :alt: Downloads per month
 
 
-====================
-Django Trigger Happy
-====================
+=============
+Trigger Happy
+=============
 
 Automatically share data between popular services you use on the web.
 And instead of giving your credentials to them, become the owner of yours !
 
-For example a new RSS item is published, django-trigger-happy will be able to 
+For example a new RSS item is published, "Trigger Happy" will be able to
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
@@ -44,10 +44,10 @@ your own Readability or Pocket account and so on
 Description
 ===========
 
-The goal of this project is to be independant from any other solution like 
+The goal of this project is to be independant from any other solution like
 IFTTT, CloudWork or others.
 
-Thus you could host your own solution and manage your own triggers without 
+Thus you could host your own solution and manage your own triggers without
 depending any non-free solution.
 
 With this project you can host triggers for you.
@@ -66,8 +66,8 @@ Requirements
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
-On a Ubuntu system: 
- 
+On a Debian/Ubuntu system:
+
 .. code:: bash
 
     apt-get install libtidy-dev
@@ -79,7 +79,7 @@ for celery
 
 for evernote support
 
-* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_ 
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_
 
 for github support
 
@@ -104,13 +104,21 @@ for search engine
 for trello support
 
 * `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
+* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.0.5
+
+Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
+
+.. code:: bash
+
+    apt-get install pandoc
+
 
 for twitter support
 
 * `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
 
 
-for redis support 
+for redis support
 
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
 * `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
@@ -124,7 +132,7 @@ To get the project up and running, from your virtualenv, do:
 
 
 
-From GitHub 
+From GitHub
 -----------
 
 
@@ -151,7 +159,7 @@ in 2 steps :
 
     pip install django-th
 
-and you will have to finish by 
+and you will have to finish by
 
 .. code:: bash
 
@@ -166,7 +174,7 @@ As usual you will setup the database parameters.
 
 Important parts are the settings of the available services :
 
-settings.py 
+settings.py
 -----------
 
 add the module django_th to the INSTALLED_APPS
@@ -214,9 +222,9 @@ TH_SERVICES is a list of the supported services
     )
 
 
-IMPORTANT : 
+IMPORTANT :
 
-With all the service you will enable, to avoid to share your key by accident, I strongly recommand that you put all of them in a seperate local_settings.py that you include at the end of the main settings.py 
+With all the service you will enable, to avoid to share your key by accident, I strongly recommand that you put all of them in a seperate local_settings.py that you include at the end of the main settings.py
 
 So below, when I speak about settings.py think about local_settings.py.
 
@@ -249,11 +257,11 @@ TH_GITHUB is the setting you will need to be abel to add/read data in/from GitHu
 
 To be able to user Github
 
-* you will need to grab the consumer key and consumer secret from `"the application" from your account page <https://github.com/settings/developers>`_ 
+* you will need to grab the consumer key and consumer secret from `"the application" from your account page <https://github.com/settings/developers>`_
 
-.. image:: http://foxmask.info/public/trigger_happy/github_account_settings.png 
+.. image:: http://foxmask.info/public/trigger_happy/github_account_settings.png
 
-* then copy the client id and client secret to the settings.py plus add your github login&password 
+* then copy the client id and client secret to the settings.py plus add your github login&password
 
 .. code:: python
 
@@ -275,7 +283,7 @@ To be able to use Pocket :
 
 * you will need to grab the pocket consumer key `by creating a new application <http://getpocket.com/developer/apps/>`_ with the rights access as below
 
-.. image:: http://foxmask.info/public/trigger_happy/pocket_account_settings.png 
+.. image:: http://foxmask.info/public/trigger_happy/pocket_account_settings.png
 
 * then copy the "consumer key" of your application to the settings.py
 
@@ -297,10 +305,10 @@ To be able to use readability :
 * you will need to `grad the readability keys <https://readability.com/developers/api>`_
 * create a new application at readability website, then
 
-.. image:: http://foxmask.info/public/trigger_happy/readability_account_settings.png 
+.. image:: http://foxmask.info/public/trigger_happy/readability_account_settings.png
 
 * copy the "keys & secret" of your application to the settings.py
- 
+
 .. code:: python
 
     TH_READABILITY = {
@@ -320,7 +328,7 @@ To be able to use Trello:
 * you will need to create an account at https://trello.com/docs/
 * then create an application and adding to the URL request "scope=read,write"
 
-.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png 
+.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png
 
 .. code:: python
 
@@ -342,7 +350,7 @@ To be able to use Twitter:
 * then on the Application Settings tab set the rights to "read and write permission"
 * then on Keys tab copy the information and fill the settings.py with them
 
-.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png 
+.. image:: http://foxmask.info/public/trigger_happy/twitter_key_settings.png
 
 .. code:: python
 
@@ -351,10 +359,10 @@ To be able to use Twitter:
         'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
     }
 
-CACHE 
+CACHE
 ~~~~~
 
-For each TriggerHappy component, define one cache like below 
+For each TriggerHappy component, define one cache like below
 
 .. code:: python
 
@@ -438,7 +446,7 @@ For each TriggerHappy component, define one cache like below
         },
     }
 
-CELERY 
+CELERY
 ~~~~~~
 
 Celery will handle tasks itself to populate the cache from provider services
@@ -471,6 +479,24 @@ Define the broker then the scheduler
     }
 
 
+An alternative configuration can be set here :
+If you prefer to enchain all the tasks in a raw, a dedicated task, named "go", will do the job
+so you will just need to do :
+
+
+.. code:: python
+
+    CELERYBEAT_SCHEDULE = {
+        'go': {
+            'task': 'django_th.tasks.go',
+            'schedule': crontab(minute='15,30,45'),
+        },
+    }
+
+
+that will replace the previous settings schedule
+
+
 * From SUPERVISORD
 
 .. code:: python
@@ -496,6 +522,14 @@ Define the broker then the scheduler
     stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
 
 
+Here, autoscale parameter can be increased (for example to 30 if your server is able to) if you plan to use the task named "go",
+because, with the 3 others tasks, it may happened that they can run in the same time. It's not a problem. Each of them does a different job.
+It's just a question of taste ;)
+
+- 1 task (that can be triggered 30 times) that run all of them, one after another, or
+- 3 tasks, running independtly
+
+
 REDISBOARD
 ~~~~~~~~~~
 
@@ -505,10 +539,10 @@ REDISBOARD
     REDISBOARD_DETAIL_FILTERS = ['.*']
 
 
-HAYSTACK 
+HAYSTACK
 ~~~~~~~~~
 
-if you plan to use the search feature, put the engine of your choice, for example : 
+if you plan to use the search feature, put the engine of your choice, for example :
 
 .. code:: python
 
@@ -520,7 +554,7 @@ if you plan to use the search feature, put the engine of your choice, for exampl
             'INDEX_NAME': 'haystack',
         },
     }
-    
+
 
 
 urls.py
@@ -535,7 +569,7 @@ urls.py
          # Examples:
          # url(r'^$', 'th.views.home', name='home'),
          # url(r'^blog/', include('blog.urls')),
-  
+
          url(r'^admin/', include(admin.site.urls)),
          url(r'', include('django_th.urls')),
     )
@@ -553,7 +587,7 @@ if you start from scratch and dont have created a django application yet, you sh
 
 .. code-block:: bash
 
-    python manage.py syncdb 
+    python manage.py syncdb
 
 
 otherwise do :
@@ -574,7 +608,7 @@ Starting the application
     python manage.py runserver
 
 
-Now that everything is in place, Celery will do our job in background 
+Now that everything is in place, Celery will do our job in background
 in the meantime you will be able to manage your triggers from the front part
 
 
@@ -582,7 +616,7 @@ in the meantime you will be able to manage your triggers from the front part
 Setting up : Administration
 ===========================
 
-Once the module is installed, go to the admin panel and activate the service you want. 
+Once the module is installed, go to the admin panel and activate the service you want.
 
 Currently there are 5 services, Evernote, Pocket, RSS, Trello and Twitter.
 
@@ -610,10 +644,10 @@ Once they are activated....
 Usage :
 =======
 
-Activating services : 
+Activating services :
 ---------------------
 
-The user activates the service for their own need. If the service requires an external authentication, he will be redirected to the service which will ask him the authorization to acces the user's account. 
+The user activates the service for their own need. If the service requires an external authentication, he will be redirected to the service which will ask him the authorization to acces the user's account.
 Once it's done, goes back to django-trigger-happy to finish and record the "auth token".
 
 .. image:: http://foxmask.info/public/trigger_happy/public_services_activated.png
@@ -623,7 +657,7 @@ Using the activated services :
 
 a set of 3 pages will ask to the user information that will permit to trigger data from a service "provider" to a service "consummer".
 
-For example : 
+For example :
 
 * page 1 : the user gives a RSS feed
 * page 2 : the user gives the name of the notebook where notes will be stored and a tag if he wants
@@ -643,11 +677,10 @@ Here are the available management commands you can use by hand when you need to 
         fire_read_data     # will put date in cache
         fire_publish_data  # will read cache and publish data
         fire_get_outside_data  # will move cache version 2 to 1
- 
+        fire_go  # will run all the previous 3 commands, one after anoter
 
-To start handling the queue of triggers you/your users configured, just set those 2 management commands in a crontab or any other scheduler solution of your choice, if you dont want to use the beat of Celery
 
-Also : Keep in mind to avoid to set a too short duration between 2 run to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
+Also : Keep in mind to avoid to set a too short duration between 2 runs to avoid to be blocked by the externals services (by their rate limitation) you/your users want to reach.
 
 
 Complete Documentation

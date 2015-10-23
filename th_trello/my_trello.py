@@ -1,21 +1,16 @@
 # coding: utf-8
-# Using OAuth1Session
-from requests_oauthlib import OAuth1Session
-
 # Trello API
 from trello import TrelloClient
 
 # django classes
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext as _
 from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
 from django_th.apps import DjangoThConfig
 from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated
-from django_th.publishing_limit import PublishingLimit
 
 """
     handle process with Trello
@@ -87,8 +82,8 @@ class ServiceTrello(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        cache_data = cache.get('th_trello_' + str(trigger_id))
-        return PublishingLimit.get_data('th_trello_', cache_data, trigger_id)
+        return super(ServiceTrello, self).process_data('th_trello',
+                                                       str(trigger_id))
 
     def save_data(self, token, trigger_id, **data):
         """
@@ -106,13 +101,15 @@ class ServiceTrello(ServicesMgr):
         title = ''
         content = ''
         status = False
-
-        title = self.set_title(data)
-        content = self.set_content(data)
+        kwargs = {'output_format': 'md'}
+        title, content = super(ServiceTrello, self).save_data(data, **kwargs)
 
         if len(title):
             # get the data of this trigger
             t = Trello.objects.get(trigger_id=trigger_id)
+            # footer of the card
+            footer = self.set_card_footer(data, t)
+            content += footer
 
             # 1 - we need to search the list and board where we will
             # store the card so ...
@@ -167,19 +164,29 @@ class ServiceTrello(ServicesMgr):
 
         return status
 
+    def set_card_footer(self, data, trigger):
+        """
+            handle the footer of the note
+        """
+        footer = ''
+        if 'link' in data:
+            provided_by = _('Provided by')
+            provided_from = _('from')
+            footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
+
+            description = trigger.trigger.description
+            footer = footer_from.format(
+                provided_by, description, provided_from,
+                data['link'], data['link'])
+
+        return footer
+
     def auth(self, request):
         """
             let's auth the user to the Service
         """
-        callback_url = 'http://%s%s' % (
-            request.get_host(), reverse('trello_callback'))
-
-        request_token = self.get_request_token()
-
-        # Save the request token information for later
-        request.session['oauth_token'] = request_token['oauth_token']
-        request.session['oauth_token_secret'] = request_token[
-            'oauth_token_secret']
+        request_token = super(ServiceTrello, self).auth(request)
+        callback_url = self.callback_url(request, 'trello')
 
         # URL to redirect user to, to authorize your app
         auth_url_str = '{auth_url}?oauth_token={token}&scope={scope}&name={name}'
@@ -197,47 +204,8 @@ class ServiceTrello(ServicesMgr):
         """
             Called from the Service when the user accept to activate it
         """
+        kwargs = {'access_token': '', 'service': 'ServiceTrello',
+                  'return': 'trello'}
+        return super(ServiceTrello, self).callback(request, **kwargs)
 
-        try:
-            # finally we save the user auth token
-            # As we already stored the object ServicesActivated
-            # from the UserServiceCreateView now we update the same
-            # object to the database so :
-            # 1) we get the previous objet
-            us = UserService.objects.get(
-                user=request.user,
-                name=ServicesActivated.objects.get(name='ServiceTrello'))
-            # 2) Trello API require to use 4 parms consumer_key/secret +
-            # token_key/secret instead of usually get just the token
-            # from an access_token request. So we need to add a string
-            # seperator for later use to slpit on this one
-            access_token = self.get_access_token(
-                request.session['oauth_token'],
-                request.session['oauth_token_secret'],
-                request.GET.get('oauth_verifier', '')
-            )
-            us.token = access_token.get('oauth_token') + \
-                '#TH#' + access_token.get('oauth_token_secret')
-            # 3) and save everything
-            us.save()
-        except KeyError:
-            return '/'
 
-        return 'trello/callback.html'
-
-    def get_request_token(self):
-        oauth = OAuth1Session(self.consumer_key,
-                              client_secret=self.consumer_secret)
-        return oauth.fetch_request_token(self.REQ_TOKEN)
-
-    def get_access_token(self, oauth_token, oauth_token_secret,
-                         oauth_verifier):
-        # Using OAuth1Session
-        oauth = OAuth1Session(self.consumer_key,
-                              client_secret=self.consumer_secret,
-                              resource_owner_key=oauth_token,
-                              resource_owner_secret=oauth_token_secret,
-                              verifier=oauth_verifier)
-        oauth_tokens = oauth.fetch_access_token(self.ACC_TOKEN)
-
-        return oauth_tokens

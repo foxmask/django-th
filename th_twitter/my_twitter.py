@@ -6,18 +6,14 @@ from twython import Twython
 
 # django classes
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.utils.log import getLogger
 from django.utils.translation import ugettext as _
 from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated
-from django_th.html_entities import HtmlEntities
-from django_th.publishing_limit import PublishingLimit
-
 from th_twitter.models import Twitter
+
 """
     handle process with twitter
     put the following in settings.py
@@ -114,7 +110,8 @@ class ServiceTwitter(ServicesMgr):
             return count, search, statuses
 
         if token is not None:
-            twitter_obj = Twitter.objects.get(trigger_id=trigger_id)
+            twitter_obj = super(ServiceTwitter, self).read_data(
+                'Twitter', trigger_id)
 
             # https://dev.twitter.com/rest/public/timelines
             if twitter_obj.since_id is not None and twitter_obj.since_id > 0:
@@ -173,8 +170,8 @@ class ServiceTwitter(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        cache_data = cache.get('th_twitter_' + str(trigger_id))
-        return PublishingLimit.get_data('th_twitter', cache_data, trigger_id)
+        return super(ServiceTwitter, self).process_data('th_twitter',
+                                                        str(trigger_id))
 
     def save_data(self, token, trigger_id, **data):
         """
@@ -189,7 +186,11 @@ class ServiceTwitter(ServicesMgr):
         """
         status = False
         tags = []
+        title = ''
         content = ''
+        # set the title and content of the data
+        title, content = super(ServiceTwitter, self).save_data(data, kwargs={})
+
         if token and 'link' in data and data['link'] is not None and \
            len(data['link']) > 0:
             # get the Twitter data of this trigger
@@ -206,12 +207,7 @@ class ServiceTwitter(ServicesMgr):
                 else:
                     tags.append('#' + trigger.tag)
 
-            if 'title' in data and data['title'] is not None and \
-               len(data['title']) > 0:
-                title = data['title']
-                # decode html entities if any
-                title = HtmlEntities(title).html_entity_decode
-
+            if title != '':
                 content = str("{title} {link}").format(title=title, link=link)
 
             # TODO : need to check the size of the content and tags to add
@@ -234,8 +230,7 @@ class ServiceTwitter(ServicesMgr):
         :return: go to the Twitter website to ask to the user
         to allow the access of TriggerHappy
         """
-        callback_url = 'http://%s%s' % (
-            request.get_host(), reverse('twitter_callback'))
+        callback_url = self.callback_url(request, 'twitter')
 
         twitter = Twython(self.consumer_key, self.consumer_secret)
 
@@ -250,26 +245,9 @@ class ServiceTwitter(ServicesMgr):
         """
             Called from the Service when the user accept to activate it
         """
-        try:
-            # retrieve the token from the session
-            access_token = self.get_access_token(
-                request.session['oauth_token'],
-                request.session['oauth_token_secret'],
-                request.GET.get('oauth_verifier', '')
-            )
-            # make the token
-            token = access_token['oauth_token'] + '#TH#'\
-                + access_token['oauth_token_secret']
-            # finally we save the user auth token
-            UserService.objects.filter(
-                user=request.user,
-                name=ServicesActivated.objects.get(name='ServiceTwitter')
-            ).update(token=token)
-
-        except KeyError:
-            return '/'
-
-        return 'twitter/callback.html'
+        kwargs = {'access_token': '', 'service': 'ServiceTwitter',
+                  'return': 'twitter'}
+        return super(ServiceTwitter, self).callback(request, **kwargs)
 
     def get_access_token(
         self, oauth_token, oauth_token_secret, oauth_verifier
