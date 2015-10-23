@@ -14,7 +14,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
 
 .. toctree::
    :maxdepth: 2
-   
+
    installation
    configuration
    usage
@@ -23,7 +23,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
 
 
 
-For example a new RSS item is published, **Trigger Happy** will be able to 
+For example a new RSS item is published, **Trigger Happy** will be able to
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
@@ -62,19 +62,19 @@ your own Readability or Pocket account and so on
 
 Description:
 ------------
-The goal of this project is to be independant from any other solution like 
+The goal of this project is to be independant from any other solution like
 IFTTT, CloudWork or others.
 
-Thus you could host your own solution and manage your own triggers without 
+Thus you could host your own solution and manage your own triggers without
 depending any non-free solution.
 
 With this project you can host triggers for you.
 
-All you need is to have a hosting provider (or simply your own server ;) 
+All you need is to have a hosting provider (or simply your own server ;)
 who permits to use a manager of tasks like "cron" and, of course Python
 
 
-Blog posts: 
+Blog posts:
 -----------
 You can find all details of all existing services of the `blog <http://www.foxmask.info/tag/TriggerHappy>`_
 

@@ -13,7 +13,6 @@ from django_th.services.services import ServicesMgr
 # th_rss classes
 from th_rss.models import Rss
 from th_rss.lib.feedsservice import Feeds
-from django_th.publishing_limit import PublishingLimit
 
 logger = getLogger('django_th.trigger_happy')
 
@@ -36,14 +35,14 @@ class ServiceRss(ServicesMgr):
             :return: list of data found from the date_triggered filter
             :rtype: list
         """
+        # get the URL from the trigger id
+        rss = super(ServiceRss, self).read_data('Rss', trigger_id)
+
+        logger.debug("RSS Feeds from %s : url %s", rss.name, rss.url)
+
         now = arrow.utcnow().to(settings.TIME_ZONE)
         published = ''
         my_feeds = []
-
-        # get the URL from the trigger id
-        rss = Rss.objects.get(trigger_id=trigger_id)
-
-        logger.debug("RSS Feeds from %s : url %s", rss.name, rss.url)
 
         # retrieve the data
         feeds = Feeds(**{'url_to_parse': rss.url}).datas()
@@ -81,5 +80,5 @@ class ServiceRss(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        cache_data = cache.get('th_rss_' + str(trigger_id))
-        return PublishingLimit.get_data('th_rss', cache_data, trigger_id)
+        return super(ServiceRss, self).process_data('th_rss',
+                                                    str(trigger_id))

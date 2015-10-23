@@ -6,7 +6,7 @@ import datetime
 import time
 import arrow
 
-from celery import shared_task
+from celery import shared_task, chain
 
 from django.conf import settings
 from django.core.cache import caches
@@ -164,7 +164,7 @@ def read_data():
 
 
 @shared_task
-def publish_data():
+def publish_data(result=''):
     """
         the purpose of this tasks is to get the data from the cache
         then publish them
@@ -254,7 +254,7 @@ def publish_data():
 
 
 @shared_task
-def get_outside_cache():
+def get_outside_cache(result=''):
     """
         the purpose of this tasks is to recycle the data from the cache
         with version=2 in the main cache
@@ -273,3 +273,8 @@ def get_outside_cache():
                 cache.delete_pattern(service, version=2)
             except ValueError:
                 pass
+
+
+@shared_task
+def go():
+    chain(read_data.s(), publish_data.s(), get_outside_cache.s())()

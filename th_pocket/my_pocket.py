@@ -8,16 +8,13 @@ import pocket
 from pocket import Pocket
 
 # django classes
-from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated
 from django_th.html_entities import HtmlEntities
-from django_th.publishing_limit import PublishingLimit
 
 """
     handle process with pocket
@@ -97,8 +94,8 @@ class ServicePocket(ServicesMgr):
             :param trigger_id: trigger ID from which to save data
             :type trigger_id: int
         """
-        cache_data = cache.get('th_pocket_' + str(trigger_id))
-        return PublishingLimit.get_data('th_pocket', cache_data, trigger_id)
+        return super(ServicePocket, self).process_data('th_pocket',
+                                                       str(trigger_id))
 
     def save_data(self, token, trigger_id, **data):
         """
@@ -144,8 +141,7 @@ class ServicePocket(ServicesMgr):
         """
             let's auth the user to the Service
         """
-        callback_url = 'http://%s%s' % (
-            request.get_host(), reverse('pocket_callback'))
+        callback_url = self.callback_url(request, 'pocket')
 
         request_token = Pocket.get_request_token(
             consumer_key=self.consumer_key,
@@ -164,25 +160,11 @@ class ServicePocket(ServicesMgr):
         """
             Called from the Service when the user accept to activate it
         """
+        access_token = Pocket.get_access_token(
+            consumer_key=self.consumer_key,
+            code=request.session['request_token'])
 
-        try:
-            # finally we save the user auth token
-            # As we already stored the object ServicesActivated
-            # from the UserServiceCreateView now we update the same
-            # object to the database so :
-            # 1) we get the previous object
-            us = UserService.objects.get(
-                user=request.user,
-                name=ServicesActivated.objects.get(name='ServicePocket'))
-            # 2) then get the token
-            access_token = Pocket.get_access_token(
-                consumer_key=self.consumer_key,
-                code=request.session['request_token'])
+        kwargs = {'access_token': access_token, 'service': 'ServicePocket',
+                  'return': 'pocket'}
 
-            us.token = access_token
-            # 3) and save everything
-            us.save()
-        except KeyError:
-            return '/'
-
-        return 'pocket/callback.html'
+        return super(ServicePocket, self).callback(request, **kwargs)

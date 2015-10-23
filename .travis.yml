@@ -6,6 +6,11 @@ python:
 script:
 - tox
 
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y libtidy-dev
+  - sudo apt-get install -y pandoc
+
 install:
 - pip install tox
 

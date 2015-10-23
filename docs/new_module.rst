@@ -103,15 +103,8 @@ If your service need an authentication, you'll need 2 new functions `auth` and `
 
 * `auth` will trigger the authentication to the third party application, the Oauth process in fact
 * `callback` is triggered when the authentication is done and call by the third party application.
-At this step the callback function store the oauth token to the dedicated dummy model as follow :
+At this step the callback function store the oauth token to the dedicated dummy model
 
-.. code-block:: python
-
-    def callback(self, request):
-        ...
-        UserService.objects.filter(
-            user=request.user,
-            name=ServicesActivated.objects.get(name='ServiceDummy')).update(token=token)
 
 The complete code of this class :
 ---------------------------------
@@ -126,7 +119,6 @@ The complete code of this class :
 
     # django classes
     from django.conf import settings
-    from django.core.urlresolvers import reverse
     from django.utils.log import getLogger
 
     # django_th classes
@@ -157,7 +149,7 @@ The complete code of this class :
 
         def __init__(self, ):
             self.dummy_instance = external_api.CallOfApi(
-                    settings.TH_DUMMY['consumer_key'], token)        
+                    settings.TH_DUMMY['consumer_key'], token)
 
         def read_data(self, token, trigger_id, date_triggered):
             """
@@ -172,13 +164,13 @@ The complete code of this class :
             data = list()
             return cache.set('th_dummy_' + str(trigger_id), data)
 
-
         def process_data(self, trigger_id):
             """
-                get the data from the service
-                :param trigger_id: trigger ID to process
+                get the data from the cache
+                :param trigger_id: trigger ID from which to save data
+                :type trigger_id: int
             """
-            return cache.get('th_dummy_' + str(trigger_id))
+            return super(ServiceDummy, self).process_data('th_dummy', str(trigger_id))
 
         def save_data(self, token, trigger_id, **data):
             """
@@ -220,15 +212,8 @@ The complete code of this class :
             """
                 let's auth the user to the Service
             """
-            callback_url = 'http://%s%s' % (
-                request.get_host(), reverse('dummy_callback'))
-
-            request_token = self.get_request_token()
-
-            # Save the request token information for later
-            request.session['oauth_token'] = request_token['oauth_token']
-            request.session['oauth_token_secret'] = request_token[
-                'oauth_token_secret']
+            request_token = super(ServiceDummy, self).auth(request)
+            callback_url = self.callback_url(request, 'dummy')
 
             # URL to redirect user to, to authorize your app
             auth_url_str = '%s?oauth_token=%s&oauth_callback=%s'
@@ -242,48 +227,6 @@ The complete code of this class :
             """
                 Called from the Service when the user accept to activate it
             """
-
-            try:
-                # finally we save the user auth token
-                # As we already stored the object ServicesActivated
-                # from the UserServiceCreateView now we update the same
-                # object to the database so :
-                # 1) we get the previous objet
-                us = UserService.objects.get(
-                    user=request.user,
-                    name=ServicesActivated.objects.get(name='ServiceDummy'))
-                # 2) Readability API require to use 4 parms consumer_key/secret +
-                # token_key/secret instead of usually get just the token
-                # from an access_token request. So we need to add a string
-                # seperator for later use to slpit on this one
-                access_token = self.get_access_token(
-                    request.session['oauth_token'],
-                    request.session['oauth_token_secret'],
-                    request.GET.get('oauth_verifier', '')
-                )
-                # us.token = access_token.get('oauth_token') + \
-                #    '#TH#' + access_token.get('oauth_token_secret')
-                us.token = access_token
-                # 3) and save everything
-                us.save()
-            except KeyError:
-                return '/'
-
-            return 'dummy/callback.html'
-
-        def get_request_token(self):
-            oauth = OAuth1Session(self.consumer_key,
-                                  client_secret=self.consumer_secret)
-            return oauth.fetch_request_token(self.REQ_TOKEN)
-
-        def get_access_token(self, oauth_token, oauth_token_secret,
-                             oauth_verifier):
-            # Using OAuth1Session
-            oauth = OAuth1Session(self.consumer_key,
-                                  client_secret=self.consumer_secret,
-                                  resource_owner_key=oauth_token,
-                                  resource_owner_secret=oauth_token_secret,
-                                  verifier=oauth_verifier)
-            oauth_tokens = oauth.fetch_access_token(self.ACC_TOKEN)
-
-            return oauth_tokens
+            kwargs = {'access_token': '', 'service': 'ServiceDummy',
+                      'return': 'dummy'}
+            return super(ServiceDummy, self).callback(request, **kwargs)
