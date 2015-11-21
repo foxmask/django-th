@@ -11,6 +11,7 @@ ALLOWED_HOSTS = ["*"]
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
+
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -210,9 +211,8 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
-            "DB": 1,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -221,9 +221,8 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
-            "DB": 2,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -232,9 +231,8 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/3",
         "OPTIONS": {
-            "DB": 3,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -243,9 +241,8 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
-            "DB": 4,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -254,9 +251,8 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
-            "DB": 5,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -265,9 +261,8 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/6",
         "OPTIONS": {
-            "DB": 8,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
@@ -276,9 +271,8 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "127.0.0.1:6379",
+        "LOCATION": "redis://127.0.0.1:6379/7",
         "OPTIONS": {
-            "DB": 9,
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },

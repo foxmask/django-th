@@ -117,7 +117,7 @@ def get_published(published='', which_date=''):
 
 
 @shared_task
-def put_in_cache(service):
+def reading(service):
     # flag to know if we have to update
     to_update = False
     # flag to get the status of a service
@@ -160,7 +160,90 @@ def read_data():
         'consumer__name', 'provider__name')
 
     for service in trigger:
-        put_in_cache.delay(service)
+        reading.delay(service)
+
+
+@shared_task
+def publishing(service, now):
+    """
+        the purpose of this tasks is to get the data from the cache
+        then publish them
+    """
+    # flag to know if we have to update
+    to_update = False
+    # flag to get the status of a service
+    status = False
+    # counting the new data to store to display them in the log
+    count_new_data = 0
+    # provider - the service that offer data
+    service_provider = default_provider.get_service(
+        str(service.provider.name.name))
+
+    # consumer - the service which uses the data
+    service_consumer = default_provider.get_service(
+        str(service.consumer.name.name))
+
+    # check if the service has already been triggered
+    # if date_triggered is None, then it's the first run
+    if service.date_triggered is None:
+        logger.debug("first run {}".format(service))
+        to_update = True
+        status = True
+    # run run run
+    else:
+        # 1) get the data from the provider service
+        # get a timestamp of the last triggered of the service
+        datas = getattr(service_provider, 'process_data')(service.id)
+        if datas is None or len(datas) == 0:
+            continue
+        consumer = getattr(service_consumer, '__init__')(
+            service.consumer.token)
+        consumer = getattr(service_consumer, 'save_data')
+
+        published = ''
+        which_date = ''
+        # 2) for each one
+        for data in datas:
+            # if in a pool of data once of them does not have
+            # a date, will take the previous date for this one
+            # if it's the first one, set it to 00:00:00
+
+            # let's try to determine the date contained in
+            # the data...
+            published = to_datetime(data)
+            published, which_date = get_published(published,
+                                                  which_date)
+            # 3) check if the previous trigger is older than the
+            # date of the data we retrieved
+            # if yes , process the consumer
+
+            # add the TIME_ZONE settings
+            # to localize the current date
+            date_triggered = arrow.get(
+                str(service.date_triggered),
+                'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+
+            # if the published date is greater or equal to the last
+            # triggered event ... :
+            if date_triggered is not None and \
+               published is not None and \
+               now >= published and \
+               published >= date_triggered:
+
+                publish_log_data(published, date_triggered, data)
+
+                status = consumer(
+                    service.consumer.token, service.id, **data)
+
+                to_update = True
+                count_new_data += 1
+            # otherwise do nothing
+            else:
+                publish_log_outdated(published, data)
+
+    log_update(service, to_update, status, count_new_data)
+    if to_update and status:
+        update_trigger(service)
 
 
 @shared_task
@@ -170,87 +253,11 @@ def publish_data(result=''):
         then publish them
     """
     now = arrow.utcnow().to(settings.TIME_ZONE)
-
     trigger = TriggerService.objects.filter(status=True).select_related(
         'consumer__name', 'provider__name')
-    if trigger:
-        for service in trigger:
 
-            # flag to know if we have to update
-            to_update = False
-            # flag to get the status of a service
-            status = False
-            # counting the new data to store to display them in the log
-            count_new_data = 0
-            # provider - the service that offer data
-            service_provider = default_provider.get_service(
-                str(service.provider.name.name))
-
-            # consumer - the service which uses the data
-            service_consumer = default_provider.get_service(
-                str(service.consumer.name.name))
-
-            # check if the service has already been triggered
-            # if date_triggered is None, then it's the first run
-            if service.date_triggered is None:
-                logger.debug("first run {}".format(service))
-                to_update = True
-                status = True
-            # run run run
-            else:
-                # 1) get the data from the provider service
-                # get a timestamp of the last triggered of the service
-                datas = getattr(service_provider, 'process_data')(service.id)
-                if datas is None or len(datas) == 0:
-                    continue
-                consumer = getattr(service_consumer, '__init__')(
-                    service.consumer.token)
-                consumer = getattr(service_consumer, 'save_data')
-
-                published = ''
-                which_date = ''
-                # 2) for each one
-                for data in datas:
-                    # if in a pool of data once of them does not have
-                    # a date, will take the previous date for this one
-                    # if it's the first one, set it to 00:00:00
-
-                    # let's try to determine the date contained in
-                    # the data...
-                    published = to_datetime(data)
-                    published, which_date = get_published(published,
-                                                          which_date)
-                    # 3) check if the previous trigger is older than the
-                    # date of the data we retrieved
-                    # if yes , process the consumer
-
-                    # add the TIME_ZONE settings
-                    # to localize the current date
-                    date_triggered = arrow.get(
-                        str(service.date_triggered),
-                        'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
-
-                    # if the published date is greater or equal to the last
-                    # triggered event ... :
-                    if date_triggered is not None and \
-                       published is not None and \
-                       now >= published and \
-                       published >= date_triggered:
-
-                        publish_log_data(published, date_triggered, data)
-
-                        status = consumer(
-                            service.consumer.token, service.id, **data)
-
-                        to_update = True
-                        count_new_data += 1
-                    # otherwise do nothing
-                    else:
-                        publish_log_outdated(published, data)
-
-            log_update(service, to_update, status, count_new_data)
-            if to_update and status:
-                update_trigger(service)
+    for service in trigger:
+        publishing.delay(service, now)
 
 
 @shared_task

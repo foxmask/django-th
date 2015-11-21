@@ -209,9 +209,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/1",
             "OPTIONS": {
-                "DB": 1,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -220,9 +219,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/2",
             "OPTIONS": {
-                "DB": 2,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -231,9 +229,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/3",
             "OPTIONS": {
-                "DB": 3,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -242,9 +239,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/4",
             "OPTIONS": {
-                "DB": 4,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -253,9 +249,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/5",
             "OPTIONS": {
-                "DB": 5,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -264,7 +259,7 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/6",
             "OPTIONS": {
                 "DB": 6,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
@@ -275,9 +270,8 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "127.0.0.1:6379",
+            "LOCATION": "redis://127.0.0.1:6379/7",
             "OPTIONS": {
-                "DB": 7,
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
@@ -366,7 +360,41 @@ so you will just need to do :
 that will replace the previous settings schedule
 
 
-* From SUPERVISORD
+in your django application you will have to add 2 modules :
+
+apps.py and celery.py :
+
+in your app.py you will need to add :
+
+.. code:: python
+
+    from .celery import app as celery_app
+
+
+and in the celery.py :
+
+
+.. code:: python
+
+    from __future__ import absolute_import
+    import os
+    from celery import Celery
+    from django.conf import settings
+
+    # set the default Django settings module for the 'celery' program.
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '<YOUR_DJANGO_APP_NAME>.settings')
+
+    app = Celery('<YOUR_DJANGO_APP_NAME>')
+
+    # Using a string here means the worker will not have to
+    # pickle the object when using Windows.
+    app.config_from_object('django.conf:settings')
+    app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
+
+that way, Celery will read your settings instead of the one provided by django_th too.
+
+SUPERVISORD
+~~~~~~~~~~~
 
 
 .. code:: python
