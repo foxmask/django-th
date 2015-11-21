@@ -321,7 +321,7 @@ and then exploit it to publish the data to the expected consumer services
 
 Define the broker then the scheduler
 
-.. code:: python
+.. code-block:: python
 
     from celery.schedules import crontab
 
