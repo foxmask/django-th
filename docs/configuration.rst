@@ -203,6 +203,7 @@ CACHE
 For each TriggerHappy component, define one cache like below
 
 .. code:: python
+
     CACHES = {
         # Evernote Cache
         'th_evernote':
