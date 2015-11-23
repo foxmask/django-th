@@ -124,6 +124,15 @@ for redis support
 * `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
 
 
+and finally :
+
+.. code:: bash
+
+    pip install django_th
+
+
+
+
 Documentation
 =============
 

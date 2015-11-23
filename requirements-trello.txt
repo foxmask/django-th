@@ -1,2 +1,0 @@
-py-trello==0.4.3
-pypandoc==1.0.5

@@ -2,13 +2,17 @@
 
 ## New Feature
 
+check the wiki page https://github.com/foxmask/django-th/wiki to see if this one is on the roadmap
+
 :bulb: open an [issue](https://github.com/foxmask/django-th/issues/new
 ) to ask this feature, thus we will check if this one will match the main line of the project.
 
 
 ## New Module
 
-:package: To create a new module you can [read the complet guide](http://trigger-happy.readthedocs.org/en/latest/new_module.html) which describes the few thing to do. 
+check the wiki page https://github.com/foxmask/django-th/wiki to see if this one is on the roadmap
+
+:package: To create a new module you can [read the complet guide](http://trigger-happy.readthedocs.org/en/latest/new_module.html) which describes the few thing to do.
 
 Quick start :
 
@@ -16,7 +20,7 @@ just clone [django-th-dummy](https://github.com/foxmask) and change 'dummy' to t
 
 or even faster :
 
-just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run it and here you are !!! Your new module is ready 
+just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run it and here you are !!! Your new module is ready
 
 ## Bug Fixing
 
@@ -33,7 +37,7 @@ just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), mo
 
 1. first of all, clone the project
 1. create a new branch for the issue you want to fix or the new module you want to make.
-1. if its : 
+1. if its :
  1. a new module/feature, checkout the master branch
  1. a bug fixing, checkout the branch on which this bug occurs
 1. commit and push to your cloned repository
@@ -42,7 +46,7 @@ just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), mo
 
 ## Issue labels
 
-some explanation on the labels of the issues 
+some explanation on the labels of the issues
 
 * **up-for-grabs** : for new users that have never been involved in any other opensource project
 * **start-with-label** : this label tells you that you can start the module by cloning the django-th-dummy moduly
@@ -55,7 +59,7 @@ some explanation on the labels of the issues
 those are great to help to test how your code is working, and most of this, to check that your improvements dont break the existing code.
 All of them are in a test.py module on in a folder test/ that hosts several testing modules
 
-To avoid to commit things that could fail, in the **.git/hooks/pre-commit** add this 
+To avoid to commit things that could fail, in the **.git/hooks/pre-commit** add this
 
 ```shell
 #!/bin/bash

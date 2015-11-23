@@ -45,16 +45,17 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'redisboard',
         'django_th',
         'th_rss',
-        'th_pocket',
-        'th_readability',
-        'evernote',
-        'th_evernote',
-        'th_twitter',
-        'th_holidays',
-        'th_trello',
-        'th_github',
-        'haystack',  # mandatory  if you plan to use th_search
-        'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
+        # uncomment the lines to enable the service you need
+        # 'th_pocket',
+        # 'th_readability',
+        # 'evernote',
+        # 'th_evernote',
+        # 'th_twitter',
+        # 'th_holidays',
+        # 'th_trello',
+        # 'th_github',
+        # 'haystack',  # mandatory  if you plan to use th_search
+        # 'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
 
     )
 
@@ -69,14 +70,14 @@ TH_SERVICES is a list of the services, like for example,
 .. code-block:: python
 
     TH_SERVICES = (
-        # comment the line to disable the service you dont want
+        # uncomment the lines to enable the service you need
         'th_rss.my_rss.ServiceRss',
-        'th_pocket.my_pocket.ServicePocket',
-        'th_evernote.my_evernote.ServiceEvernote',
-        'th_readability.my_readability.ServiceReadability',
-        'th_trello.my_trello.ServiceTrello',
-        'th_twitter.my_twitter.ServiceTwitter',
-        'th_github.my_github.ServiceGithub',
+        # 'th_pocket.my_pocket.ServicePocket',
+        # 'th_evernote.my_evernote.ServiceEvernote',
+        # 'th_readability.my_readability.ServiceReadability',
+        # 'th_trello.my_trello.ServiceTrello',
+        # 'th_twitter.my_twitter.ServiceTwitter',
+        # 'th_github.my_github.ServiceGithub',
     )
 
 
