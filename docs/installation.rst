@@ -28,9 +28,19 @@ in 2 steps :
 
 .. code-block:: bash
 
-    pip install django-th
+    pip install django-th[all]
 
-and you will have to finish by
+
+or to make your own "receipe" :
+
+
+.. code-block:: bash
+
+    pip install django-th[rss,pocket]
+    pip install django-th[rss,twitter,pocket,github]
+
+
+and if you need Evernote, you will have to finish by
 
 .. code-block:: bash
 

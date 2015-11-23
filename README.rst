@@ -126,10 +126,18 @@ for redis support
 
 and finally :
 
-.. code:: bash
+.. code-block:: bash
 
-    pip install django_th
+    pip install django-th[all]
 
+
+or to make your own "receipe" :
+
+
+.. code-block:: bash
+
+    pip install django-th[rss,pocket]
+    pip install django-th[rss,twitter,pocket,github]
 
 
 
