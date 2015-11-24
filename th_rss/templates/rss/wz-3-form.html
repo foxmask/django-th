@@ -11,7 +11,7 @@
         <h4>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h4>
         <form class="form-horizontal" action="" method="post">{% csrf_token %}
             <fieldset>
-                
+
                 <div class="wizard-fieldset">
                     <table>
                     {{ wizard.management_form }}
@@ -29,7 +29,7 @@
                 <div class="form-actions">
                     {% if wizard.steps.prev %}
                     <button class="btn btn-inverse" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
-                    <button class="btn btn-inverse" type="submit" value="{{ wizard.steps.prev }}">{% trans "prev step" %}</button>
+                    <button class="btn btn-inverse" type="submit" value="{{ wizard.steps.next }}">{% trans "next step" %}</button>
                     {% endif %}
                     <button class="btn btn-primary">{% trans "Submit" %}</button>
                 </div>
