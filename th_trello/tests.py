@@ -21,6 +21,11 @@ class TrelloTest(MainTest):
     def test_get_config_th_cache(self):
         self.assertIn('th_trello', settings.CACHES)
 
+    def test_get_services_list(self):
+        th_service = ('th_trello.my_trello.ServiceTrello',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)
+
     def create_trello(self):
         trigger = self.create_triggerservice(consumer_name='ServiceTrello')
         board_name = 'Trigger Happy'

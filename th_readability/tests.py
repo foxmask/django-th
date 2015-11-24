@@ -28,10 +28,19 @@ class ReadabilityTest(MainTest):
         self.assertTrue(isinstance(r, Readability))
         self.assertEqual(r.show(), "My Readability %s" % (r.name))
 
-    """
-        Form
-    """
-    # no need to test if the tag is filled or not as it's not mandatory
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_READABILITY)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_readability', settings.CACHES)
+
+    def test_get_services_list(self):
+        th_service = ('th_readability.my_readability.ServiceReadability',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)
 
 
 try:

@@ -68,3 +68,11 @@ class GithubTest(MainTest):
             does this settings exists ?
         """
         self.assertTrue(settings.TH_GITHUB)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_github', settings.CACHES)
+
+    def test_get_services_list(self):
+        th_service = ('th_github.my_github.ServiceGithub',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)

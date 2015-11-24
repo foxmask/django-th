@@ -54,6 +54,19 @@ class EvernoteTest(MainTest):
         form = EvernoteConsumerForm(data={})
         self.assertFalse(form.is_valid())
 
+    def test_get_config_th(self):
+        """
+            does this settings exists ?
+        """
+        self.assertTrue(settings.TH_EVERNOTE)
+
+    def test_get_services_list(self):
+        th_service = ('th_evernote.my_evernote.ServiceEvernote',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)
+
+
+
 try:
     from unittest import mock
 except ImportError:

@@ -21,6 +21,11 @@ class TwitterTest(MainTest):
     def test_get_config_th_cache(self):
         self.assertIn('th_twitter', settings.CACHES)
 
+    def test_get_services_list(self):
+        th_service = ('th_twitter.my_twitter.ServiceTwitter',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)
+
     def create_twitter(self):
         trigger = self.create_triggerservice(consumer_name='ServiceTwitter')
         tag = 'twitter'

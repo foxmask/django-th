@@ -1,4 +1,5 @@
 # coding: utf-8
+from django.conf import settings
 from th_rss.models import Rss
 from th_rss.forms import RssProviderForm
 from django_th.tests.test_main import MainTest
@@ -39,3 +40,11 @@ class RssTest(MainTest):
     def test_invalid_provider_form(self):
         form = RssProviderForm(data={})
         self.assertFalse(form.is_valid())
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_rss', settings.CACHES)
+
+    def test_get_services_list(self):
+        th_service = ('th_rss.my_rss.ServiceRss',)
+        for service in th_service:
+            self.assertIn(service, settings.TH_SERVICES)
