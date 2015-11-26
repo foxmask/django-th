@@ -432,6 +432,17 @@ REDISBOARD
     REDISBOARD_DETAIL_FILTERS = ['.*']
 
 
+TH_HOLIDAYS
+~~~~~~~~~~~
+
+To use the Holidays feature, just add this piece of HTML in the template templates/mark_all.html :
+
+
+.. code:: html
+
+    <li role="presentation"><a role="menuitem" href="{% url 'holidays' %}" title="{% trans 'Set Triggers on Holidays ?' %}"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;{% trans 'Set Triggers on Holidays ?' %}</a></li>
+
+
 HAYSTACK
 ~~~~~~~~~
 

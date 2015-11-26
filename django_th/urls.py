@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django_th.forms.wizard import DummyForm, ProviderForm
 from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
@@ -148,7 +149,11 @@ urlpatterns = \
                  name="github_callback",
                  ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
-             # url(r'^th/search/', include('th_search.urls')),
-             url(r'^th/holidays/', include('th_holidays.urls')),
-
              )
+
+
+if 'th_holidays' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('', url(r'^th/holidays/', include('th_holidays.urls')))
+
+if 'th_search' in settings.INSTALLED_APPS:
+    urlpatterns += patterns('', url(r'^th/search/', include('th_search.urls')))

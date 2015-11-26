@@ -194,52 +194,53 @@ def publishing(service, now):
         # 1) get the data from the provider service
         # get a timestamp of the last triggered of the service
         datas = getattr(service_provider, 'process_data')(service.id)
-        if datas is None or len(datas) == 0:
-            continue
-        consumer = getattr(service_consumer, '__init__')(
-            service.consumer.token)
-        consumer = getattr(service_consumer, 'save_data')
+        if datas is not None and len(datas) > 0:
+            consumer = getattr(service_consumer, '__init__')(
+                service.consumer.token)
+            consumer = getattr(service_consumer, 'save_data')
 
-        published = ''
-        which_date = ''
-        # 2) for each one
-        for data in datas:
-            # if in a pool of data once of them does not have
-            # a date, will take the previous date for this one
-            # if it's the first one, set it to 00:00:00
+            published = ''
+            which_date = ''
+            # 2) for each one
+            for data in datas:
+                # if in a pool of data once of them does not have
+                # a date, will take the previous date for this one
+                # if it's the first one, set it to 00:00:00
 
-            # let's try to determine the date contained in
-            # the data...
-            published = to_datetime(data)
-            published, which_date = get_published(published,
-                                                  which_date)
-            # 3) check if the previous trigger is older than the
-            # date of the data we retrieved
-            # if yes , process the consumer
+                # let's try to determine the date contained in
+                # the data...
+                published = to_datetime(data)
+                published, which_date = get_published(published,
+                                                      which_date)
+                # 3) check if the previous trigger is older than the
+                # date of the data we retrieved
+                # if yes , process the consumer
 
-            # add the TIME_ZONE settings
-            # to localize the current date
-            date_triggered = arrow.get(
-                str(service.date_triggered),
-                'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
-
-            # if the published date is greater or equal to the last
-            # triggered event ... :
-            if date_triggered is not None and \
-               published is not None and \
-               now >= published and \
-               published >= date_triggered:
+                # add the TIME_ZONE settings
+                # to localize the current date
+                date_triggered = arrow.get(
+                    str(service.date_triggered),
+                    'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
 
                 publish_log_data(published, date_triggered, data)
 
-                status = consumer(
-                    service.consumer.token, service.id, **data)
+                # if the published date is greater or equal to the last
+                # triggered event ... :
+                if date_triggered is not None and \
+                   published is not None and \
+                   now >= published and \
+                   published >= date_triggered:
 
-                to_update = True
-                count_new_data += 1
-            # otherwise do nothing
-            else:
-                publish_log_outdated(published, data)
+                    publish_log_data(published, date_triggered, data)
+
+                    status = consumer(
+                        service.consumer.token, service.id, **data)
+
+                    to_update = True
+                    count_new_data += 1
+                # otherwise do nothing
+                else:
+                    publish_log_outdated(published, data)
 
     log_update(service, to_update, status, count_new_data)
     if to_update and status:

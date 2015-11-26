@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django>=1.8',
+    'Django==1.8.7',
     'django-formtools==1.0',
     'arrow==0.5.4',
     'django-js-reverse==0.5.1',
@@ -11,13 +11,15 @@ install_requires = [
     'django-redisboard==1.2.1',
     'pytidylib6==0.2.2',
     'pypandoc==1.0.5',
+    'requests-oauthlib==0.5.0',
+    'feedparser==5.2.1',
 ]
 
 extras_require_github = [
     'github3.py==1.0.0a2',
 ]
 extras_require_pocket = [
-    'pocket==0.3.5',
+    'pocket==0.3.6',
 ]
 extras_require_readability = [
     'readability-api==1.0.0',
