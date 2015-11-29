@@ -11,7 +11,6 @@ from django.core.cache import caches
 # django_th classes
 from django_th.services.services import ServicesMgr
 # th_rss classes
-from th_rss.models import Rss
 from th_rss.lib.feedsservice import Feeds
 
 logger = getLogger('django_th.trigger_happy')
@@ -47,30 +46,34 @@ class ServiceRss(ServicesMgr):
         # retrieve the data
         feeds = Feeds(**{'url_to_parse': rss.url}).datas()
 
-        if hasattr(feeds.feed, 'published_parsed'):
-            published = datetime.datetime.utcfromtimestamp(
-                time.mktime(feeds.feed.published_parsed))
-        elif hasattr(feeds.feed, 'updated_parsed'):
-            published = datetime.datetime.utcfromtimestamp(
-                time.mktime(feeds.feed.updated_parsed))
+        for entry in feeds.entries:
 
-        if published == '':
-            published = now
-        else:
-            published = arrow.get(str(published),
-                                  'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+            if hasattr(entry, 'published_parsed'):
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.published_parsed))
+            elif hasattr(entry, 'created_parsed'):
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.created_parsed))
+            elif hasattr(entry, 'updated_parsed'):
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.updated_parsed))
 
-        date_triggered = arrow.get(
-            str(date_triggered),
-            'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+            if published == '':
+                published = now
+            else:
+                published = arrow.get(str(published)).to(settings.TIME_ZONE)
 
-        if date_triggered is not None and\
-           published is not None and\
-           now >= published and\
-           published >= date_triggered:
-            my_feeds = feeds.entries
-            cache.set('th_rss_' + str(trigger_id), my_feeds)
-            cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)
+            date_triggered = arrow.get(
+                str(date_triggered)).to(settings.TIME_ZONE)
+
+            if date_triggered is not None and\
+               published is not None and\
+               now >= published and\
+               published >= date_triggered:
+                my_feeds.append(entry)
+
+        cache.set('th_rss_' + str(trigger_id), my_feeds)
+        cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)
         # return the data
         return my_feeds
 
