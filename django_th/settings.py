@@ -377,6 +377,9 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+
+TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
+
 # local settings management
 try:
     from .local_settings import *

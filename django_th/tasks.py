@@ -42,12 +42,12 @@ def publish_log_data(published, date_triggered, data):
     """
     if 'title' in data:
         sentence = "date {} >= triggered {} title {}"
-        logger.info(sentence.format(published,
+        logger.debug(sentence.format(published,
                                     date_triggered,
                                     data['title']))
     else:
         sentence = "date {} >= date triggered {}"
-        logger.info(sentence.format(published,
+        logger.debug(sentence.format(published,
                                     date_triggered))
 
 
@@ -83,6 +83,9 @@ def to_datetime(data):
     if 'published_parsed' in data:
         my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.published_parsed))
+    elif 'created_parsed' in data:
+        my_date_time = datetime.datetime.utcfromtimestamp(
+            time.mktime(data.created_parsed))
     elif 'updated_parsed' in data:
         my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.updated_parsed))
@@ -192,7 +195,6 @@ def publishing(service, now):
     # run run run
     else:
         # 1) get the data from the provider service
-        # get a timestamp of the last triggered of the service
         datas = getattr(service_provider, 'process_data')(service.id)
         if datas is not None and len(datas) > 0:
             consumer = getattr(service_consumer, '__init__')(
@@ -201,48 +203,23 @@ def publishing(service, now):
 
             published = ''
             which_date = ''
+
             # 2) for each one
             for data in datas:
-                # if in a pool of data once of them does not have
-                # a date, will take the previous date for this one
-                # if it's the first one, set it to 00:00:00
 
-                # let's try to determine the date contained in
-                # the data...
-                published = to_datetime(data)
-                published, which_date = get_published(published,
-                                                      which_date)
-                # 3) check if the previous trigger is older than the
-                # date of the data we retrieved
-                # if yes , process the consumer
-
-                # add the TIME_ZONE settings
-                # to localize the current date
-                date_triggered = arrow.get(
-                    str(service.date_triggered),
-                    'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
-
-                publish_log_data(published, date_triggered, data)
-
-                # if the published date is greater or equal to the last
-                # triggered event ... :
-                if date_triggered is not None and \
-                   published is not None and \
-                   now >= published and \
-                   published >= date_triggered:
-
+                if settings.DEBUG:
+                    published = to_datetime(data)
+                    published, which_date = get_published(published, which_date)
+                    date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                     publish_log_data(published, date_triggered, data)
-
-                    status = consumer(
-                        service.consumer.token, service.id, **data)
-
-                    to_update = True
-                    count_new_data += 1
-                # otherwise do nothing
-                else:
-                    publish_log_outdated(published, data)
-
+                # the consummer will save the data and return if success or not
+                status = consumer(service.consumer.token, service.id, **data)
+            else:
+                count_new_data = len(datas)
+                to_update = True
+    # let's log
     log_update(service, to_update, status, count_new_data)
+    # let's update
     if to_update and status:
         update_trigger(service)
 
