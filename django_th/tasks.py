@@ -2,19 +2,19 @@
 from __future__ import unicode_literals
 from __future__ import absolute_import
 
-import datetime
-import time
 import arrow
-
 from celery import shared_task, chain
 
+# django
 from django.conf import settings
 from django.core.cache import caches
+from django.utils.log import getLogger
+
+# trigger happy
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django_th.my_services import MyService
 
-from django.utils.log import getLogger
 # create logger
 logger = getLogger('django_th.trigger_happy')
 
@@ -22,38 +22,38 @@ logger = getLogger('django_th.trigger_happy')
 default_provider.load_services()
 
 
-def publish_log_outdated(published, data):
-    """
-        lets log things about outdated data
-        or data from the future... (a date from the future)
-    """
-    if 'title' in data:
-        sentence = "data outdated skipped : [{}] {}"
-        logger.debug(sentence.format(published,
-                                     data['title']))
-    else:
-        sentence = "data outdated skipped : [{}] "
-        logger.debug(sentence.format(published))
-
-
 def publish_log_data(published, date_triggered, data):
     """
         lets log everything linked to the data
+        :param published: publishing date
+        :param date_triggered: the last time a trigger has been proceeded
+        :param data: the data of the current trigger
+        :type published: string date
+        :type date_triggered: string date
+        :type data: dict
     """
     if 'title' in data:
         sentence = "date {} >= triggered {} title {}"
         logger.debug(sentence.format(published,
-                                    date_triggered,
-                                    data['title']))
+                                     date_triggered,
+                                     data['title']))
     else:
         sentence = "date {} >= date triggered {}"
         logger.debug(sentence.format(published,
-                                    date_triggered))
+                                     date_triggered))
 
 
 def log_update(service, to_update, status, count):
     """
         lets log everything at the end
+        :param service: service object
+        :param to_update: boolean to check if we have to update
+        :param status: is everything worked fine ?
+        :param count: number of data to update
+        :type service: service object
+        :type to_update: boolean
+        :type status: boolean
+        :type count: interger
     """
     if to_update:
         if status:
@@ -67,32 +67,11 @@ def log_update(service, to_update, status, count):
 def update_trigger(service):
     """
         update the date when occurs the trigger
+        :param service: service object to update
     """
     now = arrow.utcnow().to(settings.TIME_ZONE).format(
         'YYYY-MM-DD HH:mm:ss')
     TriggerService.objects.filter(id=service.id).update(date_triggered=now)
-
-
-def to_datetime(data):
-    """
-        convert Datetime 9-tuple to the date and time format
-        feedparser provides this 9-tuple
-    """
-    my_date_time = None
-
-    if 'published_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.published_parsed))
-    elif 'created_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.created_parsed))
-    elif 'updated_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.updated_parsed))
-    elif 'my_date' in data:
-        my_date_time = arrow.get(data['my_date'])
-
-    return my_date_time
 
 
 def get_published(published='', which_date=''):
@@ -100,6 +79,10 @@ def get_published(published='', which_date=''):
        get the published date from the provider
        or set a default date (today in fact) if this service runs
        for the first time
+       :param published: service object to update
+       :param which_date: service object to update
+       :type published: string data
+       :type which_date: string date
     """
     if published is not None:
         # get the published date of the provider
@@ -121,6 +104,10 @@ def get_published(published='', which_date=''):
 
 @shared_task
 def reading(service):
+    """
+       get the data from the service and put theme in cache
+       :param service: service object to read
+    """
     # flag to know if we have to update
     to_update = False
     # flag to get the status of a service
@@ -171,6 +158,10 @@ def publishing(service, now):
     """
         the purpose of this tasks is to get the data from the cache
         then publish them
+        :param service: service object where we will publish
+        :param now: it's the current date
+        :type service: obect
+        :type now: string date
     """
     # flag to know if we have to update
     to_update = False
@@ -208,6 +199,7 @@ def publishing(service, now):
             for data in datas:
 
                 if settings.DEBUG:
+                    from django_th.tools import to_datetime
                     published = to_datetime(data)
                     published, which_date = get_published(published, which_date)
                     date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
@@ -229,6 +221,8 @@ def publish_data(result=''):
     """
         the purpose of this tasks is to get the data from the cache
         then publish them
+        :param result: the result of the previous tasks when cascading all of them
+        :type result: string
     """
     now = arrow.utcnow().to(settings.TIME_ZONE)
     trigger = TriggerService.objects.filter(status=True).select_related(
@@ -243,6 +237,8 @@ def get_outside_cache(result=''):
     """
         the purpose of this tasks is to recycle the data from the cache
         with version=2 in the main cache
+        :param result: the result of the previous tasks when cascading all of them
+        :type result: string
     """
     all_packages = MyService.all_packages()
     for package in all_packages:

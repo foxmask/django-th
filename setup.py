@@ -4,13 +4,13 @@ from django_th import __version__ as version
 install_requires = [
     'Django==1.8.7',
     'django-formtools==1.0',
-    'arrow==0.5.4',
+    'arrow==0.7.0',
     'django-js-reverse==0.5.1',
-    'celery==3.1.18',
-    'django-redis==4.2.0',
+    'celery==3.1.19',
+    'django-redis==4.3.0',
     'django-redisboard==1.2.1',
     'pytidylib6==0.2.2',
-    'pypandoc==1.0.5',
+    'pypandoc==1.1.2',
     'requests-oauthlib==0.5.0',
     'feedparser==5.2.1',
 ]
@@ -34,7 +34,7 @@ extras_require_trello = [
     'py-trello==0.4.3',
 ]
 extras_require_twitter = [
-    'twython==3.2.0',
+    'twython==3.3.0',
 ]
 
 extras_require_all = extras_require_github\

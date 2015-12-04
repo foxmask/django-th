@@ -69,11 +69,13 @@ def to_datetime(data):
     if 'published_parsed' in data:
         my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.published_parsed))
+    elif 'created_parsed' in data:
+        my_date_time = datetime.datetime.utcfromtimestamp(
+            time.mktime(data.created_parsed))
     elif 'updated_parsed' in data:
         my_date_time = datetime.datetime.utcfromtimestamp(
             time.mktime(data.updated_parsed))
     elif 'my_date' in data:
-        my_date_time = arrow.get(str(data['my_date']),
-                                 'YYYY-MM-DD HH:mm:ss')
+        my_date_time = arrow.get(data['my_date'])
 
     return my_date_time
