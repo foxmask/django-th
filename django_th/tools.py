@@ -2,7 +2,6 @@
 import importlib
 import datetime
 import time
-import arrow
 
 """
     Simple utility functions
@@ -63,6 +62,8 @@ def to_datetime(data):
     """
         convert Datetime 9-tuple to the date and time format
         feedparser provides this 9-tuple
+        :param data: data to be checked
+        :type data: dict
     """
     my_date_time = None
 

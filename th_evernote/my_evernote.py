@@ -54,28 +54,32 @@ class ServiceEvernote(ServicesMgr):
         self.sandbox = settings.TH_EVERNOTE['sandbox']
         self.consumer_key = settings.TH_EVERNOTE['consumer_key']
         self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
+        self.token = token
 
         kwargs = {'consumer_key': self.consumer_key,
                   'consumer_secret': self.consumer_secret,
                   'sandbox': self.sandbox}
 
-        if token:
+        if self.token:
             kwargs = {'token': token, 'sandbox': self.sandbox}
 
         self.client = EvernoteClient(**kwargs)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter
+
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+
             :rtype: list
         """
-        trigger = super(ServiceEvernote, self).read_data('Evernote',
-                                                         trigger_id)
+        date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs['trigger_id']
+
+        kw = {"model": 'Evernote', 'trigger_id': trigger_id}
+
+        trigger = super(ServiceEvernote, self).read_data(**kw)
 
         data = []
         # get the data from the last time the trigger has been started
@@ -102,7 +106,7 @@ class ServiceEvernote(ServicesMgr):
         spec.includeAttributes = True
 
         note_store = self.client.get_note_store()
-        our_note_list = note_store.findNotesMetadata(token,
+        our_note_list = note_store.findNotesMetadata(self.token,
                                                      my_filter,
                                                      0,
                                                      100,
@@ -110,7 +114,7 @@ class ServiceEvernote(ServicesMgr):
 
         whole_note = ''
         for note in our_note_list.notes:
-            whole_note = note_store.getNote(token,
+            whole_note = note_store.getNote(self.token,
                                             note.guid,
                                             True,
                                             True,
@@ -127,16 +131,16 @@ class ServiceEvernote(ServicesMgr):
 
         return data
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        return super(ServiceEvernote, self).process_data('th_evernote',
-                                                         str(trigger_id))
+        kw = {'cache_stack': 'th_evernote', 'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceEvernote, self).process_data(**kw)
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
             don't want to handle empty title nor content
@@ -144,9 +148,9 @@ class ServiceEvernote(ServicesMgr):
             the Evernote's API
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """

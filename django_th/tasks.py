@@ -127,11 +127,12 @@ def reading(service):
     else:
         # 1) get the data from the provider service
         # get a timestamp of the last triggered of the service
+        kw = {'token': service.provider.token,
+              'trigger_id': service.id,
+              'date_triggered': service.date_triggered}
         datas = getattr(service_provider, '__init__')(service.provider.token)
-        datas = getattr(service_provider, 'read_data')(
-            service.provider.token,
-            service.id,
-            service.date_triggered)
+        datas = getattr(service_provider, 'read_data')(**kw)
+
         if len(datas) > 0:
             to_update = True
             status = True
@@ -186,7 +187,8 @@ def publishing(service, now):
     # run run run
     else:
         # 1) get the data from the provider service
-        datas = getattr(service_provider, 'process_data')(service.id)
+        kw = {'trigger_id': service.id}
+        datas = getattr(service_provider, 'process_data')(**kw)
         if datas is not None and len(datas) > 0:
             consumer = getattr(service_consumer, '__init__')(
                 service.consumer.token)

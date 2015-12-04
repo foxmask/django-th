@@ -34,22 +34,18 @@ class ServiceTwitter(ServicesMgr):
     def __init__(self, token=None):
         self.consumer_key = settings.TH_TWITTER['consumer_key']
         self.consumer_secret = settings.TH_TWITTER['consumer_secret']
-        if token is not None:
-            token_key, token_secret = token.split('#TH#')
+        self.token = token
+        if self.token is not None:
+            token_key, token_secret = self.token.split('#TH#')
             self.twitter_api = Twython(self.consumer_key, self.consumer_secret,
                                        token_key, token_secret)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):  #token, trigger_id, date_triggered):
         """
             get the data from the service
 
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter -
-            data has to return {'content': 'a text',
-            'link': 'a valid url to the ressource'}
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
             :rtype: list
         """
         twitter_url = 'https://www.twitter.com/{}/status/{}'
@@ -57,6 +53,8 @@ class ServiceTwitter(ServicesMgr):
         my_tweets = []
         search = {}
         since_id = None
+        trigger_id = kwargs['trigger_id']
+        date_triggered = kwargs['date_triggered']
 
         def _get_tweets(twitter_obj, search):
             """
@@ -109,9 +107,9 @@ class ServiceTwitter(ServicesMgr):
 
             return count, search, statuses
 
-        if token is not None:
-            twitter_obj = super(ServiceTwitter, self).read_data(
-                'Twitter', trigger_id)
+        if self.token is not None:
+            kw = {'model': 'Twitter', 'trigger_id': trigger_id}
+            twitter_obj = super(ServiceTwitter, self).read_data(**kw)
 
             # https://dev.twitter.com/rest/public/timelines
             if twitter_obj.since_id is not None and twitter_obj.since_id > 0:
@@ -164,23 +162,23 @@ class ServiceTwitter(ServicesMgr):
                         count=count)
         return my_tweets
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        return super(ServiceTwitter, self).process_data('th_twitter',
-                                                        str(trigger_id))
+        kw = {'cache_stack': 'th_twitter', 'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceTwitter, self).process_data(**kw)
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """
@@ -191,7 +189,7 @@ class ServiceTwitter(ServicesMgr):
         # set the title and content of the data
         title, content = super(ServiceTwitter, self).save_data(data, kwargs={})
 
-        if token and 'link' in data and data['link'] is not None and \
+        if self.token and 'link' in data and data['link'] is not None and \
            len(data['link']) > 0:
             # get the Twitter data of this trigger
             trigger = Twitter.objects.get(trigger_id=trigger_id)

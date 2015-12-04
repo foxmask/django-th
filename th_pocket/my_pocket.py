@@ -41,29 +41,32 @@ class ServicePocket(ServicesMgr):
 
     def __init__(self, token=None):
         self.consumer_key = settings.TH_POCKET['consumer_key']
+        self.token = token
         if token:
             self.pocket = Pocket(self.consumer_key, token)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
             as the pocket service does not have any date
             in its API linked to the note,
             add the triggered date to the dict data
             thus the service will be triggered when data will be found
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter
+
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+
             :rtype: list
         """
+        trigger_id = kwargs['trigger_id']
+        date_triggered = kwargs['date_triggered']
+
         data = list()
         # pocket uses a timestamp date format
         since = int(
             time.mktime(datetime.datetime.timetuple(date_triggered)))
 
-        if token is not None:
+        if self.token is not None:
 
             # get the data from the last time the trigger have been started
             # timestamp form
@@ -88,23 +91,23 @@ class ServicePocket(ServicesMgr):
 
         return data
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        return super(ServicePocket, self).process_data('th_pocket',
-                                                       str(trigger_id))
+        kw = {'cache_stack': 'th_pocket', 'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServicePocket, self).process_data(**kw)
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """
@@ -112,7 +115,7 @@ class ServicePocket(ServicesMgr):
 
         status = False
 
-        if token and 'link' in data and data['link'] is not None\
+        if self.token and 'link' in data and data['link'] is not None\
                 and len(data['link']) > 0:
             # get the pocket data of this trigger
             trigger = PocketModel.objects.get(trigger_id=trigger_id)

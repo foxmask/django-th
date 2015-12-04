@@ -55,47 +55,44 @@ class ServiceGithub(ServicesMgr):
         else:
             self.gh = GitHub(username=self.username, password=self.password)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
-            as the pocket service does not have any date
-            in its API linked to the note,
-            add the triggered date to the dict data
-            thus the service will be triggered when data will be found
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter
+
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+
             :rtype: list
         """
+        # date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs['trigger_id']
         data = list()
         cache.set('th_github_' + str(trigger_id), data)
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        datas = list()
-        return datas
+        kw = {'cache_stack': 'th_github', 'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceGithub, self).process_data(**kw)
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """
         from th_github.models import Github
         status = False
 
-        if token:
+        if self.token:
             title = self.set_title(data)
             body = self.set_content(data)
             # get the details of this trigger

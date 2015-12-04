@@ -42,25 +42,26 @@ class ServiceReadability(ServicesMgr):
         self.ACC_TOKEN = '{}/api/rest/v1/oauth/access_token/'.format(base)
         self.consumer_key = settings.TH_READABILITY['consumer_key']
         self.consumer_secret = settings.TH_READABILITY['consumer_secret']
+        self.token = token
         if token:
-            token_key, token_secret = token.split('#TH#')
+            token_key, token_secret = self.token.split('#TH#')
             self.client = ReaderClient(token_key, token_secret,
                                        self.consumer_key, self.consumer_secret)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
 
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+
             :rtype: list
         """
+        date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs['trigger_id']
         data = []
 
-        if token is not None:
+        if self.token is not None:
 
             bookmarks = self.client.get_bookmarks(
                 added_since=date_triggered).content
@@ -90,28 +91,28 @@ class ServiceReadability(ServicesMgr):
 
         return data
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        return super(ServiceReadability, self).process_data('th_readability',
-                                                            str(trigger_id))
+        kw = {'cache_stack': 'th_readability', 'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceReadability, self).process_data(**kw)
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """
         status = False
-        if token and 'link' in data and\
+        if self.token and 'link' in data and\
            data['link'] is not None and\
            len(data['link']) > 0:
             # get the data of this trigger

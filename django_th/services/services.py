@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8 -*-
 # Using OAuth1Session
 from requests_oauthlib import OAuth1Session
 
@@ -102,36 +102,40 @@ class ServicesMgr(object):
 
         return content
 
-    def read_data(self, model_name, trigger_id):
+    def read_data(self, **kwargs):
         """
-            get the data details from the service
+            get the data from the service
+
+            :param kwargs: contain keyword args : trigger_id and model name
+            :type kwargs: dict
+            :rtype: list
         """
-        model = get_model('django_th', model_name)
+        model = get_model('django_th', kwargs['model_name'])
 
-        return model.objects.get(trigger_id=trigger_id)
+        return model.objects.get(trigger_id=kwargs['trigger_id'])
 
-    def process_data(self, cache_stack, trigger_id):
+    def process_data(self, **kwargs):
         """
-            used to get data from the service
-
-            :param cache_stack: contains the name of the module eg th_twitter,
-            th_evernote and so on
-            :type cache_stack: string
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: string
-            :return cache data
-            :rtype dict
+             get the data from the cache
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        cache = caches[cache_stack]
-        cache_data = cache.get(cache_stack + '_' + trigger_id)
-        return PublishingLimit.get_data(cache_stack, cache_data, trigger_id)
+        cache = caches[kwargs['cache_stack']]
+        cache_data = cache.get(kwargs['cache_stack'] + '_' + kwargs['trigger_id'])
+        return PublishingLimit.get_data(kwargs['cache_stack'], cache_data, kwargs['trigger_id'])
 
-    def save_data(self, data, **kwargs):
+    def save_data(self, trigger_id, data, **kwargs):
         """
             used to save data to the service
             but first of all
             make some work about the data to find
             and the data to convert
+            :param trigger_id: trigger ID from which to save data
+            :param data: the data to check to be used and save
+            :type trigger_id: int
+            :type data:  dict
+            :return: the status of the save statement
+            :rtype: boolean
         """
         title = self.set_title(data)
         title = HtmlEntities(title).html_entity_decode
