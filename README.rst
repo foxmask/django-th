@@ -1,3 +1,8 @@
+.. image:: https://codeclimate.com/github/foxmask/django-th/badges/gpa.svg
+    :target: https://codeclimate.com/github/foxmask/django-th
+    :alt: Code Climate
+
+
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
     :alt: Travis Status
