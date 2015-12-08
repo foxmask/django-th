@@ -27,6 +27,11 @@ For example a new RSS item is published, **Trigger Happy** will be able to
 automatically create a note on your Evernote account or create a bookmark to
 your own Readability or Pocket account and so on
 
+.. image:: https://codeclimate.com/github/foxmask/django-th/badges/gpa.svg
+    :target: https://codeclimate.com/github/foxmask/django-th
+    :alt: Code Climate
+
+
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
     :alt: Travis Status
