@@ -35,10 +35,6 @@ class UserServiceTest(TestCase):
         self.assertEqual(u.show(), "User Service %s %s %s" % (u.user, u.token,
                                                               u.name))
 
-    """
-        Form - works with python 2.7.x - fails with python 3.4.0
-    """
-
     def test_valid_form(self):
         u = self.create_userservice()
         if u.name.auth_required:
