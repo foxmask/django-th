@@ -16,6 +16,9 @@ addons:
     - pandoc
     - redis-server
 
+services:
+    - redis-server
+
 install:
 - pip install tox
 
