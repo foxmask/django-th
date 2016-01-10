@@ -46,7 +46,7 @@ setup(
     version=version,
     description='Trigger Happy - take the control of your data with this bridge between your internet services',
     author='Olivier Demah',
-    author_email='olivier@foxmask.info',
+    author_email='foxmask@trigger-happy.eu',
     url='https://github.com/foxmask/django-th',
     download_url="https://github.com/foxmask/django-th/archive/trigger-happy-"
     + version + ".zip",
