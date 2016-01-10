@@ -51,6 +51,7 @@ cache = caches['th_evernote']
 class ServiceEvernote(ServicesMgr):
 
     def __init__(self, token=None):
+        super(ServiceEvernote, self).__init__(token)
         self.sandbox = settings.TH_EVERNOTE['sandbox']
         self.consumer_key = settings.TH_EVERNOTE['consumer_key']
         self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
@@ -65,7 +66,7 @@ class ServiceEvernote(ServicesMgr):
 
         self.client = EvernoteClient(**kwargs)
 
-    def read_data(self, **kwargs):
+    def read_data(self, date_triggered, trigger_id, **kwargs):
         """
             get the data from the service
 
@@ -74,8 +75,6 @@ class ServiceEvernote(ServicesMgr):
 
             :rtype: list
         """
-        date_triggered = kwargs['date_triggered']
-        trigger_id = kwargs['trigger_id']
 
         kw = {"model": 'Evernote', 'trigger_id': trigger_id}
 

@@ -164,17 +164,17 @@ Once you did **python manage.py syncdb** and followed the standard process to bo
 
 Admin Home of Trigger Happy :
 
-.. image:: http://foxmask.info/public/trigger_happy/admin_home.png
+.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_home.png
 
 
 Admin list of activated services if Trigger Happy :
 
-.. image:: http://foxmask.info/public/trigger_happy/admin_service_list.png
+.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_list.png
 
 
 Admin Detail of one service of Trigger Happy :
 
-.. image:: http://foxmask.info/public/trigger_happy/admin_service_details.png
+.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_details.png
 
 Activating the service from your account from the public part of the website
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,7 +183,7 @@ Once your services are setup from the admin, you can go on the public part of th
 
 "My activated services" :
 
-.. image:: http://foxmask.info/public/trigger_happy/public_services_activated.png
+.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/public_services_activated.png
 
 Why this process ?
 ~~~~~~~~~~~~~~~~~~

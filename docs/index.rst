@@ -81,7 +81,7 @@ who permits to use a manager of tasks like "cron" and, of course Python
 
 Blog posts:
 -----------
-You can find all details of all existing services of the `blog <http://www.foxmask.info/tag/TriggerHappy>`_
+You can find all details of all existing services of the `blog <http://foxmask.trigger-happy.eu/tag/triggerhappy.html>`_
 
 
 Indices and tables

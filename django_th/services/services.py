@@ -80,6 +80,9 @@ class ServicesMgr(object):
     def set_title(self, data):
         """
             handle the title from the data
+            :param data: contains the data from the provider
+            :type data: dict
+            :rtype: string
         """
         title = ''
         title = (data['title'] if 'title' in data else data['link'])
@@ -89,6 +92,9 @@ class ServicesMgr(object):
     def set_content(self, data):
         """
             handle the content from the data
+            :param data: contains the data from the provider
+            :type data: dict
+            :rtype: string
         """
         content = ''
         content = self._get_content(data, 'content')
@@ -152,6 +158,9 @@ class ServicesMgr(object):
     def auth(self, request):
         """
             get the auth of the services
+            :param request: contains the current session
+            :type request: dict
+            :rtype: string
         """
         request_token = self.get_request_token()
 
@@ -163,12 +172,26 @@ class ServicesMgr(object):
         return request_token
 
     def callback_url(self, request, service):
+        """
+            the url to go back after the external service call
+            :param request: contains the current session
+            :param service: contains the service name
+            :type request: dict
+            :type service: string
+            :rtype: string
+        """
         return_to = '{service}_callback'.format(service=service)
         return 'http://%s%s' % (request.get_host(), reverse(return_to))
 
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
+            the url to go back after the external service call
+            :param request: contains the current session
+            :param kwargs: keyword args
+            :type request: dict
+            :type kwargs: dict
+            :rtype: string
         """
         parms = ('access_token', 'service', 'return')
         if not all(k in parms for k in kwargs.keys()):
@@ -199,12 +222,26 @@ class ServicesMgr(object):
         return back_to
 
     def get_request_token(self):
+        """
+           request the token to the external service
+        """
         oauth = OAuth1Session(self.consumer_key,
                               client_secret=self.consumer_secret)
         return oauth.fetch_request_token(self.REQ_TOKEN)
 
     def get_access_token(self, oauth_token, oauth_token_secret,
                          oauth_verifier):
+        """
+           get the access token
+            the url to go back after the external service call
+            :param oauth_token: oauth token
+            :param oauth_token_secret: oauth secret token
+            :param oauth_verifier: oauth verifier
+            :type oauth_token: string
+            :type oauth_token_secret: string
+            :type oauth_verifier: string
+            :rtype: dict
+        """
         # Using OAuth1Session
         oauth = OAuth1Session(self.consumer_key,
                               client_secret=self.consumer_secret,

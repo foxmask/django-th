@@ -21,7 +21,7 @@ cache = caches['th_rss']
 class ServiceRss(ServicesMgr):
 
     def __init__(self, token=None):
-        pass
+        super(ServiceRss, self).__init__(token)
 
     def read_data(self, token, trigger_id, date_triggered):
         """
