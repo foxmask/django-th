@@ -15,6 +15,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
 .. toctree::
    :maxdepth: 2
 
+   quickstart
    installation
    configuration
    usage
