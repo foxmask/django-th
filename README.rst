@@ -136,7 +136,7 @@ and finally :
     pip install django-th[all]
 
 
-or to make your own "receipe" :
+or to make your own "recipe" :
 
 
 .. code-block:: bash
@@ -157,5 +157,5 @@ Blog posts :
 
 You can find all details of all existing services of the blog :
 
-* http://www.foxmask.info/tag/TriggerHappy
-* http://blog.trigger-happy.eu/
+* https://foxmask.trigger-happy.eu/tag/triggerhappy.html
+* https://blog.trigger-happy.eu/
