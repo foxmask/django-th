@@ -60,7 +60,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
     )
 
 
-this setting supposes you already own a Pocket account
+do not forget to uncomment one of the service th_pocket, th_readability, th_evernote (and then evernote also) th_twitter, th_trello, th_github otherwise, the application wont work.
 
 TH_SERVICES
 ~~~~~~~~~~~
@@ -80,24 +80,13 @@ TH_SERVICES is a list of the services, like for example,
         # 'th_github.my_github.ServiceGithub',
     )
 
+do not forget to uncomment one of the line to enable another service, or the application wont work.
 
 
 Update the database
 -------------------
 
-Once the settings is done, enter the following command to sync the database
-
-
-
-if you start from scratch and dont have created a django application yet, you should do :
-
-
-.. code-block:: bash
-
-    python manage.py syncdb
-
-
-otherwise do :
+Once the settings is done, enter the following command to sync the database :
 
 
 .. code-block:: bash
@@ -105,7 +94,26 @@ otherwise do :
     python manage.py migrate
 
 
-if you meet some errors with this last command, have a look at MIGRATION_0.10.x_to_0.11.x.rst file
+If you meet some errors with this command, have a look at MIGRATION_0.10.x_to_0.11.x.rst file
+
+
+If you are installing the project from scratch, do not forget to create a super user:
+
+
+.. code-block:: bash
+
+    python manage.py createsuperuser
+
+
+Start the application
+---------------------
+
+.. code-block:: bash
+
+    python manage.py runserver
+
+
+Now open your browser and go to 127.0.0.1:8000/th/ to start using the application
 
 
 Activate the services
@@ -118,6 +126,9 @@ to activate a service, you will need to follow those steps
 * Adding the service from the Admin
 * Activating the service from your account from the public part of the website
 * Why this process ?
+
+
+in details this gives us :
 
 
 Requesting a key to the Services
@@ -160,21 +171,21 @@ So, when I speak about settings.py think about local_settings.py
 Adding the service from the Admin
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once you did **python manage.py syncdb** and followed the standard process to bootstrap the application, go to the admin panel of the application.
+Once you did **python manage.py migrate** and followed the standard process to bootstrap the application, go to the admin panel of the application.
 
 Admin Home of Trigger Happy :
 
-.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_home.png
+.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_home.png
 
 
 Admin list of activated services if Trigger Happy :
 
-.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_list.png
+.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_list.png
 
 
 Admin Detail of one service of Trigger Happy :
 
-.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_details.png
+.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_details.png
 
 Activating the service from your account from the public part of the website
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -183,19 +194,19 @@ Once your services are setup from the admin, you can go on the public part of th
 
 "My activated services" :
 
-.. image:: http://foxmask.trigger-happy.eu/static/trigger_happy/public_services_activated.png
+.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/public_services_activated.png
 
 Why this process ?
 ~~~~~~~~~~~~~~~~~~
 
-* it is simple : actually, to use Trigger Happy you need to install and host it by yourself, and so, you need to "declare" for each service your instance of TriggerHappy.
+* it is simple : actually, to use Trigger Happy you need to install and host it by yourself, and so, you need to "declare" for each service your instance of TriggerHappy to the service provider.
 * Other details : you need to activate the service from the admin panel, BECAUSE, TriggerHappy is planed to be used by many other users soon. So the admin of the instance of TriggerHappy will decide if he wants to offer the possibility to use this service of this other one. Once the admin has done his job, the end user, from the "public part" can go to the list of services and add the new one etc.
 
 
 Others settings
 ---------------
 
-They are necessary if you want to be able to follow the log, cache rss and use the site framework
+They are necessary if you want to be able to follow the log and set the cache
 
 
 CACHE
@@ -206,6 +217,15 @@ For each TriggerHappy component, define one cache like below
 .. code-block:: python
 
     CACHES = {
+        'default':
+        {
+            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+            'LOCATION': BASE_DIR + '/cache/',
+            'TIMEOUT': 600,
+            'OPTIONS': {
+                'MAX_ENTRIES': 10000
+            }
+        },
         # Evernote Cache
         'th_evernote':
         {
@@ -278,6 +298,8 @@ For each TriggerHappy component, define one cache like below
             }
         },
     }
+
+in the settings, 'default' may already exist in your settings.py, so dont use it, otherwise, if it doesnt, django will complain, so add it.
 
 
 The Log
@@ -398,6 +420,7 @@ that way, Celery will read your settings instead of the one provided by django_t
 SUPERVISORD
 ~~~~~~~~~~~
 
+supervisord permits to automatically start his services like for celery  
 
 .. code:: python
 

@@ -2,10 +2,35 @@
 Installation
 =============
 
-To get the project do :
+TriggerHappy can be installed inside an existing project, or from scratch
 
-From GitHub
-===========
+Installation from scratch
+=========================
+
+We just create a virtualenv with python 3.4
+
+.. code-block:: bash
+
+    virtualenv --pytyhon=/usr/bin/python34 myproject
+    cd $_
+    source bin/activate
+    
+then you can continue with one of the two choice "From GitHub" or "From Pypi"
+
+
+Installation from an existing project
+=====================================
+
+.. code-block:: bash
+
+    cd /to/the/path/of/my/existing/project
+    source bin/activate (if you have a virtualenv)
+ 
+then you can continue with one of the two choice "From GitHub" or "From Pypi"
+
+
+Installation From GitHub
+========================
 
 .. code-block:: bash
 
@@ -20,18 +45,21 @@ then continue by installing :
     cd ..
     pip install -r requirements-evernote.txt
 
-From Pypi
-=========
+
+Installation From Pypi
+======================
 
 in 2 steps :
 
+
+step 1:
 
 .. code-block:: bash
 
     pip install django-th[all]
 
 
-or to make your own "receipe" :
+or to make your own "receipe", for example to install some of the component and no all of them:
 
 
 .. code-block:: bash
@@ -40,13 +68,18 @@ or to make your own "receipe" :
     pip install django-th[rss,twitter,pocket,github]
 
 
-and if you need Evernote, you will have to finish by
+step 2:
+
+if you need Evernote, you will have to finish by
 
 .. code-block:: bash
 
     pip install -r https://raw.githubusercontent.com/foxmask/django-th/master/requirements-evernote.txt
 
-this is because Evernote SDK for Python 3 is not yet available on pypi
+this is because Evernote SDK for Python 3 is not yet available on pypi, then we get it from GitHub
+
+
+Once you have made this steps, you can continue to the [configuration process](http://trigger-happy.readthedocs.org/en/latest/configuration.html)
 
 
 
@@ -54,7 +87,7 @@ Requirements
 ============
 
 * Python 3.4.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
+* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8 < 1.9
 * `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
 * django-formtools == 1.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1

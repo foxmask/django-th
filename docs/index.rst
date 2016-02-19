@@ -63,7 +63,7 @@ your own Readability or Pocket account and so on
 
 
 
-.. image:: http://trigger-happy.eu/static/th_esb.png
+.. image:: https://trigger-happy.eu/static/th_esb.png
 
 Description:
 ------------
@@ -81,7 +81,7 @@ who permits to use a manager of tasks like "cron" and, of course Python
 
 Blog posts:
 -----------
-You can find all details of all existing services of the `blog <http://foxmask.trigger-happy.eu/tag/triggerhappy.html>`_
+You can find all details of all existing services of the `blog <https://foxmask.trigger-happy.eu/tag/triggerhappy.html>`_
 
 
 Indices and tables
