@@ -32,6 +32,7 @@ cache = caches['th_twitter']
 class ServiceTwitter(ServicesMgr):
 
     def __init__(self, token=None):
+        super(ServiceTwitter, self).__init__(token)
         self.consumer_key = settings.TH_TWITTER['consumer_key']
         self.consumer_secret = settings.TH_TWITTER['consumer_secret']
         self.token = token
@@ -40,7 +41,7 @@ class ServiceTwitter(ServicesMgr):
             self.twitter_api = Twython(self.consumer_key, self.consumer_secret,
                                        token_key, token_secret)
 
-    def read_data(self, **kwargs):  #token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
 
@@ -149,8 +150,7 @@ class ServiceTwitter(ServicesMgr):
                         published = arrow.get(my_date).to(settings.TIME_ZONE)
                         if date_triggered is not None and \
                            published is not None and \
-                           now >= published and \
-                           published >= date_triggered:
+                           now >= published >= date_triggered:
                             my_tweets.append({'title': title,
                                               'content': s['text'],
                                               'link': url,
@@ -168,7 +168,8 @@ class ServiceTwitter(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_twitter', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_twitter',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServiceTwitter, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
@@ -184,10 +185,9 @@ class ServiceTwitter(ServicesMgr):
         """
         status = False
         tags = []
-        title = ''
-        content = ''
         # set the title and content of the data
-        title, content = super(ServiceTwitter, self).save_data(data, kwargs={})
+        title, content = super(ServiceTwitter, self).save_data(
+            trigger_id, data, kwargs={})
 
         if self.token and 'link' in data and data['link'] is not None and \
            len(data['link']) > 0:
@@ -239,7 +239,7 @@ class ServiceTwitter(ServicesMgr):
 
         return req_token['auth_url']
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """

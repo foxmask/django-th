@@ -20,4 +20,3 @@ INSTALLED_APPS = (
     'django_th',
     'test',
     )
-

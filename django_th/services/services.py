@@ -52,7 +52,7 @@ class ServicesMgr(object):
         return getattr(self.instance, name)
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
     def _get_content(self, data, which_content):
         """
@@ -114,7 +114,7 @@ class ServicesMgr(object):
 
             :param kwargs: contain keyword args : trigger_id and model name
             :type kwargs: dict
-            :rtype: list
+            :rtype: model
         """
         model = get_model('django_th', kwargs['model_name'])
 
@@ -160,7 +160,7 @@ class ServicesMgr(object):
             get the auth of the services
             :param request: contains the current session
             :type request: dict
-            :rtype: string
+            :rtype: dict
         """
         request_token = self.get_request_token()
 

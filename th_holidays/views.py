@@ -48,12 +48,14 @@ def holidays(request):
         holidays = Holidays.objects.filter(user=request.user)
         if holidays.count() > 0:
             # holidays mode is on
-            title = 'Are your sure you want to enable all your triggers back now ?'
+            title = 'Are your sure you want to enable'
+            title += ' all your triggers back now ?'
             description = ''
         else:
             # holidays mode is off
             title = 'Are your sure you want to activate this features now ?'
-            description = 'Activating this feature will set off all your triggers'
+            description = 'Activating this feature will set off '
+            description += 'all your triggers'
             description += ' until you come back here to disable the feature'
             description += ' to enable everything again'
 

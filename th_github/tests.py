@@ -16,7 +16,11 @@ class GithubTest(MainTest):
         repo = 'foobar'
         project = 'barfoo'
         status = True
-        return Github.objects.create(trigger=trigger, name=name, status=status, repo=repo, project=project)
+        return Github.objects.create(trigger=trigger,
+                                     name=name,
+                                     status=status,
+                                     repo=repo,
+                                     project=project)
 
     def test_github(self):
         """

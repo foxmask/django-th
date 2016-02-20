@@ -23,19 +23,20 @@ class ServiceRss(ServicesMgr):
     def __init__(self, token=None):
         super(ServiceRss, self).__init__(token)
 
-    def read_data(self, token, trigger_id, date_triggered):
+    def read_data(self, **kwargs):
         """
             get the data from the service
 
-            :param trigger_id: trigger ID to process
-            :param date_triggered: the date of the last trigger
-            :type trigger_id: int
-            :type date_triggered: datetime
-            :return: list of data found from the date_triggered filter
-            :rtype: list
+            :param kwargs: contain keyword args : trigger_id and model name
+            :type kwargs: dict
+            :rtype: dict
         """
+        date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs['trigger_id']
+        kwargs['model_name'] = 'Rss'
+
         # get the URL from the trigger id
-        rss = super(ServiceRss, self).read_data('Rss', trigger_id)
+        rss = super(ServiceRss, self).read_data(**kwargs)
 
         logger.debug("RSS Feeds from %s : url %s", rss.name, rss.url)
 
@@ -68,8 +69,7 @@ class ServiceRss(ServicesMgr):
 
             if date_triggered is not None and\
                published is not None and\
-               now >= published and\
-               published >= date_triggered:
+               now >= published >= date_triggered:
                 my_feeds.append(entry)
 
         cache.set('th_rss_' + str(trigger_id), my_feeds)
@@ -77,11 +77,12 @@ class ServiceRss(ServicesMgr):
         # return the data
         return my_feeds
 
-    def process_data(self, trigger_id):
+    def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
         """
-        return super(ServiceRss, self).process_data('th_rss',
-                                                    str(trigger_id))
+        kw = {'cache_stack': 'th_rss',
+              'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceRss, self).process_data(**kw)

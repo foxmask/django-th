@@ -1,6 +1,4 @@
 # coding: utf-8
-from __future__ import unicode_literals
-
 import sys
 import arrow
 
@@ -66,7 +64,7 @@ class ServiceEvernote(ServicesMgr):
 
         self.client = EvernoteClient(**kwargs)
 
-    def read_data(self, date_triggered, trigger_id, **kwargs):
+    def read_data(self, **kwargs):
         """
             get the data from the service
 
@@ -75,10 +73,12 @@ class ServiceEvernote(ServicesMgr):
 
             :rtype: list
         """
+        date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs['trigger_id']
 
-        kw = {"model": 'Evernote', 'trigger_id': trigger_id}
+        kwargs['model_name'] = 'Evernote'
 
-        trigger = super(ServiceEvernote, self).read_data(**kw)
+        trigger = super(ServiceEvernote, self).read_data(**kwargs)
 
         data = []
         # get the data from the last time the trigger has been started
@@ -89,7 +89,9 @@ class ServiceEvernote(ServicesMgr):
             ':', '').replace('-', '').replace(' ', '')
         date_filter = "created:{} ".format(new_date_triggered[:-6])
 
-        notebook_filter = "notebook:{} ".format(trigger.notebook) if trigger.notebook != '' else ''
+        notebook_filter = ''
+        if trigger.notebook:
+            notebook_filter = "notebook:{} ".format(trigger.notebook)
         tag_filter = "tag:{} ".format(trigger.tag) if trigger.tag != '' else ''
 
         complet_filter = ''.join((notebook_filter, tag_filter, date_filter))
@@ -136,8 +138,55 @@ class ServiceEvernote(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_evernote', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_evernote',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServiceEvernote, self).process_data(**kw)
+
+    def _create_note(self, note, trigger_id, data):
+        """
+            create a note
+            :param note
+            :param trigger_id id of the trigger
+            :param data to save or to put in cache
+            :type note:
+            :type trigger_id: int
+            :type data: dict
+            :return boolean
+            :rtype boolean
+        """
+        # create the note !
+        try:
+            created_note = self.note_store.createNote(note)
+            sentance = str('note %s created') % created_note.guid
+            logger.debug(sentance)
+            return True
+        except EDAMSystemException as e:
+            if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
+                sentance = "Rate limit reached {code}"
+                sentance += "Retry your request in {msg} seconds"
+                logger.warn(sentance.format(
+                    code=e.errorCode,
+                    msg=e.rateLimitDuration))
+                # put again in cache the data that could not be
+                # published in Evernote yet
+                cache.set('th_evernote_' + str(trigger_id),
+                          data,
+                          version=2)
+                return True
+            else:
+                logger.critical(e)
+                return False
+        except EDAMUserException as e:
+            if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
+                sentance = "Data ignored due to validation"
+                sentance += " error : err {code} {msg}"
+                logger.warn(sentance.format(
+                    code=e.errorCode,
+                    msg=e.parameter))
+                return True
+        except Exception as e:
+            logger.critical(e)
+            return False
 
     def save_data(self, trigger_id, **data):
         """
@@ -153,12 +202,12 @@ class ServiceEvernote(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        title = ''
-        content = ''
         status = False
         kwargs = {}
         # set the title and content of the data
-        title, content = super(ServiceEvernote, self).save_data(data, **kwargs)
+        title, content = super(ServiceEvernote, self).save_data(trigger_id,
+                                                                data,
+                                                                **kwargs)
 
         if len(title):
             # get the evernote data of this trigger
@@ -221,40 +270,8 @@ class ServiceEvernote(ServicesMgr):
             note.title = title
             note.content = self.set_evernote_header()
             note.content += self.get_sanitize_content(content)
-
-            # create the note !
-            try:
-                created_note = self.note_store.createNote(note)
-                sentance = str('note %s created') % created_note.guid
-                logger.debug(sentance)
-                status = True
-            except EDAMSystemException as e:
-                if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                    sentance = "Rate limit reached {code}"
-                    sentance += "Retry your request in {msg} seconds"
-                    logger.warn(sentance.format(
-                        code=e.errorCode,
-                        msg=e.rateLimitDuration))
-                    # put again in cache the data that could not be
-                    # published in Evernote yet
-                    cache.set('th_evernote_' + str(trigger_id),
-                              data,
-                              version=2)
-                    return True
-                else:
-                    logger.critical(e)
-                    return False
-            except EDAMUserException as e:
-                if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
-                    sentance = "Data ignored due to validation"
-                    sentance += " error : err {code} {msg}"
-                    logger.warn(sentance.format(
-                        code=e.errorCode,
-                        msg=e.parameter))
-                    return True
-            except Exception as e:
-                logger.critical(e)
-                return False
+            # create a note
+            return set._create_note(note, trigger_id, data)
 
         else:
             sentence = "no title provided for trigger ID {} and title {}"
@@ -412,7 +429,7 @@ class ServiceEvernote(ServicesMgr):
         # from the calling func
         return client.get_authorize_url(request_token)
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """

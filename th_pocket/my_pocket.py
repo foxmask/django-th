@@ -4,7 +4,6 @@ import time
 import arrow
 
 # pocket API
-import pocket
 from pocket import Pocket
 
 # django classes
@@ -40,6 +39,7 @@ cache = caches['th_pocket']
 class ServicePocket(ServicesMgr):
 
     def __init__(self, token=None):
+        super(ServicePocket, self).__init__(token)
         self.consumer_key = settings.TH_POCKET['consumer_key']
         self.token = token
         if token:
@@ -71,7 +71,7 @@ class ServicePocket(ServicesMgr):
             # get the data from the last time the trigger have been started
             # timestamp form
             pockets = self.pocket.get(since=since, state="unread")
-
+            content = ''
             if pockets is not None and len(pockets[0]['list']) > 0:
                 for my_pocket in pockets[0]['list'].values():
                     if my_pocket['excerpt']:
@@ -83,8 +83,8 @@ class ServicePocket(ServicesMgr):
                                    .to(settings.TIME_ZONE)
                     data.append({'my_date': str(my_date),
                                  'tag': '',
-                                 'link': pocket['given_url'],
-                                 'title': pocket['given_title'],
+                                 'link': my_pocket['given_url'],
+                                 'title': my_pocket['given_title'],
                                  'content': content,
                                  'tweet_id': 0})
                 cache.set('th_pocket_' + str(trigger_id), data)
@@ -97,7 +97,8 @@ class ServicePocket(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_pocket', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_pocket',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServicePocket, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
@@ -120,7 +121,6 @@ class ServicePocket(ServicesMgr):
             # get the pocket data of this trigger
             trigger = PocketModel.objects.get(trigger_id=trigger_id)
 
-            title = ''
             title = self.set_title(data)
             # convert htmlentities
             title = HtmlEntities(title).html_entity_decode
@@ -159,7 +159,7 @@ class ServicePocket(ServicesMgr):
 
         return auth_url
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """

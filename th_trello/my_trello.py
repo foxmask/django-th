@@ -39,6 +39,7 @@ class ServiceTrello(ServicesMgr):
     # Boards own Lists own Cards
 
     def __init__(self, token=None):
+        super(ServiceTrello, self).__init__(token)
         # app name
         self.app_name = DjangoThConfig.verbose_name
         # expiration
@@ -65,10 +66,7 @@ class ServiceTrello(ServicesMgr):
 
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
-
-            :rtype: list
         """
-        # date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
         data = list()
         cache.set('th_trello_' + str(trigger_id), data)
@@ -79,7 +77,8 @@ class ServiceTrello(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_trello', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_trello',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServiceTrello, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
@@ -95,11 +94,11 @@ class ServiceTrello(ServicesMgr):
         """
         from th_trello.models import Trello
 
-        title = ''
-        content = ''
         status = False
         kwargs = {'output_format': 'md'}
-        title, content = super(ServiceTrello, self).save_data(data, **kwargs)
+        title, content = super(ServiceTrello, self).save_data(trigger_id,
+                                                              data,
+                                                              **kwargs)
 
         if len(title):
             # get the data of this trigger
@@ -116,7 +115,6 @@ class ServiceTrello(ServicesMgr):
             boards = self.trello_instance.list_boards()
 
             board_id = ''
-            my_board = ''
             my_list = ''
             for board in boards:
                 if t.board_name == board.name.decode('utf-8'):
@@ -186,7 +184,8 @@ class ServiceTrello(ServicesMgr):
         callback_url = self.callback_url(request, 'trello')
 
         # URL to redirect user to, to authorize your app
-        auth_url_str = '{auth_url}?oauth_token={token}&scope={scope}&name={name}'
+        auth_url_str = '{auth_url}?oauth_token={token}'
+        auth_url_str += '&scope={scope}&name={name}'
         auth_url_str += '&expiration={expiry}&oauth_callback={callback_url}'
         auth_url = auth_url_str.format(auth_url=self.AUTH_URL,
                                        token=request_token['oauth_token'],
@@ -197,12 +196,10 @@ class ServiceTrello(ServicesMgr):
 
         return auth_url
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """
         kwargs = {'access_token': '', 'service': 'ServiceTrello',
                   'return': 'trello'}
         return super(ServiceTrello, self).callback(request, **kwargs)
-
-

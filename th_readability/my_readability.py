@@ -36,6 +36,7 @@ cache = caches['th_readability']
 class ServiceReadability(ServicesMgr):
 
     def __init__(self, token=None):
+        super(ServiceReadability, self).__init__(token)
         base = 'https://www.readability.com'
         self.AUTH_URL = '{}/api/rest/v1/oauth/authorize/'.format(base)
         self.REQ_TOKEN = '{}/api/rest/v1/oauth/request_token/'.format(base)
@@ -43,10 +44,11 @@ class ServiceReadability(ServicesMgr):
         self.consumer_key = settings.TH_READABILITY['consumer_key']
         self.consumer_secret = settings.TH_READABILITY['consumer_secret']
         self.token = token
+        kwargs = {'consumer_key': self.consumer_key,
+                  'consumer_secret': self.consumer_secret}
         if token:
             token_key, token_secret = self.token.split('#TH#')
-            self.client = ReaderClient(token_key, token_secret,
-                                       self.consumer_key, self.consumer_secret)
+            self.client = ReaderClient(token_key, token_secret, **kwargs)
 
     def read_data(self, **kwargs):
         """
@@ -97,7 +99,8 @@ class ServiceReadability(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_readability', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_readability',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServiceReadability, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
@@ -153,7 +156,7 @@ class ServiceReadability(ServicesMgr):
 
         return auth_url
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """

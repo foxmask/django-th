@@ -25,7 +25,8 @@ class HolidaysTest(TestCase):
         """
             dummy data
         """
-        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+        now = arrow.utcnow().to(
+            settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
         date_created = now
         user = self.user
         status = True
@@ -48,7 +49,9 @@ class HolidaysTest(TestCase):
                                                 description="My first Service",
                                                 status=status)
 
-        return Holidays.objects.create(user=user, trigger=trigger, status=status)
+        return Holidays.objects.create(user=user,
+                                       trigger=trigger,
+                                       status=status)
 
     def test_holidays(self):
         h = self.create_holidays()

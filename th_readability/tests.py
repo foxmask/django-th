@@ -14,7 +14,8 @@ class ReadabilityTest(MainTest):
         ReadabilityTest Model
     """
     def create_readability(self):
-        trigger = self.create_triggerservice(consumer_name='ServiceReadability')
+        trigger = self.create_triggerservice(
+            consumer_name='ServiceReadability')
         name = 'test'
         tag = 'test tag'
         status = True
@@ -106,12 +107,7 @@ class ServiceReadabilityTest(TestCase):
         self.assertIsNotNone(self.data['link'])
         self.assertNotEqual(self.data['title'], '')
 
-        #from th_pocket.models import Pocket as PocketModel
-        #trigger = PocketModel.objects.get(trigger_id=trigger_id)
-        # tags = trigger.tag.lower()
         tags = ('test',)
-
-        title = ''
         title = (self.data['title'] if 'title' in self.data else '')
 
         pocket_instance = mock.Mock(return_value=True)

@@ -40,6 +40,7 @@ cache = caches['th_github']
 class ServiceGithub(ServicesMgr):
 
     def __init__(self, token=None):
+        super(ServiceGithub, self).__init__(token)
         self.scope = ['public_repo']
         self.REQ_TOKEN = 'https://github.com/login/oauth/authorize'
         self.AUTH_URL = 'https://github.com/login/oauth/authorize'
@@ -75,7 +76,8 @@ class ServiceGithub(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        kw = {'cache_stack': 'th_github', 'trigger_id': str(kwargs['trigger_id'])}
+        kw = {'cache_stack': 'th_github',
+              'trigger_id': str(kwargs['trigger_id'])}
         return super(ServiceGithub, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
@@ -109,7 +111,7 @@ class ServiceGithub(ServicesMgr):
                                          title,
                                          body)
             else:
-                # rate limite reach
+                # rate limit reach
                 logger.warn("Rate limit reached")
                 # put again in cache the data that could not be
                 # published in Github yet
@@ -119,8 +121,8 @@ class ServiceGithub(ServicesMgr):
             logger.debug(sentance)
             status = True
         else:
-            logger.critical(
-                "no token or link provided for trigger ID {} ".format(trigger_id))
+            sentance = "no token or link provided for trigger ID {} "
+            logger.critical(sentance.format(trigger_id))
             status = False
 
         return status
@@ -142,7 +144,7 @@ class ServiceGithub(ServicesMgr):
         request.session['oauth_id'] = auth.id
         return callback_url
 
-    def callback(self, request):
+    def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """
@@ -160,7 +162,8 @@ class ServiceGithub(ServicesMgr):
             # token_key/secret instead of usually get just the token
             # from an access_token request. So we need to add a string
             # seperator for later use to slpit on this one
-            access_token = request.session['oauth_token'] + "#TH#" + str(request.session['oauth_id'])
+            access_token = request.session['oauth_token'] + "#TH#"
+            access_token += str(request.session['oauth_id'])
             us.token = access_token
             # 3) and save everything
             us.save()
