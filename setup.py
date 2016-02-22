@@ -2,17 +2,15 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django==1.8.9',
+    'Django<1.9RC',
     'django-formtools==1.0',
-    'arrow==0.6.0',
-    'django-js-reverse==0.5.1',
-    'celery==3.1.19',
+    'arrow<0.7.0',
+    'django-js-reverse==0.6.1',
+    'celery==3.1.20',
     'django-redis==4.3.0',
-    'django-redisboard==1.2.1',
     'pytidylib6==0.2.2',
-    'pypandoc==1.1.2',
+    'pypandoc==1.1.3',
     'requests-oauthlib==0.5.0',
-    'feedparser==5.2.1',
 ]
 
 extras_require_github = [
@@ -25,10 +23,10 @@ extras_require_readability = [
     'readability-api==1.0.0',
 ]
 extras_require_rss = [
-    'feedparser==5.1.3',
+    'feedparser==5.2.1',
 ]
 extras_require_search = [
-    'django-haystack==2.4.0',
+    'django-haystack==2.4.1',
 ]
 extras_require_trello = [
     'py-trello==0.4.3',

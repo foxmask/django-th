@@ -64,10 +64,10 @@ Requirements
 ============
 
 * Python 3.4.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8
-* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
+* `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9
+* `arrow <https://pypi.python.org/pypi/arrow>`_ < 0.7.0
 * django-formtools == 1.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.6.1
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
@@ -80,7 +80,7 @@ On a Debian/Ubuntu system:
 
 for celery
 
-* `Celery <http://www.celeryproject.org/>`_ == 3.1.18
+* `Celery <http://www.celeryproject.org/>`_ == 3.1.20
 
 for evernote support
 
@@ -92,24 +92,24 @@ for github support
 
 for pocket support
 
-* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.5
+* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.6
 
 for readability support
 
-* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.0
+* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.2
 
 for rss support
 
-* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.1.3
+* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.2.1
 
 for search engine
 
-* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.3.1
+* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.4.1
 
 for trello support
 
 * `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
-* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.0.5
+* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.1.3
 
 Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
 
