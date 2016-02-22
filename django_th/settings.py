@@ -118,7 +118,6 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'formtools',
     'django_js_reverse',
-    'redisboard',
     'django_th',
     'th_rss',
     # uncomment the lines to enable the service you need
