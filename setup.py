@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django<1.9RC',
+    'Django<1.9a',
     'django-formtools==1.0',
     'arrow<0.7.0',
     'django-js-reverse==0.6.1',
