@@ -22,4 +22,4 @@ For example :
 Fire the Triggers :
 ===================
 
-Grabbing data and publishing data are done by Celery each 12min and 15min.
+Grabbing data and publishing data are done by Python-RQ each 12min and 15min.

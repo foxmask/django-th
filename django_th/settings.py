@@ -1,6 +1,5 @@
 # Django settings for django_th project.
 import os
-from celery.schedules import crontab
 from django.core.urlresolvers import reverse_lazy
 
 DEBUG = True
@@ -122,6 +121,7 @@ INSTALLED_APPS = (
     'th_rss',
     # uncomment the lines to enable the service you need
     'th_pocket',
+    'django_rq',
     # 'th_evernote',
     # 'th_twitter',
     # 'th_readability',
@@ -276,7 +276,27 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    'redis-cache':
+    {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/10",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+    },
 
+}
+RQ_QUEUES = {
+    'default': {
+        'USE_REDIS_CACHE': 'redis-cache',
+    },
+    'high': {
+        'USE_REDIS_CACHE': 'redis-cache',
+    },
+    'low': {
+        'USE_REDIS_CACHE': 'redis-cache',
+    },
 }
 
 DJANGO_TH = {
@@ -345,27 +365,7 @@ TH_GITHUB = {
     'consumer_secret': 'my secret'
 }
 
-
 SECRET_KEY = 'to be defined :P'
-
-
-# CELERY
-BROKER_URL = 'redis://localhost:6379/0'
-
-CELERYBEAT_SCHEDULE = {
-    'read-data': {
-        'task': 'django_th.tasks.read_data',
-        'schedule': crontab(minute='12,24,36,48'),
-    },
-    'publish-data': {
-        'task': 'django_th.tasks.publish_data',
-        'schedule': crontab(minute='20,40,59'),
-    },
-    'outside-cache': {
-        'task': 'django_th.tasks.get_outside_cache',
-        'schedule': crontab(minute='15,30,45'),
-    },
-}
 
 
 HAYSTACK_CONNECTIONS = {

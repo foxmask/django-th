@@ -6,7 +6,7 @@ install_requires = [
     'django-formtools==1.0',
     'arrow<0.7.0',
     'django-js-reverse==0.6.1',
-    'celery==3.1.20',
+    'django-rq==0.9.0',
     'django-redis==4.3.0',
     'pytidylib6==0.2.2',
     'pypandoc==1.1.3',

@@ -87,11 +87,12 @@ Requirements
 ============
 
 * Python 3.4.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ >= 1.8 < 1.9
+* `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
 * `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
 * django-formtools == 1.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
+* `django-rq <https://pypi.python.org/pypi/django-rq>`_ == 0.9.0
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
 On a Debian/Ubuntu system:
@@ -100,10 +101,6 @@ On a Debian/Ubuntu system:
 
     apt-get install libtidy-dev
 
-
-for celery
-
-* `Celery <http://www.celeryproject.org/>`_ == 3.1.18
 
 for evernote support
 

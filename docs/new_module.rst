@@ -2,8 +2,22 @@
 Create a new module
 ===================
 
+2 ways to reach the goal to "bootstrap" a new TriggerHappy module :
+
+1 - django-th-ansible :
+=======================
+
+just simple and fast ;)
+
+with git, clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run it and here you are !!!
+Your new module is ready to be customize for your new service.
+
+
+2 - django-th-dummy :
+=====================
+
 Introduction :
-==============
+--------------
 
 You can start a new module by cloning the project `Django Th Dummy <https://github.com/foxmask/django-th-dummy>`_
 which is a vanilla django module, ready to be used, after you've replaced the name of the form/model/class we'll see below
@@ -14,7 +28,7 @@ Below we'll keep the name dummy to continue our explanation
 
 
 Forms :
-=======
+-------
 
 the form **th_dummy/forms.py** provides 3 forms :
 
@@ -27,7 +41,7 @@ DummyForm will define the content of our form, our fields our widget etc
 
 
 Models :
-========
+--------
 
 the model **th_dummy/models.py** :
 
@@ -52,14 +66,14 @@ the model **th_dummy/models.py** :
 
 
 Key points :
-------------
+~~~~~~~~~~~~
 
 * The model is related to TriggerService model
 * The model uses the **app_label** to **django_th** meta, so the Trigger Happy will be added the table name
 
 
 Service class :
-===============
+---------------
 
 at the beginning of the class **ServiceDummy** (from `th_dummy/my_dummy.py`) you will need to import the class of the
 third party application
@@ -69,7 +83,7 @@ the class `ServiceDummy` will extend `ServiceMgr` we've imported from `django_th
 This class is composed at least by 2 methods :
 
 process_data :
---------------
+~~~~~~~~~~~~~~
 
 we provide the following parms
 
@@ -82,7 +96,8 @@ role : grabs the data of the current service to be provided to another
 return : a list composed by : `title`, `url`, `content`, and can return also `my_date` a datetime value
 
 save_data :
------------
+~~~~~~~~~~~
+
 
 we provider the following parms
 
@@ -98,7 +113,8 @@ If the service does not save data, it's the case of the module django-th-rss whi
 you'll put `pass` to save_data as the body of your code
 
 auth and callback :
--------------------
+~~~~~~~~~~~~~~~~~~~
+
 If your service need an authentication, you'll need 2 new functions `auth` and `callback`
 
 * `auth` will trigger the authentication to the third party application, the Oauth process in fact
@@ -107,7 +123,8 @@ At this step the callback function store the oauth token to the dedicated dummy 
 
 
 The complete code of this class :
----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 .. code-block:: python
 

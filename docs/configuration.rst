@@ -44,6 +44,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'django_js_reverse',
         'redisboard',
         'django_th',
+        'django_rq',
         'th_rss',
         # uncomment the lines to enable the service you need
         # 'th_pocket',
@@ -158,7 +159,6 @@ For example for Twitter :
         'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
         'consumer_secret': 'abcdefghijklmnopqrstuvwxyz',
     }
-
 
 IMPORTANT :
 
@@ -333,126 +333,118 @@ in the LOGGING add to loggers
     }
 
 
-CELERY
-~~~~~~
+DJANGO-RQ
+~~~~~~~~~
 
-Celery will handle tasks itself to populate the cache from provider services
+Django-RQ will handle tasks itself to populate the cache from provider services
 and then exploit it to publish the data to the expected consumer services
 
 * From Settings
 
-
-Define the broker then the scheduler
+If you dont have a redis server that handles the cache for you then do the following :
 
 .. code-block:: python
 
-    from celery.schedules import crontab
-
-    BROKER_URL = 'redis://localhost:6379/0'
-
-    CELERYBEAT_SCHEDULE = {
-        'read-data': {
-            'task': 'django_th.tasks.read_data',
-            'schedule': crontab(minute='12,24,36,48'),
+    RQ_QUEUES = {
+        'default': {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
         },
-        'publish-data': {
-            'task': 'django_th.tasks.publish_data',
-            'schedule': crontab(minute='20,40,59'),
+        'high': {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/2",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
         },
-        'outside-cache': {
-            'task': 'django_th.tasks.get_outside_cache',
-            'schedule': crontab(minute='15,30,45'),
+        'low': {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/3",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        }
+    }
+
+
+Otherwise this should be enough :
+
+.. code-block:: python
+
+    CACHES = {
+        [...]
+        'redis-cache':
+        {
+                'TIMEOUT': 3600,
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379/10",
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                }
+        },
+        [...]
+    }
+
+    RQ_QUEUES = {
+        'default': {
+            'USE_REDIS_CACHE': 'redis-cache',
+        },
+        'high': {
+            'USE_REDIS_CACHE': 'redis-cache',
+        },
+        'low': {
+            'USE_REDIS_CACHE': 'redis-cache',
         },
     }
 
 
-An alternative configuration can be set here :
-If you prefer to enchain all the tasks in a raw, a dedicated task, named "go", will do the job
-so you will just need to do :
+Once this is done we can create tasks in the crontab :
 
 
-.. code:: python
+Suppose my virtualenv is created in /home/trigger-happy and the django app is located in /home/trigger-happy/th :
 
-    CELERYBEAT_SCHEDULE = {
-        'go': {
-            'task': 'django_th.tasks.go',
-            'schedule': crontab(minute='15,30,45'),
-        },
-    }
+.. code-block:: bash
 
+    */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/django_th/ && ./manage.py fire_read_data && ../bin/rqworker-default-burst.sh
+    */15 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py fire_publish_data && ../bin/rqworker-high-burst.sh
+    */20 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py fire_get_outside_data && ../bin/rqworker-low-burst.sh
 
-that will replace the previous settings schedule
+where `rqworker-default-burst.sh` contains :
 
+.. code-block:: bash
 
-in your django application you will have to add 2 modules :
-
-apps.py and celery.py :
-
-in your app.py you will need to add :
-
-.. code:: python
-
-    from .celery import app as celery_app
+    #!/bin/bash
+    python manage.py rqworker default --burst &
+    python manage.py rqworker default --burst &
+    python manage.py rqworker default --burst &
+    python manage.py rqworker default --burst &
+    python manage.py rqworker default --burst &
 
 
-and in the celery.py :
+where `rqworker-high-burst.sh` contains :
 
+.. code-block:: bash
 
-.. code:: python
+    #!/bin/bash
+    python manage.py rqworker high --burst &
+    python manage.py rqworker high --burst &
+    python manage.py rqworker high --burst &
+    python manage.py rqworker high --burst &
+    python manage.py rqworker high --burst &
 
-    from __future__ import absolute_import
-    import os
-    from celery import Celery
-    from django.conf import settings
+where `rqworker-low-burst.sh` contains :
 
-    # set the default Django settings module for the 'celery' program.
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', '<YOUR_DJANGO_APP_NAME>.settings')
+.. code-block:: bash
 
-    app = Celery('<YOUR_DJANGO_APP_NAME>')
+    #!/bin/bash
+    python manage.py rqworker low --burst &
 
-    # Using a string here means the worker will not have to
-    # pickle the object when using Windows.
-    app.config_from_object('django.conf:settings')
-    app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-that way, Celery will read your settings instead of the one provided by django_th too.
-
-SUPERVISORD
-~~~~~~~~~~~
-
-supervisord permits to automatically start his services like for celery  
-
-.. code:: python
-
-    [program:django_th_worker]
-    user = foxmask
-    directory=/home/projects/trigger-happy/th
-    command=/home/projects/trigger-happy/bin/celery -A django_th worker --autoscale=10,3 -l info
-    autostart=true
-    autorestart=true
-    redirect_stderr=true
-    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
-    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
-
-    [program:django_th_beat]
-    user = foxmask
-    directory=/home/projects/trigger-happy/th
-    command=/home/projects/trigger-happy/bin/celery -A django_th beat -l info
-    autostart=true
-    autorestart=true
-    redirect_stderr=true
-    stdout_logfile=/home/projects/trigger-happy/logs/trigger-happy.log
-    stderr_logfile=/home/projects/trigger-happy/logs/trigger-happy-err.log
-
-
-
-REDISBOARD
-~~~~~~~~~~
-
-.. code:: python
-
-    # REDISBOARD
-    REDISBOARD_DETAIL_FILTERS = ['.*']
 
 
 TH_HOLIDAYS
@@ -467,7 +459,7 @@ To use the Holidays feature, just add this piece of HTML in the template templat
 
 
 HAYSTACK
-~~~~~~~~~
+~~~~~~~~
 
 if you plan to use the search feature, put the engine of your choice, for example :
 

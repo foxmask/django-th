@@ -24,7 +24,7 @@ We install TriggerHappy from Pypi
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th
-    pip install  Django==1.8.9 django-formtools arrow==0.6.0 django-js-reverse celery django-redis django-redisboard requests-oauthlib feedparser
+    pip install  Django<1.9a django-formtools arrow==0.6.0 django-js-reverse django-rq django-redis django-redisboard requests-oauthlib feedparser
 
 I dont want to use django 1.9 now and arrow 0.7.0 got a very annoying bug for the project so 0.6.0 is important to get
 

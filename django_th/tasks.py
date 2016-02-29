@@ -3,12 +3,14 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 import arrow
-from celery import shared_task, chain
 
 # django
 from django.conf import settings
 from django.core.cache import caches
 from django.utils.log import getLogger
+
+# django-rq
+from django_rq import job
 
 # trigger happy
 from django_th.services import default_provider
@@ -102,12 +104,13 @@ def get_published(published='', which_date=''):
     return published, which_date
 
 
-@shared_task
+@job
 def reading(service):
     """
        get the data from the service and put theme in cache
        :param service: service object to read
     """
+    datas = ()
     # flag to know if we have to update
     to_update = False
     # flag to get the status of a service
@@ -137,10 +140,10 @@ def reading(service):
             to_update = True
             status = True
 
-        log_update(service, to_update, status, len(datas))
+    log_update(service, to_update, status, len(datas))
 
 
-@shared_task
+@job
 def read_data():
     """
         The purpose of this tasks is to put data in cache
@@ -154,15 +157,13 @@ def read_data():
         reading.delay(service)
 
 
-@shared_task
-def publishing(service, now):
+@job('high')
+def publishing(service):
     """
         the purpose of this tasks is to get the data from the cache
         then publish them
         :param service: service object where we will publish
-        :param now: it's the current date
-        :type service: obect
-        :type now: string date
+        :type service: object
     """
     # flag to know if we have to update
     to_update = False
@@ -204,7 +205,8 @@ def publishing(service, now):
                     from django_th.tools import to_datetime
                     published = to_datetime(data)
                     published, which_date = get_published(published, which_date)
-                    date_triggered = arrow.get(str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                    date_triggered = arrow.get(
+                        str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                     publish_log_data(published, date_triggered, data)
                 # the consummer will save the data and return if success or not
                 status = consumer(service.consumer.token, service.id, **data)
@@ -218,29 +220,24 @@ def publishing(service, now):
         update_trigger(service)
 
 
-@shared_task
-def publish_data(result=''):
+@job('high')
+def publish_data():
     """
         the purpose of this tasks is to get the data from the cache
         then publish them
-        :param result: the result of the previous tasks when cascading all of them
-        :type result: string
     """
-    now = arrow.utcnow().to(settings.TIME_ZONE)
     trigger = TriggerService.objects.filter(status=True).select_related(
         'consumer__name', 'provider__name')
 
     for service in trigger:
-        publishing.delay(service, now)
+        publishing.delay(service)
 
 
-@shared_task
-def get_outside_cache(result=''):
+@job('low')
+def get_outside_cache():
     """
         the purpose of this tasks is to recycle the data from the cache
         with version=2 in the main cache
-        :param result: the result of the previous tasks when cascading all of them
-        :type result: string
     """
     all_packages = MyService.all_packages()
     for package in all_packages:
@@ -256,8 +253,3 @@ def get_outside_cache(result=''):
                 cache.delete_pattern(service, version=2)
             except ValueError:
                 pass
-
-
-@shared_task
-def go():
-    chain(read_data.s(), publish_data.s(), get_outside_cache.s())()
