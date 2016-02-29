@@ -40,4 +40,3 @@ class DiscoverRunnerTriggerHappy(DiscoverRunner):
             do_not_test = set()
 
         return installed_apps - do_not_test
-

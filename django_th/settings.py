@@ -147,7 +147,8 @@ LOGGING = {
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(asctime)s %(levelname)s %(module)s %(process)d %(message)s'
+            'format':
+                '%(asctime)s %(levelname)s %(module)s %(process)d %(message)s'
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -381,7 +382,8 @@ HAYSTACK_CONNECTIONS = {
 }
 
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
-TEST_RUNNER_WHITELIST = ('django_rq',)  # Unit Test are buggy ; so do not make them
+# Unit Test are buggy for this app ; so do not make them
+TEST_RUNNER_WHITELIST = ('django_rq',)
 
 # local settings management
 try:

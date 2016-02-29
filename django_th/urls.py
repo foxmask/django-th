@@ -23,7 +23,7 @@ admin.autodiscover()
 urlpatterns = \
     patterns('',
              url(r'^jsreverse/$', 'django_js_reverse.views.urls_js',
-                name='js_reverse'),
+                 name='js_reverse'),
              # ****************************************
              # admin module
              # ****************************************
@@ -153,7 +153,9 @@ urlpatterns = \
 
 
 if 'th_holidays' in settings.INSTALLED_APPS:
-    urlpatterns += patterns('', url(r'^th/holidays/', include('th_holidays.urls')))
+    urlpatterns += patterns('',
+                            url(r'^th/holidays/', include('th_holidays.urls')))
 
 if 'th_search' in settings.INSTALLED_APPS:
-    urlpatterns += patterns('', url(r'^th/search/', include('th_search.urls')))
+    urlpatterns += patterns('',
+                            url(r'^th/search/', include('th_search.urls')))

@@ -222,9 +222,11 @@ def publishing(service):
                 if settings.DEBUG:
                     from django_th.tools import to_datetime
                     published = to_datetime(data)
-                    published, which_date = get_published(published, which_date)
+                    published, which_date = get_published(published,
+                                                          which_date)
                     date_triggered = arrow.get(
-                        str(service.date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
+                        str(service.date_triggered),
+                        'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                     publish_log_data(published, date_triggered, data)
                 # the consummer will save the data and return if success or not
                 status = consumer(service.consumer.token, service.id, **data)

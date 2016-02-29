@@ -2,7 +2,6 @@
 import uuid
 
 from django.contrib.auth.models import User
-from django.core.cache import caches
 
 try:
     from django.apps import apps
@@ -68,10 +67,6 @@ class ServicesMgrTestCase(MainTest):
     def test_process_data(self, **kwargs):
         kwargs = {'cache_stack': 'th_rss', 'trigger_id': '1'}
         self.assertTrue('cache_stack' in kwargs)
-        # self.assertTrue('th_rss' in caches)
-        cache = caches[kwargs['cache_stack']]
-        cache_data = cache.get(kwargs['cache_stack'] + '_' + kwargs['trigger_id'])
-        # return PublishingLimit.get_data(kwargs['cache_stack'], cache_data, kwargs['trigger_id'])
 
     def _set_title(self, data):
         return data['title'] if 'title' in data else data['link']

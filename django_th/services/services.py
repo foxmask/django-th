@@ -127,8 +127,10 @@ class ServicesMgr(object):
             :type kwargs: dict
         """
         cache = caches[kwargs['cache_stack']]
-        cache_data = cache.get(kwargs['cache_stack'] + '_' + kwargs['trigger_id'])
-        return PublishingLimit.get_data(kwargs['cache_stack'], cache_data, kwargs['trigger_id'])
+        cache_data = cache.get(kwargs['cache_stack'] + '_' +
+                               kwargs['trigger_id'])
+        return PublishingLimit.get_data(kwargs['cache_stack'],
+                                        cache_data, kwargs['trigger_id'])
 
     def save_data(self, trigger_id, data, **kwargs):
         """
@@ -195,7 +197,9 @@ class ServicesMgr(object):
         """
         parms = ('access_token', 'service', 'return')
         if not all(k in parms for k in kwargs.keys()):
-            raise KeyError('Missing args in kwargs. Kwargs has to contains "access_token", "service" and "return"')
+            raise KeyError('Missing args in kwargs. '
+                           'Kwargs has to contains "access_token",'
+                           ' "service" and "return"')
 
         if kwargs['access_token'] == '':
             access_token = self.get_access_token(

@@ -123,7 +123,6 @@ for twitter support
 for redis support
 
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
-* `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
 
 
 and finally :
