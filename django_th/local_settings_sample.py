@@ -1,3 +1,6 @@
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
+
 TH_EVERNOTE = {
     'sandbox': True,
     'consumer_key': 'my key',

@@ -2,7 +2,7 @@
 import os
 from django.core.urlresolvers import reverse_lazy
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = ["*"]
@@ -278,15 +278,19 @@ CACHES = {
     },
     'redis-cache':
     {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/10",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/10",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 5000,
+        }
     },
 
 }
+# FOR DJANGO-RQ
+REDIS_CACHE_TYPE = 'django-redis'
+RQ_SHOW_ADMIN_LINK = True
 RQ_QUEUES = {
     'default': {
         'USE_REDIS_CACHE': 'redis-cache',
@@ -376,8 +380,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
+TEST_RUNNER_WHITELIST = ('django_rq',)  # Unit Test are buggy ; so do not make them
 
 # local settings management
 try:

@@ -24,6 +24,24 @@ logger = getLogger('django_th.trigger_happy')
 default_provider.load_services()
 
 
+def publish_log_outdated(published, data):
+    """
+        lets log things about outdated data
+        or data from the future... (a date from the future)
+        :param published: publishing date
+        :param data: the data of the current trigger
+        :type published: string date
+        :type data: dict
+    """
+    if 'title' in data:
+        sentence = "data outdated skipped : [{}] {}"
+        logger.debug(sentence.format(published,
+                                     data['title']))
+    else:
+        sentence = "data outdated skipped : [{}] "
+        logger.debug(sentence.format(published))
+
+
 def publish_log_data(published, date_triggered, data):
     """
         lets log everything linked to the data

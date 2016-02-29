@@ -22,15 +22,15 @@ class TriggerSettingsTestCase(unittest.TestCase):
     def test_get_services_list(self):
         th_service = (
             'th_rss.my_rss.ServiceRss',
-            #'th_pocket.my_pocket.ServicePocket',
-            #'th_evernote.my_evernote.ServiceEvernote',
-            #'th_readability.my_readability.ServiceReadability',
-            #'th_twitter.my_twitter.ServiceTwitter',
-            #'th_trello.my_trello.ServiceTrello',
+            # 'th_pocket.my_pocket.ServicePocket',
+            # 'th_evernote.my_evernote.ServiceEvernote',
+            # 'th_readability.my_readability.ServiceReadability',
+            # 'th_twitter.my_twitter.ServiceTwitter',
+            # 'th_trello.my_trello.ServiceTrello',
         )
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
 
-    def test_get_config_celery(self):
-        self.assertTrue(settings.CELERYBEAT_SCHEDULE)
-        self.assertTrue(settings.BROKER_URL)
+    def test_get_config_rq(self):
+        self.assertTrue(settings.RQ_QUEUES)
+        self.assertTrue(settings.RQ_SHOW_ADMIN_LINK)
