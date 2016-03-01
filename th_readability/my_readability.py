@@ -144,6 +144,9 @@ class ServiceReadability(ServicesMgr):
     def auth(self, request):
         """
             let's auth the user to the Service
+            :param request: request object
+            :return: callback url
+            :rtype: string that contains the url to redirect after auth
         """
         request_token = super(ServiceReadability, self).auth(request)
         callback_url = self.callback_url(request, 'readability')
@@ -159,6 +162,9 @@ class ServiceReadability(ServicesMgr):
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
+            :param request: request object
+            :return: callback url
+            :rtype: string , path to the template
         """
         kwargs = {'access_token': '', 'service': 'ServiceReadability',
                   'return': 'readability'}

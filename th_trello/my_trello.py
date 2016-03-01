@@ -94,7 +94,6 @@ class ServiceTrello(ServicesMgr):
         """
         from th_trello.models import Trello
 
-        status = False
         kwargs = {'output_format': 'md'}
         title, content = super(ServiceTrello, self).save_data(trigger_id,
                                                               data,
@@ -111,7 +110,7 @@ class ServiceTrello(ServicesMgr):
             # store the card so ...
 
             # 1.a search the board_id by its name
-            # by retreiving all the boards
+            # by retrieving all the boards
             boards = self.trello_instance.list_boards()
 
             board_id = ''
@@ -149,17 +148,18 @@ class ServiceTrello(ServicesMgr):
             # create the Trello card
             my_list.add_card(title, content)
 
-            sentance = str('trello {} created').format(data['link'])
-            logger.debug(sentance)
+            sentence = str('trello {} created').format(data['link'])
+            logger.debug(sentence)
             status = True
         else:
-            sentance = "no token or link provided for trigger ID {}"
-            logger.critical(sentance.format(trigger_id))
+            sentence = "no token or link provided for trigger ID {}"
+            logger.critical(sentence.format(trigger_id))
             status = False
 
         return status
 
-    def set_card_footer(self, data, trigger):
+    @staticmethod
+    def set_card_footer(data, trigger):
         """
             handle the footer of the note
         """
@@ -179,6 +179,9 @@ class ServiceTrello(ServicesMgr):
     def auth(self, request):
         """
             let's auth the user to the Service
+            :param request: request object
+            :return: callback url
+            :rtype: string that contains the url to redirect after auth
         """
         request_token = super(ServiceTrello, self).auth(request)
         callback_url = self.callback_url(request, 'trello')
@@ -199,6 +202,9 @@ class ServiceTrello(ServicesMgr):
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
+            :param request: request object
+            :return: callback url
+            :rtype: string , path to the template
         """
         kwargs = {'access_token': '', 'service': 'ServiceTrello',
                   'return': 'trello'}

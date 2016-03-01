@@ -113,7 +113,6 @@ class ServiceEvernote(ServicesMgr):
                                                      100,
                                                      spec)
 
-        whole_note = ''
         for note in our_note_list.notes:
             whole_note = note_store.getNote(self.token,
                                             note.guid,
@@ -202,7 +201,6 @@ class ServiceEvernote(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        status = False
         kwargs = {}
         # set the title and content of the data
         title, content = super(ServiceEvernote, self).save_data(trigger_id,
@@ -241,8 +239,6 @@ class ServiceEvernote(ServicesMgr):
             # note object
             note = Types.Note()
             if trigger.notebook:
-                notebook_id = 0
-                tag_id = []
                 # get the notebookGUID ...
                 notebook_id = self.get_notebook(trigger)
                 # create notebookGUID if it does not exist then return its id
@@ -271,13 +267,12 @@ class ServiceEvernote(ServicesMgr):
             note.content = self.set_evernote_header()
             note.content += self.get_sanitize_content(content)
             # create a note
-            return set._create_note(note, trigger_id, data)
+            return self._create_note(note, trigger_id, data)
 
         else:
             sentence = "no title provided for trigger ID {} and title {}"
             logger.critical(sentence.format(trigger_id, title))
-            status = False
-        return status
+            return False
 
     def get_notebook(self, trigger):
         """
@@ -342,7 +337,8 @@ class ServiceEvernote(ServicesMgr):
 
         return tag_id
 
-    def set_evernote_header(self):
+    @staticmethod
+    def set_evernote_header():
         """
             preparing the hearder of Evernote
         """
@@ -351,7 +347,8 @@ class ServiceEvernote(ServicesMgr):
         "http://xml.evernote.com/pub/enml2.dtd">\n'
         return prolog
 
-    def get_sanitize_content(self, content):
+    @staticmethod
+    def get_sanitize_content(content):
         """
             tidy and sanitize content
         """
@@ -362,7 +359,8 @@ class ServiceEvernote(ServicesMgr):
         else:
             return str(enml)
 
-    def set_note_attribute(self, data):
+    @staticmethod
+    def set_note_attribute(data):
         """
            add the link of the 'source' in the note
            get a NoteAttributes object
@@ -373,9 +371,10 @@ class ServiceEvernote(ServicesMgr):
             # add the url
             na.sourceURL = data['link']
             # add the object to the note
-            return na
+        return na
 
-    def set_note_footer(self, data, trigger):
+    @staticmethod
+    def set_note_footer(data, trigger):
         """
             handle the footer of the note
         """
@@ -456,7 +455,8 @@ class ServiceEvernote(ServicesMgr):
 
         return 'evernote/callback.html'
 
-    def cleaning_content(self, data):
+    @staticmethod
+    def cleaning_content(data):
 
         data = data.replace('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">\n<en-note>', '')
         data = data.replace('</en-note>', '')

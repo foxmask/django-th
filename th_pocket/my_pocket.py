@@ -143,6 +143,9 @@ class ServicePocket(ServicesMgr):
     def auth(self, request):
         """
             let's auth the user to the Service
+            :param request: request object
+            :return: callback url
+            :rtype: string that contains the url to redirect after auth
         """
         callback_url = self.callback_url(request, 'pocket')
 
@@ -162,6 +165,9 @@ class ServicePocket(ServicesMgr):
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
+            :param request: request object
+            :return: callback url
+            :rtype: string , path to the template
         """
         access_token = Pocket.get_access_token(
             consumer_key=self.consumer_key,

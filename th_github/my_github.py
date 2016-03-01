@@ -59,13 +59,10 @@ class ServiceGithub(ServicesMgr):
     def read_data(self, **kwargs):
         """
             get the data from the service
-
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
-
             :rtype: list
         """
-        # date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
         data = list()
         cache.set('th_github_' + str(trigger_id), data)
@@ -83,7 +80,6 @@ class ServiceGithub(ServicesMgr):
     def save_data(self, trigger_id, **data):
         """
             let's save the data
-
             :param trigger_id: trigger ID from which to save data
             :param data: the data to check to be used and save
             :type trigger_id: int
@@ -92,8 +88,6 @@ class ServiceGithub(ServicesMgr):
             :rtype: boolean
         """
         from th_github.models import Github
-        status = False
-
         if self.token:
             title = self.set_title(data)
             body = self.set_content(data)
@@ -117,12 +111,12 @@ class ServiceGithub(ServicesMgr):
                 # published in Github yet
                 cache.set('th_github_' + str(trigger_id), data, version=2)
                 return True
-            sentance = str('github {} created').format(r)
-            logger.debug(sentance)
+            sentence = str('github {} created').format(r)
+            logger.debug(sentence)
             status = True
         else:
-            sentance = "no token or link provided for trigger ID {} "
-            logger.critical(sentance.format(trigger_id))
+            sentence = "no token or link provided for trigger ID {} "
+            logger.critical(sentence.format(trigger_id))
             status = False
 
         return status
@@ -130,6 +124,9 @@ class ServiceGithub(ServicesMgr):
     def auth(self, request):
         """
             let's auth the user to the Service
+            :param request: request object
+            :return: callback url
+            :rtype: string that contains the url to redirect after auth
         """
         callback_url = 'http://%s%s' % (
             request.get_host(), reverse('github_callback'))
@@ -147,8 +144,10 @@ class ServiceGithub(ServicesMgr):
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
+            :param request: request object
+            :return: callback url
+            :rtype: string , path to the template
         """
-
         try:
             # finally we save the user auth token
             # As we already stored the object ServicesActivated
@@ -158,10 +157,10 @@ class ServiceGithub(ServicesMgr):
             us = UserService.objects.get(
                 user=request.user,
                 name=ServicesActivated.objects.get(name='ServiceGithub'))
-            # 2) Readability API require to use 4 parms consumer_key/secret +
+            # 2) Readability API require to use 4 params consumer_key/secret +
             # token_key/secret instead of usually get just the token
             # from an access_token request. So we need to add a string
-            # seperator for later use to slpit on this one
+            # separator for later use to split on this one
             access_token = request.session['oauth_token'] + "#TH#"
             access_token += str(request.session['oauth_id'])
             us.token = access_token
