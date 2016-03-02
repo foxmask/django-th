@@ -27,7 +27,7 @@ class EvernoteTest(MainTest):
     def test_evernote(self):
         ev = self.create_evernote()
         self.assertTrue(isinstance(ev, Evernote))
-        self.assertEqual(ev.show(), "My Evernote %s" % ev.title)
+        self.assertEqual(ev.show(), "My Evernote {}".format(ev.title))
 
     """
         Form
@@ -64,8 +64,6 @@ class EvernoteTest(MainTest):
         th_service = ('th_evernote.my_evernote.ServiceEvernote',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
-
-
 
 try:
     from unittest import mock

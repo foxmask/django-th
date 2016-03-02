@@ -83,10 +83,10 @@ class TriggerServiceTest(MainTest):
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
-        self.assertEqual(t.show(), "My Service %s %s %s %s" % (t.provider,
-                                                               t.consumer,
-                                                               t.description,
-                                                               t.user))
+        self.assertEqual(t.show(), "My Service {} {} {} {}".format(t.user,
+                                                                   t.provider.name,
+                                                                   t.consumer.name,
+                                                                   t.description))
     """
         Form
     """

@@ -42,7 +42,6 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         ...
         'formtools',
         'django_js_reverse',
-        'redisboard',
         'django_th',
         'django_rq',
         'th_rss',
@@ -57,6 +56,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         # 'th_github',
         # 'haystack',  # mandatory  if you plan to use th_search
         # 'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
+        # 'th_pelican',
 
     )
 

@@ -89,10 +89,15 @@ Requirements
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
 * `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
-* django-formtools == 1.0
+* `django-formtools <https://pypi.python.org/pypi/django-formtools`_ == 1.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
-* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 * `django-rq <https://pypi.python.org/pypi/django-rq>`_ == 0.9.0
+
+
+for evernote support
+
+* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_
+* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
 On a Debian/Ubuntu system:
@@ -102,9 +107,6 @@ On a Debian/Ubuntu system:
     apt-get install libtidy-dev
 
 
-for evernote support
-
-* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_
 
 for github support
 
@@ -146,4 +148,9 @@ for twitter support
 for redis support
 
 * `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
-* `django-redisboard <https://pypi.python.org/pypi/django-redisboard>`_ == 1.2.0
+
+
+for pelican support
+
+* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_ == 1.6.5
+

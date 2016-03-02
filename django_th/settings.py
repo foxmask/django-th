@@ -119,9 +119,9 @@ INSTALLED_APPS = (
     'django_js_reverse',
     'django_th',
     'th_rss',
-    # uncomment the lines to enable the service you need
-    'th_pocket',
     'django_rq',
+    # uncomment the lines to enable the service you need
+    # 'th_pocket',
     # 'th_evernote',
     # 'th_twitter',
     # 'th_readability',
@@ -130,6 +130,7 @@ INSTALLED_APPS = (
     # 'th_search',
     # 'th_trello',
     # 'th_github',
+    # 'th_pelican',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -324,6 +325,7 @@ TH_SERVICES = (
     # 'th_twitter.my_twitter.ServiceTwitter',
     # 'th_trello.my_trello.ServiceTrello',
     # 'th_github.my_github.ServiceGithub',
+    # 'th_pelican.my_pelican.ServicePelican',
 )
 
 
@@ -385,8 +387,11 @@ TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
 TEST_RUNNER_WHITELIST = ('django_rq',)
 
+TH_PELICAN_AUTHOR = 'Foxmask'
+
 # local settings management
 try:
     from .local_settings import *
 except ImportError:
     pass
+

@@ -23,7 +23,7 @@ class ServicesActivated(models.Model):
                                                   self.description)
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
 
 class UserService(models.Model):
@@ -40,7 +40,7 @@ class UserService(models.Model):
         return "User Service %s %s %s" % (self.user, self.token, self.name)
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
 
 class TriggerService(models.Model):
@@ -56,13 +56,15 @@ class TriggerService(models.Model):
     date_triggered = models.DateTimeField(null=True)
     status = models.BooleanField(default=False)
 
-    def show(self):
-        return "My Service %s %s %s %s" % (self.provider, self.consumer,
-                                           self.description, self.user)
-
     def __str__(self):
-        string = "{user} - {provider} - {consumer} - {description}"
-        return string.format(user=self.user,
-                             provider=self.provider,
-                             consumer=self.consumer,
-                             description=self.description)
+        return "{} - {} - {} - {}".format(self.user,
+                                          self.provider.name,
+                                          self.consumer.name,
+                                          self.description)
+
+    def show(self):
+        return "My Service {} {} {} {}".format(self.user,
+                                               self.provider.name,
+                                               self.consumer.name,
+                                               self.description)
+

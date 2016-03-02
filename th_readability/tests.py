@@ -27,7 +27,7 @@ class ReadabilityTest(MainTest):
     def test_readability(self):
         r = self.create_readability()
         self.assertTrue(isinstance(r, Readability))
-        self.assertEqual(r.show(), "My Readability %s" % (r.name))
+        self.assertEqual(r.show(), "My Readability {}".format(r.name))
 
     def test_get_config_th(self):
         """

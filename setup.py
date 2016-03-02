@@ -34,20 +34,25 @@ extras_require_trello = [
 extras_require_twitter = [
     'twython==3.3.0',
 ]
+extras_require_pelican = [
+    'awesome-slugify==1.6.5',
+]
 
 extras_require_all = extras_require_github\
     + extras_require_pocket + extras_require_readability + extras_require_rss\
-    + extras_require_search + extras_require_trello + extras_require_twitter
+    + extras_require_search + extras_require_trello + extras_require_twitter\
+    + extras_require_pelican
 
 setup(
     name='django_th',
     version=version,
-    description='Trigger Happy - take the control of your data with this bridge between your internet services',
+    description='Trigger Happy - take the control of your data '
+                'with this bridge between your internet services',
     author='Olivier Demah',
     author_email='foxmask@trigger-happy.eu',
     url='https://github.com/foxmask/django-th',
-    download_url="https://github.com/foxmask/django-th/archive/trigger-happy-"
-    + version + ".zip",
+    download_url="https://github.com/foxmask/django-th/"
+                 "archive/trigger-happy-" + version + ".zip",
     packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -72,6 +77,7 @@ setup(
         'search': extras_require_search,
         'trello': extras_require_trello,
         'twitter': extras_require_twitter,
+        'pelican': extras_require_pelican,
     },
     include_package_data=True,
 )

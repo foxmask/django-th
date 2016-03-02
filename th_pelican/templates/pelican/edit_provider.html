@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of your trigger' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <div class="form-group{% if form.title.errors %} has-error{% endif %}">
+                {% if form.title.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.title.errors }}</div>
+                {% endif %}
+                <label for="id_title" class="col-sm-2 control-label">{% trans "Title" %}</label>
+                <div class="col-sm-10">{{ form.title }}</div>
+            </div>
+            <div class="form-group{% if form.category.errors %} has-error{% endif %}">
+                {% if form.category.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.category.errors }}</div>
+                {% endif %}
+                <label for="id_category" class="col-sm-2 control-label">{% trans "Category" %}</label>
+                <div class="col-sm-10">{{ form.category }}</div>
+            </div>
+            <div class="form-group{% if form.tags.errors %} has-error{% endif %}">
+                {% if form.tags.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.tags.errors }}</div>
+                {% endif %}
+                <label for="id_tags" class="col-sm-2 control-label">{% trans "Tags" %}</label>
+                <div class="col-sm-10">{{ form.tags }}</div>
+            </div>
+            <div class="form-group{% if form.url.errors %} has-error{% endif %}">
+                {% if form.url.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.url.errors }}</div>
+                {% endif %}
+                <label for="id_url" class="col-sm-2 control-label">{% trans "URL of the website" %}</label>
+                <div class="col-sm-10">{{ form.url }}</div>
+                <div class="col-sm-offset-2 col-sm-10">{% trans "this URL will be displayed in the footer of the post eg &lt;a href='https://trigger-happy.eu/'&gt;Provided by Trigger-Happy&lt;/a&gt;" %}</div>
+            </div>
+            <div class="form-group{% if form.path.errors %} has-error{% endif %}">
+                {% if form.path.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.path.errors }}</div>
+                {% endif %}
+                <label for="id_path" class="col-sm-2 control-label">{% trans "Pelican Path" %}</label>
+                <div class="col-sm-10">{{ form.path }}</div>
+                <div class="col-sm-offset-2 col-sm-10">{% trans "set the path that leads to the <strong>content</strong> folder of pelican, eg /home/trigger-happy/pelican/content" %}</div>
+            </div>
+
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}

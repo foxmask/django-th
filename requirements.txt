@@ -14,3 +14,4 @@ feedparser==5.2.1
 django-haystack==2.4.1
 py-trello==0.4.3
 twython==3.3.0
+awesome-slugify==1.6.5

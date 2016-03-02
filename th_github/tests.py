@@ -28,7 +28,7 @@ class GithubTest(MainTest):
         """
         d = self.create_github()
         self.assertTrue(isinstance(d, Github))
-        self.assertEqual(d.show(), "My Github %s" % (d.name))
+        self.assertEqual(d.show(), "My Github {}".format(d.name))
 
     """
         Form

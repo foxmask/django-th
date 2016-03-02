@@ -28,6 +28,7 @@ urlpatterns = \
              # admin module
              # ****************************************
              url(r'^admin/', include(admin.site.urls)),
+             url(r'^admin/django-rq/', include('django_rq.urls')),
              # ****************************************
              # auth module
              # ****************************************

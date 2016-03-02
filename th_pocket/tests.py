@@ -27,7 +27,7 @@ class PocketTest(MainTest):
     def test_pocket(self):
         p = self.create_pocket()
         self.assertTrue(isinstance(p, Pocket))
-        self.assertEqual(p.show(), "My Pocket %s" % p.url)
+        self.assertEqual(p.show(), "My Pocket {}".format(p.url))
 
     def test_get_config_th(self):
         """
@@ -88,9 +88,8 @@ class ServicePocketTest(TestCase):
         # from th_pocket.models import Pocket as PocketModel
         # trigger = PocketModel.objects.get(trigger_id=trigger_id)
         # tags = trigger.tag.lower()
-        tags = ('test')
+        tags = ('test',)
 
-        title = ''
         title = (self.data['title'] if 'title' in self.data else '')
 
         pocket_instance = mock.Mock(return_value=True)
