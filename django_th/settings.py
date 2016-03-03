@@ -377,7 +377,10 @@ SECRET_KEY = 'to be defined :P'
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        # set the backend of your choice from
+        # http://django-haystack.readthedocs.org/en/v2.4.0/tutorial.html#installation
+        # for example
+        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },
