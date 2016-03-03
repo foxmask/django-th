@@ -379,7 +379,7 @@ HAYSTACK_CONNECTIONS = {
     'default': {
         # set the backend of your choice from
         # http://django-haystack.readthedocs.org/en/v2.4.0/tutorial.html#installation
-        # for example
+        # for example
         # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
@@ -390,6 +390,7 @@ TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
 TEST_RUNNER_WHITELIST = ('django_rq',)
 
+# for the pelican website generator, set the author's name of the posts here
 TH_PELICAN_AUTHOR = 'Foxmask'
 
 # local settings management
@@ -397,4 +398,3 @@ try:
     from .local_settings import *
 except ImportError:
     pass
-
