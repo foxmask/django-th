@@ -229,7 +229,7 @@ def publishing(service):
                         'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                     publish_log_data(published, date_triggered, data)
                 # the consummer will save the data and return if success or not
-                status = consumer(service.consumer.token, service.id, **data)
+                status = consumer(service.id, **data)
             else:
                 count_new_data = len(datas)
                 to_update = True
