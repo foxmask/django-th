@@ -40,7 +40,7 @@ class UserService(models.Model):
         return "User Service %s %s %s" % (self.user, self.token, self.name)
 
     def __str__(self):
-        return self.name
+        return self.name.name
 
 
 class TriggerService(models.Model):

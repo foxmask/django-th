@@ -46,8 +46,12 @@ def logout_view(request):
 def trigger_on_off(request, trigger_id):
     """
         enable/disable the status of the trigger then go back home
+        :param request: request object
         :param trigger_id: the trigger ID to switch the status to True or False
+        :type request: HttpRequest object
         :type trigger_id: int
+        :return render
+        :rtype HttpResponse
     """
     now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
@@ -77,10 +81,12 @@ def service_related_triggers_switch_to(request, user_service_id, switch):
     """
         switch the status of all the triggers related to the service,
         then go back home
-        :param service_id: the service ID to switch the status to
+        :param request: request object
+        :param user_service_id: the service ID to switch the status to
         True or False of all the related trigger
-        :type service_id: int
         :param switch: the switch value
+        :type request: HttpRequest object
+        :type user_service_id: int
         :type switch: string off or on
     """
     status = True
@@ -97,22 +103,20 @@ def service_related_triggers_switch_to(request, user_service_id, switch):
 
 def trigger_switch_all_to(request, switch):
     """
-        switch the status of all the triggers then go back home
+        switch the status of all the "my" triggers then go back home
+        :param request: request object
         :param switch: the switch value
+        :type request: HttpRequest object
         :type switch: string off or on
     """
     now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
     status = True
     if switch == 'off':
         status = False
-    triggers = TriggerService.objects.all()
-    for trigger in triggers:
-        trigger.status = status
-        # set the trigger to the current date when the
-        # the trigger is back online
-        if status:
-            trigger.date_triggered = now
-        trigger.save()
+    if status:
+        TriggerService.objects.filter(user=request.user).update(status=status, date_triggered=now)
+    else:
+        TriggerService.objects.filter(user=request.user).update(status=status)
 
     return HttpResponseRedirect(reverse('base'))
 
@@ -120,6 +124,11 @@ def trigger_switch_all_to(request, switch):
 def list_services(request, step):
     """
         get the activated services added from the administrator
+        :param request: request object
+        :param step: the step which is proceeded
+        :type request: HttpRequest object
+        :type step: string
+        :return the activated services added from the administrator
     """
     all_datas = []
 
@@ -137,10 +146,14 @@ def list_services(request, step):
 def trigger_edit(request, trigger_id, edit_what):
     """
         edit the provider
+        :param request: request object
         :param trigger_id: ID of the trigger to edit
         :param edit_what: edit a 'Provider' or 'Consumer' ?
+        :type request: HttpRequest object
         :type trigger_id: int
         :type edit_what: string
+        :return render
+        :rtype HttpResponse
     """
     if edit_what not in ('Provider', 'Consumer'):
         # bad request
