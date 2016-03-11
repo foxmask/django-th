@@ -174,6 +174,9 @@ class ServiceTrello(ServicesMgr):
                 provided_by, description, provided_from,
                 data['link'], data['link'])
 
+            import pypandoc
+            footer = pypandoc.convert(footer, 'md', format='html')
+
         return footer
 
     def auth(self, request):
