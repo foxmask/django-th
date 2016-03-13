@@ -19,6 +19,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
    installation
    configuration
    usage
+   services
    new_module
    migration
 
@@ -62,9 +63,8 @@ your own Readability or Pocket account and so on
    :alt: Downloads per month
 
 
-
-
 .. image:: https://trigger-happy.eu/static/th_esb.png
+   :alt: Trigger Happy Architecture
 
 Description:
 ------------
