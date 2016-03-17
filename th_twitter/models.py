@@ -40,7 +40,7 @@ class Twitter(Services):
                 _("You have to fill ONE of the both fields (or all together)"))
 
     def __str__(self):
-        return "%s" % self.screen
+        return self.screen
 
     def show(self):
         return "My Twitter %s %s" % (self.screen, self.tag)

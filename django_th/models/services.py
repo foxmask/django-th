@@ -11,14 +11,6 @@ class Services(models.Model):
     status = models.BooleanField(default=False)
     description = models.CharField(max_length=255)
 
-    def __str__(self):
-        return "%s" % self.name
-
-    def show(self):
-        return "Services Model %s %s %s " % (self.name,
-                                             self.status,
-                                             self.description)
-
     class Meta:
         app_label = 'django_th'
         abstract = True

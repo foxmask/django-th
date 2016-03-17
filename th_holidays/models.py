@@ -20,7 +20,7 @@ class Holidays(models.Model):
         db_table = 'django_th_holidays'
 
     def __str__(self):
-        return "%s" % (self.trigger)
+        return self.trigger
 
     def show(self):
-        return "Holidays for service %s" % (self.trigger)
+        return "Holidays for service %s" % self.trigger

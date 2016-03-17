@@ -21,7 +21,7 @@ class Pocket(Services):
         db_table = 'django_th_pocket'
 
     def __str__(self):
-        return "%s" % self.url
+        return self.url
 
     def show(self):
-        return "My Pocket %s" % (self.url)
+        return "My Pocket %s" % self.url

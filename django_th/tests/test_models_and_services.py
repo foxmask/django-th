@@ -34,13 +34,13 @@ class UserServiceTest(TestCase):
         self.assertTrue(isinstance(u, UserService))
         self.assertEqual(u.show(), "User Service %s %s %s" % (u.user, u.token,
                                                               u.name))
+        self.assertEqual(u.__str__(), u.name.name)
 
     def test_valid_form(self):
         u = self.create_userservice()
+        data = {'user': u.user, 'name': u.name, 'token': ''}
         if u.name.auth_required:
             data = {'user': u.user, 'name': u.name, 'token': u.token}
-        else:
-            data = {'user': u.user, 'name': u.name, 'token': ''}
         initial = {'user': self.user}
         form = UserServiceForm(data=data, initial=initial)
         self.assertTrue(form.is_valid())

@@ -38,6 +38,7 @@ class TwitterTest(MainTest):
         t = self.create_twitter()
         self.assertTrue(isinstance(t, Twitter))
         self.assertEqual(t.show(), "My Twitter %s %s" % (t.screen, t.tag))
+        self.assertEqual(t.__str__(), "{}".format(t.screen))
 
     """
         Form

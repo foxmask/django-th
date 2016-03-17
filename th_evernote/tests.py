@@ -28,6 +28,7 @@ class EvernoteTest(MainTest):
         ev = self.create_evernote()
         self.assertTrue(isinstance(ev, Evernote))
         self.assertEqual(ev.show(), "My Evernote {}".format(ev.title))
+        self.assertEqual(ev.__str__(), ev.title)
 
     """
         Form

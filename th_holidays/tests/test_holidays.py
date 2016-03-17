@@ -56,4 +56,5 @@ class HolidaysTest(TestCase):
     def test_holidays(self):
         h = self.create_holidays()
         self.assertTrue(isinstance(h, Holidays))
-        self.assertEqual(h.show(), "Holidays for service %s" % (h.trigger))
+        self.assertEqual(h.show(), "Holidays for service {}".format(h.trigger))
+        self.assertEqual(h.__str__(), h.trigger)

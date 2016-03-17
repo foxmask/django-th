@@ -5,6 +5,7 @@ import time
 from django.test import TestCase
 from django.conf import settings
 from th_pocket.models import Pocket
+from th_pocket.forms import PocketProviderForm, PocketConsumerForm
 from django_th.tests.test_main import MainTest
 
 
@@ -28,6 +29,7 @@ class PocketTest(MainTest):
         p = self.create_pocket()
         self.assertTrue(isinstance(p, Pocket))
         self.assertEqual(p.show(), "My Pocket {}".format(p.url))
+        self.assertEqual(p.__str__(), "{}".format(p.url))
 
     def test_get_config_th(self):
         """
@@ -42,6 +44,35 @@ class PocketTest(MainTest):
         th_service = ('th_pocket.my_pocket.ServicePocket',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
+
+    """
+        Form
+    """
+
+    # provider
+    def test_valid_provider_form(self):
+        """
+           test if that form is a valid provider one
+        """
+        p = self.create_pocket()
+        data = {'tag': p.tag}
+        form = PocketProviderForm(data=data)
+        self.assertTrue(form.is_valid())
+        form = PocketProviderForm(data={})
+        self.assertTrue(form.is_valid())
+
+    # consumer
+    def test_valid_consumer_form(self):
+        """
+           test if that form is a valid consumer one
+        """
+        p = self.create_pocket()
+        data = {'tag': p.tag}
+        form = PocketConsumerForm(data=data)
+        self.assertTrue(form.is_valid())
+        form = PocketConsumerForm(data={})
+        self.assertTrue(form.is_valid())
+
 
 try:
     from unittest import mock
@@ -117,3 +148,4 @@ class ServicePocketTest(TestCase):
 
     def test_callback(self):
         pass
+

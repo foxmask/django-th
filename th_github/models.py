@@ -20,7 +20,7 @@ class Github(Services):
         db_table = 'django_th_github'
 
     def __str__(self):
-        return "%s" % (self.name)
+        return self.name
 
     def show(self):
-        return "My Github %s" % (self.name)
+        return "My Github %s" % self.name

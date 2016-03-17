@@ -71,7 +71,7 @@ class ServicePelican(ServicesMgr):
 
         category = data['category'] if 'category' in data else ''
         tags = data['tags'] if 'tags' in data else ''
-        print(content)
+
         filename = self._set_filename(data['title'], pelican_path)
 
         full_content = self._set_full_content(site_title, data['title'], published,

@@ -20,7 +20,7 @@ class Evernote(Services):
         db_table = 'django_th_evernote'
 
     def __str__(self):
-        return "%s" % (self.title)
+        return self.title
 
     def show(self):
         return "My Evernote %s" % self.title

@@ -1,29 +1,22 @@
 # coding: utf-8
-from django.test import TestCase
 from django.conf import settings
-from django.contrib.auth.models import User
-from th_pelican.models import Pelican
 from django_th.models import TriggerService, UserService, ServicesActivated
+from django_th.tests.test_main import MainTest
+from th_pelican.models import Pelican
 from th_pelican.forms import PelicanProviderForm, PelicanConsumerForm
+from th_pelican.my_pelican import ServicePelican
 
 
-class PelicanTest(TestCase):
+class PelicanTest(MainTest):
 
     """
         pelicanTest Model
     """
-    def setUp(self):
-        """
-           create a user
-        """
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
-    def create_triggerservice(self, date_created="20130610",
-                              description="My first Service", status=True):
+    def create_triggerservice(self,
+                              date_created="20130610",
+                              description="My first Service",
+                              status=True,
+                              consumer_name="ServicePelican"):
         """
            create a TriggerService
         """
@@ -33,7 +26,7 @@ class PelicanTest(TestCase):
             name='ServiceRSS', status=True,
             auth_required=False, description='Service RSS')
         service_consumer = ServicesActivated.objects.create(
-            name='ServicePelican', status=True,
+            name=consumer_name, status=True,
             auth_required=True, description='Service Pelican')
         provider = UserService.objects.create(user=user,
                                               token="",
@@ -56,7 +49,12 @@ class PelicanTest(TestCase):
         name = 'pelican'
         status = True
         return Pelican.objects.create(trigger=trigger,
-                                      name=name, status=status)
+                                      title='My Pelican',
+                                      url='http://localhost.com',
+                                      path='/tmp/',
+                                      name=name,
+                                      category='News',
+                                      status=status)
 
     def test_pelican(self):
         """
@@ -64,7 +62,8 @@ class PelicanTest(TestCase):
         """
         d = self.create_pelican()
         self.assertTrue(isinstance(d, Pelican))
-        self.assertEqual(d.show(), "My Pelican %s" % (d.name))
+        self.assertEqual(d.show(), "My Pelican {}".format(d.name))
+        self.assertEqual(d.__str__(), d.name)
 
     """
         Form
@@ -114,3 +113,18 @@ class PelicanTest(TestCase):
         th_service = ('th_pelican.my_pelican.ServicePelican',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
+
+    def test_save_data(self):
+        pelican = self.create_pelican()
+        token = 'AZERTY1234'
+        data = {'title': 'my title', 'category': 'News', 'tags': 'Python'}
+
+        s = ServicePelican()
+        r = s.save_data(token, pelican.trigger_id, **data)
+        self.assertTrue(r, True)
+
+        pelican.path = '/tmp/foo'
+        pelican.save()
+        s = ServicePelican()
+        r = s.save_data(token, pelican.trigger_id, **data)
+        self.assertFalse(r, False)

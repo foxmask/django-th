@@ -26,7 +26,7 @@ class MainTest(TestCase):
             auth_required=False, description='Service RSS')
         service_consumer = ServicesActivated.objects.create(
             name=consumer_name, status=True,
-            auth_required=True, description='Service github')
+            auth_required=True, description='Service Evernote')
         provider = UserService.objects.create(user=user,
                                               token="",
                                               name=service_provider)

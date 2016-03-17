@@ -42,6 +42,9 @@ class TrelloTest(MainTest):
         self.assertEqual(t.show(), "My Trello %s %s %s" % (t.board_name,
                                                            t.list_name,
                                                            t.card_title))
+        self.assertEqual(t.__str__(), "%s %s %s" % (t.board_name,
+                                                    t.list_name,
+                                                    t.card_title))
 
     """
         Form
@@ -68,3 +71,32 @@ class TrelloTest(MainTest):
     def test_invalid_consumer_form(self):
         form = TrelloConsumerForm(data={})
         self.assertFalse(form.is_valid())
+
+    def test_read_data(self):
+        r = self.create_trello()
+        from th_trello.my_trello import ServiceTrello
+        kwargs = {'trigger_id': r.trigger_id}
+        t = ServiceTrello()
+        t.read_data(**kwargs)
+        data = list()
+        self.assertTrue(type(data) is list)
+        self.assertTrue('trigger_id' in kwargs)
+
+    """def test_process_data(self):
+        r = self.create_trello()
+        from th_trello.my_trello import ServiceTrello
+
+        kwargs = {'trigger_id': r.trigger_id}
+
+        self.assertTrue('trigger_id' in kwargs)
+
+        kw = {'cache_stack': 'th_trello',
+              'trigger_id': str(kwargs['trigger_id'])}
+
+        self.assertTrue('cache_stack' in kw)
+        self.assertTrue('trigger_id' in kw)
+
+        s = ServiceTrello()
+        data = s.process_data(**kw)
+
+        self.assertTrue(type(data) is list)"""

@@ -20,7 +20,7 @@ class Readability(Services):
         db_table = 'django_th_readability'
 
     def __str__(self):
-        return "%s" % self.name
+        return self.name
 
     def show(self):
-        return "My Readability %s" % (self.name)
+        return "My Readability %s" % self.name

@@ -5,6 +5,7 @@ import time
 from django.test import TestCase
 from django.conf import settings
 from th_readability.models import Readability
+from th_readability.forms import ReadabilityProviderForm, ReadabilityConsumerForm
 from django_th.tests.test_main import MainTest
 
 
@@ -28,6 +29,7 @@ class ReadabilityTest(MainTest):
         r = self.create_readability()
         self.assertTrue(isinstance(r, Readability))
         self.assertEqual(r.show(), "My Readability {}".format(r.name))
+        self.assertEqual(r.__str__(), r.name)
 
     def test_get_config_th(self):
         """
@@ -43,6 +45,29 @@ class ReadabilityTest(MainTest):
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
 
+    # provider
+    def test_valid_provider_form(self):
+        """
+           test if that form is a valid provider one
+        """
+        p = self.create_readability()
+        data = {'tag': p.tag}
+        form = ReadabilityProviderForm(data=data)
+        self.assertTrue(form.is_valid())
+        form = ReadabilityProviderForm(data={})
+        self.assertTrue(form.is_valid())
+
+    # consumer
+    def test_valid_consumer_form(self):
+        """
+           test if that form is a valid consumer one
+        """
+        p = self.create_readability()
+        data = {'tag': p.tag}
+        form = ReadabilityConsumerForm(data=data)
+        self.assertTrue(form.is_valid())
+        form = ReadabilityConsumerForm(data={})
+        self.assertTrue(form.is_valid())
 
 try:
     from unittest import mock
@@ -110,12 +135,12 @@ class ServiceReadabilityTest(TestCase):
         tags = ('test',)
         title = (self.data['title'] if 'title' in self.data else '')
 
-        pocket_instance = mock.Mock(return_value=True)
-        pocket_instance.method(url=self.data['link'], title=title, tags=tags)
-        pocket_instance.method.assert_called_with(url=self.data['link'],
+        readability_instance = mock.Mock(return_value=True)
+        readability_instance.method(url=self.data['link'], title=title, tags=tags)
+        readability_instance.method.assert_called_with(url=self.data['link'],
                                                   title=title, tags=tags)
 
-        if pocket_instance():
+        if readability_instance ():
             the_return = True
 
         return the_return
