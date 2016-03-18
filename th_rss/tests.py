@@ -83,6 +83,5 @@ class RssTest(MainTest):
 
         s = ServiceRss()
         data = s.process_data(**kw)
-        print(type(data))
-
-        self.assertTrue(type(data) is list)
+        if data:
+            self.assertTrue(type(data) is list)
