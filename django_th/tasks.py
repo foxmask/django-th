@@ -168,7 +168,7 @@ def read_data():
         because of the read_data function of each
         service
     """
-    trigger = TriggerService.objects.filter(status=True).select_related(
+    trigger = TriggerService.objects.filter(status=True, user__is_active=True).select_related(
         'consumer__name', 'provider__name')
 
     for service in trigger:
@@ -246,7 +246,7 @@ def publish_data():
         the purpose of this tasks is to get the data from the cache
         then publish them
     """
-    trigger = TriggerService.objects.filter(status=True).select_related(
+    trigger = TriggerService.objects.filter(status=True, user__is_active=True).select_related(
         'consumer__name', 'provider__name')
 
     for service in trigger:

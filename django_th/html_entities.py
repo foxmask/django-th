@@ -1,11 +1,6 @@
 # coding: utf-8
-import sys
 import re
-# python 2
-if sys.version_info.major == 2:
-    import htmlentitydefs as htmlentities
-else:
-    import html.entities as htmlentities
+import html.entities as htmlentities
 
 
 class HtmlEntities:

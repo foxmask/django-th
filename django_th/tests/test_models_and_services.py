@@ -42,8 +42,15 @@ class UserServiceTest(TestCase):
         if u.name.auth_required:
             data = {'user': u.user, 'name': u.name, 'token': u.token}
         initial = {'user': self.user}
+        # create a second service to be able to cover the "else" in activated_services()
+        user = self.user
+        ServicesActivated.objects.create(name='ServiceRss',
+                                         status=True,
+                                         auth_required=True,
+                                         description='Service Rss')
         form = UserServiceForm(data=data, initial=initial)
         self.assertTrue(form.is_valid())
+        form.save(user=user)
 
     def test_invalid_form(self):
         data = {'user': '', 'name': '', 'token': ''}
@@ -103,3 +110,5 @@ class TriggerServiceTest(MainTest):
         data = {'description': t.description, }
         form = TriggerServiceForm(data=data)
         self.assertFalse(form.is_valid())
+
+

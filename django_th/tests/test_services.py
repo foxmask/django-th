@@ -30,7 +30,7 @@ class ServicesMgrTestCase(MainTest):
                               consumer_name="ServiceEvernote"):
         return super(ServicesMgrTestCase, self).create_triggerservice(self)
 
-    def create_rss(self, **kwargs):
+    def create_rss(self):
         trigger = self.create_triggerservice()
         name = 'Foobar RSS'
         url = 'http://foobar.com/somewhere/in/the/rainbow.rss'
@@ -55,29 +55,25 @@ class ServicesMgrTestCase(MainTest):
         self.assertTrue('description' in data)
         self.assertTrue('summary_detail' not in data)
 
-    def test_read_data(self, **kwargs):
-        kwargs = {'model_name': 'Rss', 'trigger_id': 1}
+    def test_read_data(self):
+        kwargs = {'model_name': 'Rss', 'trigger_id': '1'}
         self.assertTrue('model_name', kwargs)
         self.assertTrue('trigger_id', kwargs)
+        s = ServicesMgr("ABCD")
+        data = s.read_data(**kwargs)
+        self.assertTrue(isinstance(data, Rss))
 
-        model = get_model('django_th', kwargs['model_name'])
-        result = model.objects.get(trigger_id=kwargs['trigger_id'])
-        self.assertTrue(isinstance(result, Rss))
-
-    def test_process_data(self, **kwargs):
-        kwargs = {'cache_stack': 'th_rss', 'trigger_id': '1'}
-        self.assertTrue('cache_stack' in kwargs)
-
-    def _set_title(self, data):
-        return data['title'] if 'title' in data else data['link']
-
-    def _set_content(self, data):
-        return data['summary_detail'] if 'summary_detail' in data else data['description']
-
-    def test_save_data(self, **kwargs):
+    def test_save_data(self):
         data = {'title': 'a title', 'summary_detail': 'a content'}
         s = ServicesMgr('')
         title = s.set_title(data)
         content = s.set_content(data)
         self.assertTrue(title)
         self.assertTrue(content)
+
+    def test_process_data(self):
+        kwargs = {'cache_stack': 'th_rss', 'trigger_id': '1'}
+        self.assertTrue('cache_stack' in kwargs)
+        s = ServicesMgr("ABCD")
+        data = s.process_data(**kwargs)
+        self.assertTrue(isinstance(data, list))
