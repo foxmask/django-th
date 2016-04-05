@@ -3,7 +3,6 @@
 from requests_oauthlib import OAuth1Session
 
 # django stuff
-from django.core.cache import caches
 from django.core.urlresolvers import reverse
 
 try:
@@ -14,7 +13,6 @@ except ImportError:
 
 # django_th stuff
 from django_th.models import UserService, ServicesActivated
-from django_th.publishing_limit import PublishingLimit
 from django_th.html_entities import HtmlEntities
 
 
