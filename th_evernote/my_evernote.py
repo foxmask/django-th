@@ -43,7 +43,7 @@ from th_evernote.sanitize import sanitize
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_evernote']
+cache = caches['ServiceEvernote']
 
 
 class ServiceEvernote(ServicesMgr):
@@ -53,8 +53,8 @@ class ServiceEvernote(ServicesMgr):
         self.sandbox = settings.TH_EVERNOTE['sandbox']
         self.consumer_key = settings.TH_EVERNOTE['consumer_key']
         self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
-        self.token = token
 
+        self.token = token
         kwargs = {'consumer_key': self.consumer_key,
                   'consumer_secret': self.consumer_secret,
                   'sandbox': self.sandbox}
@@ -75,7 +75,8 @@ class ServiceEvernote(ServicesMgr):
         """
         date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
-
+        consumer = kwargs['consumer']
+        consumer_token = kwargs['token']
         kwargs['model_name'] = 'Evernote'
 
         trigger = super(ServiceEvernote, self).read_data(**kwargs)
@@ -94,11 +95,11 @@ class ServiceEvernote(ServicesMgr):
             notebook_filter = "notebook:{} ".format(trigger.notebook)
         tag_filter = "tag:{} ".format(trigger.tag) if trigger.tag != '' else ''
 
-        complet_filter = ''.join((notebook_filter, tag_filter, date_filter))
+        complete_filter = ''.join((notebook_filter, tag_filter, date_filter))
 
         # filter
         my_filter = NoteStore.NoteFilter()
-        my_filter.words = complet_filter
+        my_filter.words = complete_filter
 
         # result spec to tell to evernote
         # what information to include in the response
@@ -127,21 +128,12 @@ class ServiceEvernote(ServicesMgr):
                  'link': whole_note.attributes.sourceURL,
                  'content': content})
 
-        cache.set('th_evernote_' + str(trigger_id), data)
-
+        cache.set(consumer + '_' + str(trigger_id), data)
+        cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
         return data
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_evernote',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceEvernote, self).process_data(**kw)
-
-    def _create_note(self, note, trigger_id, data):
+    @staticmethod
+    def _create_note(note_store, note, trigger_id, data):
         """
             create a note
             :param note
@@ -155,7 +147,7 @@ class ServiceEvernote(ServicesMgr):
         """
         # create the note !
         try:
-            created_note = self.note_store.createNote(note)
+            created_note = note_store.createNote(note)
             sentance = str('note %s created') % created_note.guid
             logger.debug(sentance)
             return True
@@ -168,7 +160,7 @@ class ServiceEvernote(ServicesMgr):
                     msg=e.rateLimitDuration))
                 # put again in cache the data that could not be
                 # published in Evernote yet
-                cache.set('th_evernote_' + str(trigger_id),
+                cache.set('ServiceEvernote_' + str(trigger_id),
                           data,
                           version=2)
                 return True
@@ -206,15 +198,14 @@ class ServiceEvernote(ServicesMgr):
         title, content = super(ServiceEvernote, self).save_data(trigger_id,
                                                                 data,
                                                                 **kwargs)
-
         if len(title):
-            # get the evernote data of this trigger
+            # get the evernote settings of this trigger
             trigger = Evernote.objects.get(trigger_id=trigger_id)
 
             try:
-                self.note_store = self.client.get_note_store()
+                note_store = self.client.get_note_store()
             except EDAMSystemException as e:
-                # rate limite reach have to wait 1 hour !
+                # rate limit reach have to wait 1 hour !
                 if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
                     sentance = "Rate limit reached {code}"
                     sentance += "Retry your request in {msg} seconds"
@@ -225,7 +216,7 @@ class ServiceEvernote(ServicesMgr):
                         msg=e.rateLimitDuration))
                     # put again in cache the data that could not be
                     # published in Evernote yet
-                    cache.set('th_evernote_' + str(trigger_id),
+                    cache.set('ServiceEvernote_' + str(trigger_id),
                               data,
                               version=2)
                     return True
@@ -240,13 +231,14 @@ class ServiceEvernote(ServicesMgr):
             note = Types.Note()
             if trigger.notebook:
                 # get the notebookGUID ...
-                notebook_id = self.get_notebook(trigger)
+                notebook_id = self.get_notebook(note_store, trigger)
                 # create notebookGUID if it does not exist then return its id
-                note.notebookGuid = self.set_notebook(trigger, notebook_id)
+                note.notebookGuid = self.set_notebook(note_store,
+                                                      trigger, notebook_id)
 
                 # ... and get the tagGUID if a tag has been provided
-                tag_id = self.get_tag(trigger)
-                tag_id = self.set_tag(trigger, tag_id)
+                tag_id = self.get_tag(note_store, trigger)
+                tag_id = self.set_tag(note_store, trigger, tag_id)
 
                 if trigger.tag is not '':
                     # set the tag to the note if a tag has been provided
@@ -267,19 +259,20 @@ class ServiceEvernote(ServicesMgr):
             note.content = self.set_evernote_header()
             note.content += self.get_sanitize_content(content)
             # create a note
-            return self._create_note(note, trigger_id, data)
+            return self._create_note(note_store, note, trigger_id, data)
 
         else:
             sentence = "no title provided for trigger ID {} and title {}"
             logger.critical(sentence.format(trigger_id, title))
             return False
 
-    def get_notebook(self, trigger):
+    @staticmethod
+    def get_notebook(note_store, trigger):
         """
             get the notebook from its name
         """
         notebook_id = 0
-        notebooks = self.note_store.listNotebooks()
+        notebooks = note_store.listNotebooks()
         # get the notebookGUID ...
         for notebook in notebooks:
             if notebook.name.lower() == trigger.notebook.lower():
@@ -287,7 +280,8 @@ class ServiceEvernote(ServicesMgr):
                 break
         return notebook_id
 
-    def set_notebook(self, trigger, notebook_id):
+    @staticmethod
+    def set_notebook(note_store, trigger, notebook_id):
         """
             create a notebook
         """
@@ -295,18 +289,19 @@ class ServiceEvernote(ServicesMgr):
             new_notebook = Types.Notebook()
             new_notebook.name = trigger.notebook
             new_notebook.defaultNotebook = False
-            notebook_id = self.note_store.createNotebook(
+            notebook_id = note_store.createNotebook(
                 new_notebook).guid
 
         return notebook_id
 
-    def get_tag(self, trigger):
+    @staticmethod
+    def get_tag(note_store, trigger):
         """
             get the tags from his Evernote account
         """
         tag_id = []
         if trigger.tag is not '':
-            listtags = self.note_store.listTags()
+            listtags = note_store.listTags()
             # cut the string by piece of tag with comma
             if ',' in trigger.tag:
                 for my_tag in trigger.tag.split(','):
@@ -324,7 +319,8 @@ class ServiceEvernote(ServicesMgr):
                         break
         return tag_id
 
-    def set_tag(self, trigger, tag_id):
+    @staticmethod
+    def set_tag(note_store, trigger, tag_id):
         """
             create a tag if not exists
         """
@@ -333,7 +329,7 @@ class ServiceEvernote(ServicesMgr):
         if tag_id == 0 and trigger.tag is not '':
             new_tag = Types.Tag()
             new_tag.name = trigger.tag
-            tag_id = self.note_store.createTag(new_tag).guid
+            tag_id = note_store.createTag(new_tag).guid
 
         return tag_id
 
@@ -458,7 +454,10 @@ class ServiceEvernote(ServicesMgr):
     @staticmethod
     def cleaning_content(data):
 
-        data = data.replace('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">\n<en-note>', '')
+        data = data.replace('<?xml version="1.0" encoding="UTF-8"?>\n'
+                            '<!DOCTYPE en-note SYSTEM '
+                            '"http://xml.evernote.com/pub/enml2.dtd">\n'
+                            '<en-note>', '')
         data = data.replace('</en-note>', '')
 
         return data

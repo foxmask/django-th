@@ -31,7 +31,7 @@ from django_th.services.services import ServicesMgr
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_trello']
+cache = caches['ServiceTrello']
 
 
 class ServiceTrello(ServicesMgr):
@@ -63,23 +63,21 @@ class ServiceTrello(ServicesMgr):
     def read_data(self, **kwargs):
         """
             get the data from the service
-
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
+            :rtype: list
         """
+        date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
+        consumer = kwargs['consumer']
+        consumer_token = kwargs['token']
+        kwargs['model_name'] = 'Trello'
+        trigger = super(ServiceTrello, self).read_data(**kwargs)
         data = list()
-        cache.set('th_trello_' + str(trigger_id), data)
-
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_trello',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceTrello, self).process_data(**kw)
+        # @TODO get the data from Trello Service
+        cache.set(consumer + '_' + str(trigger_id), data)
+        cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
+        return data
 
     def save_data(self, trigger_id, **data):
         """

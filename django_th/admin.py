@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.admin.helpers import ActionForm
+from django import forms
 
 from django_th.forms.services import ServicesAdminForm
 from django_th.models import ServicesActivated
@@ -18,7 +20,8 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(request, "%s successfully marked as enabled." % message_bit)
+        self.message_user(request,
+                          "%s successfully marked as enabled." % message_bit)
 
     def make_status_disable(self, request, queryset):
         rows_updated = queryset.update(status=False)
@@ -27,7 +30,8 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(request, "%s successfully marked as disabled." % message_bit)
+        self.message_user(request,
+                          "%s successfully marked as disabled." % message_bit)
 
     make_status_enable.short_description = "Status Enable"
     make_status_disable.short_description = "Status Disable"
@@ -57,6 +61,11 @@ class UserServiceAdmin(admin.ModelAdmin):
     list_filter = ['user', 'name']
 
 
+class ServicesActivatedActionForm(ActionForm):
+    provider = forms.ChoiceField(choices=ServicesActivated.objects.values_list('id', 'name'))
+    consumer = forms.ChoiceField(choices=ServicesActivated.objects.values_list('id', 'name'))
+
+
 class TriggerServiceAdmin(admin.ModelAdmin):
 
     """
@@ -65,6 +74,16 @@ class TriggerServiceAdmin(admin.ModelAdmin):
     list_display = ('user', 'provider', 'consumer', 'description',
                     'date_created', 'date_triggered', 'status')
     list_filter = ['user', 'provider', 'consumer', 'status']
+    action_form = ServicesActivatedActionForm
+
+    def change_service(self, request, queryset):
+        provider = request.POST['provider']
+        consumer = request.POST['consumer']
+        print(consumer, provider)
+        queryset.update(provider=provider, consumer=consumer)
+
+    change_service.short_description = 'Change of Service'
+    actions = [change_service]
 
 
 admin.site.register(ServicesActivated, ServicesManagedAdmin)

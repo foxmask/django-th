@@ -1,5 +1,7 @@
 # coding: utf-8
 from django.test import TestCase
+from django.conf import settings
+from django_th.my_services import MyService
 
 
 class MyServiceTest(TestCase):
@@ -11,18 +13,21 @@ class MyServiceTest(TestCase):
         self.full_name = "th_rss.my_rss.ServiceRss"
 
     def test_full_name(self):
-        service_name = self.package.split('_')[1]
-        full_name = ''.join((self.package,
-                             ".my_",
-                             service_name,
-                             ".Service",
-                             service_name.title()))
-        self.assertEqual(self.full_name, full_name)
+        string = MyService.full_name(self.service_name)
+        self.assertEqual(self.full_name, string)
 
     def test_module_name(self):
-        module_name = "".join(("my_", self.package.split('_')[1]))
-        self.assertEqual(self.module_name, module_name)
+        string = MyService.module_name(self.module_name)
+        self.assertEqual(self.module_name, string)
 
     def test_service_name(self):
-        service_name = "".join(("Service", self.package.split('_')[1].title()))
-        self.assertEqual(self.service_name, service_name)
+        string = MyService.service_name(self.package)
+        self.assertEqual(self.service_name, string)
+
+    def test_all_packages(self):
+        all_packages = MyService.all_packages()
+        my_services = list()
+        for services in settings.TH_SERVICES:
+            package = services.split('.')[2]
+            my_services.append(package)
+        self.assertEqual(all_packages, my_services)

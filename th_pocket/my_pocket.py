@@ -33,7 +33,7 @@ from django_th.html_entities import HtmlEntities
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_pocket']
+cache = caches['ServicePocket']
 
 
 class ServicePocket(ServicesMgr):
@@ -58,15 +58,17 @@ class ServicePocket(ServicesMgr):
 
             :rtype: list
         """
-        trigger_id = kwargs['trigger_id']
-        date_triggered = kwargs['date_triggered']
-
-        data = list()
-        # pocket uses a timestamp date format
-        since = int(
-            time.mktime(datetime.datetime.timetuple(date_triggered)))
-
         if self.token is not None:
+
+            date_triggered = kwargs['date_triggered']
+            trigger_id = kwargs['trigger_id']
+            consumer = kwargs['consumer']
+            consumer_token = kwargs['token']
+            kwargs['model_name'] = 'Pocket'
+            data = list()
+            # pocket uses a timestamp date format
+            since = int(
+                time.mktime(datetime.datetime.timetuple(date_triggered)))
 
             # get the data from the last time the trigger have been started
             # timestamp form
@@ -87,19 +89,9 @@ class ServicePocket(ServicesMgr):
                                  'title': my_pocket['given_title'],
                                  'content': content,
                                  'tweet_id': 0})
-                cache.set('th_pocket_' + str(trigger_id), data)
-
+                cache.set(consumer + '_' + str(trigger_id), data)
+                cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
         return data
-
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_pocket',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServicePocket, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
         """

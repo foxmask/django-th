@@ -26,7 +26,7 @@ from th_twitter.models import Twitter
 """
 
 logger = getLogger('django_th.trigger_happy')
-cache = caches['th_twitter']
+cache = caches['ServiceTwitter']
 
 
 class ServiceTwitter(ServicesMgr):
@@ -56,6 +56,9 @@ class ServiceTwitter(ServicesMgr):
         since_id = None
         trigger_id = kwargs['trigger_id']
         date_triggered = kwargs['date_triggered']
+        consumer = kwargs['consumer']
+        consumer_token = kwargs['token']
+        kwargs['model_name'] = 'Twitter'
 
         def _get_tweets(twitter_obj, search):
             """
@@ -155,22 +158,14 @@ class ServiceTwitter(ServicesMgr):
                                               'content': s['text'],
                                               'link': url,
                                               'my_date': my_date})
-                    cache.set('th_twitter_' + str(trigger_id), my_tweets)
+                    cache.set(consumer + '_' + str(trigger_id), my_tweets)
+                    cache.set(consumer + '_TOKEN_' + str(trigger_id),
+                              consumer_token)
                     Twitter.objects.filter(trigger_id=trigger_id).update(
                         since_id=since_id,
                         max_id=max_id,
                         count=count)
         return my_tweets
-
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_twitter',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceTwitter, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
         """

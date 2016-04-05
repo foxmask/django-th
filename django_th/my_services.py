@@ -10,13 +10,13 @@ class MyService(object):
         th_<service>.my_<service>.Service<Service>
     """
     @staticmethod
-    def full_name(package):
-        service_name = package.split('_')[1]
-        return ''.join((package,
+    def full_name(service):
+        service_name = service.split('Service')[1].lower()
+        return ''.join(("th_" + service_name,
                         ".my_",
                         service_name,
-                        ".Service",
-                        service_name.title()))
+                        ".",
+                        service))
 
     @staticmethod
     def module_name(package):
@@ -28,8 +28,8 @@ class MyService(object):
 
     @staticmethod
     def all_packages():
-        my_services = []
+        my_services = list()
         for services in settings.TH_SERVICES:
-            package = services.split('.')[0]
+            package = services.split('.')[2]
             my_services.append(package)
         return my_services

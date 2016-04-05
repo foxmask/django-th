@@ -38,7 +38,7 @@ class ReadabilityTest(MainTest):
         self.assertTrue(settings.TH_READABILITY)
 
     def test_get_config_th_cache(self):
-        self.assertIn('th_readability', settings.CACHES)
+        self.assertIn('ServiceReadability', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_readability.my_readability.ServiceReadability',)
@@ -93,34 +93,6 @@ class ServiceReadabilityTest(TestCase):
         self.assertTrue(settings.TH_READABILITY)
         self.assertIn('consumer_key', settings.TH_READABILITY)
         self.assertIn('consumer_secret', settings.TH_READABILITY)
-
-    def test_get_config_th_cache(self):
-        self.assertIn('th_readability', settings.CACHES)
-
-    def test_process_data(self, token='AZERTY123#TH#AZERTY123', trigger_id=1):
-        since = int(
-            time.mktime(datetime.datetime.timetuple(self.date_triggered)))
-        self.assertIn('#TH#', token)
-        token_key, token_secret = token.split('#TH#')
-
-        datas = list()
-        self.assertTrue(isinstance(self.date_triggered, datetime.datetime))
-        self.assertTrue(token)
-        self.assertTrue(isinstance(trigger_id, int))
-        self.assertTrue(isinstance(since, int))
-        self.assertTrue(isinstance(datas, list))
-
-        client = mock.Mock()
-        client.method(consumer_key=self.consumer_key,
-                      consumer_secret=self.consumer_secret,
-                      token_key=token_key,
-                      token_secret=token_secret)
-        client.method.assert_called_with(consumer_key=self.consumer_key,
-                                         consumer_secret=self.consumer_secret,
-                                         token_key=token_key,
-                                         token_secret=token_secret)
-
-        return datas
 
     def test_save_data(self, token='AZERTY123', trigger_id=1):
 

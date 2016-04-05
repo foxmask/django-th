@@ -30,7 +30,7 @@ from th_readability.models import Readability
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_readability']
+cache = caches['ServiceReadability']
 
 
 class ServiceReadability(ServicesMgr):
@@ -59,12 +59,14 @@ class ServiceReadability(ServicesMgr):
 
             :rtype: list
         """
-        date_triggered = kwargs['date_triggered']
-        trigger_id = kwargs['trigger_id']
-        data = []
-
         if self.token is not None:
 
+            date_triggered = kwargs['date_triggered']
+            trigger_id = kwargs['trigger_id']
+            consumer = kwargs['consumer']
+            consumer_token = kwargs['token']
+            kwargs['model_name'] = 'Readability'
+            data = list()
             bookmarks = self.client.get_bookmarks(
                 added_since=date_triggered).content
 
@@ -89,19 +91,9 @@ class ServiceReadability(ServicesMgr):
                              'link': link,
                              'content': content})
 
-            cache.set('th_readability_' + str(trigger_id), data)
-
+            cache.set(consumer + '_' + str(trigger_id), data)
+            cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
         return data
-
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_readability',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceReadability, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
         """
