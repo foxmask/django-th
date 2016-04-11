@@ -61,6 +61,11 @@ class UserServiceAdmin(admin.ModelAdmin):
     list_filter = ['user', 'name']
 
 
+class ServicesActivatedActionForm(ActionForm):
+    provider = forms.ChoiceField(choices=ServicesActivated.objects.values_list('id', 'name'))
+    consumer = forms.ChoiceField(choices=ServicesActivated.objects.values_list('id', 'name'))
+
+
 class TriggerServiceAdmin(admin.ModelAdmin):
 
     """
@@ -69,6 +74,16 @@ class TriggerServiceAdmin(admin.ModelAdmin):
     list_display = ('user', 'provider', 'consumer', 'description',
                     'date_created', 'date_triggered', 'status')
     list_filter = ['user', 'provider', 'consumer', 'status']
+    action_form = ServicesActivatedActionForm
+
+    def change_service(self, request, queryset):
+        provider = request.POST['provider']
+        consumer = request.POST['consumer']
+        print(consumer, provider)
+        queryset.update(provider=provider, consumer=consumer)
+
+    change_service.short_description = 'Change of Service'
+    actions = [change_service]
 
 
 admin.site.register(ServicesActivated, ServicesManagedAdmin)
