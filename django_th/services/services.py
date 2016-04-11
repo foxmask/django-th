@@ -54,7 +54,8 @@ class ServicesMgr(object):
     def __str__(self):
         return self.name
 
-    def _get_content(self, data, which_content):
+    @staticmethod
+    def _get_content(data, which_content):
         """
             get the content that could be hidden
             in the middle of "content" or "summary detail"
@@ -77,7 +78,8 @@ class ServicesMgr(object):
                     content = data[which_content]['value']
         return content
 
-    def set_title(self, data):
+    @staticmethod
+    def set_title(data):
         """
             handle the title from the data
             :param data: contains the data from the provider
@@ -96,7 +98,6 @@ class ServicesMgr(object):
             :type data: dict
             :rtype: string
         """
-        content = ''
         content = self._get_content(data, 'content')
 
         if content == '':
@@ -173,7 +174,8 @@ class ServicesMgr(object):
 
         return request_token
 
-    def callback_url(self, request, service):
+    @staticmethod
+    def callback_url(request, service):
         """
             the url to go back after the external service call
             :param request: contains the current session

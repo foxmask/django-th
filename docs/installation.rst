@@ -91,7 +91,6 @@ Requirements
 * `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.5.4
 * `django-formtools <https://pypi.python.org/pypi/django-formtools`_ == 1.0
 * `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.5.1
-* `django-rq <https://pypi.python.org/pypi/django-rq>`_ == 0.9.0
 
 
 for evernote support

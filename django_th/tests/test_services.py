@@ -23,17 +23,11 @@ class ServicesMgrTestCase(MainTest):
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
-        self.create_rss()
-
-    def create_triggerservice(self, date_created="20130610",
-                              description="My first Service", status=True,
-                              consumer_name="ServiceEvernote"):
-        return super(ServicesMgrTestCase, self).create_triggerservice(self)
 
     def create_rss(self):
         trigger = self.create_triggerservice()
         name = 'Foobar RSS'
-        url = 'http://foobar.com/somewhere/in/the/rainbow.rss'
+        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
         status = True
         return Rss.objects.create(uuid=uuid.uuid4(),
                                   url=url,
@@ -55,14 +49,6 @@ class ServicesMgrTestCase(MainTest):
         self.assertTrue('description' in data)
         self.assertTrue('summary_detail' not in data)
 
-    def test_read_data(self):
-        kwargs = {'model_name': 'Rss', 'trigger_id': '1'}
-        self.assertTrue('model_name', kwargs)
-        self.assertTrue('trigger_id', kwargs)
-        s = ServicesMgr("ABCD")
-        data = s.read_data(**kwargs)
-        self.assertTrue(isinstance(data, Rss))
-
     def test_save_data(self):
         data = {'title': 'a title', 'summary_detail': 'a content'}
         s = ServicesMgr('')
@@ -70,10 +56,3 @@ class ServicesMgrTestCase(MainTest):
         content = s.set_content(data)
         self.assertTrue(title)
         self.assertTrue(content)
-
-    def test_process_data(self):
-        kwargs = {'cache_stack': 'th_rss', 'trigger_id': '1'}
-        self.assertTrue('cache_stack' in kwargs)
-        s = ServicesMgr("ABCD")
-        data = s.process_data(**kwargs)
-        self.assertTrue(isinstance(data, list))

@@ -18,6 +18,7 @@ class TriggerSettingsTestCase(unittest.TestCase):
         self.assertIn('publishing_limit', settings.DJANGO_TH)
         self.assertIs(type(settings.DJANGO_TH['paginate_by']), int)
         self.assertIs(type(settings.DJANGO_TH['publishing_limit']), int)
+        self.assertIs(type(settings.DJANGO_TH['processes']), int)
 
     def test_get_services_list(self):
         th_service = (
@@ -30,7 +31,3 @@ class TriggerSettingsTestCase(unittest.TestCase):
         )
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
-
-    def test_get_config_rq(self):
-        self.assertTrue(settings.RQ_QUEUES)
-        self.assertTrue(settings.RQ_SHOW_ADMIN_LINK)

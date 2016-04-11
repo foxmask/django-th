@@ -43,7 +43,6 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'formtools',
         'django_js_reverse',
         'django_th',
-        'django_rq',
         'th_rss',
         # uncomment the lines to enable the service you need
         # 'th_pocket',
@@ -333,77 +332,6 @@ in the LOGGING add to loggers
     }
 
 
-DJANGO-RQ
-~~~~~~~~~
-
-Django-RQ will handle tasks itself to populate the cache from provider services
-and then exploit it to publish the data to the expected consumer services
-
-* From Settings
-
-If you dont have a redis server that handles the cache for you then do the following :
-
-.. code-block:: python
-
-    RQ_QUEUES = {
-        'default': {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/1",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-        'high': {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/2",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-        'low': {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/3",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        }
-    }
-
-
-Otherwise this should be enough :
-
-.. code-block:: python
-
-    CACHES = {
-        [...]
-        'redis-cache':
-        {
-                'TIMEOUT': 3600,
-                "BACKEND": "django_redis.cache.RedisCache",
-                "LOCATION": "redis://127.0.0.1:6379/10",
-                "OPTIONS": {
-                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                }
-        },
-        [...]
-    }
-
-    RQ_QUEUES = {
-        'default': {
-            'USE_REDIS_CACHE': 'redis-cache',
-        },
-        'high': {
-            'USE_REDIS_CACHE': 'redis-cache',
-        },
-        'low': {
-            'USE_REDIS_CACHE': 'redis-cache',
-        },
-    }
-
-
 Once this is done we can create tasks in the crontab :
 
 
@@ -411,41 +339,9 @@ Suppose my virtualenv is created in /home/trigger-happy and the django app is lo
 
 .. code-block:: bash
 
-    */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/django_th/ && ./manage.py fire_read_data && ../bin/rqworker-default-burst.sh
-    */15 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py fire_publish_data && ../bin/rqworker-high-burst.sh
-    */20 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py fire_get_outside_data && ../bin/rqworker-low-burst.sh
-
-where `rqworker-default-burst.sh` contains :
-
-.. code-block:: bash
-
-    #!/bin/bash
-    python manage.py rqworker default --burst &
-    python manage.py rqworker default --burst &
-    python manage.py rqworker default --burst &
-    python manage.py rqworker default --burst &
-    python manage.py rqworker default --burst &
-
-
-where `rqworker-high-burst.sh` contains :
-
-.. code-block:: bash
-
-    #!/bin/bash
-    python manage.py rqworker high --burst &
-    python manage.py rqworker high --burst &
-    python manage.py rqworker high --burst &
-    python manage.py rqworker high --burst &
-    python manage.py rqworker high --burst &
-
-where `rqworker-low-burst.sh` contains :
-
-.. code-block:: bash
-
-    #!/bin/bash
-    python manage.py rqworker low --burst &
-
-
+    */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/django_th/ && ./manage.py read
+    */15 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py publish
+    */20 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py recycle
 
 TH_HOLIDAYS
 ~~~~~~~~~~~

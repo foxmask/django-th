@@ -119,9 +119,8 @@ INSTALLED_APPS = (
     'django_js_reverse',
     'django_th',
     'th_rss',
-    'django_rq',
     # uncomment the lines to enable the service you need
-    # 'th_pocket',
+    'th_pocket',
     # 'th_evernote',
     # 'th_twitter',
     # 'th_readability',
@@ -300,20 +299,6 @@ CACHES = {
     },
 
 }
-# FOR DJANGO-RQ
-REDIS_CACHE_TYPE = 'django-redis'
-RQ_SHOW_ADMIN_LINK = True
-RQ_QUEUES = {
-    'default': {
-        'USE_REDIS_CACHE': 'redis-cache',
-    },
-    'high': {
-        'USE_REDIS_CACHE': 'redis-cache',
-    },
-    'low': {
-        'USE_REDIS_CACHE': 'redis-cache',
-    },
-}
 
 DJANGO_TH = {
     # paginating
@@ -324,6 +309,8 @@ DJANGO_TH = {
     # the cache is kept until next time
     # set it to 0 to drop that limit
     'publishing_limit': 0,
+    # number of process to spawn from multiprocessing.Pool
+    'processes': 5,
 }
 
 TH_SERVICES = (

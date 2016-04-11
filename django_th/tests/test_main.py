@@ -33,7 +33,8 @@ class MainTest(TestCase):
         consumer = UserService.objects.create(user=user,
                                               token="AZERTY1234",
                                               name=service_consumer)
-        return TriggerService.objects.create(provider=provider,
+        return TriggerService.objects.create(id=1,
+                                             provider=provider,
                                              consumer=consumer,
                                              user=user,
                                              date_created=date_created,
