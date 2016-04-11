@@ -1,5 +1,4 @@
 # coding: utf-8
-import arrow
 from django.conf import settings
 from th_github.models import Github
 from th_github.forms import GithubProviderForm, GithubConsumerForm
@@ -76,34 +75,9 @@ class GithubTest(MainTest):
         self.assertTrue(settings.TH_GITHUB)
 
     def test_get_config_th_cache(self):
-        self.assertIn('ServiceGithub', settings.CACHES)
+        self.assertIn('th_github', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_github.my_github.ServiceGithub',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
-
-    def test_read_data(self):
-        r = self.create_github()
-        date_triggered = arrow.get('2013-05-11T21:23:58.970460+00:00')
-        from th_github.my_github import ServiceGithub
-        kwargs = {'date_triggered': date_triggered,
-                  'trigger_id': r.trigger_id,
-                  'model_name': 'Github',
-                  'consumer': 'ServiceEvernote',
-                  'token': 'ABCD'}
-        g = ServiceGithub()
-        g.read_data(**kwargs)
-        data = list()
-        self.assertTrue(type(data) is list)
-        self.assertTrue('date_triggered' in kwargs)
-        self.assertTrue('trigger_id' in kwargs)
-        self.assertTrue('consumer' in kwargs)
-        self.assertTrue('model_name' in kwargs)
-        self.assertTrue('token' in kwargs)
-
-    def test_auth(self):
-        pass
-
-    def test_callback(self):
-        pass

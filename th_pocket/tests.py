@@ -1,7 +1,6 @@
 # coding: utf-8
 import datetime
 import time
-import arrow
 
 from django.test import TestCase
 from django.conf import settings
@@ -39,7 +38,7 @@ class PocketTest(MainTest):
         self.assertTrue(settings.TH_POCKET)
 
     def test_get_config_th_cache(self):
-        self.assertIn('ServicePocket', settings.CACHES)
+        self.assertIn('th_pocket', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_pocket.my_pocket.ServicePocket',)
@@ -90,6 +89,23 @@ class ServicePocketTest(TestCase):
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
 
+    def test_process_data(self, token='AZERTY123', trigger_id=1):
+        since = int(
+            time.mktime(datetime.datetime.timetuple(self.date_triggered)))
+
+        datas = list()
+        self.assertTrue(isinstance(self.date_triggered, datetime.datetime))
+        self.assertTrue(token)
+        self.assertTrue(isinstance(trigger_id, int))
+        self.assertTrue(isinstance(since, int))
+        self.assertTrue(isinstance(datas, list))
+
+        pocket_instance = mock.Mock()
+        pocket_instance.method(since=since, state="unread")
+        pocket_instance.method.assert_called_with(since=since, state="unread")
+
+        return datas
+
     def test_save_data(self, token='AZERTY123', trigger_id=1):
 
         the_return = False
@@ -124,10 +140,12 @@ class ServicePocketTest(TestCase):
         self.assertTrue(settings.TH_POCKET)
         self.assertIn('consumer_key', settings.TH_POCKET)
 
+    def test_get_config_th_cache(self):
+        self.assertIn('th_pocket', settings.CACHES)
+
     def test_auth(self):
         pass
 
     def test_callback(self):
         pass
-
 

@@ -120,6 +120,18 @@ class ServicesMgr(object):
 
         return model.objects.get(trigger_id=kwargs['trigger_id'])
 
+    def process_data(self, **kwargs):
+        """
+             get the data from the cache
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+        """
+        cache = caches[kwargs['cache_stack']]
+        cache_data = cache.get(kwargs['cache_stack'] + '_' +
+                               kwargs['trigger_id'])
+        return PublishingLimit.get_data(kwargs['cache_stack'],
+                                        cache_data, kwargs['trigger_id'])
+
     def save_data(self, trigger_id, data, **kwargs):
         """
             used to save data to the service

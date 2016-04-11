@@ -7,9 +7,9 @@ from django_th.my_services import MyService
 class PublishingLimitTestCase(TestCase):
 
     def test_get_data(self):
-        service = "ServiceRss"
+        service = "th_rss"
 
-        self.assertTrue(service.startswith('Service'))
+        self.assertTrue(service.startswith('th_'))
 
         service_long = MyService.full_name(service)
 

@@ -70,3 +70,10 @@ class ServicesMgrTestCase(MainTest):
         content = s.set_content(data)
         self.assertTrue(title)
         self.assertTrue(content)
+
+    def test_process_data(self):
+        kwargs = {'cache_stack': 'th_rss', 'trigger_id': '1'}
+        self.assertTrue('cache_stack' in kwargs)
+        s = ServicesMgr("ABCD")
+        data = s.process_data(**kwargs)
+        self.assertTrue(isinstance(data, list))

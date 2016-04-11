@@ -24,7 +24,7 @@ class PublishingLimit(object):
 
         # rebuild the string
         # th_<service>.my_<service>.Service<Service>
-        if service.startswith('Service'):
+        if service.startswith('th_'):
             service_long = MyService.full_name(service)
             # ... and check it
             if service_long in settings.TH_SERVICES:

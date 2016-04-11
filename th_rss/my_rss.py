@@ -15,7 +15,7 @@ from th_rss.lib.feedsservice import Feeds
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['ServiceRss']
+cache = caches['th_rss']
 
 
 class ServiceRss(ServicesMgr):
@@ -33,8 +33,6 @@ class ServiceRss(ServicesMgr):
         """
         date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
-        consumer = kwargs['consumer']
-        consumer_token = kwargs['token']
         kwargs['model_name'] = 'Rss'
 
         # get the URL from the trigger id
@@ -47,8 +45,7 @@ class ServiceRss(ServicesMgr):
         my_feeds = []
 
         # retrieve the data
-        f = Feeds()
-        feeds = f.data(**{'url_to_parse': rss.url})
+        feeds = Feeds(**{'url_to_parse': rss.url}).datas()
 
         for entry in feeds.entries:
 
@@ -75,9 +72,17 @@ class ServiceRss(ServicesMgr):
                now >= published >= date_triggered:
                 my_feeds.append(entry)
 
-        cache.set(consumer + '_' + str(trigger_id), my_feeds)
-        cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
+        cache.set('th_rss_' + str(trigger_id), my_feeds)
         cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)
         # return the data
         return my_feeds
 
+    def process_data(self, **kwargs):
+        """
+            get the data from the cache
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+        """
+        kw = {'cache_stack': 'th_rss',
+              'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceRss, self).process_data(**kw)

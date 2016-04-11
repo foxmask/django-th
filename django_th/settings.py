@@ -175,7 +175,7 @@ LOGGING = {
             'level': 'INFO',
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': BASE_DIR + '/trigger_happy.log',
-            'maxBytes': 122560,
+            'maxBytes': 61280,
             'backupCount': 3,
             'formatter': 'verbose',
 
@@ -209,7 +209,7 @@ CACHES = {
         }
     },
     # Evernote Cache
-    'ServiceEvernote':
+    'th_evernote':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -219,7 +219,7 @@ CACHES = {
         }
     },
     # Pocket Cache
-    'ServicePocket':
+    'th_pocket':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -229,7 +229,7 @@ CACHES = {
         }
     },
     # RSS Cache
-    'ServiceRss':
+    'th_rss':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -239,7 +239,7 @@ CACHES = {
         }
     },
     # Readability
-    'ServiceReadability':
+    'th_readability':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -249,7 +249,7 @@ CACHES = {
         }
     },
     # Twitter Cache
-    'ServiceTwitter':
+    'th_twitter':
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -259,7 +259,7 @@ CACHES = {
         }
     },
     # Trello
-    'ServiceTrello':
+    'th_trello':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -269,7 +269,7 @@ CACHES = {
         }
     },
     # GitHub
-    'ServiceGithub':
+    'th_github':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -279,7 +279,7 @@ CACHES = {
         }
     },
     # Pelican
-    'ServicePelican':
+    'th_pelican':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",

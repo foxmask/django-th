@@ -7,7 +7,7 @@ from th_rss.models import Rss
 from django_th.models import TriggerService
 
 import django_th
-cache = caches['ServiceRss']
+cache = caches['th_rss']
 
 
 class MyRssFeed(TemplateView):

@@ -1,5 +1,4 @@
 # coding: utf-8
-import arrow
 from django.conf import settings
 from th_twitter.models import Twitter
 from th_twitter.forms import TwitterProviderForm, TwitterConsumerForm
@@ -20,7 +19,7 @@ class TwitterTest(MainTest):
         self.assertIn('consumer_secret', settings.TH_TWITTER)
 
     def test_get_config_th_cache(self):
-        self.assertIn('ServiceTwitter', settings.CACHES)
+        self.assertIn('th_twitter', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_twitter.my_twitter.ServiceTwitter',)
@@ -65,28 +64,3 @@ class TwitterTest(MainTest):
     def test_invalid_consumer_form(self):
         form = TwitterConsumerForm(data={})
         self.assertFalse(form.is_valid())
-
-    def test_read_data(self):
-        r = self.create_twitter()
-        date_triggered = arrow.get('2013-05-11T21:23:58.970460+00:00')
-        from th_twitter.my_twitter import ServiceTwitter
-        kwargs = {'date_triggered': date_triggered,
-                  'trigger_id': r.trigger_id,
-                  'model_name': 'Twitter',
-                  'consumer': 'ServiceEvernote',
-                  'token': 'ABCD'}
-        t = ServiceTwitter()
-        t.read_data(**kwargs)
-        data = list()
-        self.assertTrue(type(data) is list)
-        self.assertTrue('date_triggered' in kwargs)
-        self.assertTrue('trigger_id' in kwargs)
-        self.assertTrue('consumer' in kwargs)
-        self.assertTrue('model_name' in kwargs)
-        self.assertTrue('token' in kwargs)
-
-    def test_auth(self):
-        pass
-
-    def test_callback(self):
-        pass

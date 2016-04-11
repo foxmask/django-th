@@ -34,7 +34,7 @@ from django_th.models import UserService, ServicesActivated
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['ServiceGithub']
+cache = caches['th_github']
 
 
 class ServiceGithub(ServicesMgr):
@@ -63,17 +63,19 @@ class ServiceGithub(ServicesMgr):
             :type kwargs: dict
             :rtype: list
         """
-        date_triggered = kwargs['date_triggered']
         trigger_id = kwargs['trigger_id']
-        consumer = kwargs['consumer']
-        consumer_token = kwargs['token']
-        kwargs['model_name'] = 'Github'
-        trigger = super(ServiceGithub, self).read_data(**kwargs)
         data = list()
-        # @TODO get the data from Github Service
-        cache.set(consumer + '_' + str(trigger_id), data)
-        cache.set(consumer + '_TOKEN_' + str(trigger_id), consumer_token)
-        return data
+        cache.set('th_github_' + str(trigger_id), data)
+
+    def process_data(self, **kwargs):
+        """
+            get the data from the cache
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+        """
+        kw = {'cache_stack': 'th_github',
+              'trigger_id': str(kwargs['trigger_id'])}
+        return super(ServiceGithub, self).process_data(**kw)
 
     def save_data(self, trigger_id, **data):
         """
@@ -107,7 +109,7 @@ class ServiceGithub(ServicesMgr):
                 logger.warn("Rate limit reached")
                 # put again in cache the data that could not be
                 # published in Github yet
-                cache.set('ServiceGithub_' + str(trigger_id), data, version=2)
+                cache.set('th_github_' + str(trigger_id), data, version=2)
                 return True
             sentence = str('github {} created').format(r)
             logger.debug(sentence)

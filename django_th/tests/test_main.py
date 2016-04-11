@@ -39,4 +39,3 @@ class MainTest(TestCase):
                                              date_created=date_created,
                                              description=description,
                                              status=status)
-

@@ -1,12 +1,8 @@
 # coding: utf-8
-import arrow
 from django.conf import settings
-from django.test import RequestFactory
-
 from th_trello.models import Trello
 from th_trello.forms import TrelloProviderForm, TrelloConsumerForm
 from django_th.tests.test_main import MainTest
-from django_th.views_wizard import finalcallback
 
 
 class TrelloTest(MainTest):
@@ -23,7 +19,7 @@ class TrelloTest(MainTest):
         self.assertIn('consumer_secret', settings.TH_TRELLO)
 
     def test_get_config_th_cache(self):
-        self.assertIn('ServiceTrello', settings.CACHES)
+        self.assertIn('th_trello', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_trello.my_trello.ServiceTrello',)
@@ -78,25 +74,29 @@ class TrelloTest(MainTest):
 
     def test_read_data(self):
         r = self.create_trello()
-        date_triggered = arrow.get('2013-05-11T21:23:58.970460+00:00')
         from th_trello.my_trello import ServiceTrello
-        kwargs = {'date_triggered': date_triggered,
-                  'trigger_id': r.trigger_id,
-                  'model_name': 'Trello',
-                  'consumer': 'ServiceEvernote',
-                  'token': 'ABCD'}
+        kwargs = {'trigger_id': r.trigger_id}
         t = ServiceTrello()
         t.read_data(**kwargs)
         data = list()
         self.assertTrue(type(data) is list)
-        self.assertTrue('date_triggered' in kwargs)
         self.assertTrue('trigger_id' in kwargs)
-        self.assertTrue('consumer' in kwargs)
-        self.assertTrue('model_name' in kwargs)
-        self.assertTrue('token' in kwargs)
 
-    def test_auth(self):
-        pass
+    """def test_process_data(self):
+        r = self.create_trello()
+        from th_trello.my_trello import ServiceTrello
 
-    def test_callback(self):
-        pass
+        kwargs = {'trigger_id': r.trigger_id}
+
+        self.assertTrue('trigger_id' in kwargs)
+
+        kw = {'cache_stack': 'th_trello',
+              'trigger_id': str(kwargs['trigger_id'])}
+
+        self.assertTrue('cache_stack' in kw)
+        self.assertTrue('trigger_id' in kw)
+
+        s = ServiceTrello()
+        data = s.process_data(**kw)
+
+        self.assertTrue(type(data) is list)"""
