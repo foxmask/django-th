@@ -8,6 +8,7 @@ import arrow
 from django.conf import settings
 from django.core.cache import caches
 from django.utils.log import getLogger
+from django.core.exceptions import ObjectDoesNotExist
 
 # trigger happy
 from django_th.services import default_provider
@@ -27,7 +28,7 @@ def update_trigger(service):
         :param service: service object to update
     """
     now = arrow.utcnow().to(settings.TIME_ZONE).format(
-        'YYYY-MM-DD HH:mm:ss')
+        'YYYY-MM-DD HH:mm:ssZZ')
     TriggerService.objects.filter(id=service.id).update(date_triggered=now)
 
 
@@ -47,9 +48,9 @@ def log_update(service, to_update, status, count):
         if status:
             logger.info("{} - {} new data".format(service, count))
         else:
-            logger.info("{} AN ERROR OCCURS ".format(service))
+            logger.warn("{} AN ERROR OCCURS ".format(service))
     else:
-        logger.info("{} nothing new ".format(service))
+        logger.debug("{} nothing new ".format(service))
 
 
 def reading(service):
@@ -63,6 +64,7 @@ def reading(service):
     to_update = False
     # flag to get the status of a service
     status = False
+    count_new_data = 0
     # counting the new data to store to display them in the log
     # provider - the service that offer data
     provider_token = service.provider.token
@@ -84,12 +86,13 @@ def reading(service):
               'date_triggered': service.date_triggered}
         getattr(service_provider, '__init__')(provider_token)
         data = getattr(service_provider, 'read_data')(**kw)
-
-        if len(data) > 0:
+        # counting the new data to store to display them in the log
+        count_new_data = len(data) if data else 0
+        if count_new_data > 0:
             to_update = True
             status = True
 
-    log_update(service, to_update, status, len(data))
+    log_update(service, to_update, status, count_new_data)
 
 
 def publishing(service):
@@ -103,8 +106,7 @@ def publishing(service):
     to_update = False
     # flag to get the status of a service
     status = False
-    # counting the new data to store to display them in the log
-    count_new_data = 0
+
     # provider - the service that offer data
     # check if the service has already been triggered
     # if date_triggered is None, then it's the first run
@@ -115,33 +117,34 @@ def publishing(service):
     # run run run
     else:
         service_provider = default_provider.get_service(
-            str(service.provider.name.name))
-
-        # 1) get the data from the provider service
-        kw = {'trigger_id': service.id}
-        data = getattr(service_provider, 'process_data')(**kw)
-        if data is not None and len(data) > 0:
-
-            # consumer - the service which uses the data
-            service_consumer = default_provider.get_service(
-                str(service.consumer.name.name))
-
-            getattr(service_consumer, '__init__')(service.consumer.token)
-            consumer = getattr(service_consumer, 'save_data')
-
-            # 2) for each one
-            for d in data:
-                # the consumer will save the data and return if success or not
-                status = consumer(service.id, **d)
-
-            count_new_data = len(data)
+                str(service.provider.name.name))
+    
+    # 1) get the data from the provider service
+    kw = {'trigger_id': service.id}
+    data = getattr(service_provider, 'process_data')(**kw)
+    # counting the new data to store to display them in the log
+    count_new_data = len(data) if data else 0
+    if count_new_data > 0:
+    
+        # consumer - the service which uses the data
+        service_consumer = default_provider.get_service(
+                    str(service.consumer.name.name))
+    
+        getattr(service_consumer, '__init__')(service.consumer.token)
+        consumer = getattr(service_consumer, 'save_data')
+    
+        # 2) for each one
+        for d in data:
+            # the consumer will save the data and return if success or not
+            status = consumer(service.id, **d)
+    
             to_update = True
-    # let's log
+        # let's log
     log_update(service, to_update, status, count_new_data)
     # let's update
     if to_update and status:
         update_trigger(service)
-
+    
 
 def recycle():
     """
@@ -162,3 +165,4 @@ def recycle():
                 cache.delete_pattern(service, version=2)
             except ValueError:
                 pass
+    logger.info('recycle of cache done!')
