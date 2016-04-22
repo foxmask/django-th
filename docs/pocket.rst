@@ -86,6 +86,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Pocket",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Pocket to ask to confirm the access to hist/your Pocket account
+* Check Auth Required: this will permit to redirect to the user (or you) to Pocket to ask to confirm the access to his/your Pocket account
 * Fill a description
 

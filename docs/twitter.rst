@@ -88,5 +88,5 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Twitter",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Twitter to ask to confirm the access to hist/your Twitter account
+* Check Auth Required: this will permit to redirect to the user (or you) to Twitter to ask to confirm the access to his/your Twitter account
 * Fill a description

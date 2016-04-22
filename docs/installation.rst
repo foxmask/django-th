@@ -153,3 +153,6 @@ for pelican support
 
 * `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_ == 1.6.5
 
+for wallabag support
+
+* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.0.0

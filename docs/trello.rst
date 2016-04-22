@@ -87,7 +87,7 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Trello",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Trello to ask to confirm the access to hist/your Trello account
+* Check Auth Required: this will permit to redirect to the user (or you) to Trello to ask to confirm the access to his/your Trello account
 * Fill a description
 
 

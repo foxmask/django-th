@@ -56,6 +56,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         # 'haystack',  # mandatory  if you plan to use th_search
         # 'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
         # 'th_pelican',
+        # 'th_wallabag',
 
     )
 
@@ -78,6 +79,7 @@ TH_SERVICES is a list of the services, like for example,
         # 'th_trello.my_trello.ServiceTrello',
         # 'th_twitter.my_twitter.ServiceTwitter',
         # 'th_github.my_github.ServiceGithub',
+        # 'th_wallabag.my_wallabag.ServiceWallabag',
     )
 
 do not forget to uncomment one of the line to enable another service, or the application wont work.
@@ -296,6 +298,17 @@ For each TriggerHappy component, define one cache like below
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
+        # Wallabag
+        'th_wallabag':
+        {
+                'TIMEOUT': 3600,
+                "BACKEND": "django_redis.cache.RedisCache",
+                "LOCATION": "redis://127.0.0.1:6379/9",
+                "OPTIONS": {
+                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                }
+        },
+
     }
 
 in the settings, 'default' may already exist in your settings.py, so dont use it, otherwise, if it doesnt, django will complain, so add it.

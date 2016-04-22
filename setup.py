@@ -37,10 +37,14 @@ extras_require_pelican = [
     'awesome-slugify==1.6.5',
 ]
 
+extras_require_wallabag = [
+    'wallabag_api==1.0.0',
+]
+
 extras_require_all = extras_require_github\
     + extras_require_pocket + extras_require_readability + extras_require_rss\
     + extras_require_search + extras_require_trello + extras_require_twitter\
-    + extras_require_pelican
+    + extras_require_pelican + extras_require_wallabag
 
 setup(
     name='django_th',
@@ -77,6 +81,7 @@ setup(
         'trello': extras_require_trello,
         'twitter': extras_require_twitter,
         'pelican': extras_require_pelican,
+        'wallabag': extras_require_wallabag,
     },
     include_package_data=True,
 )

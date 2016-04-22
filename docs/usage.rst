@@ -5,7 +5,9 @@ Usage
 Activating services :
 ---------------------
 
-The user activates the service for their own need. If the service requires an external authentication, he will be redirected to the service which will ask him the authorization to acces the user's account. Once it's done, goes back to django-trigger-happy to finish and record the "auth token".
+The user activates the service for their own need. If the service requires an external authentication,
+he will be redirected to the service which will ask him the authorization to acces the user's account.
+Once it's done, goes back to django-trigger-happy to finish and record the "auth token".
 
 Using the activated services :
 ------------------------------
@@ -22,4 +24,4 @@ For example :
 Fire the Triggers :
 ===================
 
-Grabbing data and publishing data are done by Python-RQ each 12min and 15min.
+Grabbing data and publishing data are done each 12min and 15min from your crontab

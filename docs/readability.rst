@@ -88,7 +88,7 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Readability",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Readability to ask to confirm the access to hist/your Readability account
+* Check Auth Required: this will permit to redirect to the user (or you) to Readability to ask to confirm the access to his/your Readability account
 * Fill a description
 
 

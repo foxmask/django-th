@@ -25,5 +25,6 @@ For all the services, the installation is the same :
    search
    trello
    twitter
+   wallabag
 
 

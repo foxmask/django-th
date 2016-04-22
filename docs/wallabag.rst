@@ -1,10 +1,10 @@
-Evernote
+Wallabag
 ========
 
 Service Description:
 --------------------
 
-This service permits to take notes, photos, schedules things and so on
+a self hostable application for saving web pages
 
 modifications of settings.py
 ----------------------------
@@ -14,7 +14,7 @@ modifications of settings.py
 .. code-block:: python
 
     INSTALLED_APPS = (
-        'th_evernote',
+        'th_wallabag',
     )
 
 2) Cache :
@@ -33,12 +33,12 @@ After the default cache add :
                 'MAX_ENTRIES': 1000
             }
         },
-        # Evernote Cache
-        'th_evernote':
+        # Wallabag Cache
+        'th_wallabag':
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/1",
+            "LOCATION": "redis://127.0.0.1:6379/9",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
@@ -51,7 +51,7 @@ add this line to the TH_SERVICES setting
 .. code-block:: python
 
     TH_SERVICES = (
-        'th_evernote.my_evernote.ServiceEvernote',
+        'th_wallabag.my_wallabag.ServiceWallabag',
     )
 
 
@@ -63,12 +63,16 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
 
 .. code-block:: python
 
-    TH_EVERNOTE = {
-        'sandbox': True,
-        'consumer_key': 'my key',
-        'consumer_secret': 'my secret',
+    TH_WALLABAG = {
+
+        'host': 'http://localhost:8080',
+        'username': '<user>',
+        'password': '<password>',
+        'client_id': '<your client id>',
+        'client_secret': '<your client secret>'
     }
 
+to fill the parameters, have a look at https://github.com/foxmask/wallabag_api/blob/master/README.rst
 
 creation of the table of the services
 -------------------------------------
@@ -85,8 +89,8 @@ from the admin panel, activation of the service
 
 from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
-* Select "Evernote",
+* Select "Wallabag",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Evernote to ask to confirm the access to his/your Evernote account
+* Check Auth Required: this will permit to redirect to the user (or you) to your Wallabag application which will request a token
 * Fill a description
 

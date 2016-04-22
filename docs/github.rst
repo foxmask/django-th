@@ -88,6 +88,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "GitHub",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to GitHub to ask to confirm the access to hist/your GitHub account
+* Check Auth Required: this will permit to redirect to the user (or you) to GitHub to ask to confirm the access to his/your GitHub account
 * Fill a description
 
