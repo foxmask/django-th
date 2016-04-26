@@ -7,7 +7,7 @@ install_requires = [
     'arrow<0.7.0',
     'django-js-reverse==0.6.1',
     'django-redis==4.3.0',
-    'pytidylib6==0.2.2',
+    'pytidylib==0.2.4',
     'pypandoc==1.1.3',
     'requests-oauthlib==0.5.0',
 ]
@@ -51,7 +51,7 @@ setup(
     version=version,
     description='Trigger Happy - take the control of your data '
                 'with this bridge between your internet services',
-    author='Olivier Demah',
+    author='FoxMaSk',
     author_email='foxmask@trigger-happy.eu',
     url='https://github.com/foxmask/django-th',
     download_url="https://github.com/foxmask/django-th/"

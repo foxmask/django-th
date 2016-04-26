@@ -9,6 +9,14 @@
     <div class="col-md-12">
         {% if user.is_authenticated %}
             <h2>My Activated Services</h2>
+            {% if sentence %}
+            <div class="span12" id="trigger-content">
+                <div class="alert alert-success">
+                    {% trans sentence %}
+                </div>
+            </div>
+            {% endif %}
+
             {% if services_list %}
                 {% if action == 'display' %}
                 <div class="col-md-11">
@@ -26,6 +34,9 @@
                                     <p>
                                         {% if service.name.auth_required == True %}
                                             <a class="btn btn-xs btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans 'Renew this service ?' %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a>
+                                        {% endif %}
+                                        {% if service.name.self_hosted == True %}
+                                            <a class="btn btn-xs btn-info" role="button" href="{% url 'edit_service' service.id %}" title="{% trans 'Edit this service' %}"><span class="glyphicon glyphicon-pencil icon-white"></span></a>
                                         {% endif %}
                                         <a class="btn btn-xs btn-success" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'off' %}" title="{% trans 'Disable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                                         <a class="btn btn-xs btn-info" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'on' %}" title="{% trans 'Enable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>

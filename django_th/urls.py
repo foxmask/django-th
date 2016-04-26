@@ -11,9 +11,8 @@ from django_th.views import service_related_triggers_switch_to
 
 from django_th.views_userservices import UserServiceListView
 from django_th.views_userservices import UserServiceCreateView
+from django_th.views_userservices import UserServiceUpdateView
 from django_th.views_userservices import UserServiceDeleteView
-from django_th.views_userservices import UserServiceAddedTemplateView
-from django_th.views_userservices import UserServiceDeletedTemplateView
 from django_th.views_userservices import renew_service
 from django_th.views_wizard import UserServiceWizard
 
@@ -83,25 +82,21 @@ urlpatterns = \
              # ****************************************
              url(r'^th/service/$', UserServiceListView.as_view(),
                  name='user_services'),
+             url(r'^th/service/(?P<action>\w+)$', UserServiceListView.as_view(),
+                 name='user_services'),
              url(r'^th/service/add/$', UserServiceCreateView.as_view(),
                  name='add_service'),
+             url(r'^th/service/edit/(?P<pk>\d+)$', UserServiceUpdateView.as_view(),
+                 name='edit_service'),
              url(r'^th/service/delete/(?P<pk>\d+)$',
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
-             url(r'^th/service/add/thanks',
-                 UserServiceAddedTemplateView.as_view(),
-                 name="service_add_thanks"),
-             # name="service_added"),
              url(r'^th/service/renew/(?P<pk>\d+)$',
                  renew_service,
                  name="renew_service"),
              url(r'^th/service/delete/$',
                  UserServiceDeleteView.as_view(),
                  name='delete_service'),
-             url(r'^th/service/delete/thanks',
-                 UserServiceDeletedTemplateView.as_view(),
-                 name="service_delete_thanks"
-                 ),
              url(r'^th/service/onoff/(?P<user_service_id>\d+)/(?P<switch>(on|off))$',
                  service_related_triggers_switch_to,
                  name="service_related_triggers_switch_to"),

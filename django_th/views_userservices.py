@@ -1,9 +1,12 @@
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+
+from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import ListView
+
+from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, DeleteView
-from django.views.generic import ListView, TemplateView
-from django.core.urlresolvers import reverse_lazy, reverse
 
 from django.http import HttpResponseRedirect
 
@@ -20,6 +23,7 @@ from django_th.services import default_provider
 def renew_service(request, pk):
     """
         renew an existing service
+        :param request object
         :param pk: the primary key of the service to renew
         :type pk: int
     """
@@ -67,6 +71,16 @@ class UserServiceListView(ListView):
             """
             context['nb_services'] = nb_user_service
 
+            if self.kwargs:
+                if self.kwargs['action'] == 'renewed':
+                    context['sentence'] = _('Your service has been successfully renewed')
+                elif self.kwargs['action'] == 'deleted':
+                    context['sentence'] = _('Your service has been successfully deleted')
+                elif self.kwargs['action'] == 'edited':
+                    context['sentence'] = _('Your service has been successfully modified')
+                elif self.kwargs['action'] == 'added':
+                    context['sentence'] = _('Your service has been successfully added')
+
         return context
 
 
@@ -100,7 +114,7 @@ class UserServiceCreateView(CreateView):
             # account details
             return redirect(lets_auth(self.request))
 
-        return HttpResponseRedirect(reverse('service_add_thanks'))
+        return HttpResponseRedirect(reverse('user_services', args=['added']))
 
     def get_form_kwargs(self):
         kwargs = super(UserServiceCreateView, self).get_form_kwargs()
@@ -108,18 +122,20 @@ class UserServiceCreateView(CreateView):
         return kwargs
 
 
-class UserServiceRenewTemplateView(TemplateView):
+class UserServiceUpdateView(UpdateView):
     """
-        page to renew a service
-        usefull when revoking has been done or made changes
+        Form to edit a service
     """
-    template_name = "services/thanks_service.html"
+    model = UserService
+    fields = ['username', 'password', 'client_secret', 'client_id', 'host']
+    template_name = "services/edit_service.html"
 
-    def get_context_data(self, **kw):
-        context = super(
-            UserServiceRenewTemplateView, self).get_context_data(**kw)
-        context['sentence'] = 'Your service has been successfully renewed'
-        return context
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserServiceUpdateView, self).dispatch(*args, **kwargs)
+
+    def get_success_url(self):
+        return reverse("user_services", args=["edited"])
 
 
 class UserServiceDeleteView(DeleteView):
@@ -134,28 +150,5 @@ class UserServiceDeleteView(DeleteView):
     def dispatch(self, *args, **kwargs):
         return super(UserServiceDeleteView, self).dispatch(*args, **kwargs)
 
-
-class UserServiceAddedTemplateView(TemplateView):
-    """
-        just a simple form to say thanks :P
-    """
-    template_name = "services/thanks_service.html"
-
-    def get_context_data(self, **kw):
-        context = super(UserServiceAddedTemplateView, self).\
-            get_context_data(**kw)
-        context['sentence'] = 'Your service has been successfully created'
-        return context
-
-
-class UserServiceDeletedTemplateView(TemplateView):
-    """
-        just a simple form to say thanks :P
-    """
-    template_name = "services/thanks_service.html"
-
-    def get_context_data(self, **kw):
-        context = super(UserServiceDeletedTemplateView, self).get_context_data(
-            **kw)
-        context['sentence'] = 'Your service has been successfully deleted'
-        return context
+    def get_success_url(self):
+        return reverse("user_services", args=["deleted"])

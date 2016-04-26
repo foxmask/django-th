@@ -31,7 +31,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
 
     make_status_enable.short_description = "Status Enable"
     make_status_disable.short_description = "Status Disable"
-    list_display = ('name', 'description', 'status', 'auth_required')
+    list_display = ('name', 'description', 'status', 'auth_required', 'self_hosted')
 
     actions = [make_status_enable, make_status_disable]
     add_form = ServicesAdminForm

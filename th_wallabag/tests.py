@@ -92,12 +92,6 @@ class WallabagTest(TestCase):
         form = WallabagConsumerForm(data=data)
         self.assertTrue(form.is_valid())
 
-    def test_get_config_th(self):
-        """
-            does this settings exists ?
-        """
-        self.assertTrue(settings.TH_WALLABAG)
-
     def test_get_config_th_cache(self):
         self.assertIn('th_wallabag', settings.CACHES)
 

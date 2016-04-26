@@ -65,7 +65,6 @@ def holidays(request):
         if form.is_valid():
             holidays = Holidays.objects.filter(user=request.user)
             if holidays.count() > 0:
-                print(holidays.count())
                 now = arrow.utcnow().to(settings.TIME_ZONE).format(
                     'YYYY-MM-DD HH:mm:ss')
                 # holidays mode is on

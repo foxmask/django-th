@@ -381,14 +381,6 @@ TH_GITHUB = {
     'consumer_secret': 'my secret'
 }
 
-TH_WALLABAG = {
-    'host': 'http://localhost:8080',
-    'username': 'username',
-    'password': 'password',
-    'client_id': 'my key',
-    'client_secret': 'my secret'
-}
-
 SECRET_KEY = 'to be defined :P'
 
 

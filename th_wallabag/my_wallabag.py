@@ -118,13 +118,14 @@ class ServiceWallabag(ServicesMgr):
         """
             let's auth the user to the Service
         """
+        service = UserService.objects.get(user=request.user, name='ServiceWallabag')
         callback_url = 'http://%s%s' % (
             request.get_host(), reverse('wallabag_callback'))
-        params = {'username': settings.TH_WALLABAG['username'],
-                  'password': settings.TH_WALLABAG['password'],
-                  'client_id': settings.TH_WALLABAG['client_id'],
-                  'client_secret': settings.TH_WALLABAG['client_secret']}
-        acces_token = Wallabag.get_token(host=settings.TH_WALLABAG['host'], **params)
+        params = {'username': service.username,
+                  'password': service.password,
+                  'client_id': service.client_id,
+                  'client_secret': service.client_secret}
+        acces_token = Wallabag.get_token(host=service.host, **params)
         request.session['oauth_token'] = acces_token
         return callback_url
 

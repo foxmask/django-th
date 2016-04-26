@@ -131,7 +131,7 @@ for pelican support
 
 for wallabag support
 
-* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.0.0
+* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.0.1
 
 and finally :
 

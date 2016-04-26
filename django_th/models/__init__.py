@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 
 class ServicesActivated(models.Model):
@@ -11,6 +12,7 @@ class ServicesActivated(models.Model):
     name = models.CharField(max_length=200, unique=True)
     status = models.BooleanField(default=False)
     auth_required = models.BooleanField(default=True)
+    self_hosted = models.BooleanField(default=False)
     description = models.CharField(max_length=200)
 
     class Meta:
@@ -35,6 +37,11 @@ class UserService(models.Model):
     token = models.CharField(max_length=255)
     name = models.ForeignKey(
         ServicesActivated, to_field='name', related_name='+')
+    username = models.CharField(_('username'), max_length=255, default='', blank=True)
+    password = models.CharField(_('password'), max_length=128, default='', blank=True)
+    host = models.CharField(_('host'), max_length=255, default='', blank=True)
+    client_id = models.CharField(_('client id'), max_length=255, default='', blank=True)
+    client_secret = models.CharField(_('client secret'), max_length=255, default='', blank=True)
 
     def show(self):
         return "User Service %s %s %s" % (self.user, self.token, self.name)

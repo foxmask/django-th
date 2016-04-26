@@ -62,6 +62,17 @@ class UserServiceForm(forms.ModelForm):
         self.myobject.user = user
         self.myobject.save()
 
+    def clean(self):
+        cleaned_data = super(UserServiceForm, self).clean()
+        sa = ServicesActivated.objects.get(name=cleaned_data.get('name'))
+        if sa.auth_required and sa.self_hosted:
+            if cleaned_data.get('host') == '' or \
+               cleaned_data.get('username') == '' or \
+               cleaned_data.get('password') == '' or \
+               cleaned_data.get('client_id') == '' or \
+               cleaned_data.get('client_secret') == '':
+                self.add_error('username', 'All the five fields are altogether mandatory')
+
     class Meta:
 
         """

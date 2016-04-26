@@ -58,21 +58,9 @@ add this line to the TH_SERVICES setting
 
 4) The service keys
 
-I strongly recommend that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
+Those will be required to be filled when activating the service for each user
 
-
-.. code-block:: python
-
-    TH_WALLABAG = {
-
-        'host': 'http://localhost:8080',
-        'username': '<user>',
-        'password': '<password>',
-        'client_id': '<your client id>',
-        'client_secret': '<your client secret>'
-    }
-
-to fill the parameters, have a look at https://github.com/foxmask/wallabag_api/blob/master/README.rst
+Have a look at https://github.com/foxmask/wallabag_api/blob/master/README.rst for more details about them
 
 creation of the table of the services
 -------------------------------------
