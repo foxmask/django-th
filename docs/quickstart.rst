@@ -24,7 +24,7 @@ We install TriggerHappy from Pypi
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th
-    pip install  Django<1.9a django-formtools arrow==0.6.0 django-js-reverse django-rq django-redis django-redisboard requests-oauthlib feedparser
+    pip install  Django<1.9a django-formtools arrow==0.6.0 django-js-reverse django-redis requests-oauthlib feedparser
 
 I dont want to use django 1.9 now, and arrow 0.7.0 got a very annoying bug for the project so 0.6.0 is important to get
 
@@ -69,12 +69,12 @@ Admin Home of Trigger Happy :
 
 click add from
 
-.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_home.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/admin_home.png
 
 
 and fill the fields.
 
-.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_details.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/admin_service_details.png
 
 
 For the service RSS (dont check auth required) and Pocket (check auth required)
@@ -82,7 +82,7 @@ For the service RSS (dont check auth required) and Pocket (check auth required)
 
 This will give something like :
 
-.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/admin_service_list.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/master/admin_service_list.png
 
 
 
@@ -93,7 +93,7 @@ Now that the 2 service RSS and Pocket are enabled, go activate them for you :
 
 "My activated services" :
 
-.. image:: https://foxmask.trigger-happy.eu/static/trigger_happy/public_services_activated.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/public_services_activated.png
 
 
 Why this process from admin and non admin part ?
