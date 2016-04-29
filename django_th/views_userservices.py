@@ -122,33 +122,41 @@ class UserServiceCreateView(CreateView):
         return kwargs
 
 
-class UserServiceUpdateView(UpdateView):
+class UserServiceMixin(object):
     """
-        Form to edit a service
+        Mixin for UpdateView and DeleteView
     """
-    model = UserService
-    fields = ['username', 'password', 'client_secret', 'client_id', 'host']
-    template_name = "services/edit_service.html"
+    queryset = UserService.objects.all()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(UserServiceUpdateView, self).dispatch(*args, **kwargs)
+        return super(UserServiceMixin, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        # get the Service of the connected user
+        if self.request.user.is_authenticated():
+            return self.queryset.filter(user=self.request.user, id=self.kwargs['pk'])
+        # otherwise return nothing
+        return UserService.objects.none()
+
+
+class UserServiceUpdateView(UserServiceMixin, UpdateView):
+    """
+        Form to edit a service
+    """
+    fields = ['username', 'password', 'client_secret', 'client_id', 'host']
+    template_name = "services/edit_service.html"
 
     def get_success_url(self):
         return reverse("user_services", args=["edited"])
 
 
-class UserServiceDeleteView(DeleteView):
+class UserServiceDeleteView(UserServiceMixin, DeleteView):
     """
         page to delete a service
     """
-    model = UserService
     template_name = "services/delete_service.html"
     success_url = reverse_lazy("service_delete_thanks")
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(UserServiceDeleteView, self).dispatch(*args, **kwargs)
 
     def get_success_url(self):
         return reverse("user_services", args=["deleted"])

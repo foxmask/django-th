@@ -312,18 +312,31 @@ class TriggerListView(ListView):
         return context
 
 
-class TriggerUpdateView(UpdateView):
+class TriggerServiceMixin(object):
     """
-        Form to update description
+        Mixin for UpdateView and DeleteView
     """
-    model = TriggerService
-    form_class = TriggerServiceForm
-    template_name = "triggers/edit_description_trigger.html"
-    success_url = reverse_lazy("trigger_edit_thanks")
+    queryset = TriggerService.objects.all()
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
-        return super(TriggerUpdateView, self).dispatch(*args, **kwargs)
+        return super(TriggerServiceMixin, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        # get the trigger of the connected user
+        if self.request.user.is_authenticated():
+            return self.queryset.filter(user=self.request.user, id=self.kwargs['pk'])
+        # otherwise return nothing
+        return TriggerService.objects.none()
+
+
+class TriggerUpdateView(TriggerServiceMixin, UpdateView):
+    """
+        Form to update description
+    """
+    form_class = TriggerServiceForm
+    template_name = "triggers/edit_description_trigger.html"
+    success_url = reverse_lazy("trigger_edit_thanks")
 
 
 class TriggerEditedTemplateView(TemplateView):
@@ -338,17 +351,12 @@ class TriggerEditedTemplateView(TemplateView):
         return context
 
 
-class TriggerDeleteView(DeleteView):
+class TriggerDeleteView(TriggerServiceMixin, DeleteView):
     """
         page to delete a trigger
     """
-    model = TriggerService
     template_name = "triggers/delete_trigger.html"
     success_url = reverse_lazy("trigger_delete_thanks")
-
-    # @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(TriggerDeleteView, self).dispatch(*args, **kwargs)
 
 
 class TriggerDeletedTemplateView(TemplateView):
