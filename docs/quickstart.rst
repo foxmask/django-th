@@ -69,12 +69,12 @@ Admin Home of Trigger Happy :
 
 click add from
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/admin_home.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_home.png
 
 
 and fill the fields.
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/admin_service_details.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_details.png
 
 
 For the service RSS (dont check auth required) and Pocket (check auth required)
@@ -82,7 +82,7 @@ For the service RSS (dont check auth required) and Pocket (check auth required)
 
 This will give something like :
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/master/admin_service_list.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_list.png
 
 
 
@@ -93,7 +93,7 @@ Now that the 2 service RSS and Pocket are enabled, go activate them for you :
 
 "My activated services" :
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/docs/public_services_activated.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_services_activated.png
 
 
 Why this process from admin and non admin part ?
