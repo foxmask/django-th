@@ -106,7 +106,6 @@ def publishing(service):
     to_update = False
     # flag to get the status of a service
     status = False
-
     # provider - the service that offer data
     # check if the service has already been triggered
     # if date_triggered is None, then it's the first run
@@ -115,14 +114,11 @@ def publishing(service):
         to_update = True
         status = True
     # run run run
-    else:
-        service_provider = default_provider.get_service(
-                str(service.provider.name.name))
+    service_provider = default_provider.get_service(str(service.provider.name.name))
     
     # 1) get the data from the provider service
     kw = {'trigger_id': service.id}
     data = getattr(service_provider, 'process_data')(**kw)
-    # counting the new data to store to display them in the log
     count_new_data = len(data) if data else 0
     if count_new_data > 0:
     
