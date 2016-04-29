@@ -77,7 +77,7 @@ from the admin panel : activation of the service
 
 from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/master/admin_service_details.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/master/docs/admin_service_details.png
 
 * Select "Wallabag",
 * Set the Status to "Enabled"
@@ -92,8 +92,8 @@ Now go to the page of "My Activated services" to enable it http://yourdomain.com
 "Activate a new service"
 
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/master/public_service_wallabag_add.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_service_wallabag_add.png
 
 then fill the fields that are required with the parameters, you got from point 4 earlier
 
-.. image:: https://raw.githubusercontent.com/foxmask/django_th/master/public_service_wallabag_settings.png
+.. image:: https://raw.githubusercontent.com/foxmask/django_th/master/docs/public_service_wallabag_settings.png
