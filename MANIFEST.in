@@ -35,6 +35,13 @@ recursive-include th_twitter *.html
 recursive-include th_twitter/templates *
 recursive-include th_twitter/migrations *
 
+recursive-include th_pelican *.html
+recursive-include th_pelican/templates *
+recursive-include th_pelican/migrations *
+
+recursive-include th_wallabag *.html
+recursive-include th_wallabag/templates *
+recursive-include th_wallabag/migrations *
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
