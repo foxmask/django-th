@@ -2,9 +2,8 @@
 # add here the call of any native lib of python like datetime etc.
 
 # add the python API here if needed
-from wallabag_api.wallabag import Wallabag
+from wallabag_api.wallabag import Wallabag as Wall
 # django classes
-from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.log import getLogger
 from django.core.cache import caches
@@ -42,11 +41,17 @@ class ServiceWallabag(ServicesMgr):
         super(ServiceWallabag, self).__init__(token)
         self.token = token
         if token:
-            us = UserService.objects.get(token=token)
-            self.wall = Wallabag(host=us.host,
-                                 client_secret=us.client_secret,
-                                 client_id=us.client_id,
-                                 token=token)
+            us = UserService.objects.get(token=token, name='ServiceWallabag')
+            self.service_username = us.username
+            self.service_password = us.password
+            self.service_host = us.host
+            self.service_client_secret = us.client_secret
+            self.service_client_id = us.client_id
+
+            self.wall = Wall(host=self.service_host,
+                                 client_secret=self.service_client_secret,
+                                 client_id=self.service_client_id,
+                                 token=self.token)
 
     def read_data(self, **kwargs):
         """
@@ -80,9 +85,9 @@ class ServiceWallabag(ServicesMgr):
             let's save the data
 
             :param trigger_id: trigger ID from which to save data
-            :param **data: the data to check to be used and save
+            :param data: the data to check to be used and save
             :type trigger_id: int
-            :type **data:  dict
+            :type data:  dict
             :return: the status of the save statement
             :rtype: boolean
         """
@@ -106,8 +111,24 @@ class ServiceWallabag(ServicesMgr):
                 logger.debug(sentence)
                 status = True
             except Exception as e:
-                logger.critical(e)
-                status = False
+                if e.errno == 401:
+                    new_token = self.refresh_token()
+                    old_token = self.token
+                    UserService.objects.filter(token=old_token, name='ServiceWallabag').update(token=new_token)
+
+                    # new wallabag session with new token
+                    new_wall = Wall(host=self.service_host,
+                                    client_secret=self.service_client_secret,
+                                    client_id=self.service_client_id,
+                                    token=new_token)
+                    try:
+                        return new_wall.post_entries(url=data['link'], title=title, tags=(trigger.tag.lower()))
+                    except Exception as e:
+                        logger.critical(e.errno, e.strerror)
+                        status = False
+                else:
+                    logger.critical(e.errno, e.strerror)
+                    status = False
 
         else:
             logger.critical(
@@ -126,8 +147,8 @@ class ServiceWallabag(ServicesMgr):
                   'password': service.password,
                   'client_id': service.client_id,
                   'client_secret': service.client_secret}
-        acces_token = Wallabag.get_token(host=service.host, **params)
-        request.session['oauth_token'] = acces_token
+        access_token = Wall.get_token(host=service.host, **params)
+        request.session['oauth_token'] = access_token
         return callback_url
 
     def callback(self, request, **kwargs):
@@ -157,3 +178,14 @@ class ServiceWallabag(ServicesMgr):
             return '/'
 
         return 'wallabag/callback.html'
+
+    def refresh_token(self):
+        """
+            refresh the expired token
+            :return: boolean
+        """
+        params = {'username': self.service_username,
+                  'password': self.service_password,
+                  'client_id': self.service_client_id,
+                  'client_secret': self.service_client_secret}
+        return Wall.get_token(host=self.service_host, **params)

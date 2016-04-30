@@ -131,7 +131,7 @@ for pelican support
 
 for wallabag support
 
-* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.0.1
+* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.1.0
 
 and finally :
 
@@ -145,7 +145,7 @@ or to make your own "recipe" :
 
 .. code-block:: bash
 
-    pip install django-th[rss,pocket]
+    pip install django-th[rss,wallabag]
     pip install django-th[rss,twitter,pocket,github]
 
 

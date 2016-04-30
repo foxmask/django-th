@@ -38,7 +38,7 @@ extras_require_pelican = [
 ]
 
 extras_require_wallabag = [
-    'wallabag_api==1.0.1',
+    'wallabag_api==1.1.0',
 ]
 
 extras_require_all = extras_require_github\
