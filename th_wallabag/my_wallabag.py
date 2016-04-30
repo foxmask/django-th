@@ -42,9 +42,10 @@ class ServiceWallabag(ServicesMgr):
         super(ServiceWallabag, self).__init__(token)
         self.token = token
         if token:
-            self.wall = Wallabag(host=settings.TH_WALLABAG['host'],
-                                 client_secret=settings.TH_WALLABAG['client_secret'],
-                                 client_id=settings.TH_WALLABAG['client_id'],
+            us = UserService.objects.get(token=token)
+            self.wall = Wallabag(host=us.host,
+                                 client_secret=us.client_secret,
+                                 client_id=us.client_id,
                                  token=token)
 
     def read_data(self, **kwargs):
