@@ -53,7 +53,8 @@ def trigger_on_off(request, trigger_id):
         :return render
         :rtype HttpResponse
     """
-    now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ss')
+    now = arrow.utcnow().to(settings.TIME_ZONE).format(
+        'YYYY-MM-DD HH:mm:ssZZ')
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
         title = 'disabled'
@@ -180,8 +181,8 @@ def trigger_edit(request, trigger_id, edit_what):
     template = service_name.lower() + '/edit_' + edit_what.lower() + ".html"
 
     if request.method == 'POST':
-        form = get_service(my_service, 'forms', form_name)(request.POST,
-                                                           instance=data)
+        form = get_service(my_service, 'forms', form_name)(
+            request.POST, instance=data)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))

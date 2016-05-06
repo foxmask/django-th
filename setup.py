@@ -6,10 +6,10 @@ install_requires = [
     'django-formtools==1.0',
     'arrow<0.7.0',
     'django-js-reverse==0.6.1',
-    'django-redis==4.3.0',
+    'django-redis==4.4.2',
     'pytidylib==0.2.4',
     'pypandoc==1.1.3',
-    'requests-oauthlib==0.5.0',
+    'requests-oauthlib==0.6.1',
 ]
 
 extras_require_github = [
@@ -19,7 +19,7 @@ extras_require_pocket = [
     'pocket==0.3.6',
 ]
 extras_require_readability = [
-    'readability-api==1.0.0',
+    'readability-api==1.0.2',
 ]
 extras_require_rss = [
     'feedparser==5.2.1',
@@ -28,10 +28,10 @@ extras_require_search = [
     'django-haystack==2.4.1',
 ]
 extras_require_trello = [
-    'py-trello==0.4.3',
+    'py-trello==0.5.0',
 ]
 extras_require_twitter = [
-    'twython==3.3.0',
+    'twython==3.4.0',
 ]
 extras_require_pelican = [
     'awesome-slugify==1.6.5',

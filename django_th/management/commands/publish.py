@@ -23,6 +23,8 @@ class Command(BaseCommand):
         """
             get all the triggers that need to be handled
         """
+        from django.db import connection
+        connection.close()
         trigger = TriggerService.objects.filter(
             status=True,
             user__is_active=True

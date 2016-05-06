@@ -16,12 +16,15 @@ logger = getLogger('django_th.trigger_happy')
 
 class Command(BaseCommand):
 
-    help = 'Trigger all the services and put them in cache'
+    help = 'Trigger all the services '\
+            'and put them in cache'
 
     def handle(self, *args, **options):
         """
             get all the triggers that need to be handled
         """
+        from django.db import connection
+        connection.close()
         trigger = TriggerService.objects.filter(
             status=True,
             user__is_active=True

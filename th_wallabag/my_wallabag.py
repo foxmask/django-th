@@ -17,12 +17,6 @@ from django_th.models import UserService, ServicesActivated
     handle process with wallabag
     put the following in settings.py
 
-    TH_WALLABAG = {
-        'client_id' = 'abcdefghijklmnopqrstuvwxyz'
-        'client_secret' = 'abcdefghijklmnopqrstuvwxyz'
-        'username' = 'jane'
-        'password' = 'doe'
-    }
     TH_SERVICES = (
         ...
         'th_wallabag.my_wallabag.ServiceWallabag',
@@ -41,17 +35,24 @@ class ServiceWallabag(ServicesMgr):
         super(ServiceWallabag, self).__init__(token)
         self.token = token
         if token:
-            us = UserService.objects.get(token=token, name='ServiceWallabag')
-            self.service_username = us.username
-            self.service_password = us.password
-            self.service_host = us.host
-            self.service_client_secret = us.client_secret
-            self.service_client_id = us.client_id
+            try:
+                us = UserService.objects.get(token=token, name='ServiceWallabag')
 
-            self.wall = Wall(host=self.service_host,
+                self.service_username = us.username
+                self.service_password = us.password
+                self.service_host = us.host
+                self.service_client_secret = us.client_secret
+                self.service_client_id = us.client_id
+
+                self.wall = Wall(host=self.service_host,
                                  client_secret=self.service_client_secret,
                                  client_id=self.service_client_id,
                                  token=self.token)
+
+                self.us_not_found = False
+
+            except UserService.DoesNotExist:
+                self.us_not_found = True
 
     def read_data(self, **kwargs):
         """
@@ -73,8 +74,8 @@ class ServiceWallabag(ServicesMgr):
     def process_data(self, **kwargs):
         """
             get the data from the cache
-            :param trigger_id: trigger ID from which to save data
-            :type trigger_id: int
+            :param kwargs: dict
+            :type kwargs: dict
         """
         kw = {'cache_stack': 'th_wallabag',
               'trigger_id': str(kwargs['trigger_id'])}
@@ -104,8 +105,22 @@ class ServiceWallabag(ServicesMgr):
             # convert htmlentities
             title = HtmlEntities(title).html_entity_decode
 
+            if self.us_not_found:
+                us = UserService.objects.get(id=data['userservice_id'])
+                self.service_host = us.host
+                self.service_client_secret = us.client_secret
+                self.service_client_id = us.client_id
+                self.token = us.token
+
+                self.wall = Wall(host=self.service_host,
+                                 client_secret=self.service_client_secret,
+                                 client_id=self.service_client_id,
+                                 token=self.token)
+
             try:
-                self.wall.post_entries(url=data['link'], title=title, tags=(trigger.tag.lower()))
+                self.wall.post_entries(url=data['link'],
+                                       title=title,
+                                       tags=(trigger.tag.lower()))
 
                 sentence = str('wallabag {} created').format(data['link'])
                 logger.debug(sentence)
@@ -113,8 +128,9 @@ class ServiceWallabag(ServicesMgr):
             except Exception as e:
                 if e.errno == 401:
                     new_token = self.refresh_token()
-                    old_token = self.token
-                    UserService.objects.filter(token=old_token, name='ServiceWallabag').update(token=new_token)
+                    UserService.objects.filter(
+                        id=data['userservice_id']).update(
+                        token=new_token)
 
                     # new wallabag session with new token
                     new_wall = Wall(host=self.service_host,
@@ -122,7 +138,10 @@ class ServiceWallabag(ServicesMgr):
                                     client_id=self.service_client_id,
                                     token=new_token)
                     try:
-                        return new_wall.post_entries(url=data['link'], title=title, tags=(trigger.tag.lower()))
+                        return new_wall.post_entries(url=data['link'],
+                                                     title=title,
+                                                     tags=(trigger.tag.lower())
+                                                     )
                     except Exception as e:
                         logger.critical(e.errno, e.strerror)
                         status = False
@@ -158,22 +177,12 @@ class ServiceWallabag(ServicesMgr):
             :return: callback url
             :rtype: string , path to the template
         """
+
         try:
-            # finally we save the user auth token
-            # As we already stored the object ServicesActivated
-            # from the UserServiceCreateView now we update the same
-            # object to the database so :
-            # 1) we get the previous objet
-            us = UserService.objects.get(
+            UserService.objects.filter(
                 user=request.user,
-                name=ServicesActivated.objects.get(name='ServiceWallabag'))
-            # 2) Readability API require to use 4 params consumer_key/secret +
-            # token_key/secret instead of usually get just the token
-            # from an access_token request. So we need to add a string
-            # separator for later use to split on this one
-            us.token = request.session['oauth_token']
-            # 3) and save everything
-            us.save()
+                name=ServicesActivated.objects.get(name='ServiceWallabag')
+            )
         except KeyError:
             return '/'
 

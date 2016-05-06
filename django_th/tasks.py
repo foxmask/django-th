@@ -8,7 +8,6 @@ import arrow
 from django.conf import settings
 from django.core.cache import caches
 from django.utils.log import getLogger
-from django.core.exceptions import ObjectDoesNotExist
 
 # trigger happy
 from django_th.services import default_provider
@@ -114,7 +113,8 @@ def publishing(service):
         to_update = True
         status = True
     # run run run
-    service_provider = default_provider.get_service(str(service.provider.name.name))
+    service_provider = default_provider.get_service(
+        str(service.provider.name.name))
     
     # 1) get the data from the provider service
     kw = {'trigger_id': service.id}

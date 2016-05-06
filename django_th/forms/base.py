@@ -72,6 +72,8 @@ class UserServiceForm(forms.ModelForm):
                cleaned_data.get('client_id') == '' or \
                cleaned_data.get('client_secret') == '':
                 self.add_error('username', 'All the five fields are altogether mandatory')
+            elif cleaned_data.get('host').endswith('/'):
+                cleaned_data['host'] = cleaned_data['host'][:-1]
 
     class Meta:
 
