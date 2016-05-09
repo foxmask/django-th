@@ -5,15 +5,18 @@ install_requires = [
     'Django<1.9a',
     'django-formtools==1.0',
     'arrow<0.7.0',
-    'django-js-reverse==0.6.1',
+    'django-js-reverse==0.7.1',
     'django-redis==4.4.2',
     'pytidylib==0.2.4',
     'pypandoc==1.1.3',
     'requests-oauthlib==0.6.1',
 ]
 
+extras_require_evernote = [
+    'evernote3==1.25.0',
+]
 extras_require_github = [
-    'github3.py==1.0.0a2',
+    'github3.py==1.0.0a4',
 ]
 extras_require_pocket = [
     'pocket==0.3.6',
@@ -44,7 +47,7 @@ extras_require_wallabag = [
 extras_require_all = extras_require_github\
     + extras_require_pocket + extras_require_readability + extras_require_rss\
     + extras_require_search + extras_require_trello + extras_require_twitter\
-    + extras_require_pelican + extras_require_wallabag
+    + extras_require_pelican + extras_require_wallabag + extras_require_evernote
 
 setup(
     name='django_th',
@@ -73,6 +76,7 @@ setup(
     install_requires=install_requires,
     extras_require={
         'all': extras_require_all,
+        'evernote': extras_require_evernote,
         'github': extras_require_github,
         'pocket': extras_require_pocket,
         'readability': extras_require_readability,
