@@ -136,8 +136,15 @@ class ServicePocket(ServicesMgr):
                 logger.critical(e)
                 status = False
 
-        else:
-            logger.critical("no token provided for trigger ID %s ", trigger_id)
+        elif self.token and 'link' in data and data['link'] is not None\
+                and len(data['link']) == 0:
+            logger.warning(
+                "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
+            status = True
+        else: 
+            logger.critical(
+                "no token provided for trigger ID {}".format(trigger_id))
+            status = False
         return status
 
     def auth(self, request):

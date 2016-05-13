@@ -149,15 +149,24 @@ class ServiceWallabag(ServicesMgr):
                     logger.critical(e.errno, e.strerror)
                     status = False
 
-        else:
+        elif self.token and 'link' in data and data['link'] is not None\
+                and len(data['link']) == 0:
+            logger.warning(
+                "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
+            status = True
+        else: 
             logger.critical(
-                "no token or link provided for trigger ID {} ".format(trigger_id))
+                "no token provided for trigger ID {}".format(trigger_id))
             status = False
         return status
 
     def auth(self, request):
         """
             let's auth the user to the Service
+            :param request: request object
+            :return: callback url
+            :rtype: string that contains the url to redirect after auth
+ 
         """
         service = UserService.objects.get(user=request.user, name='ServiceWallabag')
         callback_url = 'http://%s%s' % (

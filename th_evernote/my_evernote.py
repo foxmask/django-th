@@ -270,8 +270,8 @@ class ServiceEvernote(ServicesMgr):
             return self._create_note(note, trigger_id, data)
 
         else:
-            sentence = "no title provided for trigger ID {} and title {}"
-            logger.critical(sentence.format(trigger_id, title))
+            sentence = "no title provided for trigger ID {}"
+            logger.critical(sentence.format(trigger_id))
             return False
 
     def get_notebook(self, trigger):
