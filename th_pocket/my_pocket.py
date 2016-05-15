@@ -45,6 +45,24 @@ class ServicePocket(ServicesMgr):
         if token:
             self.pocket = Pocket(self.consumer_key, token)
 
+    def _create_entry(self, url, title, tags):
+        """
+            Create an entry
+            :param url:  url to save
+            :param title: title to set
+            :param tags: tags to set
+            :return: status
+        """
+        try:
+            self.pocket.add(url=url, title=title, tags=tags)
+            sentence = str('pocket {} created').format(url)
+            logger.debug(sentence)
+            status = True
+        except Exception as e:
+            logger.critical(e)
+            status = False
+        return status
+
     def read_data(self, **kwargs):
         """
             get the data from the service
@@ -102,35 +120,23 @@ class ServicePocket(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        from th_pocket.models import Pocket as PocketModel
+        if 'link' in data and data['link'] is not None:
+            if len(data['link']) > 0:
+                # get the pocket data of this trigger
+                from th_pocket.models import Pocket as PocketModel
+                trigger = PocketModel.objects.get(trigger_id=trigger_id)
 
-        status = False
+                title = self.set_title(data)
+                # convert htmlentities
+                title = HtmlEntities(title).html_entity_decode
 
-        if self.token and 'link' in data and data['link'] is not None\
-                and len(data['link']) > 0:
-            # get the pocket data of this trigger
-            trigger = PocketModel.objects.get(trigger_id=trigger_id)
-
-            title = self.set_title(data)
-            # convert htmlentities
-            title = HtmlEntities(title).html_entity_decode
-
-            try:
-                self.pocket.add(
-                    url=data['link'], title=title, tags=(trigger.tag.lower()))
-
-                sentence = str('pocket {} created').format(data['link'])
-                logger.debug(sentence)
+                status = self._create_entry(url=data['link'],
+                                            title=title,
+                                            tags=(trigger.tag.lower()))
+            else:
+                logger.warning(
+                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
                 status = True
-            except Exception as e:
-                logger.critical(e)
-                status = False
-
-        elif self.token and 'link' in data and data['link'] is not None\
-                and len(data['link']) == 0:
-            logger.warning(
-                "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
-            status = True
         else: 
             logger.critical(
                 "no token provided for trigger ID {}".format(trigger_id))

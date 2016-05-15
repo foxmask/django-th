@@ -105,30 +105,29 @@ class ServiceReadability(ServicesMgr):
             :rtype: boolean
         """
         status = False
-        if self.token and 'link' in data and data['link'] is not None \
-                and len(data['link']) > 0:
-            # get the data of this trigger
-            trigger = Readability.objects.get(trigger_id=trigger_id)
+        if 'link' in data and data['link'] is not None:
+            if len(data['link']) > 0:
+                # get the data of this trigger
+                trigger = Readability.objects.get(trigger_id=trigger_id)
 
-            bookmark_id = self.client.add_bookmark(url=data['link'])
+                bookmark_id = self.client.add_bookmark(url=data['link'])
 
-            if trigger.tag is not None and len(trigger.tag) > 0:
-                try:
-                    self.client.add_tags_to_bookmark(
-                        bookmark_id, tags=(trigger.tag.lower()))
-                    sentence = str('readability {} created item id {}').format(
-                        data['link'], bookmark_id)
-                    logger.debug(sentence)
-                    status = True
-                except Exception as e:
-                    logger.critical(e)
-                    status = False
+                if trigger.tag is not None and len(trigger.tag) > 0:
+                    try:
+                        self.client.add_tags_to_bookmark(
+                            bookmark_id, tags=(trigger.tag.lower()))
+                        sentence = str('readability {} created item id {}').format(
+                            data['link'], bookmark_id)
+                        logger.debug(sentence)
+                        status = True
+                    except Exception as e:
+                        logger.critical(e)
+                        status = False
 
-        elif self.token and 'link' in data and data['link'] is not None\
-                and len(data['link']) == 0:
-            logger.warning(
-                "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
-            status = True
+            else:
+                logger.warning(
+                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
+                status = True
         else: 
             logger.critical(
                 "no token provided for trigger ID {}".format(trigger_id))

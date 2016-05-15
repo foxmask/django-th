@@ -51,12 +51,59 @@ class ServiceWallabag(ServicesMgr):
             except UserService.DoesNotExist:
                 pass
 
-    def new_wall(self, token):
-
+    def _new_wall(self, token):
+        """
+            new Wallabag instance
+            :param token:
+            :return: instance
+        """
         return Wall(host=self.service_host,
                     client_secret=self.service_client_secret,
                     client_id=self.service_client_id,
                     token=token)
+
+    def _create_entry(self, userservice_id, url, title, tags, shootagain=False):
+        """
+            Create an entry
+            :param userservice_id: id of the service to update with new token
+            :param url:  url to save
+            :param title: title to set
+            :param tags: tags to set
+            :param shootagain: retry to create a post after a 401
+            :return: status
+        """
+        if shootagain:
+            new_token = self.refresh_token()
+            new_wall = self._new_wall(new_token)
+            # update the token
+            UserService.objects.filter(id=userservice_id).update(token=new_token)
+        try:
+            if shootagain:
+                status = new_wall.post_entries(url=url,
+                                               title=title,
+                                               tags=tags
+                                               )
+            else:
+                status = self.wall.post_entries(url=url,
+                                                title=title,
+                                                tags=tags)
+            sentence = str('wallabag {} created').format(url)
+            logger.debug(sentence)
+        except Exception as e:
+            if e.errno == 401:
+                if shootagain:
+                    # break circular call :P
+                    logger.critical(e.errno, e.strerror)
+                    status = False
+                self._create_entry(userservice_id=userservice_id,
+                                   url=url,
+                                   title=title,
+                                   tags=tags,
+                                   shootagain=True)
+            else:
+                logger.critical(e.errno, e.strerror)
+                status = False
+        return status
 
     def read_data(self, **kwargs):
         """
@@ -86,55 +133,29 @@ class ServiceWallabag(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        from th_wallabag.models import Wallabag
+        if 'link' in data and data['link'] is not None:
+            if len(data['link']) > 0:
+                # get the wallabag data for this trigger
+                from th_wallabag.models import Wallabag
+                trigger = Wallabag.objects.get(trigger_id=trigger_id)
 
-        if self.token and 'link' in data and data['link'] is not None\
-                and len(data['link']) > 0:
-            # get the data of this trigger
-            trigger = Wallabag.objects.get(trigger_id=trigger_id)
+                title = self.set_title(data)
+                # convert htmlentities
+                title = HtmlEntities(title).html_entity_decode
 
-            title = self.set_title(data)
-            # convert htmlentities
-            title = HtmlEntities(title).html_entity_decode
-
-            try:
-                self.wall.post_entries(url=data['link'],
-                                       title=title,
-                                       tags=(trigger.tag.lower()))
-
-                sentence = str('wallabag {} created').format(data['link'])
-                logger.debug(sentence)
+                status = self._create_entry(userservice_id=data['userservice_id'],
+                                            url=data['link'],
+                                            title=title,
+                                            tags=trigger.tag.lower())
+            else:
+                logger.warning(
+                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
                 status = True
-            except Exception as e:
-                if e.errno == 401:
-                    new_token = self.refresh_token()
-                    UserService.objects.filter(
-                        id=data['userservice_id']).update(
-                        token=new_token)
-
-                    # new wallabag session with new token
-                    new_wall = self.new_wall(new_token)
-                    try:
-                        return new_wall.post_entries(url=data['link'],
-                                                     title=title,
-                                                     tags=(trigger.tag.lower())
-                                                     )
-                    except Exception as e:
-                        logger.critical(e.errno, e.strerror)
-                        status = False
-                else:
-                    logger.critical(e.errno, e.strerror)
-                    status = False
-
-        elif self.token and 'link' in data and data['link'] is not None\
-                and len(data['link']) == 0:
-            logger.warning(
-                "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
-            status = True
-        else: 
+        else:
             logger.critical(
                 "no token provided for trigger ID {}".format(trigger_id))
             status = False
+
         return status
 
     def auth(self, request):

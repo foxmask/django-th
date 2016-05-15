@@ -3,9 +3,15 @@
     :alt: Code Climate
 
 
+.. image:: https://scrutinizer-ci.com/g/foxmask/django-th/badges/quality-score.png?b=master
+   :target: https://scrutinizer-ci.com/g/foxmask/django-th/?branch=master
+   :alt: Scrutinizer
+
+
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
     :alt: Travis Status
+
 
 .. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
     :target: https://readthedocs.org/projects/trigger-happy/?badge=latest

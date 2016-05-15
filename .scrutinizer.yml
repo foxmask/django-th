@@ -1,0 +1,10 @@
+checks:
+    python:
+        code_rating: true
+        duplicate_code: true
+        variables_used_before_assignment: true
+
+filter:
+    excluded_paths:
+        - '*/tests.py'
+        - '*/tests/*'
