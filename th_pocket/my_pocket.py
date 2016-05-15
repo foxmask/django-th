@@ -91,16 +91,6 @@ class ServicePocket(ServicesMgr):
 
         return data
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_pocket',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServicePocket, self).process_data(**kw)
-
     def save_data(self, trigger_id, **data):
         """
             let's save the data

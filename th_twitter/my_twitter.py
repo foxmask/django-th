@@ -162,16 +162,6 @@ class ServiceTwitter(ServicesMgr):
                         count=count)
         return my_tweets
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_twitter',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceTwitter, self).process_data(**kw)
-
     def save_data(self, trigger_id, **data):
         """
             let's save the data

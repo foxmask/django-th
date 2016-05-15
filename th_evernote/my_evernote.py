@@ -131,16 +131,6 @@ class ServiceEvernote(ServicesMgr):
 
         return data
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_evernote',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceEvernote, self).process_data(**kw)
-
     def _create_note(self, note, trigger_id, data):
         """
             create a note

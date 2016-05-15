@@ -67,16 +67,6 @@ class ServiceGithub(ServicesMgr):
         data = list()
         cache.set('th_github_' + str(trigger_id), data)
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_github',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceGithub, self).process_data(**kw)
-
     def save_data(self, trigger_id, **data):
         """
             let's save the data

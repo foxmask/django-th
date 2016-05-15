@@ -76,13 +76,3 @@ class ServiceRss(ServicesMgr):
         cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)
         # return the data
         return my_feeds
-
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_rss',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceRss, self).process_data(**kw)

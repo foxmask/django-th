@@ -48,11 +48,15 @@ class ServiceWallabag(ServicesMgr):
                                  client_secret=self.service_client_secret,
                                  client_id=self.service_client_id,
                                  token=self.token)
-
-                self.us_not_found = False
-
             except UserService.DoesNotExist:
-                self.us_not_found = True
+                pass
+
+    def new_wall(self, token):
+
+        return Wall(host=self.service_host,
+                    client_secret=self.service_client_secret,
+                    client_id=self.service_client_id,
+                    token=token)
 
     def read_data(self, **kwargs):
         """
@@ -71,16 +75,6 @@ class ServiceWallabag(ServicesMgr):
         trigger_id = kwargs['trigger_id']
         cache.set('th_wallabag_' + str(trigger_id), data)
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: dict
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_wallabag',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceWallabag, self).process_data(**kw)
-
     def save_data(self, trigger_id, **data):
         """
             let's save the data
@@ -94,8 +88,6 @@ class ServiceWallabag(ServicesMgr):
         """
         from th_wallabag.models import Wallabag
 
-        status = False
-
         if self.token and 'link' in data and data['link'] is not None\
                 and len(data['link']) > 0:
             # get the data of this trigger
@@ -104,18 +96,6 @@ class ServiceWallabag(ServicesMgr):
             title = self.set_title(data)
             # convert htmlentities
             title = HtmlEntities(title).html_entity_decode
-
-            if self.us_not_found:
-                us = UserService.objects.get(id=data['userservice_id'])
-                self.service_host = us.host
-                self.service_client_secret = us.client_secret
-                self.service_client_id = us.client_id
-                self.token = us.token
-
-                self.wall = Wall(host=self.service_host,
-                                 client_secret=self.service_client_secret,
-                                 client_id=self.service_client_id,
-                                 token=self.token)
 
             try:
                 self.wall.post_entries(url=data['link'],
@@ -133,10 +113,7 @@ class ServiceWallabag(ServicesMgr):
                         token=new_token)
 
                     # new wallabag session with new token
-                    new_wall = Wall(host=self.service_host,
-                                    client_secret=self.service_client_secret,
-                                    client_id=self.service_client_id,
-                                    token=new_token)
+                    new_wall = self.new_wall(new_token)
                     try:
                         return new_wall.post_entries(url=data['link'],
                                                      title=title,

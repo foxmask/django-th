@@ -117,7 +117,8 @@ def publishing(service):
         str(service.provider.name.name))
     
     # 1) get the data from the provider service
-    kw = {'trigger_id': service.id}
+    module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
+    kw = {'trigger_id': str(service.id), 'cache_stack': module_name}
     data = getattr(service_provider, 'process_data')(**kw)
     count_new_data = len(data) if data else 0
     if count_new_data > 0:

@@ -41,15 +41,13 @@ And instead of giving your credentials to them, become the owner of yours !
 
 For example a new RSS item is published, "Trigger Happy" will be able to
 automatically create a note on your Evernote account or create a bookmark to
-your own Readability or Pocket account and so on
-
-.. image:: http://trigger-happy.eu/static/th_esb.png
+your own Wallabag or Pocket account and so on
 
 
 Description
 ===========
 
-The goal of this project is to be independant from any other solution like
+The goal of this project is to be independent from any other solution like
 IFTTT, CloudWork or others.
 
 Thus you could host your own solution and manage your own triggers without
@@ -63,77 +61,18 @@ who permits to use a manager of tasks like "cron" and, of course Python.
 Requirements
 ============
 
+The minimum are the following :
+
 * Python 3.4.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
 * `arrow <https://pypi.python.org/pypi/arrow>`_ < 0.7.0
 * `django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 1.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.6.1
-
-for evernote support
-
-* `Evernote for python 3 <https://github.com/evernote/evernote-sdk-python3>`_
-* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
-
-The latest libtidy-dev should be installed with your operating system package manager, not from pip.
-
-On a Debian/Ubuntu system:
-
-.. code:: bash
-
-    apt-get install libtidy-dev
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.1
 
 
-for github support
 
-* `github <https://pypi.python.org/pypi/github3.py>`_ == 1.0.0a2
-
-for pocket support
-
-* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.6
-
-for readability support
-
-* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.2
-
-for rss support
-
-* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.2.1
-
-for search engine
-
-* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.4.1
-
-for trello support
-
-* `trello <https://github.com/sarumont/py-trello>`_  == 0.4.3
-* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.1.3
-
-Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
-
-.. code:: bash
-
-    apt-get install pandoc
-
-
-for twitter support
-
-* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.2.0
-
-
-for redis support
-
-* `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
-
-
-for pelican support
-
-* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_ == 1.6.5
-
-for wallabag support
-
-* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.1.0
-
-and finally :
+Installation
+============
 
 .. code-block:: bash
 
@@ -156,10 +95,3 @@ Documentation
 For installation and settings, see http://trigger-happy.readthedocs.org/
 
 
-Blog posts :
-============
-
-You can find all details of all existing services of the blog :
-
-* https://foxmask.trigger-happy.eu/tag/triggerhappy.html
-* https://blog.trigger-happy.eu/

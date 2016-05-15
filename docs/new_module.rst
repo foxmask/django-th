@@ -82,18 +82,6 @@ the class `ServiceDummy` will extend `ServiceMgr` we've imported from `django_th
 
 This class is composed at least by 2 methods :
 
-process_data :
-~~~~~~~~~~~~~~
-
-we provide the following parms
-
-* token - the token of the service
-* trigger_id - the trigger id we handle
-* date_triggered - the date of the last trigger
-
-role : grabs the data of the current service to be provided to another
-
-return : a list composed by : `title`, `url`, `content`, and can return also `my_date` a datetime value
 
 save_data :
 ~~~~~~~~~~~
@@ -180,14 +168,6 @@ The complete code of this class :
             """
             data = list()
             return cache.set('th_dummy_' + str(trigger_id), data)
-
-        def process_data(self, trigger_id):
-            """
-                get the data from the cache
-                :param trigger_id: trigger ID from which to save data
-                :type trigger_id: int
-            """
-            return super(ServiceDummy, self).process_data('th_dummy', str(trigger_id))
 
         def save_data(self, token, trigger_id, **data):
             """

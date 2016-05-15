@@ -93,16 +93,6 @@ class ServiceReadability(ServicesMgr):
 
         return data
 
-    def process_data(self, **kwargs):
-        """
-            get the data from the cache
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-        """
-        kw = {'cache_stack': 'th_readability',
-              'trigger_id': str(kwargs['trigger_id'])}
-        return super(ServiceReadability, self).process_data(**kw)
-
     def save_data(self, trigger_id, **data):
         """
             let's save the data
@@ -115,9 +105,8 @@ class ServiceReadability(ServicesMgr):
             :rtype: boolean
         """
         status = False
-        if self.token and 'link' in data and\
-           data['link'] is not None and\
-           len(data['link']) > 0:
+        if self.token and 'link' in data and data['link'] is not None \
+                and len(data['link']) > 0:
             # get the data of this trigger
             trigger = Readability.objects.get(trigger_id=trigger_id)
 
