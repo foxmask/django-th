@@ -5,7 +5,7 @@ django-formtools==1.0
 django-haystack==2.4.1
 django-js-reverse==0.7.1
 django-redis==4.4.2
-evernote3==1.25.0
+evernote3
 feedparser==5.2.1
 github3.py==1.0.0a4
 pocket==0.3.6

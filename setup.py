@@ -13,7 +13,7 @@ install_requires = [
 ]
 
 extras_require_evernote = [
-    'evernote3==1.25.0',
+    'evernote3',
 ]
 extras_require_github = [
     'github3.py==1.0.0a4',
