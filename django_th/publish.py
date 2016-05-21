@@ -6,17 +6,13 @@ import arrow
 
 # django
 from django.conf import settings
-from django.core.cache import caches
 from django.utils.log import getLogger
 
 # trigger happy
 from django_th.services import default_provider
 from django_th.models import TriggerService
-from django_th.my_services import MyService
 
-# create logger
 logger = getLogger('django_th.trigger_happy')
-
 
 default_provider.load_services()
 
@@ -52,48 +48,6 @@ def log_update(service, to_update, status, count):
         logger.debug("{} nothing new ".format(service))
 
 
-def reading(service):
-    """
-       get the data from the service and put theme in cache
-       :param service: service object to read
-       :type service: object
-    """
-    data = ()
-    # flag to know if we have to update
-    to_update = False
-    # flag to get the status of a service
-    status = False
-    count_new_data = 0
-    # counting the new data to store to display them in the log
-    # provider - the service that offer data
-    provider_token = service.provider.token
-    service_provider = default_provider.get_service(
-        str(service.provider.name.name))
-
-    # check if the service has already been triggered
-    # if date_triggered is None, then it's the first run
-    if service.date_triggered is None:
-        logger.debug("first time {}".format(service))
-        to_update = True
-        status = True
-        # run run run
-    else:
-        # 1) get the data from the provider service
-        # get a timestamp of the last triggered of the service
-        kw = {'token': provider_token,
-              'trigger_id': service.id,
-              'date_triggered': service.date_triggered}
-        getattr(service_provider, '__init__')(provider_token)
-        data = getattr(service_provider, 'read_data')(**kw)
-        # counting the new data to store to display them in the log
-        count_new_data = len(data) if data else 0
-        if count_new_data > 0:
-            to_update = True
-            status = True
-
-    log_update(service, to_update, status, count_new_data)
-
-
 def publishing(service):
     """
         the purpose of this tasks is to get the data from the cache
@@ -113,53 +67,31 @@ def publishing(service):
         to_update = True
         status = True
     # run run run
-    service_provider = default_provider.get_service(
-        str(service.provider.name.name))
-    
+    service_provider = default_provider.get_service(str(service.provider.name.name))
+
     # 1) get the data from the provider service
     module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
     kw = {'trigger_id': str(service.id), 'cache_stack': module_name}
     data = getattr(service_provider, 'process_data')(**kw)
     count_new_data = len(data) if data else 0
     if count_new_data > 0:
-    
+
         # consumer - the service which uses the data
         service_consumer = default_provider.get_service(
-                    str(service.consumer.name.name))
-    
+            str(service.consumer.name.name))
+
         getattr(service_consumer, '__init__')(service.consumer.token)
         consumer = getattr(service_consumer, 'save_data')
-    
+
         # 2) for each one
         for d in data:
+            d['userservice_id'] = service.consumer.id
             # the consumer will save the data and return if success or not
             status = consumer(service.id, **d)
-    
+
             to_update = True
-        # let's log
+            # let's log
     log_update(service, to_update, status, count_new_data)
     # let's update
     if to_update and status:
         update_trigger(service)
-    
-
-def recycle():
-    """
-        the purpose of this tasks is to recycle the data from the cache
-        with version=2 in the main cache
-    """
-    all_packages = MyService.all_packages()
-    for package in all_packages:
-        cache = caches[package]
-        # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
-        for service in cache.iter_keys('th_*'):
-            try:
-                # get the value from the cache version=2
-                service_value = cache.get(service, version=2)
-                # put it in the version=1
-                cache.set(service, service_value)
-                # remote version=2
-                cache.delete_pattern(service, version=2)
-            except ValueError:
-                pass
-    logger.info('recycle of cache done!')

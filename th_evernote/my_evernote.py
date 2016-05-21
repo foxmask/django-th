@@ -168,7 +168,7 @@ class ServiceEvernote(ServicesMgr):
         except EDAMUserException as e:
             if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
                 sentance = "Data ignored due to validation"
-                sentance += " error : err {code} {msg}"
+                sentance += " error : err {code} {msg}"
                 logger.warn(sentance.format(
                     code=e.errorCode,
                     msg=e.parameter))
@@ -317,15 +317,33 @@ class ServiceEvernote(ServicesMgr):
     def set_tag(self, trigger, tag_id):
         """
             create a tag if not exists
+            :param trigger object
+            :param tag_id id of the tag(s) to create
+            :return: array of the tag to create
         """
-        # tagGUID does not exist:
-        # create it if a tag has been provided
-        if tag_id == 0 and trigger.tag is not '':
+        if len(tag_id) == 0:
             new_tag = Types.Tag()
-            new_tag.name = trigger.tag
-            tag_id = self.note_store.createTag(new_tag).guid
-
+            if ',' in trigger.tag:
+                for my_tag in trigger.tag.split(','):
+                    new_tag.name = my_tag
+                    tag_id.append(self._create_tag(new_tag))
+            else:
+                new_tag.name = trigger.tag
+                tag_id.append(self._create_tag(new_tag))
         return tag_id
+
+    def _create_tag(self, new_tag):
+        """
+            :param new_tag: create this new tag
+            :return: new tag id
+        """
+        try:
+            return self.note_store.createTag(new_tag).guid
+        except EDAMUserException as e:
+            if e.errorCode == EDAMErrorCode.DATA_CONFLICT:
+                logger.info("Evernote Data Conflict Err {0}".format(e))
+            elif e.errorCode == EDAMErrorCode.BAD_DATA_FORMAT:
+                logger.critical("Evernote Err {0}".format(e))
 
     @staticmethod
     def set_evernote_header():

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.log import getLogger
 # trigger happy
 from django_th.models import TriggerService
-from django_th.tasks import publishing
+from django_th.publish import publishing
 
 # create logger
 logger = getLogger('django_th.trigger_happy')
