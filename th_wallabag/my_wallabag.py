@@ -119,7 +119,7 @@ class ServiceWallabag(ServicesMgr):
             :rtype: list
         """
         data = list()
-        trigger_id = kwargs['trigger_id']
+        trigger_id = kwargs.get('trigger_id')
         cache.set('th_wallabag_' + str(trigger_id), data)
 
     def save_data(self, trigger_id, **data):
@@ -133,8 +133,8 @@ class ServiceWallabag(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        if 'link' in data and data['link'] is not None:
-            if len(data['link']) > 0:
+        if data.get('link'):
+            if len(data.get('link')) > 0:
                 # get the wallabag data for this trigger
                 from th_wallabag.models import Wallabag
                 trigger = Wallabag.objects.get(trigger_id=trigger_id)

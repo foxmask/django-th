@@ -31,7 +31,7 @@ class Command(BaseCommand):
         ).select_related('consumer__name', 'provider__name')
 
         try:
-            with Pool(processes=settings.DJANGO_TH['processes']) as pool:
+            with Pool(processes=settings.DJANGO_TH.get('processes')) as pool:
                 result = pool.map_async(reading, trigger)
                 result.get(timeout=360)
         except TimeoutError as e:

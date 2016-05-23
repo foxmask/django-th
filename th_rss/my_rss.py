@@ -31,8 +31,8 @@ class ServiceRss(ServicesMgr):
             :type kwargs: dict
             :rtype: dict
         """
-        date_triggered = kwargs['date_triggered']
-        trigger_id = kwargs['trigger_id']
+        date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
         kwargs['model_name'] = 'Rss'
 
         # get the URL from the trigger id

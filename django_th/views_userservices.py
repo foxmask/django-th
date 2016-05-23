@@ -72,14 +72,10 @@ class UserServiceListView(ListView):
             context['nb_services'] = nb_user_service
 
             if self.kwargs:
-                if self.kwargs['action'] == 'renewed':
-                    context['sentence'] = _('Your service has been successfully renewed')
-                elif self.kwargs['action'] == 'deleted':
-                    context['sentence'] = _('Your service has been successfully deleted')
-                elif self.kwargs['action'] == 'edited':
-                    context['sentence'] = _('Your service has been successfully modified')
-                elif self.kwargs['action'] == 'added':
-                    context['sentence'] = _('Your service has been successfully added')
+                context['sentence'] = _('Your service has been successfully ')
+                if self.kwargs.get('action') in ('renewed', 'deleted',
+                                                 'edited', 'added'):
+                    context['sentence'] += self.kwargs.get('action')
 
         return context
 
@@ -99,13 +95,13 @@ class UserServiceCreateView(CreateView):
         default_provider.load_services()
         self.object = form.save(user=self.request.user)
 
-        sa = ServicesActivated.objects.get(name=form.cleaned_data['name'].name)
+        sa = ServicesActivated.objects.get(name=form.cleaned_data.get('name').name)
         # let's build the 'call' of the auth method
         # which own to a Service Class
         if sa.auth_required:
             # use the default_provider to get the object from the ServiceXXX
             service_object = default_provider.get_service(
-                str(form.cleaned_data['name'].name))
+                str(form.cleaned_data.get('name').name))
             # get the class object
             lets_auth = getattr(service_object, 'auth')
             # call the auth func from this class
@@ -135,7 +131,8 @@ class UserServiceMixin(object):
     def get_queryset(self):
         # get the Service of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user, id=self.kwargs['pk'])
+            return self.queryset.filter(user=self.request.user,
+                                        id=self.kwargs.get('pk'))
         # otherwise return nothing
         return UserService.objects.none()
 

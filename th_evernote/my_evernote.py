@@ -73,8 +73,8 @@ class ServiceEvernote(ServicesMgr):
 
             :rtype: list
         """
-        date_triggered = kwargs['date_triggered']
-        trigger_id = kwargs['trigger_id']
+        date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
 
         kwargs['model_name'] = 'Evernote'
 
@@ -374,7 +374,7 @@ class ServiceEvernote(ServicesMgr):
            get a NoteAttributes object
         """
         na = False
-        if 'link' in data:
+        if data.get('link'):
             na = Types.NoteAttributes()
             # add the url
             na.sourceURL = data['link']
@@ -387,20 +387,14 @@ class ServiceEvernote(ServicesMgr):
             handle the footer of the note
         """
         footer = ''
-        if 'link' in data:
+        if data.get('link'):
             provided_by = _('Provided by')
             provided_from = _('from')
             footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
 
-            # python 2
-            if sys.version_info.major == 2:
-                description = trigger.trigger.description.encode(
-                    'ascii', 'xmlcharrefreplace')
-            else:
-                description = trigger.trigger.description
             footer = footer_from.format(
-                provided_by, description, provided_from,
-                data['link'], data['link'])
+                provided_by, trigger.trigger.description, provided_from,
+                data.get('link'), data.get('link'))
 
         return footer
 

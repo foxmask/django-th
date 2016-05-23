@@ -67,7 +67,7 @@ class ServiceTrello(ServicesMgr):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        trigger_id = kwargs['trigger_id']
+        trigger_id = kwargs.get('trigger_id')
         data = list()
         cache.set('th_trello_' + str(trigger_id), data)
 
@@ -154,7 +154,7 @@ class ServiceTrello(ServicesMgr):
             handle the footer of the note
         """
         footer = ''
-        if 'link' in data:
+        if data.get('link'):
             provided_by = _('Provided by')
             provided_from = _('from')
             footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
@@ -162,7 +162,7 @@ class ServiceTrello(ServicesMgr):
             description = trigger.trigger.description
             footer = footer_from.format(
                 provided_by, description, provided_from,
-                data['link'], data['link'])
+                data.get('link'), data.get('link'))
 
             import pypandoc
             footer = pypandoc.convert(footer, 'md', format='html')

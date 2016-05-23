@@ -16,9 +16,9 @@ class TriggerSettingsTestCase(unittest.TestCase):
         self.assertTrue(settings.DJANGO_TH)
         self.assertIn('paginate_by', settings.DJANGO_TH)
         self.assertIn('publishing_limit', settings.DJANGO_TH)
-        self.assertIs(type(settings.DJANGO_TH['paginate_by']), int)
-        self.assertIs(type(settings.DJANGO_TH['publishing_limit']), int)
-        self.assertIs(type(settings.DJANGO_TH['processes']), int)
+        self.assertIs(type(settings.DJANGO_TH.get('paginate_by')), int)
+        self.assertIs(type(settings.DJANGO_TH.get('publishing_limit')), int)
+        self.assertIs(type(settings.DJANGO_TH.get('processes')), int)
 
     def test_get_services_list(self):
         th_service = (

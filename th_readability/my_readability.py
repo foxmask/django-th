@@ -59,8 +59,8 @@ class ServiceReadability(ServicesMgr):
 
             :rtype: list
         """
-        date_triggered = kwargs['date_triggered']
-        trigger_id = kwargs['trigger_id']
+        date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
         data = []
 
         if self.token is not None:
@@ -105,19 +105,19 @@ class ServiceReadability(ServicesMgr):
             :rtype: boolean
         """
         status = False
-        if 'link' in data and data['link'] is not None:
-            if len(data['link']) > 0:
+        if data.get('link'):
+            if len(data.get('link')) > 0:
                 # get the data of this trigger
                 trigger = Readability.objects.get(trigger_id=trigger_id)
 
-                bookmark_id = self.client.add_bookmark(url=data['link'])
+                bookmark_id = self.client.add_bookmark(url=data.get('link'))
 
                 if trigger.tag is not None and len(trigger.tag) > 0:
                     try:
                         self.client.add_tags_to_bookmark(
                             bookmark_id, tags=(trigger.tag.lower()))
                         sentence = str('readability {} created item id {}').format(
-                            data['link'], bookmark_id)
+                            data.get('link'), bookmark_id)
                         logger.debug(sentence)
                         status = True
                     except Exception as e:

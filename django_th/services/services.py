@@ -62,20 +62,20 @@ class ServicesMgr(object):
             from the data of the provider
         """
         content = ''
-        if which_content in data:
-            if type(data[which_content]) is list or\
-               type(data[which_content]) is tuple or\
-               type(data[which_content]) is dict:
-                if 'value' in data[which_content][0]:
-                    content = data[which_content][0].value
+        if data.get(which_content):
+            if type(data.get(which_content)) is list or\
+               type(data.get(which_content)) is tuple or\
+               type(data.get(which_content)) is dict:
+                if 'value' in data.get(which_content)[0]:
+                    content = data.get(which_content)[0].value
             else:
-                if type(data[which_content]) is str:
-                    content = data[which_content]
+                if type(data.get(which_content)) is str:
+                    content = data.get(which_content)
                 else:
                     # if not str or list or tuple
                     # or dict it could be feedparser.FeedParserDict
                     # so get the item value
-                    content = data[which_content]['value']
+                    content = data.get(which_content)['value']
         return content
 
     @staticmethod
@@ -86,8 +86,7 @@ class ServicesMgr(object):
             :type data: dict
             :rtype: string
         """
-        title = ''
-        title = (data['title'] if 'title' in data else data['link'])
+        title = (data.get('title') if data.get('title') else data.get('link'))
 
         return title
 
@@ -104,8 +103,8 @@ class ServicesMgr(object):
             content = self._get_content(data, 'summary_detail')
 
         if content == '':
-            if 'description' in data:
-                content = data['description']
+            if data.get('description'):
+                content = data.get('description')
 
         return content
 
@@ -127,11 +126,11 @@ class ServicesMgr(object):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        cache = caches[kwargs['cache_stack']]
-        cache_data = cache.get(kwargs['cache_stack'] + '_' +
-                               kwargs['trigger_id'])
-        return PublishingLimit.get_data(kwargs['cache_stack'],
-                                        cache_data, kwargs['trigger_id'])
+        cache = caches[kwargs.get('cache_stack')]
+        cache_data = cache.get(kwargs.get('cache_stack') + '_' +
+                               kwargs.get('trigger_id'))
+        return PublishingLimit.get_data(kwargs.get('cache_stack'),
+                                        cache_data, kwargs.get('trigger_id'))
 
     def save_data(self, trigger_id, data, **kwargs):
         """
@@ -150,11 +149,11 @@ class ServicesMgr(object):
         title = HtmlEntities(title).html_entity_decode
         content = self.set_content(data)
         content = HtmlEntities(content).html_entity_decode
-        if 'output_format' in kwargs:
+        if kwargs.get('output_format'):
             # pandoc to convert tools
             import pypandoc
             content = pypandoc.convert(content,
-                                       kwargs['output_format'],
+                                       kwargs.get('output_format'),
                                        format='html')
         return title, content
 

@@ -210,7 +210,7 @@ class TriggerListView(ListView):
         """
         paginate_by = 3
         if hasattr(settings, 'DJANGO_TH'):
-            if 'paginate_by' in settings.DJANGO_TH:
+            if settings.DJANGO_TH.get('paginate_by'):
                 paginate_by = settings.DJANGO_TH['paginate_by']
         return paginate_by
 
@@ -221,16 +221,16 @@ class TriggerListView(ListView):
         # get the Trigger of the connected user
         if self.request.user.is_authenticated():
             # if the user selected a filter, get its ID
-            if 'trigger_filtered_by' in self.kwargs:
+            if self.kwargs.get('trigger_filtered_by'):
                 filtered_by = UserService.objects.filter(
                     user=self.request.user,
-                    name=self.kwargs['trigger_filtered_by'])[0].id
+                    name=self.kwargs.get('trigger_filtered_by'))[0].id
 
-            if 'trigger_ordered_by' in self.kwargs:
+            if self.kwargs.get('trigger_ordered_by'):
                 """
                     sort by 'name' property in the related model UserService
                 """
-                order_by = str(self.kwargs['trigger_ordered_by'] + "__name")
+                order_by = str(self.kwargs.get('trigger_ordered_by') + "__name")
                 # append to the tuple, the selected 'trigger_ordered_by'
                 # choosen in the dropdown
                 ordered_by = (order_by, ) + ordered_by
@@ -269,14 +269,14 @@ class TriggerListView(ListView):
 
         context = super(TriggerListView, self).get_context_data(**kw)
 
-        if 'trigger_filtered_by' in self.kwargs:
+        if self.kwargs.get('trigger_filtered_by'):
             page_link = reverse('trigger_filter_by',
                                 kwargs={'trigger_filtered_by':
-                                        self.kwargs['trigger_filtered_by']})
-        elif 'trigger_ordered_by' in self.kwargs:
+                                        self.kwargs.get('trigger_filtered_by')})
+        elif self.kwargs.get('trigger_ordered_by'):
             page_link = reverse('trigger_order_by',
                                 kwargs={'trigger_ordered_by':
-                                        self.kwargs['trigger_ordered_by']})
+                                        self.kwargs.get('trigger_ordered_by')})
         else:
             page_link = reverse('home')
 
@@ -326,7 +326,7 @@ class TriggerServiceMixin(object):
     def get_queryset(self):
         # get the trigger of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user, id=self.kwargs['pk'])
+            return self.queryset.filter(user=self.request.user, id=self.kwargs.get('pk'))
         # otherwise return nothing
         return TriggerService.objects.none()
 

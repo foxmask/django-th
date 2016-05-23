@@ -63,7 +63,7 @@ class ServiceGithub(ServicesMgr):
             :type kwargs: dict
             :rtype: list
         """
-        trigger_id = kwargs['trigger_id']
+        trigger_id = kwargs.get('trigger_id')
         data = list()
         cache.set('th_github_' + str(trigger_id), data)
 

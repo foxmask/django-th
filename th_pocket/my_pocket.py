@@ -76,8 +76,8 @@ class ServicePocket(ServicesMgr):
 
             :rtype: list
         """
-        trigger_id = kwargs['trigger_id']
-        date_triggered = kwargs['date_triggered']
+        trigger_id = kwargs.get('trigger_id')
+        date_triggered = kwargs.get('date_triggered')
 
         data = list()
         # pocket uses a timestamp date format
@@ -120,8 +120,8 @@ class ServicePocket(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        if 'link' in data and data['link'] is not None:
-            if len(data['link']) > 0:
+        if data.get('link'):
+            if len(data.get('link')) > 0:
                 # get the pocket data of this trigger
                 from th_pocket.models import Pocket as PocketModel
                 trigger = PocketModel.objects.get(trigger_id=trigger_id)
@@ -130,7 +130,7 @@ class ServicePocket(ServicesMgr):
                 # convert htmlentities
                 title = HtmlEntities(title).html_entity_decode
 
-                status = self._create_entry(url=data['link'],
+                status = self._create_entry(url=data.get('link'),
                                             title=title,
                                             tags=(trigger.tag.lower()))
             else:

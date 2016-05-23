@@ -29,10 +29,10 @@ class UserServiceWizard(SessionWizardView):
         else:
             data = self.get_cleaned_data_for_step(self.get_prev_step(
                 self.steps.current))
-            if 'provider' in data:
-                folder = str(data['provider']).split('Service')[1]
-            elif 'consumer' in data:
-                folder = str(data['consumer']).split('Service')[1]
+            if data.get('provider'):
+                folder = str(data.get('provider')).split('Service')[1]
+            elif data.get('consumer'):
+                folder = str(data.get('consumer')).split('Service')[1]
 
         return '%s/wz-%s-form.html' % (folder.lower(), self.steps.current)
 
@@ -47,7 +47,7 @@ class UserServiceWizard(SessionWizardView):
         if step == '1':
 
             prev_data = self.get_cleaned_data_for_step('0')
-            service_name = str(prev_data['provider']).split('Service')[1]
+            service_name = str(prev_data.get('provider')).split('Service')[1]
             class_name = 'th_' + service_name.lower() + '.forms'
             form_name = service_name + 'ProviderForm'
             form_class = class_for_name(class_name, form_name)
@@ -56,12 +56,12 @@ class UserServiceWizard(SessionWizardView):
         elif step == '2':
             step0_data = self.get_cleaned_data_for_step('0')
             form = ConsumerForm(
-                data, initial={'provider': step0_data['provider']})
+                data, initial={'provider': step0_data.get('provider')})
 
         elif step == '3':
 
             prev_data = self.get_cleaned_data_for_step('2')
-            service_name = str(prev_data['consumer']).split('Service')[1]
+            service_name = str(prev_data.get('consumer')).split('Service')[1]
             class_name = 'th_' + service_name.lower() + '.forms'
             form_name = service_name + 'ConsumerForm'
             form_class = class_for_name(class_name, form_name)
@@ -90,18 +90,18 @@ class UserServiceWizard(SessionWizardView):
             # get the service we selected at step 0 : provider
             if i == 0:
                 trigger_provider = UserService.objects.get(
-                    name=data['provider'],
+                    name=data.get('provider'),
                     user=self.request.user.id)
-                model_provider = get_service(data['provider'], 'models')
+                model_provider = get_service(data.get('provider'), 'models')
             # get the service we selected at step 2 : consumer
             elif i == 2:
                 trigger_consumer = UserService.objects.get(
-                    name=data['consumer'],
+                    name=data.get('consumer'),
                     user=self.request.user.id)
-                model_consumer = get_service(data['consumer'], 'models')
+                model_consumer = get_service(data.get('consumer'), 'models')
             # get the description we gave for the trigger
             elif i == 4:
-                trigger_description = data['description']
+                trigger_description = data.get('description')
             i += 1
 
         # save the trigger
@@ -141,7 +141,7 @@ def finalcallback(request, **kwargs):
         the auth request from UserServiceCreateView
     """
     default_provider.load_services()
-    service_name = kwargs['service_name']
+    service_name = kwargs.get('service_name')
     service_object = default_provider.get_service(service_name)
     lets_callback = getattr(service_object, 'callback')
     # call the auth func from this class

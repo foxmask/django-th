@@ -179,8 +179,7 @@ class ServiceTwitter(ServicesMgr):
         title, content = super(ServiceTwitter, self).save_data(
             trigger_id, data, kwargs={})
 
-        if 'link' in data and data['link'] is not None and \
-           len(data['link']) > 0:
+        if data.get('link') and len(data.get('link')) > 0:
             # get the Twitter data of this trigger
             trigger = Twitter.objects.get(trigger_id=trigger_id)
 
@@ -188,7 +187,7 @@ class ServiceTwitter(ServicesMgr):
                 # is there several tag ?
                 tags = ["#" + tag.strip() for tag in trigger.tag.split(',')] if ',' in trigger.tag else "#" + trigger.tag
 
-            content = str("{title} {link}").format(title=title, link=data['link'])
+            content = str("{title} {link}").format(title=title, link=data.get('link'))
 
             # TODO : need to check the size of the content and tags to add
             if len(tags) > 0:
