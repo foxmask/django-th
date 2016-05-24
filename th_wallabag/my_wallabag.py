@@ -12,6 +12,7 @@ from django.core.cache import caches
 from django_th.services.services import ServicesMgr
 from django_th.html_entities import HtmlEntities
 from django_th.models import UserService, ServicesActivated
+from th_wallabag.models import Wallabag
 
 """
     handle process with wallabag
@@ -48,62 +49,9 @@ class ServiceWallabag(ServicesMgr):
                                  client_secret=self.service_client_secret,
                                  client_id=self.service_client_id,
                                  token=self.token)
+
             except UserService.DoesNotExist:
                 pass
-
-    def _new_wall(self, token):
-        """
-            new Wallabag instance
-            :param token:
-            :return: instance
-        """
-        return Wall(host=self.service_host,
-                    client_secret=self.service_client_secret,
-                    client_id=self.service_client_id,
-                    token=token)
-
-    def _create_entry(self, userservice_id, url, title, tags, shootagain=False):
-        """
-            Create an entry
-            :param userservice_id: id of the service to update with new token
-            :param url:  url to save
-            :param title: title to set
-            :param tags: tags to set
-            :param shootagain: retry to create a post after a 401
-            :return: status
-        """
-        if shootagain:
-            new_token = self.refresh_token()
-            new_wall = self._new_wall(new_token)
-            # update the token
-            UserService.objects.filter(id=userservice_id).update(token=new_token)
-        try:
-            if shootagain:
-                status = new_wall.post_entries(url=url,
-                                               title=title,
-                                               tags=tags
-                                               )
-            else:
-                status = self.wall.post_entries(url=url,
-                                                title=title,
-                                                tags=tags)
-            sentence = str('wallabag {} created').format(url)
-            logger.debug(sentence)
-        except Exception as e:
-            if e.errno == 401:
-                if shootagain:
-                    # break circular call :P
-                    logger.critical(e.errno, e.strerror)
-                    status = False
-                self._create_entry(userservice_id=userservice_id,
-                                   url=url,
-                                   title=title,
-                                   tags=tags,
-                                   shootagain=True)
-            else:
-                logger.critical(e.errno, e.strerror)
-                status = False
-        return status
 
     def read_data(self, **kwargs):
         """
@@ -122,6 +70,83 @@ class ServiceWallabag(ServicesMgr):
         trigger_id = kwargs.get('trigger_id')
         cache.set('th_wallabag_' + str(trigger_id), data)
 
+    def new_wall(self, token):
+        """
+            produce a new wall instance
+            :param token: to get
+            :return: Wall instance
+        """
+        return Wall(host=self.service_host,
+                    client_secret=self.service_client_secret,
+                    client_id=self.service_client_id,
+                    token=token)
+
+    def _create_entry(self, title, data, tags):
+        """
+            create an entry
+            :param title: string
+            :param data: dict
+            :param tags: list
+            :return: boolean
+        """
+        if data.get('link') and len(data.get('link')) > 0:
+            try:
+                self.wall.post_entries(url=data.get('link'),
+                                       title=title,
+                                       tags=(tags.lower()))
+                sentence = str('wallabag {} created').format(data.get('link'))
+                logger.debug(sentence)
+                status = True
+            except AttributeError as e:
+                    # in the __init__ the token was not found in the UserService model
+                    status = self._new_token(data.get('userservice_id'),
+                                             data.get('link'),
+                                             title,
+                                             tags.lower())
+            except Exception as e:
+                if e.errno == 401:
+                    status = self._new_token(data.get('userservice_id'),
+                                             data.get('link'),
+                                             title,
+                                             tags.lower())
+                else:
+                    logger.critical(e.errno, e.strerror)
+                    status = False
+        else:
+            status = False
+        return status
+
+    def _refresh_token(self):
+        """
+            refresh the expired token
+            :return: boolean
+        """
+        params = {'username': self.service_username,
+                  'password': self.service_password,
+                  'client_id': self.service_client_id,
+                  'client_secret': self.service_client_secret}
+        return Wall.get_token(host=self.service_host, **params)
+
+    def _new_token(self, userservice_id, link, title, tags):
+        """
+            create a new token
+            :param userservice_id: id of the UserService
+            :param link: string
+            :param title: string
+            :param tags: list
+            :return: boolean
+        """
+        new_token = self._refresh_token()
+        UserService.objects.filter(id=userservice_id).update(token=new_token)
+    
+        # new wallabag session with new token
+        new_wall = self.new_wall(new_token)
+        try:
+            return new_wall.post_entries(url=link, title=title, tags=tags)
+        except Exception as e:
+            logger.critical(e.errno, e.strerror)
+            return False
+
     def save_data(self, trigger_id, **data):
         """
             let's save the data
@@ -133,30 +158,13 @@ class ServiceWallabag(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        if data.get('link'):
-            if len(data.get('link')) > 0:
-                # get the wallabag data for this trigger
-                from th_wallabag.models import Wallabag
-                trigger = Wallabag.objects.get(trigger_id=trigger_id)
+        trigger = Wallabag.objects.get(trigger_id=trigger_id)
 
-                title = self.set_title(data)
-                # convert htmlentities
-                title = HtmlEntities(title).html_entity_decode
+        title = self.set_title(data)
+        # convert htmlentities
+        title = HtmlEntities(title).html_entity_decode
 
-                status = self._create_entry(userservice_id=data['userservice_id'],
-                                            url=data['link'],
-                                            title=title,
-                                            tags=trigger.tag.lower())
-            else:
-                logger.warning(
-                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
-                status = True
-        else:
-            logger.critical(
-                "no token provided for trigger ID {}".format(trigger_id))
-            status = False
-
-        return status
+        return self._create_entry(title, data, trigger.tag)
 
     def auth(self, request):
         """
@@ -194,14 +202,3 @@ class ServiceWallabag(ServicesMgr):
             return '/'
 
         return 'wallabag/callback.html'
-
-    def refresh_token(self):
-        """
-            refresh the expired token
-            :return: boolean
-        """
-        params = {'username': self.service_username,
-                  'password': self.service_password,
-                  'client_id': self.service_client_id,
-                  'client_secret': self.service_client_secret}
-        return Wall.get_token(host=self.service_host, **params)

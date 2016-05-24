@@ -131,13 +131,180 @@ class ServiceEvernote(ServicesMgr):
 
         return data
 
-    def _create_note(self, note, trigger_id, data):
+    def save_data(self, trigger_id, **data):
+        """
+            let's save the data
+            don't want to handle empty title nor content
+            otherwise this will produce an Exception by
+            the Evernote's API
+
+            :param trigger_id: trigger ID from which to save data
+            :param data: the data to check to be used and save
+            :type trigger_id: int
+            :type data:  dict
+            :return: the status of the save statement
+            :rtype: boolean
+        """
+        kwargs = {}
+        # set the title and content of the data
+        title, content = super(ServiceEvernote, self).save_data(trigger_id,
+                                                                data,
+                                                                **kwargs)
+
+        if len(title):
+            # get the evernote data of this trigger
+            trigger = Evernote.objects.get(trigger_id=trigger_id)
+
+            try:
+                note_store = self.client.get_note_store()
+            except EDAMSystemException as e:
+                # rate limite reach have to wait 1 hour !
+                if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
+                    sentance = "Rate limit reached {code}"
+                    sentance += "Retry your request in {msg} seconds"
+                    sentance += " - date set to cache again until"
+                    sentance += " limit reached"
+                    logger.warn(sentance.format(
+                        code=e.errorCode,
+                        msg=e.rateLimitDuration))
+                    # put again in cache the data that could not be
+                    # published in Evernote yet
+                    cache.set('th_evernote_' + str(trigger_id),
+                              data,
+                              version=2)
+                    return True
+                else:
+                    logger.critical(e)
+                    return False
+            except Exception as e:
+                logger.critical(e)
+                return False
+
+            # note object
+            note = Types.Note()
+            if trigger.notebook:
+                # get the notebookGUID ...
+                notebook_id = self.get_notebook(note_store, trigger.notebook)
+                # create notebookGUID if it does not exist then return its id
+                note.notebookGuid = self.set_notebook(note_store,
+                                                      trigger.notebook,
+                                                      notebook_id)
+
+                if trigger.tag:
+                    # ... and get the tagGUID if a tag has been provided
+                    tag_id = self.get_tag(note_store, trigger.tag)
+                    if tag_id is False:
+                        tag_id = self.set_tag(note_store, trigger.tag, tag_id)
+                        # set the tag to the note if a tag has been provided
+                        note.tagGuids = tag_id
+
+                logger.debug("notebook that will be used %s", trigger.notebook)
+
+            # attribute of the note: the link to the website
+            note_attribute = self.set_note_attribute(data)
+            if note_attribute:
+                note.attributes = note_attribute
+
+            # footer of the note
+            footer = self.set_note_footer(data, trigger)
+            content += footer
+
+            note.title = title
+            note.content = self.set_evernote_header()
+            note.content += self.get_sanitize_content(content)
+            # create a note
+            return self._create_note(note_store, note, trigger_id, data)
+
+        else:
+            sentence = "no title provided for trigger ID {}"
+            logger.critical(sentence.format(trigger_id))
+            return False
+
+    @staticmethod
+    def get_notebook(note_store, my_notebook):
+        """
+            get the notebook from its name
+        """
+        notebook_id = 0
+        notebooks = note_store.listNotebooks()
+        # get the notebookGUID ...
+        for notebook in notebooks:
+            if notebook.name.lower() == my_notebook.lower():
+                notebook_id = notebook.guid
+                break
+        return notebook_id
+
+    @staticmethod
+    def set_notebook(note_store, my_notebook, notebook_id):
+        """
+            create a notebook
+        """
+        if notebook_id == 0:
+            new_notebook = Types.Notebook()
+            new_notebook.name = my_notebook
+            new_notebook.defaultNotebook = False
+            notebook_id = note_store.createNotebook(new_notebook).guid
+
+        return notebook_id
+
+    @staticmethod
+    def get_tag(note_store, my_tags):
+        """
+            get the tags from his Evernote account
+            :param note_store Evernote Instance
+            :param my_tags string
+            :return: array of the tag to create
+        """
+        tag_id = []
+        listtags = note_store.listTags()
+        # cut the string by piece of tag with comma
+        if ',' in my_tags:
+            for my_tag in my_tags.split(','):
+                for tag in listtags:
+                    # remove space before and after
+                    # thus we keep "foo bar"
+                    # but not " foo bar" nor "foo bar "
+                    if tag.name.lower() == my_tag.lower().lstrip().rstrip():
+                        tag_id.append(tag.guid)
+                        break
+        else:
+            for tag in listtags:
+                if tag.name.lower() == my_tags.lower():
+                    tag_id.append(tag.guid)
+                    break
+
+        return tag_id
+
+    def set_tag(self, note_store, my_tags, tag_id):
+        """
+            create a tag if not exists
+            :param my_tags string
+            :param tag_id id of the tag(s) to create
+            :return: array of the tag to create
+        """
+        # tagGUID does not exist:
+        # create it if a tag has been provided
+        new_tag = Types.Tag()
+        if ',' in my_tags:
+            for my_tag in my_tags.split(','):
+                new_tag.name = my_tag
+                tag_id.append(self._create_tag(note_store, new_tag))
+        elif my_tags:
+            new_tag.name = my_tags
+            tag_id.append(self._create_tag(note_store, new_tag))
+
+        return tag_id
+
+    @staticmethod
+    def _create_note(note_store, note, trigger_id, data):
         """
             create a note
+            :param note_store Evernote instance
             :param note
             :param trigger_id id of the trigger
             :param data to save or to put in cache
-            :type note:
+            :type Evernote Instance
+            :type note: string
             :type trigger_id: int
             :type data: dict
             :return boolean
@@ -145,7 +312,7 @@ class ServiceEvernote(ServicesMgr):
         """
         # create the note !
         try:
-            created_note = self.note_store.createNote(note)
+            created_note = note_store.createNote(note)
             sentance = str('note %s created') % created_note.guid
             logger.debug(sentance)
             return True
@@ -177,168 +344,14 @@ class ServiceEvernote(ServicesMgr):
             logger.critical(e)
             return False
 
-    def save_data(self, trigger_id, **data):
-        """
-            let's save the data
-            don't want to handle empty title nor content
-            otherwise this will produce an Exception by
-            the Evernote's API
-
-            :param trigger_id: trigger ID from which to save data
-            :param data: the data to check to be used and save
-            :type trigger_id: int
-            :type data:  dict
-            :return: the status of the save statement
-            :rtype: boolean
-        """
-        kwargs = {}
-        # set the title and content of the data
-        title, content = super(ServiceEvernote, self).save_data(trigger_id,
-                                                                data,
-                                                                **kwargs)
-
-        if len(title):
-            # get the evernote data of this trigger
-            trigger = Evernote.objects.get(trigger_id=trigger_id)
-
-            try:
-                self.note_store = self.client.get_note_store()
-            except EDAMSystemException as e:
-                # rate limite reach have to wait 1 hour !
-                if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                    sentance = "Rate limit reached {code}"
-                    sentance += "Retry your request in {msg} seconds"
-                    sentance += " - date set to cache again until"
-                    sentance += " limit reached"
-                    logger.warn(sentance.format(
-                        code=e.errorCode,
-                        msg=e.rateLimitDuration))
-                    # put again in cache the data that could not be
-                    # published in Evernote yet
-                    cache.set('th_evernote_' + str(trigger_id),
-                              data,
-                              version=2)
-                    return True
-                else:
-                    logger.critical(e)
-                    return False
-            except Exception as e:
-                logger.critical(e)
-                return False
-
-            # note object
-            note = Types.Note()
-            if trigger.notebook:
-                # get the notebookGUID ...
-                notebook_id = self.get_notebook(trigger)
-                # create notebookGUID if it does not exist then return its id
-                note.notebookGuid = self.set_notebook(trigger, notebook_id)
-
-                # ... and get the tagGUID if a tag has been provided
-                tag_id = self.get_tag(trigger)
-                tag_id = self.set_tag(trigger, tag_id)
-
-                if trigger.tag is not '':
-                    # set the tag to the note if a tag has been provided
-                    note.tagGuids = tag_id
-
-                logger.debug("notebook that will be used %s", trigger.notebook)
-
-            # attribute of the note: the link to the website
-            note_attribute = self.set_note_attribute(data)
-            if note_attribute:
-                note.attributes = note_attribute
-
-            # footer of the note
-            footer = self.set_note_footer(data, trigger)
-            content += footer
-
-            note.title = title
-            note.content = self.set_evernote_header()
-            note.content += self.get_sanitize_content(content)
-            # create a note
-            return self._create_note(note, trigger_id, data)
-
-        else:
-            sentence = "no title provided for trigger ID {}"
-            logger.critical(sentence.format(trigger_id))
-            return False
-
-    def get_notebook(self, trigger):
-        """
-            get the notebook from its name
-        """
-        notebook_id = 0
-        notebooks = self.note_store.listNotebooks()
-        # get the notebookGUID ...
-        for notebook in notebooks:
-            if notebook.name.lower() == trigger.notebook.lower():
-                notebook_id = notebook.guid
-                break
-        return notebook_id
-
-    def set_notebook(self, trigger, notebook_id):
-        """
-            create a notebook
-        """
-        if notebook_id == 0:
-            new_notebook = Types.Notebook()
-            new_notebook.name = trigger.notebook
-            new_notebook.defaultNotebook = False
-            notebook_id = self.note_store.createNotebook(
-                new_notebook).guid
-
-        return notebook_id
-
-    def get_tag(self, trigger):
-        """
-            get the tags from his Evernote account
-        """
-        tag_id = []
-        if trigger.tag is not '':
-            listtags = self.note_store.listTags()
-            # cut the string by piece of tag with comma
-            if ',' in trigger.tag:
-                for my_tag in trigger.tag.split(','):
-                    for tag in listtags:
-                        # remove space before and after
-                        # thus we keep "foo bar"
-                        # but not " foo bar" nor "foo bar "
-                        if tag.name.lower() == my_tag.lower().lstrip().rstrip():
-                            tag_id.append(tag.guid)
-                            break
-            else:
-                for tag in listtags:
-                    if tag.name.lower() == trigger.tag.lower():
-                        tag_id.append(tag.guid)
-                        break
-        return tag_id
-
-    def set_tag(self, trigger, tag_id):
-        """
-            create a tag if not exists
-            :param trigger object
-            :param tag_id id of the tag(s) to create
-            :return: array of the tag to create
-        """
-        if len(tag_id) == 0:
-            new_tag = Types.Tag()
-            if ',' in trigger.tag:
-                for my_tag in trigger.tag.split(','):
-                    new_tag.name = my_tag
-                    tag_id.append(self._create_tag(new_tag))
-            else:
-                new_tag.name = trigger.tag
-                tag_id.append(self._create_tag(new_tag))
-        return tag_id
-
-    def _create_tag(self, new_tag):
+    @staticmethod
+    def _create_tag(note_store, new_tag):
         """
             :param new_tag: create this new tag
             :return: new tag id
         """
         try:
-            return self.note_store.createTag(new_tag).guid
+            return note_store.createTag(new_tag).guid
         except EDAMUserException as e:
             if e.errorCode == EDAMErrorCode.DATA_CONFLICT:
                 logger.info("Evernote Data Conflict Err {0}".format(e))
