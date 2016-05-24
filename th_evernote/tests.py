@@ -86,32 +86,7 @@ class ServiceEvernoteTest(TestCase):
         self.token = 'AZERTY123'
         self.trigger_id = 1
 
-    def test_process_data(self, token='AZERTY123',
-                          trigger_id=1, date_triggered=''):
-        token = self.token
-        date_triggered = self.date_triggered
-        trigger_id = self.trigger_id
-
-        since = int(
-            time.mktime(datetime.datetime.timetuple(date_triggered)))
-
-        datas = list()
-        self.assertTrue(isinstance(self.date_triggered, datetime.datetime))
-        self.assertTrue(token)
-        self.assertTrue(isinstance(trigger_id, int))
-        self.assertTrue(isinstance(since, int))
-        self.assertTrue(isinstance(datas, list))
-
-        self.assertIn('sandbox', settings.TH_EVERNOTE)
-        sandbox = settings.TH_EVERNOTE['sandbox']
-
-        client = mock.Mock()
-        client.method(token=token, sandbox=sandbox)
-        client.method.assert_called_with(token=token, sandbox=sandbox)
-
-        return datas
-
-    def test_save_data(self, token='AZERTY123', trigger_id=1):
+    def test_save_data(self):
         token = self.token
         trigger_id = self.trigger_id
 
