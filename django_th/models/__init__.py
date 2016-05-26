@@ -37,11 +37,15 @@ class UserService(models.Model):
     token = models.CharField(max_length=255)
     name = models.ForeignKey(
         ServicesActivated, to_field='name', related_name='+')
-    username = models.CharField(_('username'), max_length=255, default='', blank=True)
-    password = models.CharField(_('password'), max_length=128, default='', blank=True)
+    username = models.CharField(
+        _('username'), max_length=255, default='', blank=True)
+    password = models.CharField(
+        _('password'), max_length=128, default='', blank=True)
     host = models.CharField(_('host'), max_length=255, default='', blank=True)
-    client_id = models.CharField(_('client id'), max_length=255, default='', blank=True)
-    client_secret = models.CharField(_('client secret'), max_length=255, default='', blank=True)
+    client_id = models.CharField(
+        _('client id'), max_length=255, default='', blank=True)
+    client_secret = models.CharField(
+        _('client secret'), max_length=255, default='', blank=True)
 
     def show(self):
         return "User Service %s %s %s" % (self.user, self.token, self.name)
@@ -74,4 +78,3 @@ class TriggerService(models.Model):
                                                self.provider.name,
                                                self.consumer.name,
                                                self.description)
-

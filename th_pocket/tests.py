@@ -14,6 +14,7 @@ class PocketTest(MainTest):
     """
         PocketTest Model
     """
+
     def create_pocket(self):
         trigger = self.create_triggerservice(consumer_name='ServicePocket')
         tag = 'test'
@@ -84,6 +85,7 @@ class ServicePocketTest(TestCase):
     """
        ServicePocketTest
     """
+
     def setUp(self):
         self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
@@ -148,4 +150,3 @@ class ServicePocketTest(TestCase):
 
     def test_callback(self):
         pass
-

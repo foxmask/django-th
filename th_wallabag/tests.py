@@ -12,6 +12,7 @@ class WallabagTest(TestCase):
     """
         wallabagTest Model
     """
+
     def setUp(self):
         """
            create a user
@@ -73,6 +74,7 @@ class WallabagTest(TestCase):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         """
            test if that form is a valid provider one
@@ -94,4 +96,3 @@ class WallabagTest(TestCase):
 
     def test_get_config_th_cache(self):
         self.assertIn('th_wallabag', settings.CACHES)
-

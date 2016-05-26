@@ -32,26 +32,10 @@ cache = caches['th_wallabag']
 
 class ServiceWallabag(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceWallabag, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceWallabag, self).__init__(token, **kwargs)
         self.token = token
-        if token:
-            try:
-                us = UserService.objects.get(token=token, name='ServiceWallabag')
-
-                self.service_username = us.username
-                self.service_password = us.password
-                self.service_host = us.host
-                self.service_client_secret = us.client_secret
-                self.service_client_id = us.client_id
-
-                self.wall = Wall(host=self.service_host,
-                                 client_secret=self.service_client_secret,
-                                 client_id=self.service_client_id,
-                                 token=self.token)
-
-            except UserService.DoesNotExist:
-                pass
+        self.user = kwargs.get('user') if kwargs.get('user') else ''
 
     def read_data(self, **kwargs):
         """
@@ -76,10 +60,16 @@ class ServiceWallabag(ServicesMgr):
             :param token: to get
             :return: Wall instance
         """
-        return Wall(host=self.service_host,
-                    client_secret=self.service_client_secret,
-                    client_id=self.service_client_id,
-                    token=token)
+        if token:
+            try:
+                us = UserService.objects.get(
+                    token=self.token, name='ServiceWallabag')
+            except UserService.DoesNotExist:
+                us = UserService.objects.get(
+                    user=self.user, name='ServiceWallabag')
+            finally:
+                return Wall(host=us.host, client_secret=us.client_secret,
+                            client_id=us.client_id, token=us.token)
 
     def _create_entry(self, title, data, tags):
         """
@@ -90,19 +80,12 @@ class ServiceWallabag(ServicesMgr):
             :return: boolean
         """
         if data.get('link') and len(data.get('link')) > 0:
+            wall = self.new_wall(self.token)
             try:
-                self.wall.post_entries(url=data.get('link'),
-                                       title=title,
-                                       tags=(tags.lower()))
-                sentence = str('wallabag {} created').format(data.get('link'))
-                logger.debug(sentence)
+                wall.post_entries(url=data.get('link'), title=title,
+                                  tags=(tags.lower()))
+                logger.debug('wallabag {} created').format(data.get('link'))
                 status = True
-            except AttributeError as e:
-                    # in the __init__ the token was not found in the UserService model
-                    status = self._new_token(data.get('userservice_id'),
-                                             data.get('link'),
-                                             title,
-                                             tags.lower())
             except Exception as e:
                 if e.errno == 401:
                     status = self._new_token(data.get('userservice_id'),
@@ -113,19 +96,22 @@ class ServiceWallabag(ServicesMgr):
                     logger.critical(e.errno, e.strerror)
                     status = False
         else:
-            status = False
+            status = True  # we ignore empty link
         return status
 
     def _refresh_token(self):
         """
             refresh the expired token
+            get the token of the service Wallabag
+            for the user that uses Wallabag
             :return: boolean
         """
-        params = {'username': self.service_username,
-                  'password': self.service_password,
-                  'client_id': self.service_client_id,
-                  'client_secret': self.service_client_secret}
-        return Wall.get_token(host=self.service_host, **params)
+        us = UserService.objects.get(user=self.user, name='ServiceWallabag')
+        params = {'username': us.username,
+                  'password': us.password,
+                  'client_id': us.client_id,
+                  'client_secret': us.client_secret}
+        return Wall.get_token(host=us.host, **params)
 
     def _new_token(self, userservice_id, link, title, tags):
         """
@@ -138,14 +124,14 @@ class ServiceWallabag(ServicesMgr):
         """
         new_token = self._refresh_token()
         UserService.objects.filter(id=userservice_id).update(token=new_token)
-    
-        # new wallabag session with new token
+
         new_wall = self.new_wall(new_token)
         try:
-            return new_wall.post_entries(url=link, title=title, tags=tags)
+            status = new_wall.post_entries(url=link, title=title, tags=tags)
         except Exception as e:
-            logger.critical(e.errno, e.strerror)
-            return False
+            logger.critical(e)
+            status = False
+        return status
 
     def save_data(self, trigger_id, **data):
         """
@@ -172,9 +158,10 @@ class ServiceWallabag(ServicesMgr):
             :param request: request object
             :return: callback url
             :rtype: string that contains the url to redirect after auth
- 
+
         """
-        service = UserService.objects.get(user=request.user, name='ServiceWallabag')
+        service = UserService.objects.get(
+            user=request.user, name='ServiceWallabag')
         callback_url = 'http://%s%s' % (
             request.get_host(), reverse('wallabag_callback'))
         params = {'username': service.username,

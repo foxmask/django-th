@@ -6,6 +6,7 @@ class DiscoverRunnerTriggerHappy(DiscoverRunner):
     """
     A Django test runner that uses unittest2 test discovery.
     """
+
     def run_tests(self, test_labels, extra_tests=None, **kwargs):
         """
         Run the unit tests for all the test labels in the provided list.

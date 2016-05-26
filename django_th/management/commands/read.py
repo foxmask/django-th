@@ -17,7 +17,7 @@ logger = getLogger('django_th.trigger_happy')
 class Command(BaseCommand):
 
     help = 'Trigger all the services '\
-            'and put them in cache'
+        'and put them in cache'
 
     def handle(self, *args, **options):
         """
@@ -36,4 +36,3 @@ class Command(BaseCommand):
                 result.get(timeout=360)
         except TimeoutError as e:
             logger.warn(e)
-

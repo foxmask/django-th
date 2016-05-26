@@ -12,6 +12,7 @@ class RssTest(MainTest):
     """
         RssTest Model
     """
+
     def create_rss(self):
         trigger = self.create_triggerservice(consumer_name='ServiceRss')
         name = 'TriggerHappy RSS'
@@ -26,13 +27,15 @@ class RssTest(MainTest):
     def test_rss(self):
         r = self.create_rss()
         self.assertTrue(isinstance(r, Rss))
-        self.assertEqual(r.show(), "Services RSS {} {}".format(r.url, r.trigger))
+        self.assertEqual(
+            r.show(), "Services RSS {} {}".format(r.url, r.trigger))
         self.assertEqual(r.__str__(), r.url)
 
     """
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         r = self.create_rss()
         data = {'name': r.name, 'url': r.url}

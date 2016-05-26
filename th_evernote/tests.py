@@ -1,6 +1,5 @@
 # coding: utf-8
 import datetime
-import time
 
 from django.test import TestCase
 from django.conf import settings
@@ -14,6 +13,7 @@ class EvernoteTest(MainTest):
     """
         EvernoteTest Model
     """
+
     def create_evernote(self):
         trigger = self.create_triggerservice(consumer_name='ServiceEvernote')
         tag = 'test'
@@ -34,6 +34,7 @@ class EvernoteTest(MainTest):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         ev = self.create_evernote()
         data = {'tag': ev.tag, 'notebook': ev.notebook}
@@ -76,6 +77,7 @@ class ServiceEvernoteTest(TestCase):
     """
        ServiceEvernoteTest
     """
+
     def setUp(self):
         self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',

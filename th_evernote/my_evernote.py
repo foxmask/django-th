@@ -46,8 +46,8 @@ cache = caches['th_evernote']
 
 class ServiceEvernote(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceEvernote, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceEvernote, self).__init__(token, **kwargs)
         self.sandbox = settings.TH_EVERNOTE['sandbox']
         self.consumer_key = settings.TH_EVERNOTE['consumer_key']
         self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
@@ -273,7 +273,10 @@ class ServiceEvernote(ServicesMgr):
     @staticmethod
     def _cleaning_content(data):
 
-        data = data.replace('<?xml version="1.0" encoding="UTF-8"?>\n<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">\n<en-note>', '')
+        data = data.replace(
+            '<?xml version="1.0" encoding="UTF-8"?>\n<'
+            '!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">'
+            '\n<en-note>', '')
         data = data.replace('</en-note>', '')
 
         return data

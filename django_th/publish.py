@@ -67,7 +67,8 @@ def publishing(service):
         to_update = True
         status = True
     # run run run
-    service_provider = default_provider.get_service(str(service.provider.name.name))
+    service_provider = default_provider.get_service(
+        str(service.provider.name.name))
 
     # 1) get the data from the provider service
     module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
@@ -75,12 +76,11 @@ def publishing(service):
     data = getattr(service_provider, 'process_data')(**kw)
     count_new_data = len(data) if data else 0
     if count_new_data > 0:
-
         # consumer - the service which uses the data
         service_consumer = default_provider.get_service(
-            str(service.consumer.name.name))
-
-        getattr(service_consumer, '__init__')(service.consumer.token)
+                    str(service.consumer.name.name))
+        kwargs = {'user': service.user}
+        getattr(service_consumer, '__init__')(service.consumer.token, **kwargs)
         consumer = getattr(service_consumer, 'save_data')
 
         # 2) for each one
@@ -90,7 +90,7 @@ def publishing(service):
             status = consumer(service.id, **d)
 
             to_update = True
-            # let's log
+        # let's log
     log_update(service, to_update, status, count_new_data)
     # let's update
     if to_update and status:

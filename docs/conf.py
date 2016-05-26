@@ -11,7 +11,6 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-import sys, os
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -228,7 +227,9 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'TriggerHappy', u'Trigger Happy Documentation',
-     u'foxmask', 'TriggerHappy', 'take the control of your data with this micro enterprise service bus (ESB) - a bridge between your internet services.',
+     u'foxmask', 'TriggerHappy', 'take the control of your data with this'
+                                 'micro enterprise service bus (ESB) - '
+                                 'a bridge between your internet services.',
      'Miscellaneous'),
 ]
 

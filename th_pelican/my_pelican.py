@@ -12,7 +12,6 @@ from django.utils.log import getLogger
 # django_th classes
 from django_th.services.services import ServicesMgr
 
-
 """
     TH_SERVICES = (
         ...
@@ -26,9 +25,10 @@ logger = getLogger('django_th.trigger_happy')
 
 class ServicePelican(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServicePelican, self).__init__(token)
-        self.AUTHOR = settings.TH_PELICAN_AUTHOR if settings.TH_PELICAN_AUTHOR else ''
+    def __init__(self, token=None, **kwargs):
+        super(ServicePelican, self).__init__(token, **kwargs)
+        self.AUTHOR = settings.TH_PELICAN_AUTHOR \
+            if settings.TH_PELICAN_AUTHOR else ''
 
     def to_datetime(self, data):
         """
@@ -69,13 +69,14 @@ class ServicePelican(ServicesMgr):
         """
         published = self.to_datetime(data)
 
-        category = data['category'] if 'category' in data else ''
-        tags = data['tags'] if 'tags' in data else ''
+        category = data.get('category') if data.get('category') else ''
+        tags = data.get('tags') if data.get('tags') else ''
 
-        filename = self._set_filename(data['title'], pelican_path)
+        filename = self._set_filename(data.get('title'), pelican_path)
 
-        full_content = self._set_full_content(site_title, data['title'], published,
-                                              content, url, category, tags)
+        full_content = self._set_full_content(site_title, data.get('title'),
+                                              published, content, url,
+                                              category, tags)
 
         try:
             with open(filename, 'w') as f:

@@ -42,7 +42,8 @@ class UserServiceTest(TestCase):
         if u.name.auth_required:
             data = {'user': u.user, 'name': u.name, 'token': u.token}
         initial = {'user': self.user}
-        # create a second service to be able to cover the "else" in activated_services()
+        # create a second service to be able to cover the "else" in
+        # activated_services()
         user = self.user
         ServicesActivated.objects.create(name='ServiceRss',
                                          status=True,
@@ -91,10 +92,11 @@ class TriggerServiceTest(MainTest):
     def test_triggerservice(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
-        self.assertEqual(t.show(), "My Service {} {} {} {}".format(t.user,
-                                                                   t.provider.name,
-                                                                   t.consumer.name,
-                                                                   t.description))
+        self.assertEqual(t.show(),
+                         "My Service {} {} {} {}".format(t.user,
+                                                         t.provider.name,
+                                                         t.consumer.name,
+                                                         t.description))
     """
         Form
     """
@@ -111,5 +113,3 @@ class TriggerServiceTest(MainTest):
         data = {'description': t.description, }
         form = TriggerServiceForm(data=data)
         self.assertFalse(form.is_valid())
-
-

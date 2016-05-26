@@ -18,7 +18,8 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(request, "%s successfully marked as enabled." % message_bit)
+        self.message_user(
+            request, "%s successfully marked as enabled." % message_bit)
 
     def make_status_disable(self, request, queryset):
         rows_updated = queryset.update(status=False)
@@ -27,11 +28,13 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(request, "%s successfully marked as disabled." % message_bit)
+        self.message_user(
+            request, "%s successfully marked as disabled." % message_bit)
 
     make_status_enable.short_description = "Status Enable"
     make_status_disable.short_description = "Status Disable"
-    list_display = ('name', 'description', 'status', 'auth_required', 'self_hosted')
+    list_display = ('name', 'description', 'status',
+                    'auth_required', 'self_hosted')
 
     actions = [make_status_enable, make_status_disable]
     add_form = ServicesAdminForm

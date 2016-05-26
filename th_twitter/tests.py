@@ -10,6 +10,7 @@ class TwitterTest(MainTest):
     """
         TwitterTest Model
     """
+
     def test_get_config_th(self):
         """
             does this settings exists ?
@@ -44,6 +45,7 @@ class TwitterTest(MainTest):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         t = self.create_twitter()
         data = {'screen': t.screen, 'tag': t.tag}

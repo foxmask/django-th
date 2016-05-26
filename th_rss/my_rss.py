@@ -20,8 +20,8 @@ cache = caches['th_rss']
 
 class ServiceRss(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceRss, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceRss, self).__init__(token, **kwargs)
 
     def read_data(self, **kwargs):
         """

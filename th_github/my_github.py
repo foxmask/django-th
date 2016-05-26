@@ -39,8 +39,8 @@ cache = caches['th_github']
 
 class ServiceGithub(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceGithub, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceGithub, self).__init__(token, **kwargs)
         self.scope = ['public_repo']
         self.REQ_TOKEN = 'https://github.com/login/oauth/authorize'
         self.AUTH_URL = 'https://github.com/login/oauth/authorize'

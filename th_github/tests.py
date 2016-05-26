@@ -35,6 +35,7 @@ class GithubTest(MainTest):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         """
            test if that form is a valid provider one

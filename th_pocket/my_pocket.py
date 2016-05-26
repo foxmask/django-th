@@ -38,8 +38,8 @@ cache = caches['th_pocket']
 
 class ServicePocket(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServicePocket, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServicePocket, self).__init__(token, **kwargs)
         self.consumer_key = settings.TH_POCKET['consumer_key']
         self.token = token
         if token:
@@ -98,7 +98,7 @@ class ServicePocket(ServicesMgr):
                         content = my_pocket['given_title']
                     my_date = arrow.get(str(date_triggered),
                                         'YYYY-MM-DD HH:mm:ss')\
-                                   .to(settings.TIME_ZONE)
+                        .to(settings.TIME_ZONE)
                     data.append({'my_date': str(my_date),
                                  'tag': '',
                                  'link': my_pocket['given_url'],
@@ -135,9 +135,10 @@ class ServicePocket(ServicesMgr):
                                             tags=(trigger.tag.lower()))
             else:
                 logger.warning(
-                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
+                    "no link provided for trigger ID {},"
+                    " so we ignore it".format(trigger_id))
                 status = True
-        else: 
+        else:
             logger.critical(
                 "no token provided for trigger ID {}".format(trigger_id))
             status = False

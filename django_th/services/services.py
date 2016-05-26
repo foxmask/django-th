@@ -37,7 +37,7 @@ class ServicesMgr(object):
 
     instance = None
 
-    def __init__(self, arg):
+    def __init__(self, arg, **kwargs):
         base = 'https://www.urltotheserviceapi.com'
         self.AUTH_URL = '{}/api/rest/v1/oauth/authorize/'.format(base)
         self.REQ_TOKEN = '{}/api/rest/v1/oauth/request_token/'.format(base)

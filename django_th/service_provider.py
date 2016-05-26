@@ -9,10 +9,11 @@ class ServiceProvider(OrderedDict):
         """
             get the service from the settings
         """
+        kwargs = {}
         for class_path in services:
             module_name, class_name = class_path.rsplit('.', 1)
             klass = import_from_path(class_path)
-            service = klass(None)
+            service = klass(None, **kwargs)
             self.register(class_name, service)
 
     def register(self, class_name, service):

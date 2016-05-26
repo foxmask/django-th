@@ -15,6 +15,7 @@ from django_th.services import default_provider
 
 
 class UserServiceWizard(SessionWizardView):
+
     def get_template_names(self):
         # name to find template :
         # form_name/wz-step-form.html

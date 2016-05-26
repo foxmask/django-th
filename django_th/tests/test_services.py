@@ -7,7 +7,7 @@ try:
     from django.apps import apps
     get_model = apps.get_model
 except ImportError:
-    from django.db.models.loading import get_model
+    pass
 
 from django_th.services.services import ServicesMgr
 from django_th.tests.test_main import MainTest

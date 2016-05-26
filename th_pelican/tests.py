@@ -12,6 +12,7 @@ class PelicanTest(MainTest):
     """
         pelicanTest Model
     """
+
     def create_triggerservice(self,
                               date_created="20130610",
                               description="My first Service",
@@ -69,6 +70,7 @@ class PelicanTest(MainTest):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         """
            test if that form is a valid provider one

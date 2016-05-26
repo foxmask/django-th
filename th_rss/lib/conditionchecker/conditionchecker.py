@@ -8,6 +8,7 @@ class Condition(object):
         class Condition permits to reduce the size of the data to return
         by applying a rule of filtering
     '''
+
     def __init__(self, **kwargs):
         '''
             set the 2 filters type : match and does_not_match

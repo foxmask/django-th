@@ -291,12 +291,12 @@ CACHES = {
     # Wallabag
     'th_wallabag':
     {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/9",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/9",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     },
     'redis-cache':
     {
@@ -334,7 +334,7 @@ TH_SERVICES = (
     # 'th_trello.my_trello.ServiceTrello',
     # 'th_github.my_github.ServiceGithub',
     # 'th_pelican.my_pelican.ServicePelican',
-    # 'th_wallabag.my_wallabag.ServiceWallabag',
+    # 'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
 
@@ -386,10 +386,6 @@ SECRET_KEY = 'to be defined :P'
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        # set the backend of your choice from
-        # http://django-haystack.readthedocs.org/en/v2.4.0/tutorial.html#installation
-        # for example
-        # 'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
         'URL': 'http://127.0.0.1:9200/',
         'INDEX_NAME': 'haystack',
     },

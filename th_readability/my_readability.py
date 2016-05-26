@@ -35,8 +35,8 @@ cache = caches['th_readability']
 
 class ServiceReadability(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceReadability, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceReadability, self).__init__(token, **kwargs)
         base = 'https://www.readability.com'
         self.AUTH_URL = '{}/api/rest/v1/oauth/authorize/'.format(base)
         self.REQ_TOKEN = '{}/api/rest/v1/oauth/request_token/'.format(base)
@@ -116,7 +116,8 @@ class ServiceReadability(ServicesMgr):
                     try:
                         self.client.add_tags_to_bookmark(
                             bookmark_id, tags=(trigger.tag.lower()))
-                        sentence = str('readability {} created item id {}').format(
+                        sentence = str('readability {} '
+                                       'created item id {}').format(
                             data.get('link'), bookmark_id)
                         logger.debug(sentence)
                         status = True
@@ -126,9 +127,10 @@ class ServiceReadability(ServicesMgr):
 
             else:
                 logger.warning(
-                    "no link provided for trigger ID {}, so we ignore it".format(trigger_id))
+                    "no link provided for trigger ID {},"
+                    " so we ignore it".format(trigger_id))
                 status = True
-        else: 
+        else:
             logger.critical(
                 "no token provided for trigger ID {}".format(trigger_id))
             status = False

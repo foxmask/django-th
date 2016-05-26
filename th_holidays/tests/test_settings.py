@@ -19,4 +19,4 @@ INSTALLED_APPS = (
     'django.contrib.contenttypes',
     'django_th',
     'test',
-    )
+)

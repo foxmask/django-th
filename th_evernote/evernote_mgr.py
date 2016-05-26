@@ -10,31 +10,6 @@ from django.core.cache import caches
 logger = getLogger('django_th.trigger_happy')
 cache = caches['th_evernote']
 
-def get_note():
-    try:
-        note_store = self.client.get_note_store()
-    except EDAMSystemException as e:
-        # rate limite reach have to wait 1 hour !
-        if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-            sentence = "Rate limit reached {code}\n" \
-                       "Retry your request in {msg} seconds\n" \
-                       " - date set to cache again until limit reached"
-            logger.warn(sentence.format(
-                code=e.errorCode,
-                msg=e.rateLimitDuration))
-            # put again in cache the data that could not be
-            # published in Evernote yet
-            cache.set('th_evernote_' + str(trigger_id),
-                      data,
-                      version=2)
-            return True
-        else:
-            logger.critical(e)
-            return False
-    except Exception as e:
-        logger.critical(e)
-        return False
-
 
 def get_notebook(note_store, my_notebook):
     """

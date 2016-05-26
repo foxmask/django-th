@@ -5,7 +5,8 @@ import time
 from django.test import TestCase
 from django.conf import settings
 from th_readability.models import Readability
-from th_readability.forms import ReadabilityProviderForm, ReadabilityConsumerForm
+from th_readability.forms import ReadabilityProviderForm,\
+    ReadabilityConsumerForm
 from django_th.tests.test_main import MainTest
 
 
@@ -14,6 +15,7 @@ class ReadabilityTest(MainTest):
     """
         ReadabilityTest Model
     """
+
     def create_readability(self):
         trigger = self.create_triggerservice(
             consumer_name='ServiceReadability')
@@ -79,6 +81,7 @@ class ServiceReadabilityTest(TestCase):
     """
        ServiceReadabilityTest
     """
+
     def setUp(self):
         self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
@@ -136,11 +139,13 @@ class ServiceReadabilityTest(TestCase):
         title = (self.data['title'] if 'title' in self.data else '')
 
         readability_instance = mock.Mock(return_value=True)
-        readability_instance.method(url=self.data['link'], title=title, tags=tags)
+        readability_instance.method(url=self.data['link'],
+                                    title=title,
+                                    tags=tags)
         readability_instance.method.assert_called_with(url=self.data['link'],
-                                                  title=title, tags=tags)
+                                                       title=title, tags=tags)
 
-        if readability_instance ():
+        if readability_instance():
             the_return = True
 
         return the_return

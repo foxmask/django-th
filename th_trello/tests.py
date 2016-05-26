@@ -10,6 +10,7 @@ class TrelloTest(MainTest):
     """
         TrelloTest Model
     """
+
     def test_get_config_th(self):
         """
             does this settings exists ?
@@ -50,6 +51,7 @@ class TrelloTest(MainTest):
         Form
     """
     # provider
+
     def test_valid_provider_form(self):
         t = self.create_trello()
         data = {'board_name': t.board_name, 'list_name': t.list_name}

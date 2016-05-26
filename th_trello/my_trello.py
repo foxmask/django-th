@@ -38,8 +38,8 @@ class ServiceTrello(ServicesMgr):
 
     # Boards own Lists own Cards
 
-    def __init__(self, token=None):
-        super(ServiceTrello, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceTrello, self).__init__(token, **kwargs)
         # app name
         self.app_name = DjangoThConfig.verbose_name
         # expiration

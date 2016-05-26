@@ -31,8 +31,8 @@ cache = caches['th_twitter']
 
 class ServiceTwitter(ServicesMgr):
 
-    def __init__(self, token=None):
-        super(ServiceTwitter, self).__init__(token)
+    def __init__(self, token=None, **kwargs):
+        super(ServiceTwitter, self).__init__(token, **kwargs)
         self.consumer_key = settings.TH_TWITTER['consumer_key']
         self.consumer_secret = settings.TH_TWITTER['consumer_secret']
         self.token = token
@@ -185,9 +185,11 @@ class ServiceTwitter(ServicesMgr):
 
             if trigger.tag:
                 # is there several tag ?
-                tags = ["#" + tag.strip() for tag in trigger.tag.split(',')] if ',' in trigger.tag else "#" + trigger.tag
+                tags = ["#" + tag.strip() for tag in trigger.tag.split(',')
+                        ] if ',' in trigger.tag else "#" + trigger.tag
 
-            content = str("{title} {link}").format(title=title, link=data.get('link'))
+            content = str("{title} {link}").format(
+                title=title, link=data.get('link'))
 
             # TODO : need to check the size of the content and tags to add
             if len(tags) > 0:

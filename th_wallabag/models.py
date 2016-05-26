@@ -24,4 +24,3 @@ class Wallabag(Services):
 
     def show(self):
         return "My Wallabag %s" % self.url
-

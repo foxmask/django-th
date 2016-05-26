@@ -115,7 +115,8 @@ def trigger_switch_all_to(request, switch):
     if switch == 'off':
         status = False
     if status:
-        TriggerService.objects.filter(user=request.user).update(status=status, date_triggered=now)
+        TriggerService.objects.filter(user=request.user).update(
+            status=status, date_triggered=now)
     else:
         TriggerService.objects.filter(user=request.user).update(status=status)
 
@@ -326,7 +327,8 @@ class TriggerServiceMixin(object):
     def get_queryset(self):
         # get the trigger of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user, id=self.kwargs.get('pk'))
+            return self.queryset.filter(user=self.request.user,
+                                        id=self.kwargs.get('pk'))
         # otherwise return nothing
         return TriggerService.objects.none()
 

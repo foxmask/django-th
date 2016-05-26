@@ -1,11 +1,7 @@
 # coding: utf-8
 import re
-
-# sanitize use from
-# https://raw.github.com/mindprince/pinboardToEvernote/master/sanitize.py
-# and modifiy with the adding of the 2nd line
-from tidylib import *
-from xml.dom.minidom import *
+from tidylib import tidy_document
+from xml.dom.minidom import parseString
 
 
 def sanitize(html):
@@ -15,7 +11,7 @@ def sanitize(html):
     document, errors = tidy_document(
         html, options={"output-xhtml": 1, "force-output": 1})
 
-    parsed_dom = xml.dom.minidom.parseString(document)
+    parsed_dom = parseString(document)
     document_element = parsed_dom.documentElement
     remove_prohibited_elements(document_element)
     remove_prohibited_attributes(document_element)
@@ -49,17 +45,26 @@ def remove_prohibited_element(tag_name, document_element):
         p.removeChild(element)
 
 
+def filter_term(att):
+    if att.startswith("on") or \
+       att.startswith("data-") or \
+       att in ["id", "class", "accesskey", "data", "dynsrc", "tabindex",
+               "frame", "rules", "width", "trbidi", "imageanchor"]:
+        return True
+
+
 def remove_prohibited_attributes(element):
     """
         To fit the Evernote DTD need, drop this attribute name
     """
+    """
     filter_term = lambda att: att.startswith("on") or\
-                              att.startswith("data-") or\
-                              att in ["id", "class", "accesskey",
-                                      "data",  "dynsrc", "tabindex",
-                                      "frame", "rules", "width","trbidi",
-                                      "imageanchor"]
-
+        att.startswith("data-") or\
+        att in ["id", "class", "accesskey",
+                "data",  "dynsrc", "tabindex",
+                "frame", "rules", "width", "trbidi",
+                "imageanchor"]
+    """
     to_be_removed_atts = [att for att in element.attributes.keys()
                           if filter_term(att.lower())]
 

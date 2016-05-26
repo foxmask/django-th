@@ -14,6 +14,7 @@ class HolidaysTest(TestCase):
     """
         Holidays Model
     """
+
     def setUp(self):
         try:
             self.user = User.objects.get(username='john')
