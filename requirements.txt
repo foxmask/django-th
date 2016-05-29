@@ -16,3 +16,4 @@ readability-api==1.0.2
 requests-oauthlib==0.6.1
 twython==3.4.0
 wallabag_api==1.1.0
+flake8==2.5.4

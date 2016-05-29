@@ -69,7 +69,7 @@ Requirements
 
 The minimum are the following :
 
-* Python 3.4.x
+* Python 3.4.x or 3.5.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
 * `arrow <https://pypi.python.org/pypi/arrow>`_ < 0.7.0
 * `django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 1.0

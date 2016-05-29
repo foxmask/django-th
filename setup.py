@@ -10,6 +10,7 @@ install_requires = [
     'pytidylib==0.2.4',
     'pypandoc==1.1.3',
     'requests-oauthlib==0.6.1',
+    'flake8==2.5.4',
 ]
 
 extras_require_evernote = [
@@ -68,6 +69,7 @@ setup(
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Framework :: Django',
         'Topic :: Internet',
         'Topic :: Communications',

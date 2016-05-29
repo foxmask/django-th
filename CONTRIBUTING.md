@@ -66,6 +66,9 @@ To avoid to commit things that could fail, in the **.git/hooks/pre-commit** add 
 python manage.py test -v2
 RESULT=$?
 [ $RESULT -ne 0 ] && exit 1
+flake8
+RESULT=$?
+[ $RESULT -ne 0 ] && exit 1
 exit 0
 ```
 
