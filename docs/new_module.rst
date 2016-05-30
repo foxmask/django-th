@@ -9,8 +9,15 @@ Create a new module
 
 just simple and fast ;)
 
-with git, clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run it and here you are !!!
-Your new module is ready to be customize for your new service.
+with git, clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), modify the site.yml file and run:
+
+
+.. code-block:: python
+
+   ansible-playbook -i site.yml
+
+
+Now aour new module is ready to be customized for your new service (template, models and so on).
 
 
 2 - django-th-dummy :
@@ -183,7 +190,7 @@ The complete code of this class :
             from th_dummy.models import Dummy
             status = False
 
-            if token and 'link' in data and data['link'] is not None and len(data['link']) > 0:
+            if token and data.get('link'):
                 # get the data of this trigger
                 trigger = Dummy.objects.get(trigger_id=trigger_id)
                 # if the external service need we provide
@@ -191,12 +198,12 @@ The complete code of this class :
                 # token_key, token_secret = token.split('#TH#')
 
                 title = ''
-                title = (data['title'] if 'title' in data else '')
+                title = (data.get('title') if data.get('title') else '')
                     # add data to the external service
                 item_id = self.dummy_instance.add(
                     url=data['link'], title=title, tags=(trigger.tag.lower()))
 
-                sentance = str('dummy {} created').format(data['link'])
+                sentance = str('dummy {} created').format(data.get('link'))
                 logger.debug(sentance)
                 status = True
             else:

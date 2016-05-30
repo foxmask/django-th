@@ -7,7 +7,7 @@ TriggerHappy can be installed inside an existing project, or from scratch
 Installation from scratch
 =========================
 
-We just create a virtualenv with python 3.4
+We just create a virtualenv with python 3.4 (or 3.5)
 
 .. code-block:: bash
 
@@ -69,7 +69,7 @@ Once it's done, you can continue to the [configuration process](http://trigger-h
 Requirements
 ============
 
-* Python 3.4.x
+* Python 3.4.x, 3.5.x
 * `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
 * `arrow <https://pypi.python.org/pypi/arrow>`_ < 0.7.0
 * `django-formtools <https://pypi.python.org/pypi/django-formtools`_ == 1.0
@@ -78,7 +78,7 @@ Requirements
 
 for evernote support
 
-* `Evernote for python 3 <https://pypi.python.org/pypi/evernote3>`_
+* `Evernote for python 3 <https://pypi.python.org/pypi/evernote3>`_ (does not support python 3.5 yet)
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
