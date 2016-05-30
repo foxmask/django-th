@@ -70,7 +70,7 @@ from the admin panel, activation of the service
 
 from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
-* Select "Readability",
+* Select "RSS",
 * Set the Status to "Enabled"
 * Uncheck "Auth Required": this service does not required an authorization to access to something
 * Fill a description
