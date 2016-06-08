@@ -93,4 +93,3 @@ class TodoistTest(TestCase):
             does this settings exists ?
         """
         self.assertTrue(settings.TH_TODOIST)
-

@@ -95,8 +95,8 @@ class ServiceTodoist(ServicesMgr):
             else:
                 status = False
         else:
-            logger.critical(
-                "no token or link provided for trigger ID {} ".format(trigger_id))
+            logger.critical("no token or link provided for "
+                            "trigger ID {} ".format(trigger_id))
             status = False
         return status
 
