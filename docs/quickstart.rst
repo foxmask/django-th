@@ -7,7 +7,7 @@ We will say we start from scratch
 Create a virtualenv
 ===================
 
-We just create a virtualenv with python 3.4
+We just create a virtualenv with python 3.4 (or 3.5)
 
 .. code-block:: bash
 

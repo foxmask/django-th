@@ -82,14 +82,15 @@ class ServiceWallabag(ServicesMgr):
         if data.get('link') and len(data.get('link')) > 0:
             wall = self.new_wall(self.token)
             try:
-                wall.post_entries(url=data.get('link'), title=title,
+                wall.post_entries(url=data.get('link').encode(),
+                                  title=title,
                                   tags=(tags.lower()))
-                logger.debug('wallabag {} created').format(data.get('link'))
+                logger.debug('wallabag {} created'.format(data.get('link')))
                 status = True
             except Exception as e:
                 if e.errno == 401:
                     status = self._new_token(data.get('userservice_id'),
-                                             data.get('link'),
+                                             data.get('link').encode(),
                                              title,
                                              tags.lower())
                 else:
