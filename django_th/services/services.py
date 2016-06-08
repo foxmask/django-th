@@ -184,7 +184,9 @@ class ServicesMgr(object):
             :rtype: string
         """
         return_to = '{service}_callback'.format(service=service)
-        return 'http://%s%s' % (request.get_host(), reverse(return_to))
+
+
+        return '%s://%s%s' % (request.scheme, request.get_host(), reverse(return_to))
 
     def callback(self, request, **kwargs):
         """

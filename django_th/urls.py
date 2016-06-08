@@ -151,6 +151,12 @@ urlpatterns = \
                  {'service_name': 'ServiceWallabag', },
                  name="wallabag_callback",
                  ),
+             url(r"^th/callbacktodoist/$",
+                 "django_th.views_wizard.finalcallback",
+                 {'service_name': 'ServiceTodoist', },
+                 name="todoist_callback",
+                 ),
+
              url(r'^th/myfeeds/', include('th_rss.urls')),
              )
 

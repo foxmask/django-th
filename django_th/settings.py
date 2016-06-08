@@ -288,6 +288,16 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Todoist
+    'th_todoist':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/11",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
     # Wallabag
     'th_wallabag':
     {
