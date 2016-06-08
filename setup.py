@@ -40,15 +40,18 @@ extras_require_twitter = [
 extras_require_pelican = [
     'awesome-slugify==1.6.5',
 ]
-
 extras_require_wallabag = [
     'wallabag_api==1.1.0',
+]
+extras_require_todoist = [
+    'todoist-python==7.0',
 ]
 
 extras_require_all = extras_require_github\
     + extras_require_pocket + extras_require_readability + extras_require_rss\
     + extras_require_search + extras_require_trello + extras_require_twitter\
-    + extras_require_pelican + extras_require_wallabag + extras_require_evernote
+    + extras_require_pelican + extras_require_wallabag\
+    + extras_require_evernote + extras_require_todoist
 
 setup(
     name='django_th',
@@ -88,6 +91,7 @@ setup(
         'twitter': extras_require_twitter,
         'pelican': extras_require_pelican,
         'wallabag': extras_require_wallabag,
+        'todoist': extras_require_todoist,
     },
     include_package_data=True,
 )

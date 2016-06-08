@@ -23,6 +23,7 @@ For all the services, the installation is the same :
    readability
    rss
    search
+   todoist
    trello
    twitter
    wallabag
