@@ -120,17 +120,18 @@ INSTALLED_APPS = (
     'django_th',
     'th_rss',
     # uncomment the lines to enable the service you need
-    'th_pocket',
     # 'th_evernote',
-    # 'th_twitter',
-    # 'th_readability',
+    # 'th_github',
     # 'th_holidays',
     # 'haystack',
+    # 'th_pelican',
+    # 'th_pocket',
+    # 'th_pushbullet',
+    # 'th_readability',
     # 'th_search',
     # 'th_trello',
-    # 'th_github',
-    # 'th_pelican',
-    # 'th_wallabag',
+    # 'th_twitter',
+    'th_wallabag',
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -355,7 +356,7 @@ TH_SERVICES = (
     # 'th_github.my_github.ServiceGithub',
     # 'th_pelican.my_pelican.ServicePelican',
     # 'th_todoist.my_todoist.ServiceTodoist',
-    'th_pushbullet.my_pushbullet.ServicePushbullet',
+    # 'th_pushbullet.my_pushbullet.ServicePushbullet',
     'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
