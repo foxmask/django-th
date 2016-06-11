@@ -83,7 +83,7 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Wallabag",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to your Wallabag application which will request a token
+* Check Auth Required: this will permit to redirect the user (or you) to your Wallabag application which will request a token
 * Check Self Hosted: this will permit to enter the details about the service key we speak from point 4
 * Fill a description
 

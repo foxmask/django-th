@@ -64,8 +64,8 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
 .. code-block:: python
 
     TH_TRELLO = {
-        'consumer_key': '<your twitter key>',
-        'consumer_secret': '<your twitter secret>',
+        'consumer_key': '<your trello key>',
+        'consumer_secret': '<your trello secret>',
     }
 
 
@@ -87,7 +87,7 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Trello",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Trello to ask to confirm the access to his/your Trello account
+* Check Auth Required: this will permit to redirect the user (or you) to Trello website to confirm the access of the Trello account
 * Fill a description
 
 

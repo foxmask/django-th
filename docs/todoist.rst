@@ -69,7 +69,7 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
         # get your credential by subscribing to
         # https://developer.todoist.com/appconsole.html
         'client_id': '<your todoist id>',
-        'client_secret': '<your otodist secret>',
+        'client_secret': '<your todoist secret>',
     }
 
 
@@ -90,5 +90,5 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Todoist",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Twitter to ask to confirm the access to his/your Twitter account
+* Check Auth Required: this will permit to redirect the user (or you) to Todoist website to confirm the access of the Todoist account
 * Fill a description

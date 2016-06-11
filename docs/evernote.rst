@@ -87,6 +87,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Evernote",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Evernote to ask to confirm the access to his/your Evernote account
+* Check Auth Required: this will permit to redirect the user (or you) to Evernote website to confirm the access of the Evernote account
 * Fill a description
 

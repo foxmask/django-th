@@ -90,5 +90,5 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Pushbullet",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect to the user (or you) to Twitter to ask to confirm the access to his/your Pushbullet account
+* Check Auth Required: this will permit to redirect to the user (or you) to Pushbullet to ask to confirm the access to his/your Pushbullet account
 * Fill a description
