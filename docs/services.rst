@@ -20,6 +20,7 @@ For all the services, the installation is the same :
    holidays
    pelican
    pocket
+   pushbullet
    readability
    rss
    search

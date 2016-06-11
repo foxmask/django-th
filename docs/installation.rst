@@ -140,6 +140,10 @@ for wallabag support
 
 * `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.1.0
 
-fro todoist support
+for todoist support
 
 * `todoist-python <https://pypi.python.org/pypi/todoist-python>`_ == 7.0
+
+for pushbullet support
+
+* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_ == 0.10.0

@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of your trigger' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <h4>{% trans 'Select one type of push and one origin from where the push will come' %}</h4>
+
+            <div class="form-group{% if form.type.errors %} has-error{% endif %}">
+                {% if form.type.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.type.errors }}</div>
+                {% endif %}
+                <label for="id_type" class="col-sm-2 control-label">{% trans "Type of push" %}</label>
+                <div class="col-sm-10">{{ form.type }}</div>
+            </div>
+
+            <h4>{% trans 'Select one origin of the push' %}</h4>
+            <div class="form-group{% if form.device.errors %} has-error{% endif %}">
+                {% if form.device.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.device.errors }}</div>
+                {% endif %}
+                <label for="id_device" class="col-sm-2 control-label">{% trans "Device" %}</label>
+                <div class="col-sm-10">{{ form.device }}</div>
+            </div>
+
+            <div class="form-group{% if form.email.errors %} has-error{% endif %}">
+                {% if form.email.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.email.errors }}</div>
+                {% endif %}
+                <label for="id_email" class="col-sm-2 control-label">{% trans "Email" %}</label>
+                <div class="col-sm-10">{{ form.email }}</div>
+            </div>
+
+            <div class="form-group{% if form.channel_tag.errors %} has-error{% endif %}">
+                {% if form.channel_tag.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.channel_tag.errors }}</div>
+                {% endif %}
+                <label for="id_channel_tag" class="col-sm-2 control-label">{% trans "Channel tag" %}</label>
+                <div class="col-sm-10">{{ form.channel_tag }}</div>
+            </div>
+
+
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}

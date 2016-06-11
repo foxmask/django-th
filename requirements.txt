@@ -18,3 +18,4 @@ twython==3.4.0
 wallabag_api==1.1.0
 flake8==2.5.4
 todoist-python==7.0
+pushbullet.py==0.10.0

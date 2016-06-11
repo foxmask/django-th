@@ -57,6 +57,8 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         # 'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
         # 'th_pelican',
         # 'th_wallabag',
+        # 'th_todoist',
+        # 'th_pushbullet',
 
     )
 

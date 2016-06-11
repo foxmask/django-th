@@ -156,7 +156,11 @@ urlpatterns = \
                  {'service_name': 'ServiceTodoist', },
                  name="todoist_callback",
                  ),
-
+             url(r"^th/callbackpushbullet/$",
+                 "django_th.views_wizard.finalcallback",
+                 {'service_name': 'ServicePushbullet', },
+                 name="pushbullet_callback",
+                 ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
              )
 

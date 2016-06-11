@@ -308,6 +308,16 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    # Pushbullet
+    'th_pushbullet':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/12",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
     'redis-cache':
     {
         'TIMEOUT': 3600,
@@ -337,21 +347,17 @@ DJANGO_TH = {
 TH_SERVICES = (
     # uncomment the lines to enable the service you need
     'th_rss.my_rss.ServiceRss',
-    'th_pocket.my_pocket.ServicePocket',
+    # 'th_pocket.my_pocket.ServicePocket',
     # 'th_evernote.my_evernote.ServiceEvernote',
     # 'th_readability.my_readability.ServiceReadability',
     # 'th_twitter.my_twitter.ServiceTwitter',
     # 'th_trello.my_trello.ServiceTrello',
     # 'th_github.my_github.ServiceGithub',
     # 'th_pelican.my_pelican.ServicePelican',
-    # 'th_wallabag.my_wallabag.ServiceWallabag',
+    # 'th_todoist.my_todoist.ServiceTodoist',
+    'th_pushbullet.my_pushbullet.ServicePushbullet',
+    'th_wallabag.my_wallabag.ServiceWallabag',
 )
-
-
-TH_POCKET = {
-    # get your credential by subscribing to http://getpocket.com/developer/
-    'consumer_key': '<your pocket key>',
-}
 
 
 TH_EVERNOTE = {
@@ -363,7 +369,25 @@ TH_EVERNOTE = {
     'consumer_secret': '<your evernote secret>',
 }
 
-# not python 3 compliant
+
+TH_GITHUB = {
+    'username': 'username',
+    'password': 'password',
+    'consumer_key': 'my key',
+    'consumer_secret': 'my secret'
+}
+
+
+TH_POCKET = {
+    # get your credential by subscribing to http://getpocket.com/developer/
+    'consumer_key': '<your pocket key>',
+}
+
+TH_PUSHBULLET = {
+    'consumer_key': '<your pushbullet key>',
+    'consumer_secret': '<your pushbullet secret>',
+}
+
 TH_READABILITY = {
     # get your credential by subscribing to
     # https://www.readability.com/settings/account
@@ -371,12 +395,9 @@ TH_READABILITY = {
     'consumer_secret': '<your readability secret>',
 }
 
-
-TH_TWITTER = {
-    # get your credential by subscribing to
-    # https://dev.twitter.com/
-    'consumer_key': '<your twitter key>',
-    'consumer_secret': '<your twitter secret>',
+TH_TODOIST = {
+    'client_id': '<your todoist key>',
+    'client_secret': '<your todoist secret>',
 }
 
 TH_TRELLO = {
@@ -384,11 +405,11 @@ TH_TRELLO = {
     'consumer_secret': '<your twitter secret>',
 }
 
-TH_GITHUB = {
-    'username': 'username',
-    'password': 'password',
-    'consumer_key': 'my key',
-    'consumer_secret': 'my secret'
+TH_TWITTER = {
+    # get your credential by subscribing to
+    # https://dev.twitter.com/
+    'consumer_key': '<your twitter key>',
+    'consumer_secret': '<your twitter secret>',
 }
 
 SECRET_KEY = 'to be defined :P'
