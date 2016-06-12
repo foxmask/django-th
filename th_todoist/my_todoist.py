@@ -1,8 +1,5 @@
 # coding: utf-8
 
-# Oauth2Session
-from requests_oauthlib import OAuth2Session
-
 # TodoistAPI
 from todoist import TodoistAPI
 
@@ -12,7 +9,6 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
-from django_th.models import UserService, ServicesActivated
 from django_th.services.services import ServicesMgr
 
 
@@ -46,6 +42,8 @@ class ServiceTodoist(ServicesMgr):
         self.consumer_key = settings.TH_TODOIST['client_id']
         self.consumer_secret = settings.TH_TODOIST['client_secret']
         self.scope = 'task:add,data:read,data:read_write'
+        self.service = 'ServiceTodoist'
+        self.oauth = 'oauth2'
         if token:
             self.token = token
             self.todoist = TodoistAPI(token)
@@ -107,30 +105,10 @@ class ServiceTodoist(ServicesMgr):
             :return: callback url
             :rtype: string that contains the url to redirect after auth
         """
-        callback_url = self.callback_url(request, 'todoist')
-        oauth = OAuth2Session(client_id=self.consumer_key,
-                              redirect_uri=callback_url,
-                              scope=self.scope)
-        authorization_url, state = oauth.authorization_url(self.AUTH_URL)
-
-        return authorization_url
+        return super(ServiceTodoist, self).auth(request)
 
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """
-        callback_url = self.callback_url(request, 'todoist')
-        oauth = OAuth2Session(client_id=self.consumer_key,
-                              redirect_uri=callback_url,
-                              scope=self.scope)
-        request_token = oauth.fetch_token(self.ACC_TOKEN,
-                                          code=request.GET.get('code', ''),
-                                          authorization_response=callback_url,
-                                          client_secret=self.consumer_secret)
-        token = request_token.get('access_token')
-        service_name = ServicesActivated.objects.get(name='ServiceTodoist')
-        UserService.objects.filter(user=request.user,
-                                   name=service_name
-                                   ).update(token=token)
-
-        return 'todoist/callback.html'
+        return super(ServiceTodoist, self).callback(request, **kwargs)

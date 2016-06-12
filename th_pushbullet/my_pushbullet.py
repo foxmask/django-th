@@ -1,8 +1,5 @@
 # coding: utf-8
 
-# Oauth2Session
-from requests_oauthlib import OAuth2Session
-
 # Pushbullet
 from pushbullet import Pushbullet as Pushb
 
@@ -12,7 +9,6 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
-from django_th.models import UserService, ServicesActivated
 from django_th.services.services import ServicesMgr
 from th_pushbullet.models import Pushbullet
 
@@ -47,6 +43,8 @@ class ServicePushbullet(ServicesMgr):
         self.consumer_key = settings.TH_PUSHBULLET['client_id']
         self.consumer_secret = settings.TH_PUSHBULLET['client_secret']
         self.scope = 'everything'
+        self.service = 'ServicePushbullet'
+        self.oauth = 'oauth2'
         if token:
             self.token = token
             self.pushb = Pushb(token)
@@ -110,30 +108,10 @@ class ServicePushbullet(ServicesMgr):
             :return: callback url
             :rtype: string that contains the url to redirect after auth
         """
-        callback_url = self.callback_url(request, 'pushbullet')
-        oauth = OAuth2Session(client_id=self.consumer_key,
-                              redirect_uri=callback_url)
-        authorization_url, state = oauth.authorization_url(self.AUTH_URL)
-
-        return authorization_url
+        return super(ServicePushbullet, self).auth(request)
 
     def callback(self, request, **kwargs):
         """
             Called from the Service when the user accept to activate it
         """
-        callback_url = self.callback_url(request, 'pushbullet')
-        oauth = OAuth2Session(client_id=self.consumer_key,
-                              scope=self.scope,
-                              redirect_uri=callback_url)
-        response = oauth.fetch_token(self.REQ_TOKEN,
-                                     code=request.GET.get('code', ''),
-                                     authorization_response=callback_url,
-                                     client_secret=self.consumer_secret)
-
-        token = response.get('access_token')
-        service_name = ServicesActivated.objects.get(name='ServicePushbullet')
-        UserService.objects.filter(user=request.user,
-                                   name=service_name
-                                   ).update(token=token)
-
-        return 'pushbullet/callback.html'
+        return super(ServicePushbullet, self).callback(request, **kwargs)

@@ -1,6 +1,6 @@
 # coding: utf-8 -*-
 # Using OAuth1Session
-from requests_oauthlib import OAuth1Session
+from requests_oauthlib import OAuth1Session, OAuth2Session
 
 # django stuff
 from django.core.cache import caches
@@ -42,7 +42,8 @@ class ServicesMgr(object):
         self.AUTH_URL = '{}/api/rest/v1/oauth/authorize/'.format(base)
         self.REQ_TOKEN = '{}/api/rest/v1/oauth/request_token/'.format(base)
         self.ACC_TOKEN = '{}/api/rest/v1/oauth/access_token/'.format(base)
-
+        self.oauth = 'oauth1'
+        self.service = ''
         if not ServicesMgr.instance:
             ServicesMgr.instance = ServicesMgr.__ServicesMgr(arg)
         else:
@@ -162,28 +163,23 @@ class ServicesMgr(object):
             get the auth of the services
             :param request: contains the current session
             :type request: dict
+            :type oauth: string of the oauth version used
             :rtype: dict
         """
-        request_token = self.get_request_token()
+        request_token = self.get_request_token(request)
 
-        # Save the request token information for later
-        request.session['oauth_token'] = request_token['oauth_token']
-        request.session['oauth_token_secret'] = request_token[
-            'oauth_token_secret']
 
         return request_token
 
-    @staticmethod
-    def callback_url(request, service):
+    def callback_url(self, request):
         """
             the url to go back after the external service call
             :param request: contains the current session
-            :param service: contains the service name
             :type request: dict
-            :type service: string
             :rtype: string
         """
-        return_to = '{service}_callback'.format(service=service)
+
+        return_to = '{service}_callback'.format(service=self.service.split('Service')[1].lower())
 
         return '%s://%s%s' % (request.scheme, request.get_host(),
                               reverse(return_to))
@@ -198,12 +194,29 @@ class ServicesMgr(object):
             :type kwargs: dict
             :rtype: string
         """
-        parms = ('access_token', 'service', 'return')
-        if not all(k in parms for k in kwargs.keys()):
-            raise KeyError('Missing args in kwargs. '
-                           'Kwargs has to contains "access_token",'
-                           ' "service" and "return"')
+        if self.oauth == 'oauth1':
+            token = self.callback_oauth1(request, **kwargs)
+        else:
+            token = self.callback_oauth2(request)
 
+        service_name = ServicesActivated.objects.get(name=self.service)
+
+        UserService.objects.filter(user=request.user,
+                                   name=service_name
+                                   ).update(token=token)
+        back = self.service.split('Service')[1].lower()
+        back_to = '{back_to}/callback.html'.format(back_to=back)
+        return back_to
+
+    def callback_oauth1(self, request, **kwargs):
+        """
+            Process for oAuth 1
+            :param request: contains the current session
+            :param kwargs: keyword args
+            :type request: dict
+            :type kwargs: dict
+            :rtype: string
+        """
         if kwargs['access_token'] == '':
             access_token = self.get_access_token(
                 request.session['oauth_token'],
@@ -218,23 +231,44 @@ class ServicesMgr(object):
         else:
             token = '#TH#'.join((access_token.get('oauth_token'),
                                  access_token.get('oauth_token_secret')))
+        return token
 
-        service_name = ServicesActivated.objects.get(name=kwargs['service'])
+    def callback_oauth2(self, request):
+        """
+            Process for oAuth 2
+            :param request: contains the current session
+            :return:
+        """
+        callback_url = self.callback_url(request)
+        oauth = OAuth2Session(client_id=self.consumer_key,
+                              redirect_uri=callback_url,
+                              scope=self.scope)
+        request_token = oauth.fetch_token(self.ACC_TOKEN,
+                                          code=request.GET.get('code', ''),
+                                          authorization_response=callback_url,
+                                          client_secret=self.consumer_secret)
+        return request_token.get('access_token')
 
-        UserService.objects.filter(user=request.user,
-                                   name=service_name
-                                   ).update(token=token)
-
-        back_to = '{back_to}/callback.html'.format(back_to=kwargs['return'])
-        return back_to
-
-    def get_request_token(self):
+    def get_request_token(self, request):
         """
            request the token to the external service
         """
-        oauth = OAuth1Session(self.consumer_key,
-                              client_secret=self.consumer_secret)
-        return oauth.fetch_request_token(self.REQ_TOKEN)
+        if self.oauth == 'oauth1':
+            oauth = OAuth1Session(self.consumer_key,
+                                  client_secret=self.consumer_secret)
+            request_token = oauth.fetch_request_token(self.REQ_TOKEN)
+            # Save the request token information for later
+            request.session['oauth_token'] = request_token['oauth_token']
+            request.session['oauth_token_secret'] = request_token[
+                'oauth_token_secret']
+            return request_token
+        else:
+            callback_url = self.callback_url(request)
+            oauth = OAuth2Session(client_id=self.consumer_key,
+                                  redirect_uri=callback_url,
+                                  scope=self.scope)
+            authorization_url, state = oauth.authorization_url(self.AUTH_URL)
+            return authorization_url
 
     def get_access_token(self, oauth_token, oauth_token_secret,
                          oauth_verifier):

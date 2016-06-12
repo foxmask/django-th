@@ -50,6 +50,8 @@ class ServiceGithub(ServicesMgr):
         self.consumer_key = settings.TH_GITHUB['consumer_key']
         self.consumer_secret = settings.TH_GITHUB['consumer_secret']
         self.token = token
+        self.oauth = 'oauth2'
+        self.service = 'ServiceGithub'
         if self.token:
             token_key, token_secret = self.token.split('#TH#')
             self.gh = GitHub(token=token_key)

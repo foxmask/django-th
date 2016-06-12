@@ -52,6 +52,8 @@ class ServiceEvernote(ServicesMgr):
         self.consumer_key = settings.TH_EVERNOTE['consumer_key']
         self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
         self.token = token
+        self.service = 'ServiceEvernote'
+        self.oauth = 'oauth1'
 
         kwargs = {'consumer_key': self.consumer_key,
                   'consumer_secret': self.consumer_secret,
@@ -231,7 +233,7 @@ class ServiceEvernote(ServicesMgr):
         """
         client = self.get_evernote_client()
         request_token = client.get_request_token(
-            self.callback_url(request, 'evernote'))
+            self.callback_url(request))
 
         # Save the request token information for later
         request.session['oauth_token'] = request_token['oauth_token']

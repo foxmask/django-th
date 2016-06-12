@@ -46,6 +46,8 @@ class ServiceTrello(ServicesMgr):
         self.expiry = "30days"
         # scope define the rights access
         self.scope = 'read,write'
+        self.oauth = 'oauth1'
+        self.service = 'ServiceTrello'
 
         base = 'https://www.trello.com'
         self.AUTH_URL = '{}/1/OAuthAuthorizeToken'.format(base)
@@ -177,7 +179,7 @@ class ServiceTrello(ServicesMgr):
             :rtype: string that contains the url to redirect after auth
         """
         request_token = super(ServiceTrello, self).auth(request)
-        callback_url = self.callback_url(request, 'trello')
+        callback_url = self.callback_url(request)
 
         # URL to redirect user to, to authorize your app
         auth_url_str = '{auth_url}?oauth_token={token}'
@@ -199,6 +201,4 @@ class ServiceTrello(ServicesMgr):
             :return: callback url
             :rtype: string , path to the template
         """
-        kwargs = {'access_token': '', 'service': 'ServiceTrello',
-                  'return': 'trello'}
         return super(ServiceTrello, self).callback(request, **kwargs)

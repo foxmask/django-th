@@ -42,6 +42,8 @@ class ServicePocket(ServicesMgr):
         super(ServicePocket, self).__init__(token, **kwargs)
         self.consumer_key = settings.TH_POCKET['consumer_key']
         self.token = token
+        self.oauth = 'oauth1'
+        self.service = 'ServicePocket'
         if token:
             self.pocket = Pocket(self.consumer_key, token)
 
@@ -151,7 +153,7 @@ class ServicePocket(ServicesMgr):
             :return: callback url
             :rtype: string that contains the url to redirect after auth
         """
-        callback_url = self.callback_url(request, 'pocket')
+        callback_url = self.callback_url(request)
 
         request_token = Pocket.get_request_token(
             consumer_key=self.consumer_key,
@@ -177,7 +179,6 @@ class ServicePocket(ServicesMgr):
             consumer_key=self.consumer_key,
             code=request.session['request_token'])
 
-        kwargs = {'access_token': access_token, 'service': 'ServicePocket',
-                  'return': 'pocket'}
+        kwargs = {'access_token': access_token}
 
         return super(ServicePocket, self).callback(request, **kwargs)

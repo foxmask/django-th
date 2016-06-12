@@ -36,6 +36,8 @@ class ServiceTwitter(ServicesMgr):
         self.consumer_key = settings.TH_TWITTER['consumer_key']
         self.consumer_secret = settings.TH_TWITTER['consumer_secret']
         self.token = token
+        self.oauth = 'oauth1'
+        self.service = 'ServiceTwitter'
         if self.token is not None:
             token_key, token_secret = self.token.split('#TH#')
             self.twitter_api = Twython(self.consumer_key, self.consumer_secret,
@@ -211,7 +213,7 @@ class ServiceTwitter(ServicesMgr):
         :return: go to the Twitter website to ask to the user
         to allow the access of TriggerHappy
         """
-        callback_url = self.callback_url(request, 'twitter')
+        callback_url = self.callback_url(request)
 
         twitter = Twython(self.consumer_key, self.consumer_secret)
 
@@ -226,8 +228,6 @@ class ServiceTwitter(ServicesMgr):
         """
             Called from the Service when the user accept to activate it
         """
-        kwargs = {'access_token': '', 'service': 'ServiceTwitter',
-                  'return': 'twitter'}
         return super(ServiceTwitter, self).callback(request, **kwargs)
 
     def get_access_token(

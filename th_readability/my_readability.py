@@ -44,6 +44,8 @@ class ServiceReadability(ServicesMgr):
         self.consumer_key = settings.TH_READABILITY['consumer_key']
         self.consumer_secret = settings.TH_READABILITY['consumer_secret']
         self.token = token
+        self.service = 'ServiceReadability'
+        self.oauth = 'oauth1'
         kwargs = {'consumer_key': self.consumer_key,
                   'consumer_secret': self.consumer_secret}
         if token:
@@ -144,7 +146,7 @@ class ServiceReadability(ServicesMgr):
             :rtype: string that contains the url to redirect after auth
         """
         request_token = super(ServiceReadability, self).auth(request)
-        callback_url = self.callback_url(request, 'readability')
+        callback_url = self.callback_url(request)
 
         # URL to redirect user to, to authorize your app
         auth_url_str = '%s?oauth_token=%s&oauth_callback=%s'
@@ -161,6 +163,4 @@ class ServiceReadability(ServicesMgr):
             :return: callback url
             :rtype: string , path to the template
         """
-        kwargs = {'access_token': '', 'service': 'ServiceReadability',
-                  'return': 'readability'}
         return super(ServiceReadability, self).callback(request, **kwargs)

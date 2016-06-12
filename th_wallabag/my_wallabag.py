@@ -35,6 +35,7 @@ class ServiceWallabag(ServicesMgr):
     def __init__(self, token=None, **kwargs):
         super(ServiceWallabag, self).__init__(token, **kwargs)
         self.token = token
+        self.service = 'ServiceWallabag'
         self.user = kwargs.get('user') if kwargs.get('user') else ''
 
     def read_data(self, **kwargs):
