@@ -168,7 +168,6 @@ class ServicesMgr(object):
         """
         request_token = self.get_request_token(request)
 
-
         return request_token
 
     def callback_url(self, request):
@@ -178,8 +177,8 @@ class ServicesMgr(object):
             :type request: dict
             :rtype: string
         """
-
-        return_to = '{service}_callback'.format(service=self.service.split('Service')[1].lower())
+        service = self.service.split('Service')[1].lower()
+        return_to = '{service}_callback'.format(service=service)
 
         return '%s://%s%s' % (request.scheme, request.get_host(),
                               reverse(return_to))
