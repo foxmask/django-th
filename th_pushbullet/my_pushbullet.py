@@ -100,18 +100,3 @@ class ServicePushbullet(ServicesMgr):
                             "trigger ID {} ".format(trigger_id))
             status = False
         return status
-
-    def auth(self, request):
-        """
-            let's auth the user to the Service
-            :param request: request object
-            :return: callback url
-            :rtype: string that contains the url to redirect after auth
-        """
-        return super(ServicePushbullet, self).auth(request)
-
-    def callback(self, request, **kwargs):
-        """
-            Called from the Service when the user accept to activate it
-        """
-        return super(ServicePushbullet, self).callback(request, **kwargs)

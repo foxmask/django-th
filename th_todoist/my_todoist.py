@@ -38,7 +38,7 @@ class ServiceTodoist(ServicesMgr):
         super(ServiceTodoist, self).__init__(token, **kwargs)
         self.AUTH_URL = 'https://todoist.com/oauth/authorize'
         self.ACC_TOKEN = 'https://todoist.com/oauth/access_token'
-        self.REQ_TOKEN = 'https://todoist.com/oauth/authorize'
+        self.REQ_TOKEN = 'https://todoist.com/oauth/access_token'
         self.consumer_key = settings.TH_TODOIST['client_id']
         self.consumer_secret = settings.TH_TODOIST['client_secret']
         self.scope = 'task:add,data:read,data:read_write'
@@ -97,18 +97,3 @@ class ServiceTodoist(ServicesMgr):
                             "trigger ID {} ".format(trigger_id))
             status = False
         return status
-
-    def auth(self, request):
-        """
-            let's auth the user to the Service
-            :param request: request object
-            :return: callback url
-            :rtype: string that contains the url to redirect after auth
-        """
-        return super(ServiceTodoist, self).auth(request)
-
-    def callback(self, request, **kwargs):
-        """
-            Called from the Service when the user accept to activate it
-        """
-        return super(ServiceTodoist, self).callback(request, **kwargs)

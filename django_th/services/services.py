@@ -43,7 +43,9 @@ class ServicesMgr(object):
         self.REQ_TOKEN = '{}/api/rest/v1/oauth/request_token/'.format(base)
         self.ACC_TOKEN = '{}/api/rest/v1/oauth/access_token/'.format(base)
         self.oauth = 'oauth1'
+        self.token = ''
         self.service = ''
+        self.scope = ''
         if not ServicesMgr.instance:
             ServicesMgr.instance = ServicesMgr.__ServicesMgr(arg)
         else:
@@ -239,13 +241,16 @@ class ServicesMgr(object):
             :return:
         """
         callback_url = self.callback_url(request)
+
         oauth = OAuth2Session(client_id=self.consumer_key,
                               redirect_uri=callback_url,
                               scope=self.scope)
-        request_token = oauth.fetch_token(self.ACC_TOKEN,
+        request_token = oauth.fetch_token(self.REQ_TOKEN,
                                           code=request.GET.get('code', ''),
                                           authorization_response=callback_url,
-                                          client_secret=self.consumer_secret)
+                                          client_secret=self.consumer_secret,
+                                          scope=self.scope,
+                                          verify=False)
         return request_token.get('access_token')
 
     def get_request_token(self, request):
