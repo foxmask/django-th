@@ -4,13 +4,11 @@ from github3 import GitHub
 
 # django classes
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated
 
 """
     handle process with github
@@ -50,7 +48,7 @@ class ServiceGithub(ServicesMgr):
         self.consumer_key = settings.TH_GITHUB['consumer_key']
         self.consumer_secret = settings.TH_GITHUB['consumer_secret']
         self.token = token
-        self.oauth = 'oauth2'
+        self.oauth = 'oauth1'
         self.service = 'ServiceGithub'
         if self.token:
             token_key, token_secret = self.token.split('#TH#')
@@ -120,8 +118,6 @@ class ServiceGithub(ServicesMgr):
             :return: callback url
             :rtype: string that contains the url to redirect after auth
         """
-        callback_url = 'http://%s%s' % (
-            request.get_host(), reverse('github_callback'))
         auth = self.gh.authorize(self.username,
                                  self.password,
                                  self.scope,
@@ -131,7 +127,7 @@ class ServiceGithub(ServicesMgr):
                                  self.consumer_secret)
         request.session['oauth_token'] = auth.token
         request.session['oauth_id'] = auth.id
-        return callback_url
+        return self.callback_url(request)
 
     def callback(self, request, **kwargs):
         """
@@ -140,25 +136,7 @@ class ServiceGithub(ServicesMgr):
             :return: callback url
             :rtype: string , path to the template
         """
-        try:
-            # finally we save the user auth token
-            # As we already stored the object ServicesActivated
-            # from the UserServiceCreateView now we update the same
-            # object to the database so :
-            # 1) we get the previous objet
-            us = UserService.objects.get(
-                user=request.user,
-                name=ServicesActivated.objects.get(name='ServiceGithub'))
-            # 2) Readability API require to use 4 params consumer_key/secret +
-            # token_key/secret instead of usually get just the token
-            # from an access_token request. So we need to add a string
-            # separator for later use to split on this one
-            access_token = request.session['oauth_token'] + "#TH#"
-            access_token += str(request.session['oauth_id'])
-            us.token = access_token
-            # 3) and save everything
-            us.save()
-        except KeyError:
-            return '/'
-
-        return 'github/callback.html'
+        access_token = request.session['oauth_token'] + "#TH#"
+        access_token += str(request.session['oauth_id'])
+        kwargs = {'access_token': access_token}
+        return super(ServiceGithub, self).callback(request, **kwargs)

@@ -150,61 +150,20 @@ class ServiceEvernote(ServicesMgr):
         if len(title):
             # get the evernote data of this trigger
             trigger = Evernote.objects.get(trigger_id=trigger_id)
-
-            try:
-                note_store = self.client.get_note_store()
-            except EDAMSystemException as e:
-                # rate limite reach have to wait 1 hour !
-                if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                    logger.warn("Rate limit reached {code}\n"
-                                "Retry your request in {msg} seconds\n"
-                                "Data set to cache again until"
-                                " limit reached".format(code=e.errorCode,
-                                                        msg=e.rateLimitDuration)
-                                )
-                    cache.set('th_evernote_' + str(trigger_id),
-                              data,
-                              version=2)
-                    return True
-                else:
-                    logger.critical(e)
-                    return False
-            except Exception as e:
-                logger.critical(e)
+            # initialize notestore process
+            note_store = self._notestore(trigger_id, data)
+            if note_store is False:
                 return False
-
             # note object
-            note = Types.Note()
-            if trigger.notebook:
-                # get the notebookGUID ...
-                notebook_id = get_notebook(note_store, trigger.notebook)
-                # create notebookGUID if it does not exist then return its id
-                note.notebookGuid = set_notebook(note_store,
-                                                 trigger.notebook,
-                                                 notebook_id)
-
-                if trigger.tag:
-                    # ... and get the tagGUID if a tag has been provided
-                    tag_id = get_tag(note_store, trigger.tag)
-                    if tag_id is False:
-                        tag_id = set_tag(note_store, trigger.tag, tag_id)
-                        # set the tag to the note if a tag has been provided
-                        note.tagGuids = tag_id
-
-                logger.debug("notebook that will be used %s", trigger.notebook)
-
-            # attribute of the note: the link to the website
-            note_attribute = set_note_attribute(data)
-            if note_attribute:
-                note.attributes = note_attribute
-
-            # footer of the note
-            footer = set_note_footer(data, trigger)
-            content += footer
-
+            note = self._notebook(trigger, note_store)
+            # its attributes
+            note = self._attributes(note, data)
+            # its footer
+            content = self._footer(trigger, data, content)
+            # its title
             note.title = title
-            note.content = set_header()
-            note.content += sanitize(content)
+            # its content
+            note = self._content(note, content)
             # create a note
             return create_note(note_store, note, trigger_id, data)
 
@@ -212,6 +171,97 @@ class ServiceEvernote(ServicesMgr):
             logger.critical("no title provided "
                             "for trigger ID {}".format(trigger_id))
             return False
+
+    def _notestore(self, trigger_id, data):
+        try:
+            note_store = self.client.get_note_store()
+            return note_store
+        except EDAMSystemException as e:
+            # rate limit reach have to wait 1 hour !
+            if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
+                logger.warn("Rate limit reached {code}\n"
+                            "Retry your request in {msg} seconds\n"
+                            "Data set to cache again until"
+                            " limit reached".format(code=e.errorCode,
+                                                    msg=e.rateLimitDuration)
+                            )
+                cache.set('th_evernote_' + str(trigger_id),
+                          data,
+                          version=2)
+                return True
+            else:
+                logger.critical(e)
+                return False
+        except Exception as e:
+            logger.critical(e)
+            return False
+
+    @staticmethod
+    def _notebook(trigger, note_store):
+        """
+        :param trigger: trigger object
+        :param note_store: note_store object
+        :return: note object
+        """
+        note = Types.Note()
+        if trigger.notebook:
+            # get the notebookGUID ...
+            notebook_id = get_notebook(note_store, trigger.notebook)
+            # create notebookGUID if it does not exist then return its id
+            note.notebookGuid = set_notebook(note_store,
+                                             trigger.notebook,
+                                             notebook_id)
+
+            if trigger.tag:
+                # ... and get the tagGUID if a tag has been provided
+                tag_id = get_tag(note_store, trigger.tag)
+                if tag_id is False:
+                    tag_id = set_tag(note_store, trigger.tag, tag_id)
+                    # set the tag to the note if a tag has been provided
+                    note.tagGuids = tag_id
+
+            logger.debug("notebook that will be used %s", trigger.notebook)
+        return note
+
+    @staticmethod
+    def _attributes(note, data):
+        """
+        attribute of the note
+        :param note: note object
+        :param data:
+        :return:
+        """
+        # attribute of the note: the link to the website
+        note_attribute = set_note_attribute(data)
+        if note_attribute:
+            note.attributes = note_attribute
+        return note
+
+    @staticmethod
+    def _footer(trigger, data, content):
+        """
+        footer of the note
+        :param trigger: trigger object
+        :param data: data to be used
+        :param content: add the footer of the note to the content
+        :return: content string
+        """
+        # footer of the note
+        footer = set_note_footer(data, trigger)
+        content += footer
+        return content
+
+    @staticmethod
+    def _content(note, content):
+        """
+        content of the note
+        :param note: note object
+        :param content: content string to make the main body of the note
+        :return:
+        """
+        note.content = set_header()
+        note.content += sanitize(content)
+        return note
 
     def get_evernote_client(self, token=None):
         """
