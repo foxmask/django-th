@@ -83,6 +83,13 @@ class UserServiceForm(forms.ModelForm):
         """
         model = UserService
         exclude = ('user',)
+        widgets = {
+            'host': TextInput(attrs={'class': 'form-control'}),
+            'username': TextInput(attrs={'class': 'form-control'}),
+            'password': PasswordInput(attrs={'class': 'form-control'}),
+            'client_id': TextInput(attrs={'class': 'form-control'}),
+            'client_secret': TextInput(attrs={'class': 'form-control'}),
+        }
 
 
 class LoginForm(forms.ModelForm):
