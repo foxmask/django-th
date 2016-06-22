@@ -4,6 +4,12 @@ from django import template
 register = template.Library()
 
 
+@register.filter(name='service_readable_class')
+def service_readable_class(service):
+    # service is a ServicesActivated object
+    return 'get-pocket' if service.name.rsplit('Service', 1)[1] == 'Pocket' else service.name.rsplit('Service', 1)[1]
+
+
 @register.filter(name='service_readable')
 def service_readable(service):
     # service is a ServicesActivated object

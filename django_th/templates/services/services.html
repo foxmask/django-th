@@ -29,7 +29,7 @@
                         <li class="col-md-3">
                             <div class="thumbnail">
                                 <div class="caption">
-                                    <h3>{{ service.name|service_readable|safe|escape }}</h3>
+                                    <h3>{{ service.name|service_readable|safe|escape }} <i class="fa fa-{{ service.name|service_readable_class|lower }}" aria-hidden="true"></i></h3>
                                     <p>{{ service.name.description }}</p>
                                     <p>
                                         {% if service.name.auth_required == True %}

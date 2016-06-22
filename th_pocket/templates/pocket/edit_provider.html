@@ -4,7 +4,7 @@
 {% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
 {% block content %}
     <div class="col-md-12" id="trigger-content">
-        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of your trigger' %} {{ context.description }}</h3>
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of the properties for' %} {{ context.description }}</h3>
         <form method="post" class="form-horizontal" action="">
         {{ form.non_field_errors }}
         <fieldset>
