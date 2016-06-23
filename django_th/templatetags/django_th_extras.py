@@ -7,7 +7,8 @@ register = template.Library()
 @register.filter(name='service_readable_class')
 def service_readable_class(service):
     # service is a ServicesActivated object
-    return 'get-pocket' if service.name.rsplit('Service', 1)[1] == 'Pocket' else service.name.rsplit('Service', 1)[1]
+    my_service = service.name.rsplit('Service', 1)[1]
+    return 'get-pocket' if my_service == 'Pocket' else my_service
 
 
 @register.filter(name='service_readable')
