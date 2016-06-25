@@ -123,6 +123,7 @@ INSTALLED_APPS = (
     # 'th_evernote',
     # 'th_github',
     # 'th_holidays',
+    # 'th_instapush',
     # 'haystack',
     # 'th_pelican',
     # 'th_pocket',
@@ -357,7 +358,8 @@ TH_SERVICES = (
     # 'th_pelican.my_pelican.ServicePelican',
     # 'th_todoist.my_todoist.ServiceTodoist',
     # 'th_pushbullet.my_pushbullet.ServicePushbullet',
-    'th_wallabag.my_wallabag.ServiceWallabag',
+    # 'th_instapush.my_pushbullet.ServicePushbullet',
+    'th_instapush.my_instapush.ServiceInstapush',
 )
 
 
