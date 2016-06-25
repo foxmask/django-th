@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-play"></span> Instapush informations</h3>
+        <h4>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h4>
+        <form class="form-horizontal" action="" method="post">{% csrf_token %}
+            <fieldset>
+                <div class="alert alert-warning" role="alert">
+                    {% trans 'This service does not provide data but consumes data. So you have to select this service as consumer at step 3 when you choose a provider' %}
+                    <br/>
+                    <a class="btn btn-inverse" href="{% url 'create_service' %}">{% trans 'Go back to step 1 and choose another service' %}</a>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

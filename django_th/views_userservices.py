@@ -142,7 +142,9 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
     """
         Form to edit a service
     """
-    fields = ['username', 'password', 'client_secret', 'client_id', 'host']
+    fields = ['username', 'password',
+              'client_secret', 'client_id', 'host',
+              'token']
     template_name = "services/edit_service.html"
 
     def get_success_url(self):

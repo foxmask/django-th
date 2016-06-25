@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of the properties for' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+        {% trans 'This service does not provide data but use them. So you have to select this service only on step 1 when you choose a provider' %}
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}

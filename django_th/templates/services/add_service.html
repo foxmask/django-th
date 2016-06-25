@@ -15,7 +15,17 @@
                 <div class="col-sm-6">{{ form.name }}</div>
                 <div class="col-sm-offset-2 col-sm-8">{{ form.name.errors }}{{ form.name.errors }}</div>
             </div>
-            if this is a self hosted service that required an authentication, then you should need to fill the 5 following fields :
+            <div class="form-group">
+                <label class="col-sm-2 control-label" for="id_token">{% trans 'User Token' %}</label>
+                <div class="col-sm-6">{{ form.token }}</div>
+                <div class="col-sm-offset-2 col-sm-8">Actually, this field is only mandatory for the Instapush service, otherwise the other services will go to the website of each service to get a new token it self</div>
+                <div class="col-sm-offset-2 col-sm-8">{{ form.token.errors }}</div>
+            </div>
+
+            <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-6">if this is a self hosted service that required an authentication, then you should need to fill the
+            5 following fields :</div>
+            </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_username">{% trans 'Username' %}</label>
                 <div class="col-sm-6">{{ form.username }}</div>

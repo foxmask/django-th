@@ -35,7 +35,7 @@
                                         {% if service.name.auth_required == True %}
                                             <a class="btn btn-xs btn-warning" role="button" href="{% url 'renew_service' service.name.id %}" title="{% trans 'Renew this service ?' %}"><span class="glyphicon glyphicon-repeat icon-white"></span></a>
                                         {% endif %}
-                                        {% if service.name.self_hosted == True %}
+                                        {% if service.name.self_hosted == True or service.name.auth_required == False %}
                                             <a class="btn btn-xs btn-info" role="button" href="{% url 'edit_service' service.id %}" title="{% trans 'Edit this service' %}"><span class="glyphicon glyphicon-pencil icon-white"></span></a>
                                         {% endif %}
                                         <a class="btn btn-xs btn-success" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'off' %}" title="{% trans 'Disable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>

@@ -89,6 +89,7 @@ class UserServiceForm(forms.ModelForm):
             'password': PasswordInput(attrs={'class': 'form-control'}),
             'client_id': TextInput(attrs={'class': 'form-control'}),
             'client_secret': TextInput(attrs={'class': 'form-control'}),
+            'token': TextInput(attrs={'class': 'form-control'}),
         }
 
 
