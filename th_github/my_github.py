@@ -6,9 +6,11 @@ from github3 import GitHub
 from django.conf import settings
 from django.utils.log import getLogger
 from django.core.cache import caches
+from django.utils.translation import ugettext as _
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from th_github.models import Github
 
 """
     handle process with github
@@ -56,6 +58,18 @@ class ServiceGithub(ServicesMgr):
         else:
             self.gh = GitHub(username=self.username, password=self.password)
 
+    def gh_footer(self, trigger, issue):
+
+        link = 'https://github.com/{0}/{1}/issues/{2}'.format(
+            trigger.repo, trigger.project, issue.id)
+
+        provided_by = _('Provided by')
+        provided_from = _('from')
+        footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
+
+        return footer_from.format(provided_by, trigger.trigger.description,
+                                  provided_from, link, link)
+
     def read_data(self, **kwargs):
         """
             get the data from the service
@@ -64,8 +78,34 @@ class ServiceGithub(ServicesMgr):
             :rtype: list
         """
         trigger_id = kwargs.get('trigger_id')
+        date_triggered = str(kwargs.get('date_triggered')).replace(' ', 'T')
         data = list()
-        cache.set('th_github_' + str(trigger_id), data)
+        if self.token:
+            # check if it remains more than 1 access
+            # then we can create an issue
+            if self.gh.ratelimit_remaining > 1:
+
+                import pypandoc
+
+                trigger = Github.objects.get(trigger_id=trigger_id)
+                issues = self.gh.issues_on(trigger.repo,
+                                           trigger.project,
+                                           since=date_triggered)
+
+                for issue in issues:
+
+                    content = pypandoc.convert(issue.body, 'md', format='html')
+                    content += self.gh_footer(trigger, issue)
+
+                    data.append({'title': issue.title, 'content': content})
+
+                cache.set('th_github_' + str(trigger_id), data)
+            else:
+                # rate limit reach, do nothing right now
+                logger.warn("Rate limit reached")
+        else:
+            logger.critical("no token provided")
+        return data
 
     def save_data(self, trigger_id, **data):
         """
@@ -77,7 +117,6 @@ class ServiceGithub(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        from th_github.models import Github
         if self.token:
             title = self.set_title(data)
             body = self.set_content(data)
