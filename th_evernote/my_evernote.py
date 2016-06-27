@@ -161,7 +161,7 @@ class ServiceEvernote(ServicesMgr):
             # its footer
             content = self._footer(trigger, data, content)
             # its title
-            note.title = title
+            note.title = title if len(title) <= 255 else title[:255]
             # its content
             note = self._content(note, content)
             # create a note
