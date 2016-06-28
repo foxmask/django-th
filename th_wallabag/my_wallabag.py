@@ -1,6 +1,8 @@
 # coding: utf-8
 # add here the call of any native lib of python like datetime etc.
-
+import arrow
+import requests
+from requests import HTTPError
 # add the python API here if needed
 from wallabag_api.wallabag import Wallabag as Wall
 # django classes
@@ -35,8 +37,7 @@ class ServiceWallabag(ServicesMgr):
     def __init__(self, token=None, **kwargs):
         super(ServiceWallabag, self).__init__(token, **kwargs)
         self.token = token
-        self.service = 'ServiceWallabag'
-        self.user = kwargs.get('user') if kwargs.get('user') else ''
+        self.user = kwargs.get('user')
 
     def read_data(self, **kwargs):
         """
@@ -51,9 +52,53 @@ class ServiceWallabag(ServicesMgr):
 
             :rtype: list
         """
-        data = list()
-        trigger_id = kwargs.get('trigger_id')
-        cache.set('th_wallabag_' + str(trigger_id), data)
+        self.date_triggered = kwargs.get('date_triggered')
+        self.trigger_id = kwargs.get('trigger_id')
+        self.user = kwargs.get('user') if kwargs.get('user') else ''
+
+        us = UserService.objects.get(token=self.token, name='ServiceWallabag')
+
+        params = dict({'access_token': self.token,
+                       'archive': 0,
+                       'star': 0,
+                       'delete': 0,
+                       'sort': 'created',
+                       'order': 'desc',
+                       'page': 1,
+                       'perPage': 30,
+                       'tags': []})
+
+        responses = requests.get(us.host + '/api/entries.json',
+                                 params=params)
+        if responses.status_code == 401:
+            params['access_token'] = self._refresh_token()
+            responses = requests.get(us.host + '/api/entries.json',
+                                     params=params)
+        elif responses.status_code != 200:
+            raise HTTPError(responses.status_code, responses.json())
+
+        json_data = {}
+        data = []
+        try:
+            json_data = responses.json()
+
+            for d in json_data['_embedded']['items']:
+                created_at = arrow.get(d.get('created_at'))
+                date_triggered = arrow.get(self.date_triggered)
+
+                if created_at > date_triggered:
+                    data.append({'title': d.get('title'),
+                                 'content': d.get('content')})
+            if len(data) > 0:
+                cache.set('th_wallabag_' + str(self.trigger_id), data)
+        except Exception as e:
+            if json_data.get('errors'):
+                for error in json_data['errors']:
+                    error_json = json_data['errors'][error]['content']
+                    logger.critical("Wallabag: {error}".format(
+                        error=error_json))
+                    logger.critical(e)
+        return data
 
     def new_wall(self, token):
         """
@@ -95,6 +140,8 @@ class ServiceWallabag(ServicesMgr):
                                              title,
                                              tags.lower())
                 else:
+                    logger.critical('issue with something else that a token'
+                                    ' link ? : {}'.format(data.get('link')))
                     logger.critical(e.errno, e.strerror)
                     status = False
         else:
@@ -125,12 +172,14 @@ class ServiceWallabag(ServicesMgr):
             :return: boolean
         """
         new_token = self._refresh_token()
+        logger.info('new token : {}'.format(new_token))
         UserService.objects.filter(id=userservice_id).update(token=new_token)
 
         new_wall = self.new_wall(new_token)
         try:
             status = new_wall.post_entries(url=link, title=title, tags=tags)
         except Exception as e:
+            logger.critical('could not create a post link ? : {}'.format(link))
             logger.critical(e)
             status = False
         return status

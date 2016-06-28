@@ -12,7 +12,7 @@
         <form class="form-horizontal" action="" method="post">{% csrf_token %}
             <fieldset>
                 <div class="wizard-fieldset">
-                    You can 'submit' next to continue
+                    <div class="alert alert-warning" role="alert">You can 'submit' next to continue</div>
                     <table>
                     {{ wizard.management_form }}
                     {% if wizard.form.forms %}
