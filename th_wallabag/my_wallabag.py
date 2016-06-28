@@ -39,23 +39,7 @@ class ServiceWallabag(ServicesMgr):
         self.token = token
         self.user = kwargs.get('user')
 
-    def read_data(self, **kwargs):
-        """
-            get the data from the service
-            as the pocket service does not have any date
-            in its API linked to the note,
-            add the triggered date to the dict data
-            thus the service will be triggered when data will be found
-
-            :param kwargs: contain keyword args : trigger_id at least
-            :type kwargs: dict
-
-            :rtype: list
-        """
-        self.date_triggered = kwargs.get('date_triggered')
-        self.trigger_id = kwargs.get('trigger_id')
-        self.user = kwargs.get('user') if kwargs.get('user') else ''
-
+    def _get_wall_data(self):
         us = UserService.objects.get(token=self.token, name='ServiceWallabag')
 
         params = dict({'access_token': self.token,
@@ -77,7 +61,27 @@ class ServiceWallabag(ServicesMgr):
         elif responses.status_code != 200:
             raise HTTPError(responses.status_code, responses.json())
 
-        json_data = {}
+        return responses
+
+    def read_data(self, **kwargs):
+        """
+            get the data from the service
+            as the pocket service does not have any date
+            in its API linked to the note,
+            add the triggered date to the dict data
+            thus the service will be triggered when data will be found
+
+            :param kwargs: contain keyword args : trigger_id at least
+            :type kwargs: dict
+
+            :rtype: list
+        """
+        self.date_triggered = arrow.get(kwargs.get('date_triggered'))
+        self.trigger_id = kwargs.get('trigger_id')
+        self.user = kwargs.get('user') if kwargs.get('user') else ''
+
+        responses = self._get_wall_data()
+
         data = []
         try:
             json_data = responses.json()
@@ -92,12 +96,7 @@ class ServiceWallabag(ServicesMgr):
             if len(data) > 0:
                 cache.set('th_wallabag_' + str(self.trigger_id), data)
         except Exception as e:
-            if json_data.get('errors'):
-                for error in json_data['errors']:
-                    error_json = json_data['errors'][error]['content']
-                    logger.critical("Wallabag: {error}".format(
-                        error=error_json))
-                    logger.critical(e)
+                logger.critical(e)
         return data
 
     def new_wall(self, token):
