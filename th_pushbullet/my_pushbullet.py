@@ -70,16 +70,17 @@ class ServicePushbullet(ServicesMgr):
         for p in pushes:
             title = 'From Pushbullet'
             created = arrow.get(p.get('created'))
-            if created > date_triggered and p.get('type') == trigger.type:
+            if created > date_triggered and p.get('type') == trigger.type and\
+                (p.get('sender_email') == p.get('receiver_email') or
+                 p.get('sender_email') is None):
                 title = title + ' Channel' if p.get('channel_iden') and \
                                               p.get('title') is None else title
                 # if sender_email and receiver_email are the same ;
                 # that means that "I" made a note or something
                 # if sender_email is None, then "an API" does the post
-                if p.get('sender_email') == p.get('receiver_email')\
-                        or p.get('sender_email') is None:
-                    body = p.get('body')
-                    data.append({'title': title, 'content': body})
+
+                body = p.get('body')
+                data.append({'title': title, 'content': body})
 
         cache.set('th_pushbullet_' + str(trigger_id), data)
         return data
