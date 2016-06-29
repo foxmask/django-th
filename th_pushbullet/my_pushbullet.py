@@ -1,5 +1,5 @@
 # coding: utf-8
-
+import arrow
 # Pushbullet
 from pushbullet import Pushbullet as Pushb
 
@@ -62,9 +62,27 @@ class ServicePushbullet(ServicesMgr):
 
             :rtype: list
         """
-        trigger_id = kwargs['trigger_id']
+        trigger_id = kwargs.get('trigger_id')
+        trigger = Pushbullet.objects.get(trigger_id=trigger_id)
+        date_triggered = kwargs.get('date_triggered')
         data = list()
+        pushes = self.pushb.get_pushes()
+        for p in pushes:
+            title = 'From Pushbullet'
+            created = arrow.get(p.get('created'))
+            if created > date_triggered and p.get('type') == trigger.type:
+                title = title + ' Channel' if p.get('channel_iden') and \
+                                              p.get('title') is None else title
+                # if sender_email and receiver_email are the same ;
+                # that means that "I" made a note or something
+                # if sender_email is None, then "an API" does the post
+                if p.get('sender_email') == p.get('receiver_email')\
+                        or p.get('sender_email') is None:
+                    body = p.get('body')
+                    data.append({'title': title, 'content': body})
+
         cache.set('th_pushbullet_' + str(trigger_id), data)
+        return data
 
     def save_data(self, trigger_id, **data):
         """
