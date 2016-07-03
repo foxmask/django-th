@@ -23,3 +23,4 @@ def trigger_disabled(trigger):
         return 'trigger-disable'
     if trigger.consumer.name.status is False:
         return 'trigger-disable'
+    return ''

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
-{% block title %}{% trans "Log in" %}{% endblock %}
+{% block title %}{% trans "Log in" %} - Trigger Happy{% endblock %}
 {% block content %}
 <div class="col-md-12">
     <h1 class="page-header">{% trans "Log in" %}</h1>
@@ -27,8 +27,8 @@
             <label class="form-label col-md-2" for="id_password">{% trans 'Password' %}</label>
             <div class="col-md-10">
             {{ form.password }}
-            {% if form.username.errors %}
-                <p class="help-block">{{ form.username.errors.as_text }}</p>
+            {% if form.password.errors %}
+                <p class="help-block">{{ form.password.errors.as_text }}</p>
             {% endif %}
             </div>
         </div>
