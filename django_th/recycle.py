@@ -11,6 +11,7 @@ from django_th.my_services import MyService
 
 logger = getLogger('django_th.trigger_happy')
 
+
 def recycle():
     """
         the purpose of this tasks is to recycle the data from the cache
