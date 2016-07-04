@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.core.management.base import BaseCommand
 
-from django_th.tasks import recycle
+from django_th.recycle import recycle
 
 
 class Command(BaseCommand):
