@@ -1,7 +1,7 @@
 # coding: utf-8
 import arrow
 # TodoistAPI
-from todoist import TodoistAPI
+from todoist.api import TodoistAPI
 
 # django classes
 from django.conf import settings
