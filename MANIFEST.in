@@ -43,5 +43,17 @@ recursive-include th_wallabag *.html
 recursive-include th_wallabag/templates *
 recursive-include th_wallabag/migrations *
 
+recursive-include th_pushbullet *.html
+recursive-include th_pushbullet/templates *
+recursive-include th_pushbullet/migrations *
+
+recursive-include th_instapush *.html
+recursive-include th_instapush/templates *
+recursive-include th_instapush/migrations *
+
+recursive-include th_todoist *.html
+recursive-include th_todoist/templates *
+recursive-include th_todoist/migrations *
+
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
