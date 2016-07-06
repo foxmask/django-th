@@ -218,8 +218,8 @@ class ServicesMgr(object):
             :type kwargs: dict
             :rtype: string
         """
-        if kwargs.get('access_token') == '' or \
-                        kwargs.get('access_token') is None:
+        if kwargs.get('access_token') == '' \
+           or kwargs.get('access_token') is None:
             access_token = self.get_access_token(
                 request.session['oauth_token'],
                 request.session['oauth_token_secret'],
