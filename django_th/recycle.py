@@ -20,6 +20,8 @@ def recycle():
     logger = getLogger('django_th.trigger_happy')
     all_packages = MyService.all_packages()
     for package in all_packages:
+        if package == 'th_instapush':
+            continue
         cache = caches[package]
         # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
         for service in cache.iter_keys('th_*'):

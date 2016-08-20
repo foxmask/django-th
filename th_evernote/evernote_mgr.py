@@ -2,6 +2,7 @@
 import evernote.edam.type.ttypes as Types
 from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
+from evernote.edam.notestore import NoteStore
 
 from django.utils.translation import ugettext as _
 from django.utils.log import getLogger
@@ -184,3 +185,19 @@ def set_note_footer(data, trigger):
             data.get('link'), data.get('link'))
 
     return footer
+
+
+def set_note_filter(filter_string):
+    """
+        set the filter of the notes
+    """
+    my_filter = NoteStore.NoteFilter()
+    my_filter.words = filter_string
+    return my_filter
+
+
+def set_evernote_spec():
+    spec = NoteStore.NotesMetadataResultSpec()
+    spec.includeTitle = True
+    spec.includeAttributes = True
+    return spec

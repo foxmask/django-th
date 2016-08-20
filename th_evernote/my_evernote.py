@@ -3,7 +3,6 @@ import arrow
 
 # evernote API
 from evernote.api.client import EvernoteClient
-from evernote.edam.notestore import NoteStore
 import evernote.edam.type.ttypes as Types
 from evernote.edam.error.ttypes import EDAMSystemException
 from evernote.edam.error.ttypes import EDAMErrorCode
@@ -18,7 +17,8 @@ from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated
 from th_evernote.models import Evernote
 from th_evernote.evernote_mgr import create_note, set_notebook, get_notebook, \
-    set_header, set_tag, get_tag, set_note_attribute, set_note_footer
+    set_header, set_tag, get_tag, set_note_attribute, set_note_footer, \
+    set_evernote_spec, set_note_filter
 from th_evernote.sanitize import sanitize
 
 """
@@ -80,9 +80,17 @@ class ServiceEvernote(ServicesMgr):
 
         trigger = super(ServiceEvernote, self).read_data(**kwargs)
 
-        data = []
+        filter_string = self.set_evernote_filter(date_triggered, trigger)
+        evernote_filter = self.set_note_filter(filter_string)
+        data = self.get_evernote_notes(evernote_filter)
+        cache.set('th_evernote_' + str(trigger_id), data)
+
+        return data
+
+    def set_evernote_filter(self, date_triggered, trigger):
         new_date_triggered = arrow.get(str(date_triggered)[:-6],
                                        'YYYY-MM-DD HH:mm:ss')
+
         new_date_triggered = str(new_date_triggered).replace(
             ':', '').replace('-', '').replace(' ', '')
         date_filter = "created:{} ".format(new_date_triggered[:-6])
@@ -94,20 +102,18 @@ class ServiceEvernote(ServicesMgr):
 
         complet_filter = ''.join((notebook_filter, tag_filter, date_filter))
 
-        # filter
-        my_filter = NoteStore.NoteFilter()
-        my_filter.words = complet_filter
+        return complet_filter
 
-        spec = NoteStore.NotesMetadataResultSpec()
-        spec.includeTitle = True
-        spec.includeAttributes = True
+    def get_evernote_notes(self, evernote_filter):
+        data = []
 
         note_store = self.client.get_note_store()
         our_note_list = note_store.findNotesMetadata(self.token,
-                                                     my_filter,
+                                                     evernote_filter,
                                                      0,
                                                      100,
-                                                     spec)
+                                                     set_evernote_spec()
+                                                     )
 
         for note in our_note_list.notes:
             whole_note = note_store.getNote(self.token,
@@ -122,8 +128,6 @@ class ServiceEvernote(ServicesMgr):
                  'my_date': arrow.get(note.created),
                  'link': whole_note.attributes.sourceURL,
                  'content': content})
-
-        cache.set('th_evernote_' + str(trigger_id), data)
 
         return data
 
@@ -262,6 +266,15 @@ class ServiceEvernote(ServicesMgr):
         note.content = set_header()
         note.content += sanitize(content)
         return note
+
+    @staticmethod
+    def set_note_filter(filter_string):
+        """
+
+        :param filter_string:
+        :return: note filter object
+        """
+        return set_note_filter(filter_string)
 
     def get_evernote_client(self, token=None):
         """

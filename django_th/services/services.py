@@ -1,4 +1,4 @@
-# coding: utf-8 -*-
+# coding: utf-8
 # Using OAuth1Session
 from requests_oauthlib import OAuth1Session, OAuth2Session
 

@@ -3,8 +3,9 @@ from django.test import TestCase
 from django.contrib.auth.models import User
 
 from django_th.models import TriggerService, UserService, ServicesActivated
-from th_instapush.models import Instapush
+from th_instapush.models import Instapush as InstapushModel
 from th_instapush.forms import InstapushConsumerForm
+from th_instapush.my_instapush import ServiceInstapush
 
 
 class InstapushTest(TestCase):
@@ -17,11 +18,20 @@ class InstapushTest(TestCase):
         """
            create a user
         """
+        super(InstapushTest, self).setUp()
         try:
             self.user = User.objects.get(username='john')
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
+
+        self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
+                     'title': 'what else',
+                     'content': 'foobar',
+                     'summary_detail': 'summary foobar',
+                     'description': 'description foobar'}
+        self.token = 'AZERTY123'
+        self.trigger_id = 1
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -57,19 +67,19 @@ class InstapushTest(TestCase):
         event_name = 'signups'
         tracker_name = 'email'
         status = True
-        return Instapush.objects.create(trigger=trigger,
-                                        app_id='1234',
-                                        app_secret='k33p1ts3cr3t',
-                                        event_name=event_name,
-                                        tracker_name=tracker_name,
-                                        status=status)
+        return InstapushModel.objects.create(trigger=trigger,
+                                             app_id='1234',
+                                             app_secret='k33p1ts3cr3t',
+                                             event_name=event_name,
+                                             tracker_name=tracker_name,
+                                             status=status)
 
     def test_instapush(self):
         """
            Test if the creation of the Instapush object looks fine
         """
         d = self.create_instapush()
-        self.assertTrue(isinstance(d, Instapush))
+        self.assertTrue(isinstance(d, InstapushModel))
         self.assertEqual(d.show(), "My Instapush %s" % d.name)
 
     # consumer
@@ -82,3 +92,22 @@ class InstapushTest(TestCase):
                 'app_id': d.app_id, 'app_secret': d.app_secret}
         form = InstapushConsumerForm(data=data)
         self.assertTrue(form.is_valid())
+
+    def test_read_data(self):
+        """
+           Test if the creation of the Instapush object looks fine
+        """
+        kwargs = {}
+        se = ServiceInstapush()
+        se.read_data(**kwargs)
+
+    def test_save_data(self):
+        """
+           Test if the creation of the Instapush object looks fine
+        """
+        self.create_instapush()
+        data = {'title': 'foo', 'content': 'bar'}
+        # content = "my nice notification"
+        # instance = InstapushModel.objects.get(trigger_id=d.trigger_id)
+        se = ServiceInstapush(self.token)
+        se.save_data(self.trigger_id, **data)

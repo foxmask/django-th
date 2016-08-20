@@ -1,11 +1,15 @@
 # coding: utf-8
-import datetime
+from unittest.mock import patch
 
-from django.test import TestCase
 from django.conf import settings
+from django.core.cache import caches
+
+from django_th.tests.test_main import MainTest
 from th_evernote.models import Evernote
 from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
-from django_th.tests.test_main import MainTest
+from th_evernote.my_evernote import ServiceEvernote
+
+cache = caches['th_evernote']
 
 
 class EvernoteTest(MainTest):
@@ -73,13 +77,24 @@ except ImportError:
     import mock
 
 
-class ServiceEvernoteTest(TestCase):
+class ServiceEvernoteTest(MainTest):
     """
        ServiceEvernoteTest
     """
 
+    def create_evernote(self):
+        trigger = self.create_triggerservice(consumer_name='ServiceEvernote')
+        tag = 'test'
+        notebook = 'my notebook'
+        title = 'a new note'
+        status = True
+        return Evernote.objects.create(tag=tag, title=title,
+                                       notebook=notebook, trigger=trigger,
+                                       status=status)
+
     def setUp(self):
-        self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
+        super(ServiceEvernoteTest, self).setUp()
+        self.ev = self.create_evernote()
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else',
                      'content': 'foobar',
@@ -87,6 +102,28 @@ class ServiceEvernoteTest(TestCase):
                      'description': 'description foobar'}
         self.token = 'AZERTY123'
         self.trigger_id = 1
+
+    def test_read_data(self):
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': self.trigger_id,
+                       'model_name': 'Evernote'})
+
+        # date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
+
+        kwargs['model_name'] = 'Evernote'
+
+        se = ServiceEvernote(self.token)
+
+        # filter_string = se.set_evernote_filter(date_triggered, self.ev)
+        # evernote_filter = se.set_note_filter(filter_string)
+        data = []
+        cache.set('th_evernote_' + str(trigger_id), data)
+
+        with patch.object(ServiceEvernote, 'read_data') as mock_read_data:
+            se = ServiceEvernote(self.token)
+            se.read_data(**kwargs)
+        mock_read_data.assert_called_once_with(**kwargs)
 
     def test_save_data(self):
         token = self.token

@@ -1,13 +1,20 @@
 # coding: utf-8
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
-from th_todoist.models import Todoist
+
 from django_th.models import TriggerService, UserService, ServicesActivated
+from th_todoist.models import Todoist
 from th_todoist.forms import TodoistProviderForm, TodoistConsumerForm
+from th_todoist.my_todoist import ServiceTodoist
 
 
 class TodoistTest(TestCase):
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_todoist', settings.CACHES)
 
     """
         TodoistTest Model
@@ -21,6 +28,9 @@ class TodoistTest(TestCase):
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
+
+        self.token = 'AZERTY123'
+        self.trigger_id = 1
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -64,6 +74,7 @@ class TodoistTest(TestCase):
         d = self.create_todoist()
         self.assertTrue(isinstance(d, Todoist))
         self.assertEqual(d.show(), "My Todoist %s" % d.name)
+        self.assertEqual(d.__str__(), "%s" % d.name)
 
     """
         Form
@@ -93,3 +104,28 @@ class TodoistTest(TestCase):
             does this settings exists ?
         """
         self.assertTrue(settings.TH_TODOIST)
+
+    def test_read_data(self):
+        """
+           Test if the creation of the Todoist object looks fine
+        """
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': self.trigger_id,
+                       'model_name': 'Todoist'})
+
+        with patch.object(ServiceTodoist, 'read_data') as mock_read_data:
+            se = ServiceTodoist(self.token)
+            se.read_data(**kwargs)
+        mock_read_data.assert_called_once_with(**kwargs)
+
+    def test_save_data(self):
+        """
+           Test if the creation of the Todoist object looks fine
+        """
+        self.create_todoist()
+        data = {'link': 'http://foo.bar/some/thing/else/what/else',
+                'title': 'what else',
+                'content': 'foobar'}
+
+        se = ServiceTodoist(self.token)
+        se.save_data(self.trigger_id, **data)

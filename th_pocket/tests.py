@@ -1,11 +1,13 @@
 # coding: utf-8
+from unittest.mock import patch
 import datetime
-import time
+from pocket import Pocket
 
 from django.test import TestCase
 from django.conf import settings
-from th_pocket.models import Pocket
+from th_pocket.models import Pocket as PocketModel
 from th_pocket.forms import PocketProviderForm, PocketConsumerForm
+from th_pocket.my_pocket import ServicePocket
 from django_th.tests.test_main import MainTest
 
 
@@ -22,13 +24,13 @@ class PocketTest(MainTest):
         title = 'foobar'
         tweet_id = ''
         status = True
-        return Pocket.objects.create(tag=tag, url=url, title=title,
-                                     tweet_id=tweet_id, trigger=trigger,
-                                     status=status)
+        return PocketModel.objects.create(tag=tag, url=url, title=title,
+                                          tweet_id=tweet_id, trigger=trigger,
+                                          status=status)
 
     def test_pocket(self):
         p = self.create_pocket()
-        self.assertTrue(isinstance(p, Pocket))
+        self.assertTrue(isinstance(p, PocketModel))
         self.assertEqual(p.show(), "My Pocket {}".format(p.url))
         self.assertEqual(p.__str__(), "{}".format(p.url))
 
@@ -90,29 +92,31 @@ class ServicePocketTest(TestCase):
         self.date_triggered = datetime.datetime(2013, 6, 10, 00, 00)
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
+        self.token = 'AZERTY123'
+        self.trigger_id = 1
 
-    def test_process_data(self, token='AZERTY123', trigger_id=1):
-        since = int(
-            time.mktime(datetime.datetime.timetuple(self.date_triggered)))
+    def test_read_data(self):
+        kwargs = {'date_triggered': self.date_triggered,
+                  'link': 'http://foo.bar/some/thing/else/what/else',
+                  'title': 'what else'}
+        since = datetime.datetime(2014, 6, 10, 00, 00)
+        with patch.object(ServicePocket, 'read_data', return_value={}) as\
+                mock_read:
+            sp = ServicePocket(self.token)
+            data = sp.read_data(**kwargs)
+            with patch.object(Pocket, 'get', return_value={}) as mock_method:
+                p = Pocket("fake consumer key", self.token)
+                p.get(since=since, state="unread")
+            mock_method.assert_called_once_with(since=since, state='unread')
+        mock_read.assert_called_once_with(**kwargs)
 
-        datas = list()
-        self.assertTrue(isinstance(self.date_triggered, datetime.datetime))
-        self.assertTrue(token)
-        self.assertTrue(isinstance(trigger_id, int))
-        self.assertTrue(isinstance(since, int))
-        self.assertTrue(isinstance(datas, list))
+        return data
 
-        pocket_instance = mock.Mock()
-        pocket_instance.method(since=since, state="unread")
-        pocket_instance.method.assert_called_with(since=since, state="unread")
-
-        return datas
-
-    def test_save_data(self, token='AZERTY123', trigger_id=1):
+    def test_save_data(self):
 
         the_return = False
-        self.assertTrue(token)
-        self.assertTrue(isinstance(trigger_id, int))
+        self.assertTrue(self.token)
+        self.assertTrue(isinstance(self.trigger_id, int))
         self.assertIn('link', self.data)
         self.assertIn('title', self.data)
         self.assertIsNotNone(self.data['link'])

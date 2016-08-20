@@ -1,8 +1,14 @@
 # coding: utf-8
+from unittest.mock import patch
+
 from django.conf import settings
+from django.contrib.auth.models import User
+
+from django_th.tests.test_main import MainTest
+
 from th_trello.models import Trello
 from th_trello.forms import TrelloProviderForm, TrelloConsumerForm
-from django_th.tests.test_main import MainTest
+from th_trello.my_trello import ServiceTrello
 
 
 class TrelloTest(MainTest):
@@ -10,6 +16,18 @@ class TrelloTest(MainTest):
     """
         TrelloTest Model
     """
+    def setUp(self):
+        """
+           create a user
+        """
+        try:
+            self.user = User.objects.get(username='john')
+        except User.DoesNotExist:
+            self.user = User.objects.create_user(
+                username='john', email='john@doe.info', password='doe')
+
+        self.token = 'AZERTY123#TH#FOOBAR'
+        self.trigger_id = 1
 
     def test_get_config_th(self):
         """
@@ -84,21 +102,16 @@ class TrelloTest(MainTest):
         self.assertTrue(type(data) is list)
         self.assertTrue('trigger_id' in kwargs)
 
-    """def test_process_data(self):
-        r = self.create_trello()
-        from th_trello.my_trello import ServiceTrello
+    def test_save_data(self):
+        """
+           Test if the creation of the Trello object looks fine
+        """
+        self.create_trello()
+        data = {'link': 'http://foo.bar/some/thing/else/what/else',
+                'title': 'what else',
+                'content': 'foobar'}
 
-        kwargs = {'trigger_id': r.trigger_id}
-
-        self.assertTrue('trigger_id' in kwargs)
-
-        kw = {'cache_stack': 'th_trello',
-              'trigger_id': str(kwargs['trigger_id'])}
-
-        self.assertTrue('cache_stack' in kw)
-        self.assertTrue('trigger_id' in kw)
-
-        s = ServiceTrello()
-        data = s.process_data(**kw)
-
-        self.assertTrue(type(data) is list)"""
+        with patch.object(ServiceTrello, 'save_data') as mock_save_data:
+            se = ServiceTrello(self.token)
+            se.save_data(self.trigger_id, **data)
+        mock_save_data.assert_called_once_with(self.trigger_id, **data)
