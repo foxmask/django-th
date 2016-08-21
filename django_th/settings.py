@@ -342,7 +342,7 @@ DJANGO_TH = {
     # to the target service - when limit is reached
     # the cache is kept until next time
     # set it to 0 to drop that limit
-    'publishing_limit': 0,
+    'publishing_limit': 5,
     # number of process to spawn from multiprocessing.Pool
     'processes': 5,
 }

@@ -70,21 +70,3 @@ class RssTest(MainTest):
         data = s.read_data(**kwargs)
 
         self.assertTrue(type(data) is list)
-
-    def test_process_data(self):
-        r = self.create_rss()
-        from th_rss.my_rss import ServiceRss
-        kwargs = {'trigger_id': r.trigger_id}
-
-        self.assertTrue('trigger_id' in kwargs)
-
-        kw = {'cache_stack': 'th_rss',
-              'trigger_id': str(kwargs['trigger_id'])}
-
-        self.assertTrue('cache_stack' in kw)
-        self.assertTrue('trigger_id' in kw)
-
-        s = ServiceRss()
-        data = s.process_data(**kw)
-        if data:
-            self.assertTrue(type(data) is list)

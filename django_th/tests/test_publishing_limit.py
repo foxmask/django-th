@@ -25,7 +25,6 @@ class PublishingLimitTestCase(TestCase):
         trigger_id = 1
 
         services = PublishingLimit.get_data(cache_stack, cache_data, trigger_id)
-
         self.assertTrue(len(services) > 0)
 
     def test_get_data3(self):
@@ -40,5 +39,4 @@ class PublishingLimitTestCase(TestCase):
         trigger_id = 1
 
         services = PublishingLimit.get_data(cache_stack, cache_data, trigger_id)
-
         self.assertTrue(len(services) > 0)

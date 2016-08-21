@@ -26,6 +26,7 @@ class UserServiceTest(TestCase):
         name = ServicesActivated.objects.create(name='ServiceEvernote',
                                                 status=True,
                                                 auth_required=True,
+                                                self_hosted=True,
                                                 description='Service Evernote')
         return UserService.objects.create(user=user, token=token, name=name)
 
@@ -39,8 +40,20 @@ class UserServiceTest(TestCase):
     def test_valid_form(self):
         u = self.create_userservice()
         data = {'user': u.user, 'name': u.name, 'token': ''}
-        if u.name.auth_required:
-            data = {'user': u.user, 'name': u.name, 'token': u.token}
+        if u.name.auth_required and u.name.self_hosted:
+            data = {'user': u.user, 'name': u.name, 'token': u.token,
+                    'host': 'http://localhost/',
+                    'username': 'johndoe',
+                    'password': 'password',
+                    'client_id': 'the_id',
+                    'client_secret': 'the_secret'
+                    }
+            data2 = {'user': u.user, 'name': u.name, 'token': u.token,
+                     'host': 'http://localhost/',
+                     'username': '',
+                     'password': 'password',
+                     'client_id': 'the_id',
+                     'client_secret': 'the_secret'}
         initial = {'user': self.user}
         # create a second service to be able to cover the "else" in
         # activated_services()
@@ -51,14 +64,13 @@ class UserServiceTest(TestCase):
                                          description='Service Rss')
         form = UserServiceForm(data=data, initial=initial)
         self.assertTrue(form.is_valid())
+        form.clean()
         form.save(user=user)
-    """
-    def test_invalid_form(self):
-        data = {'user': '', 'name': '', 'token': ''}
-        initial = {'user': self.user}
-        form = UserServiceForm(data=data, initial=initial)
+        # form is not valid because auth +
+        # self_host are true but username is missing
+        form = UserServiceForm(data=data2, initial=initial)
         self.assertFalse(form.is_valid())
-    """
+        form.clean()
 
 
 class ServicesActivatedTest(TestCase):

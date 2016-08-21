@@ -55,6 +55,7 @@ class PelicanTest(MainTest):
                                       path='/tmp/',
                                       name=name,
                                       category='News',
+                                      tags='foo, bar',
                                       status=status)
 
     def test_pelican(self):
@@ -119,7 +120,8 @@ class PelicanTest(MainTest):
     def test_save_data(self):
         pelican = self.create_pelican()
         token = 'AZERTY1234'
-        data = {'title': 'my title', 'category': 'News', 'tags': 'Python'}
+        data = {'title': 'my title', 'category': 'News',
+                'my_date': '2016-08-20 13:23:58+00:00'}
 
         s = ServicePelican()
         r = s.save_data(token, pelican.trigger_id, **data)

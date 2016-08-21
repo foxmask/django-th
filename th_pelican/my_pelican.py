@@ -1,7 +1,5 @@
 # coding: utf-8
 import arrow
-import time
-import datetime
 
 from slugify import slugify
 
@@ -11,6 +9,7 @@ from django.utils.log import getLogger
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from django_th.tools import to_datetime
 
 """
     TH_SERVICES = (
@@ -30,29 +29,6 @@ class ServicePelican(ServicesMgr):
         self.AUTHOR = settings.TH_PELICAN_AUTHOR \
             if settings.TH_PELICAN_AUTHOR else ''
 
-    def to_datetime(self, data):
-        """
-            convert Datetime 9-tuple to the date and time format
-            feedparser provides this 9-tuple
-            :param data: data to be checked
-            :type data: dict
-        """
-        my_date_time = None
-
-        if 'published_parsed' in data:
-            my_date_time = datetime.datetime.utcfromtimestamp(
-                time.mktime(data['published_parsed']))
-        elif 'created_parsed' in data:
-            my_date_time = datetime.datetime.utcfromtimestamp(
-                time.mktime(data['created_parsed']))
-        elif 'updated_parsed' in data:
-            my_date_time = datetime.datetime.utcfromtimestamp(
-                time.mktime(data['updated_parsed']))
-        elif 'my_date' in data:
-            my_date_time = arrow.get(data['my_date'])
-
-        return my_date_time
-
     def _create_content(self, site_title, content, pelican_path, url, **data):
         """
             create the file in the 'content' directory of pelican
@@ -67,7 +43,7 @@ class ServicePelican(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        published = self.to_datetime(data)
+        published = to_datetime(data)
 
         category = data.get('category') if data.get('category') else ''
         tags = data.get('tags') if data.get('tags') else ''

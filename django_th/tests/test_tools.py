@@ -4,6 +4,7 @@ import datetime
 from django.test import TestCase
 
 from django_th.tools import class_for_name, get_service, to_datetime
+from django_th.html_entities import HtmlEntities
 
 
 class ToolsTest(TestCase):
@@ -38,3 +39,11 @@ class ToolsTest(TestCase):
         data = {'my_date': now}
         date = to_datetime(data)
         self.assertTrue(type(date), type(datetime))
+
+
+class HtmlEntitiesTest(TestCase):
+
+    def test_html_entity_decode(self):
+        my_string = "&#62;"
+        my_string = HtmlEntities(my_string).html_entity_decode
+        self.assertTrue(my_string, str)

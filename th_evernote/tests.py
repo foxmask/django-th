@@ -8,6 +8,7 @@ from django_th.tests.test_main import MainTest
 from th_evernote.models import Evernote
 from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
 from th_evernote.my_evernote import ServiceEvernote
+from th_evernote.sanitize import sanitize
 
 cache = caches['th_evernote']
 
@@ -190,3 +191,17 @@ class ServiceEvernoteTest(MainTest):
 
     def test_callback(self):
         pass
+
+    def test_sanitize(self):
+        html = "<html><body>" \
+               "<p>coucou</p>" \
+               "<dir>foobar</dir>" \
+               "<div data-foobar='nothing'>foobar2</div>" \
+               "<a href='ftp://localhost'>dropped</a>" \
+               "<a href='http://localhost'>kept</a>" \
+               "</body></html>"
+        html = sanitize(html)
+        self.assertTrue("dir" not in html)
+        self.assertTrue("ftp" not in html)
+        self.assertTrue("data-foobar" not in html)
+        self.assertTrue("http" in html)

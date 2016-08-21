@@ -1,10 +1,14 @@
 # coding: utf-8
+from unittest.mock import patch
+
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
-from th_wallabag.models import Wallabag
+
 from django_th.models import TriggerService, UserService, ServicesActivated
+from th_wallabag.models import Wallabag
 from th_wallabag.forms import WallabagProviderForm, WallabagConsumerForm
+from th_wallabag.my_wallabag import ServiceWallabag
 
 
 class WallabagTest(TestCase):
@@ -96,3 +100,20 @@ class WallabagTest(TestCase):
 
     def test_get_config_th_cache(self):
         self.assertIn('th_wallabag', settings.CACHES)
+
+
+class ServiceWallabagTest(TestCase):
+
+    def test_read_data(self):
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': 1,
+                       'model_name': 'Wallabag'})
+
+        kwargs['model_name'] = 'Wallabag'
+
+        token = 'AZERTY'
+
+        with patch.object(ServiceWallabag, 'read_data') as mock_read_data:
+            se = ServiceWallabag(token)
+            se.read_data(**kwargs)
+        mock_read_data.assert_called_once_with(**kwargs)
