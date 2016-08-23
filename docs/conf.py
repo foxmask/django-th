@@ -228,7 +228,7 @@ man_pages = [
 texinfo_documents = [
     ('index', 'TriggerHappy', u'Trigger Happy Documentation',
      u'foxmask', 'TriggerHappy', 'take the control of your data with this'
-                                 'opensource clone of ITFFF',
+                                 'opensource clone of IFTTT',
      'Miscellaneous'),
 ]
 
