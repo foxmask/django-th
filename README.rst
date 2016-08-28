@@ -5,7 +5,7 @@
 
 .. image:: https://scrutinizer-ci.com/g/foxmask/django-th/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/foxmask/django-th/?branch=master
-   :alt: Scrutinizer
+   :alt: Scrutinizer Code Quality
 
 
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
@@ -23,7 +23,7 @@
     :alt: Latest version
 
 
-.. image:: http://img.shields.io/badge/python-3.4-orange.svg
+.. image:: http://img.shields.io/badge/python-3.5-orange.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: Python version supported
 
