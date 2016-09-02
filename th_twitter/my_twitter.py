@@ -176,26 +176,16 @@ class ServiceTwitter(ServicesMgr):
             :rtype: boolean
         """
         status = False
-        tags = []
         # set the title and content of the data
         title, content = super(ServiceTwitter, self).save_data(
             trigger_id, data, kwargs={})
 
         if data.get('link') and len(data.get('link')) > 0:
-            # get the Twitter data of this trigger
-            trigger = Twitter.objects.get(trigger_id=trigger_id)
-
-            if trigger.tag:
-                # is there several tag ?
-                tags = ["#" + tag.strip() for tag in trigger.tag.split(',')
-                        ] if ',' in trigger.tag else "#" + trigger.tag
 
             content = str("{title} {link}").format(
                 title=title, link=data.get('link'))
 
-            # TODO : need to check the size of the content and tags to add
-            if len(tags) > 0:
-                content += ' ' + str(','.join(tags))
+            content += self.get_tags(trigger_id)
 
             try:
                 self.twitter_api.update_status(status=content)
@@ -204,6 +194,28 @@ class ServiceTwitter(ServicesMgr):
                 logger.critical("Twitter ERR {}".format(inst))
                 status = False
         return status
+
+    def get_tags(self, trigger_id):
+        """
+        get the tags if any
+        :param trigger_id: the id of the related trigger
+        :return: tags string
+        """
+
+        # get the Twitter data of this trigger
+        trigger = Twitter.objects.get(trigger_id=trigger_id)
+
+        tags = ''
+
+        if len(trigger.tag) > 0:
+            # is there several tag ?
+            tags = ["#" + tag.strip() for tag in trigger.tag.split(',')
+                    ] if ',' in trigger.tag else "#" + trigger.tag
+
+            tags = str(','.join(tags)) if isinstance(tags, list) else tags
+            tags = ' ' + tags
+
+        return tags
 
     def auth(self, request):
         """
