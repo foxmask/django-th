@@ -16,7 +16,15 @@
                 </div>
             </div>
             {% endif %}
-
+            {% if messages %}
+            <div class="alert alert-warning">
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
             {% if services_list %}
                 {% if action == 'display' %}
                 <div class="col-md-11">

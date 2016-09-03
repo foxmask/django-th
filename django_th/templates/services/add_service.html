@@ -5,6 +5,12 @@
 {% block content %}
     <div class="col-md-12" id="trigger-content">
         <h3>{% trans 'Creation of your service' %}</h3>
+        {%  if services == 0 %}
+        <div class="alert alert-warning">
+            You already have activated all the existing services.
+            <a href="{% url 'user_services' %}">Go back to your activated services</a>
+        </div>
+        {%  else  %}
         <form method="post" role="form" class="form-horizontal" action="">
         {% csrf_token %}
         <fieldset>
@@ -13,7 +19,7 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_service">{% trans 'Service' %}</label>
                 <div class="col-sm-6">{{ form.name }}</div>
-                <div class="col-sm-offset-2 col-sm-8">{{ form.name.errors }}{{ form.name.errors }}</div>
+                <div class="col-sm-offset-2 col-sm-8">{{ form.name.errors }}</div>
             </div>
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_token">{% trans 'User Token' %}</label>
@@ -58,5 +64,6 @@
             </div>
         </fieldset>
         </form>
+        {%  endif  %}
     </div>
 {% endblock %}

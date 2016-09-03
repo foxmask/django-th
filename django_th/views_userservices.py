@@ -11,7 +11,7 @@ from django.utils.decorators import method_decorator
 from django.http import HttpResponseRedirect
 
 from django_th.models import UserService, ServicesActivated
-from django_th.forms.base import UserServiceForm
+from django_th.forms.base import UserServiceForm, activated_services
 from django_th.services import default_provider
 
 
@@ -87,31 +87,46 @@ class UserServiceCreateView(CreateView):
     form_class = UserServiceForm
     template_name = "services/add_service.html"
 
+    def get_context_data(self, **kwargs):
+        context = super(UserServiceCreateView, self).get_context_data(**kwargs)
+        context['services'] = len(activated_services(self.request.user))
+        print(context)
+        return context
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
-        default_provider.load_services()
-        self.object = form.save(user=self.request.user)
+        name = form.cleaned_data.get('name').name
+        user = self.request.user
+        if UserService.objects.filter(name=name, user=user).exists():
+            from django.contrib import messages
+            messages.warning(self.request, 'Service %s already activated' %
+                             name.split('Service')[1])
+            return HttpResponseRedirect(reverse('user_services'))
+        else:
+            form.save(user=user)
 
-        sa = ServicesActivated.objects.get(
-            name=form.cleaned_data.get('name').name)
-        # let's build the 'call' of the auth method
-        # which own to a Service Class
-        if sa.auth_required:
-            # use the default_provider to get the object from the ServiceXXX
-            service_object = default_provider.get_service(
-                str(form.cleaned_data.get('name').name))
-            # get the class object
-            lets_auth = getattr(service_object, 'auth')
-            # call the auth func from this class
-            # and redirect to the external service page
-            # to auth the application django-th to access to the user
-            # account details
-            return redirect(lets_auth(self.request))
+            sa = ServicesActivated.objects.get(
+                name=form.cleaned_data.get('name').name)
+            # let's build the 'call' of the auth method
+            # which own to a Service Class
+            if sa.auth_required:
+                # use the default_provider to get the object from the ServiceXXX
+                default_provider.load_services()
+                service_object = default_provider.get_service(
+                    str(form.cleaned_data.get('name').name))
+                # get the class object
+                lets_auth = getattr(service_object, 'auth')
+                # call the auth func from this class
+                # and redirect to the external service page
+                # to auth the application django-th to access to the user
+                # account details
+                return redirect(lets_auth(self.request))
 
-        return HttpResponseRedirect(reverse('user_services', args=['added']))
+            return HttpResponseRedirect(reverse('user_services',
+                                                args=['added']))
 
     def get_form_kwargs(self):
         kwargs = super(UserServiceCreateView, self).get_form_kwargs()

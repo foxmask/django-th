@@ -3,8 +3,6 @@ import os
 from django.core.urlresolvers import reverse_lazy
 
 DEBUG = False
-TEMPLATE_DEBUG = DEBUG
-
 ALLOWED_HOSTS = ["*"]
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -90,7 +88,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 )
 
 ROOT_URLCONF = 'django_th.urls'
@@ -135,11 +133,22 @@ INSTALLED_APPS = (
     'th_wallabag',
 )
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.contrib.auth.context_processors.auth',
-    'django.core.context_processors.request',
-    # 'django.template.context_processors.request',
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': ["django.contrib.auth.context_processors.auth",
+                                   "django.core.context_processors.request",
+                                   "django.template.context_processors.debug",
+                                   "django.template.context_processors.i18n",
+                                   "django.template.context_processors.media",
+                                   "django.template.context_processors.static",
+                                   "django.template.context_processors.tz",
+                                   "django.contrib.messages.context_processors.messages"]
+        }
+    },
+]
 
 # A sample logging configuration. The only tangible logging
 # performed by this configuration is to send an email to
