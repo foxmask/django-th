@@ -91,7 +91,8 @@ or to make your own "recipe" :
 .. code-block:: bash
 
     pip install django-th[rss,wallabag]
-    pip install django-th[rss,twitter,pocket,github]
+    pip install django-th[rss,wallabag,twitter,github]
+    pip install django-th[all]
 
 
 

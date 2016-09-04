@@ -22,7 +22,6 @@ For all the services, the installation is the same :
    pelican
    pocket
    pushbullet
-   readability
    rss
    search
    todoist

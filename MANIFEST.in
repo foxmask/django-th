@@ -17,10 +17,6 @@ recursive-include th_pocket *.html
 recursive-include th_pocket/templates *
 recursive-include th_pocket/migrations *
 
-recursive-include th_readability *.html
-recursive-include th_readability/templates *
-recursive-include th_readability/migrations *
-
 recursive-include th_rss *.html
 recursive-include th_rss/templates *
 

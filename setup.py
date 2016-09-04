@@ -22,9 +22,6 @@ extras_require_github = [
 extras_require_pocket = [
     'pocket==0.3.6',
 ]
-extras_require_readability = [
-    'readability-api==1.0.2',
-]
 extras_require_rss = [
     'feedparser==5.2.1',
 ]
@@ -55,7 +52,7 @@ extras_require_instapush = [
 ]
 
 extras_require_all = extras_require_github\
-    + extras_require_pocket + extras_require_readability + extras_require_rss\
+    + extras_require_pocket + extras_require_rss\
     + extras_require_search + extras_require_trello + extras_require_twitter\
     + extras_require_pelican + extras_require_wallabag\
     + extras_require_evernote + extras_require_todoist\
@@ -92,7 +89,6 @@ setup(
         'evernote': extras_require_evernote,
         'github': extras_require_github,
         'pocket': extras_require_pocket,
-        'readability': extras_require_readability,
         'rss': extras_require_rss,
         'search': extras_require_search,
         'trello': extras_require_trello,

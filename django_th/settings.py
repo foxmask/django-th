@@ -250,16 +250,6 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Readability
-    'th_readability':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/4",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
     # Twitter Cache
     'th_twitter':
     {
@@ -361,7 +351,6 @@ TH_SERVICES = (
     'th_rss.my_rss.ServiceRss',
     # 'th_pocket.my_pocket.ServicePocket',
     # 'th_evernote.my_evernote.ServiceEvernote',
-    # 'th_readability.my_readability.ServiceReadability',
     # 'th_twitter.my_twitter.ServiceTwitter',
     # 'th_trello.my_trello.ServiceTrello',
     # 'th_github.my_github.ServiceGithub',
@@ -399,13 +388,6 @@ TH_POCKET = {
 TH_PUSHBULLET = {
     'consumer_key': '<your pushbullet key>',
     'consumer_secret': '<your pushbullet secret>',
-}
-
-TH_READABILITY = {
-    # get your credential by subscribing to
-    # https://www.readability.com/settings/account
-    'consumer_key': '<your readability key>',
-    'consumer_secret': '<your readability secret>',
 }
 
 TH_TODOIST = {
