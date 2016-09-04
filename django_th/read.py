@@ -19,33 +19,35 @@ def reading(service):
        :param service: service object to read
        :type service: object
     """
-    # flag to know if we have to update
-    to_update = False
-    count_new_data = 0
-    # counting the new data to store to display them in the log
-    # provider - the service that offer data
-    provider_token = service.provider.token
-    service_provider = default_provider.get_service(
-        str(service.provider.name.name))
-
-    # check if the service has already been triggered
-    # if date_triggered is None, then it's the first run
-    if service.date_triggered is None:
-        logger.debug("first time {}".format(service))
-        to_update = True
-        # run run run
-    else:
-        # 1) get the data from the provider service
-        # get a timestamp of the last triggered of the service
-        kw = {'token': provider_token,
-              'trigger_id': service.id,
-              'date_triggered': service.date_triggered}
-        getattr(service_provider, '__init__')(provider_token)
-        data = getattr(service_provider, 'read_data')(**kw)
+    # get only activated service
+    if service.provider.name.status and service.consumer.name.status:
+        # flag to know if we have to update
+        to_update = False
+        count_new_data = 0
         # counting the new data to store to display them in the log
-        count_new_data = len(data) if data else 0
-        if count_new_data > 0:
-            to_update = True
+        # provider - the service that offer data
+        provider_token = service.provider.token
+        service_provider = default_provider.get_service(
+            str(service.provider.name.name))
 
-    if to_update:
-        logger.info("{} - {} new data".format(service, count_new_data))
+        # check if the service has already been triggered
+        # if date_triggered is None, then it's the first run
+        if service.date_triggered is None:
+            logger.debug("first time {}".format(service))
+            to_update = True
+            # run run run
+        else:
+            # 1) get the data from the provider service
+            # get a timestamp of the last triggered of the service
+            kw = {'token': provider_token,
+                  'trigger_id': service.id,
+                  'date_triggered': service.date_triggered}
+            getattr(service_provider, '__init__')(provider_token)
+            data = getattr(service_provider, 'read_data')(**kw)
+            # counting the new data to store to display them in the log
+            count_new_data = len(data) if data else 0
+            if count_new_data > 0:
+                to_update = True
+
+        if to_update:
+            logger.info("{} - {} new data".format(service, count_new_data))

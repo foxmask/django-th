@@ -35,6 +35,17 @@ logger = logging.getLogger(__name__)
 # ************************
 
 
+def can_modify_trigger(request, provider, consumer):
+    # do not permit to edit the details of one trigger
+    # if the provider or consumer is disabled
+    if provider and consumer:
+        return False
+    else:
+        from django.contrib import messages
+        messages.warning(request, 'You cant modify a disabled trigger')
+        return True
+
+
 def logout_view(request):
     """
         logout the user then redirect him to the home page
@@ -165,6 +176,11 @@ def trigger_edit(request, trigger_id, edit_what):
 
     # get the trigger object
     service = TriggerService.objects.get(id=trigger_id)
+
+    if can_modify_trigger(request,
+                          service.provider.name.status,
+                          service.consumer.name.status):
+        return HttpResponseRedirect(reverse('base'))
 
     if edit_what == 'Consumer':
         my_service = service.consumer.name.name
@@ -340,6 +356,22 @@ class TriggerUpdateView(TriggerServiceMixin, UpdateView):
     form_class = TriggerServiceForm
     template_name = "triggers/edit_description_trigger.html"
     success_url = reverse_lazy("trigger_edit_thanks")
+
+    def get_context_data(self, **kw):
+        return super(TriggerUpdateView, self).get_context_data(**kw)
+
+    def get(self, *args, **kwargs):
+        # Go through keyword arguments, and either save their values to our
+        # instance, or raise an error.
+        self.object = self.get_object()
+        status = can_modify_trigger(self.request,
+                                    self.object.provider.name.status,
+                                    self.object.consumer.name.status)
+        if status:
+            return HttpResponseRedirect(reverse('base'))
+        else:
+            return super(TriggerUpdateView, self).get(
+                self.request, *args, **kwargs)
 
 
 class TriggerEditedTemplateView(TemplateView):

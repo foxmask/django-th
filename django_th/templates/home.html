@@ -29,8 +29,18 @@
             </ul>
         </div>
         {% endif %}
+        {% if messages %}
+        <div class="alert alert-warning">
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
         {% for trigger in triggers_list %}
-        <div id="trigger-record-{{ trigger.id }}" class="trigger-record col-xs-12 col-md-12 col-lg-12 {{ trigger|trigger_disabled }}">
+        {% if trigger.provider.name.status and trigger.consumer.name.status %}
+        <div id="trigger-record-{{ trigger.id }}" class="trigger-record col-xs-12 col-md-12 col-lg-12">
             <div class="col-xs-7 col-md-7 col-lg-7">
                 <a class="btn btn-sm btn-md btn-lg btn-default" href="{% url 'edit_trigger' trigger.id %}" title="{% trans 'Edit the description' %} "> {{ trigger.description|safe|escape }}</a>
                 <a class="btn btn-sm btn-md btn-lg btn-default" role="button" href="{% url 'edit_provider' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.provider.name|service_readable|lower }}" >{{ trigger.provider.name|service_readable|lower }} <i class="fa fa-{{ trigger.provider.name|service_readable_class|lower }}" aria-hidden="true"></i></a>
@@ -54,6 +64,27 @@
                 </div>
             </footer>
         </div>
+        {% else %}
+        <div id="trigger-record-{{ trigger.id }}" class="trigger-record col-xs-12 col-md-12 col-lg-12 {{ trigger|trigger_disabled }}">
+            <div class="col-xs-7 col-md-7 col-lg-7">
+                <a class="btn btn-sm btn-md btn-lg btn-default" role="button"> {{ trigger.description|safe|escape }}</a>
+                <a class="btn btn-sm btn-md btn-lg btn-default" role="button" title="{{ trigger.provider.name|service_readable|lower }}" >{{ trigger.provider.name|service_readable|lower }} <i class="fa fa-{{ trigger.provider.name|service_readable_class|lower }}" aria-hidden="true"></i></a>
+                <a class="btn btn-sm btn-md btn-lg btn-default" role="button" title="{{ trigger.consumer.name|service_readable|lower }}" >{{ trigger.consumer.name|service_readable|lower }} <i class="fa fa-{{ trigger.consumer.name|service_readable_class|lower }}" aria-hidden="true"></i></a>
+            </div>
+            <div class="col-xs-5 col-md-5 col-lg-5">
+                Trigger disabled due to admin activity who disable one of the 2 services {{ trigger.provider.name|service_readable|lower }} or {{ trigger.consumer.name|service_readable|lower }} or both of them
+            </div>
+            <footer>
+                <div class="col-xs-12 col-md-12 col-lg-12">
+                    <p>
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Created" %}&nbsp;{{ trigger.date_created }}
+                        &nbsp;-&nbsp;
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
+                    </p>
+                </div>
+            </footer>
+        </div>
+        {% endif %}
         {% endfor %}
         {% if is_paginated %}
         <div class="col-xs-12 col-md-12 col-lg-12">

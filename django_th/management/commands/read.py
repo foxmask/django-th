@@ -27,7 +27,7 @@ class Command(BaseCommand):
         connection.close()
         trigger = TriggerService.objects.filter(
             status=True,
-            user__is_active=True
+            user__is_active=True,
         ).select_related('consumer__name', 'provider__name')
 
         try:
