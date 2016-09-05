@@ -55,43 +55,46 @@ def publishing(service):
         :param service: service object where we will publish
         :type service: object
     """
-    # flag to know if we have to update
-    to_update = False
-    # flag to get the status of a service
-    status = False
-    # provider - the service that offer data
-    # check if the service has already been triggered
-    # if date_triggered is None, then it's the first run
-    if service.date_triggered is None:
-        logger.debug("first run {}".format(service))
-        to_update = True
-        status = True
-    # run run run
-    service_provider = default_provider.get_service(
-        str(service.provider.name.name))
-
-    # 1) get the data from the provider service
-    module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
-    kw = {'trigger_id': str(service.id), 'cache_stack': module_name}
-    data = getattr(service_provider, 'process_data')(**kw)
-    count_new_data = len(data) if data else 0
-    if count_new_data > 0:
-        # consumer - the service which uses the data
-        service_consumer = default_provider.get_service(
-                    str(service.consumer.name.name))
-        kwargs = {'user': service.user}
-        getattr(service_consumer, '__init__')(service.consumer.token, **kwargs)
-        consumer = getattr(service_consumer, 'save_data')
-
-        # 2) for each one
-        for d in data:
-            d['userservice_id'] = service.consumer.id
-            # the consumer will save the data and return if success or not
-            status = consumer(service.id, **d)
-
+    if service.provider.name.status and service.consumer.name.status:
+        # flag to know if we have to update
+        to_update = False
+        # flag to get the status of a service
+        status = False
+        # provider - the service that offer data
+        # check if the service has already been triggered
+        # if date_triggered is None, then it's the first run
+        if service.date_triggered is None:
+            logger.debug("first run {}".format(service))
             to_update = True
-        # let's log
-    log_update(service, to_update, status, count_new_data)
-    # let's update
-    if to_update and status:
-        update_trigger(service)
+            status = True
+        # run run run
+        service_provider = default_provider.get_service(
+            str(service.provider.name.name))
+
+        # 1) get the data from the provider service
+        module_name = 'th_' + \
+                      service.provider.name.name.split('Service')[1].lower()
+        kw = {'trigger_id': str(service.id), 'cache_stack': module_name}
+        data = getattr(service_provider, 'process_data')(**kw)
+        count_new_data = len(data) if data else 0
+        if count_new_data > 0:
+            # consumer - the service which uses the data
+            service_consumer = default_provider.get_service(
+                        str(service.consumer.name.name))
+            kwargs = {'user': service.user}
+            getattr(service_consumer, '__init__')(service.consumer.token,
+                                                  **kwargs)
+            consumer = getattr(service_consumer, 'save_data')
+
+            # 2) for each one
+            for d in data:
+                d['userservice_id'] = service.consumer.id
+                # the consumer will save the data and return if success or not
+                status = consumer(service.id, **d)
+
+                to_update = True
+            # let's log
+        log_update(service, to_update, status, count_new_data)
+        # let's update
+        if to_update and status:
+            update_trigger(service)
