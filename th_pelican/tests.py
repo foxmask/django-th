@@ -119,16 +119,15 @@ class PelicanTest(MainTest):
 
     def test_save_data(self):
         pelican = self.create_pelican()
-        token = 'AZERTY1234'
         data = {'title': 'my title', 'category': 'News',
                 'my_date': '2016-08-20 13:23:58+00:00'}
 
         s = ServicePelican()
-        r = s.save_data(token, pelican.trigger_id, **data)
+        r = s.save_data(pelican.trigger_id, **data)
         self.assertTrue(r, True)
 
         pelican.path = '/tmp/foo'
         pelican.save()
         s = ServicePelican()
-        r = s.save_data(token, pelican.trigger_id, **data)
+        r = s.save_data(pelican.trigger_id, **data)
         self.assertFalse(r, False)

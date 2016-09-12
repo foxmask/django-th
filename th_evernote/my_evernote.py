@@ -146,11 +146,9 @@ class ServiceEvernote(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        kwargs = {}
         # set the title and content of the data
         title, content = super(ServiceEvernote, self).save_data(trigger_id,
-                                                                data,
-                                                                **kwargs)
+                                                                **data)
 
         if len(title):
             # get the evernote data of this trigger

@@ -60,8 +60,8 @@ class ServicesMgrTestCase(MainTest):
     def test_save_data(self):
         trigger_id = 1
         data = {'title': 'a title', 'summary_detail': 'a content'}
-        kw = {'output_format': 'md'}
-        title, content = self.service.save_data(trigger_id, data, **kw)
+        data['output_format'] = 'md'
+        title, content = self.service.save_data(trigger_id, **data)
         self.assertTrue(title)
         self.assertTrue(content)
 

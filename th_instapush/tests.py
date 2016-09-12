@@ -1,4 +1,6 @@
 # coding: utf-8
+from unittest.mock import MagicMock
+
 from django.test import TestCase
 from django.contrib.auth.models import User
 
@@ -32,6 +34,7 @@ class InstapushTest(TestCase):
                      'description': 'description foobar'}
         self.token = 'AZERTY123'
         self.trigger_id = 1
+        self.service = ServiceInstapush(self.token)
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -107,7 +110,7 @@ class InstapushTest(TestCase):
         """
         self.create_instapush()
         data = {'title': 'foo', 'content': 'bar'}
-        # content = "my nice notification"
-        # instance = InstapushModel.objects.get(trigger_id=d.trigger_id)
-        se = ServiceInstapush(self.token)
-        se.save_data(self.trigger_id, **data)
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(self.trigger_id, **data)
+
+        self.assertTrue(the_return)

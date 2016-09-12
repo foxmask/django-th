@@ -2,8 +2,9 @@
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
-from th_pushbullet.models import Pushbullet
+
 from django_th.models import TriggerService, UserService, ServicesActivated
+from th_pushbullet.models import Pushbullet
 from th_pushbullet.forms import PushbulletProviderForm, PushbulletConsumerForm
 
 

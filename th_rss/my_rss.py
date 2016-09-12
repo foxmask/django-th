@@ -48,16 +48,20 @@ class ServiceRss(ServicesMgr):
         feeds = Feeds(**{'url_to_parse': rss.url}).datas()
 
         for entry in feeds.entries:
-
+            # entry.*_parsed may be None when the date in a RSS Feed is invalid
+            # so will have the "now" date as default
             if hasattr(entry, 'published_parsed'):
-                published = datetime.datetime.utcfromtimestamp(
-                    time.mktime(entry.published_parsed))
+                if entry.published_parsed is not None:
+                    published = datetime.datetime.utcfromtimestamp(
+                        time.mktime(entry.published_parsed))
             elif hasattr(entry, 'created_parsed'):
-                published = datetime.datetime.utcfromtimestamp(
-                    time.mktime(entry.created_parsed))
+                if entry.created_parsed is not None:
+                    published = datetime.datetime.utcfromtimestamp(
+                        time.mktime(entry.created_parsed))
             elif hasattr(entry, 'updated_parsed'):
-                published = datetime.datetime.utcfromtimestamp(
-                    time.mktime(entry.updated_parsed))
+                if entry.updated_parsed is not None:
+                    published = datetime.datetime.utcfromtimestamp(
+                        time.mktime(entry.updated_parsed))
 
             if published == '':
                 published = now

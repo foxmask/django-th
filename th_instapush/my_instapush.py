@@ -54,10 +54,8 @@ class ServiceInstapush(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        kwargs = {}
         title, content = super(ServiceInstapush, self).save_data(trigger_id,
-                                                                 data,
-                                                                 **kwargs)
+                                                                 **data)
         instance = InstapushModel.objects.get(trigger_id=trigger_id)
         Instapush(user_token=self.token)
         app = App(appid=instance.app_id, secret=instance.app_secret)

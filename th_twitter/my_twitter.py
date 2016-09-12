@@ -178,7 +178,7 @@ class ServiceTwitter(ServicesMgr):
         status = False
         # set the title and content of the data
         title, content = super(ServiceTwitter, self).save_data(
-            trigger_id, data, kwargs={})
+            trigger_id, **data)
 
         if data.get('link') and len(data.get('link')) > 0:
 

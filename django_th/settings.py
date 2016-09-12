@@ -255,7 +255,7 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/5",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -265,7 +265,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/6",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -275,7 +275,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/7",
+        "LOCATION": "redis://127.0.0.1:6379/6",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -285,7 +285,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/8",
+        "LOCATION": "redis://127.0.0.1:6379/7",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -295,7 +295,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/11",
+        "LOCATION": "redis://127.0.0.1:6379/8",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -315,7 +315,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/12",
+        "LOCATION": "redis://127.0.0.1:6379/10",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -324,7 +324,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/10",
+        "LOCATION": "redis://localhost:6379/11",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 5000,
@@ -356,9 +356,9 @@ TH_SERVICES = (
     # 'th_github.my_github.ServiceGithub',
     # 'th_pelican.my_pelican.ServicePelican',
     # 'th_todoist.my_todoist.ServiceTodoist',
-    # 'th_pushbullet.my_pushbullet.ServicePushbullet',
     # 'th_instapush.my_pushbullet.ServicePushbullet',
-    'th_instapush.my_instapush.ServiceInstapush',
+    # 'th_instapush.my_instapush.ServiceInstapush',
+    'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
 
@@ -386,8 +386,8 @@ TH_POCKET = {
 }
 
 TH_PUSHBULLET = {
-    'consumer_key': '<your pushbullet key>',
-    'consumer_secret': '<your pushbullet secret>',
+    'client_id': '<your pushbullet key>',
+    'client_secret': '<your pushbullet secret>',
 }
 
 TH_TODOIST = {

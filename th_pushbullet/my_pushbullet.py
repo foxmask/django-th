@@ -95,11 +95,8 @@ class ServicePushbullet(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        kwargs = {}
-
         title, content = super(ServicePushbullet, self).save_data(trigger_id,
-                                                                  data,
-                                                                  **kwargs)
+                                                                  **data)
 
         if self.token:
             trigger = Pushbullet.objects.get(trigger_id=trigger_id)

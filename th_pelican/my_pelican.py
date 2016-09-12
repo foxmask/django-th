@@ -199,13 +199,11 @@ class ServicePelican(ServicesMgr):
         """
         return "\n</html>"
 
-    def save_data(self, token, trigger_id, **data):
+    def save_data(self, trigger_id, **data):
         """
             let's save the data
-            :param token string
             :param trigger_id: trigger ID from which to save data
             :param data: the data to check to be used and save
-            :type token string
             :type trigger_id: int
             :type data: dict
             :return: the status of the save statement
@@ -213,10 +211,8 @@ class ServicePelican(ServicesMgr):
         """
         from th_pelican.models import Pelican
 
-        kwargs = {}
-
         title, content = super(ServicePelican, self).save_data(
-            trigger_id, data, **kwargs)
+            trigger_id, **data)
 
         trigger = Pelican.objects.get(trigger_id=trigger_id)
 

@@ -26,6 +26,10 @@ class WallabagTest(TestCase):
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
+        self.token = 'AZERTY'
+        self.trigger_id = 1
+        self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
+                     'title': 'what else'}
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -61,6 +65,7 @@ class WallabagTest(TestCase):
         url = 'http://trigger-happy.eu'
         title = 'Trigger Happy'
         status = True
+        self.trigger_id = trigger.id
         return Wallabag.objects.create(trigger=trigger,
                                        url=url,
                                        title=title,
@@ -102,7 +107,7 @@ class WallabagTest(TestCase):
         self.assertIn('th_wallabag', settings.CACHES)
 
 
-class ServiceWallabagTest(TestCase):
+class ServiceWallabagTest(WallabagTest):
 
     def test_read_data(self):
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
@@ -117,3 +122,10 @@ class ServiceWallabagTest(TestCase):
             se = ServiceWallabag(token)
             se.read_data(**kwargs)
         mock_read_data.assert_called_once_with(**kwargs)
+
+    def test_save_data(self):
+        kwargs = dict({})
+        with patch.object(ServiceWallabag, 'save_data') as mock_save_data:
+            se = ServiceWallabag(self.token)
+            se.save_data(self.trigger_id, **kwargs)
+        mock_save_data.assert_called_once_with(self.trigger_id, **kwargs)

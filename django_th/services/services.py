@@ -135,7 +135,7 @@ class ServicesMgr(object):
         return PublishingLimit.get_data(kwargs.get('cache_stack'),
                                         cache_data, kwargs.get('trigger_id'))
 
-    def save_data(self, trigger_id, data, **kwargs):
+    def save_data(self, trigger_id, **data):
         """
             used to save data to the service
             but first of all
@@ -152,11 +152,11 @@ class ServicesMgr(object):
         title = HtmlEntities(title).html_entity_decode
         content = self.set_content(data)
         content = HtmlEntities(content).html_entity_decode
-        if kwargs.get('output_format'):
+        if data.get('output_format'):
             # pandoc to convert tools
             import pypandoc
             content = pypandoc.convert(content,
-                                       kwargs.get('output_format'),
+                                       data.get('output_format'),
                                        format='html')
         return title, content
 
@@ -165,7 +165,6 @@ class ServicesMgr(object):
             get the auth of the services
             :param request: contains the current session
             :type request: dict
-            :type oauth: string of the oauth version used
             :rtype: dict
         """
         request_token = self.get_request_token(request)
@@ -181,7 +180,6 @@ class ServicesMgr(object):
         """
         service = self.service.split('Service')[1].lower()
         return_to = '{service}_callback'.format(service=service)
-
         return '%s://%s%s' % (request.scheme, request.get_host(),
                               reverse(return_to))
 
@@ -226,7 +224,7 @@ class ServicesMgr(object):
                 request.GET.get('oauth_verifier', '')
             )
         else:
-            access_token = kwargs['access_token']
+            access_token = kwargs.get('access_token')
 
         if type(access_token) == str:
             token = access_token

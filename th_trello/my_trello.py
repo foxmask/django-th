@@ -86,10 +86,9 @@ class ServiceTrello(ServicesMgr):
         """
         from th_trello.models import Trello
 
-        kwargs = {'output_format': 'md'}
+        data['output_format'] = 'md'
         title, content = super(ServiceTrello, self).save_data(trigger_id,
-                                                              data,
-                                                              **kwargs)
+                                                              **data)
 
         if len(title):
             # get the data of this trigger

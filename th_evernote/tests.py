@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.conf import settings
 from django.core.cache import caches
@@ -103,21 +103,17 @@ class ServiceEvernoteTest(MainTest):
                      'description': 'description foobar'}
         self.token = 'AZERTY123'
         self.trigger_id = 1
+        self.service = ServiceEvernote(self.token)
 
     def test_read_data(self):
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'trigger_id': self.trigger_id,
                        'model_name': 'Evernote'})
 
-        # date_triggered = kwargs.get('date_triggered')
         trigger_id = kwargs.get('trigger_id')
 
         kwargs['model_name'] = 'Evernote'
 
-        se = ServiceEvernote(self.token)
-
-        # filter_string = se.set_evernote_filter(date_triggered, self.ev)
-        # evernote_filter = se.set_note_filter(filter_string)
         data = []
         cache.set('th_evernote_' + str(trigger_id), data)
 
@@ -130,7 +126,6 @@ class ServiceEvernoteTest(MainTest):
         token = self.token
         trigger_id = self.trigger_id
 
-        the_return = False
         self.assertTrue(token)
         self.assertTrue(isinstance(trigger_id, int))
         self.assertIn('content', self.data)
@@ -139,18 +134,12 @@ class ServiceEvernoteTest(MainTest):
         self.assertIn('title', self.data)
         self.assertIsNotNone(self.data['link'])
         self.assertNotEqual(self.data['title'], '')
-
         self.assertIn('sandbox', settings.TH_EVERNOTE)
-        sandbox = settings.TH_EVERNOTE['sandbox']
 
-        client = mock.Mock(return_value=True)
-        client.method(token=token, sandbox=sandbox)
-        client.method.assert_called_with(token=token, sandbox=sandbox)
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(trigger_id, **self.data)
 
-        if client():
-            the_return = True
-
-        return the_return
+        self.assertTrue(the_return)
 
     def test_get_config_th(self):
         """

@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from django.test import TestCase
 from django.conf import settings
@@ -31,6 +31,7 @@ class TodoistTest(TestCase):
 
         self.token = 'AZERTY123'
         self.trigger_id = 1
+        self.service = ServiceTodoist(self.token)
 
     def create_triggerservice(self, date_created="20130610",
                               description="My first Service", status=True):
@@ -127,5 +128,7 @@ class TodoistTest(TestCase):
                 'title': 'what else',
                 'content': 'foobar'}
 
-        se = ServiceTodoist(self.token)
-        se.save_data(self.trigger_id, **data)
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(self.trigger_id, **data)
+
+        self.assertTrue(the_return)

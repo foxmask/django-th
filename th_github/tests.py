@@ -1,8 +1,15 @@
 # coding: utf-8
+from unittest.mock import patch, MagicMock
+
 from django.conf import settings
+from django.core.cache import caches
+
 from th_github.models import Github
 from th_github.forms import GithubProviderForm, GithubConsumerForm
+from th_github.my_github import ServiceGithub
 from django_th.tests.test_main import MainTest
+
+cache = caches['th_github']
 
 
 class GithubTest(MainTest):
@@ -82,3 +89,53 @@ class GithubTest(MainTest):
         th_service = ('th_github.my_github.ServiceGithub',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
+
+
+class ServiceGithubTest(GithubTest):
+    """
+       ServiceGithubTest
+    """
+    def setUp(self):
+        super(ServiceGithubTest, self).setUp()
+        self.data = {'content': 'this is the body of the issue;)',
+                     'summary_detail': 'a nice issue ;)',
+                     'title': 'a nice issue ;)',
+                     'description': 'this is the body of the issue'}
+        self.token = 'QWERTY123#TH#12345'
+        self.trigger_id = 1
+        self.service = ServiceGithub(self.token)
+
+    def test_read_data(self):
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': self.trigger_id,
+                       'model_name': 'Github'})
+
+        # date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
+
+        kwargs['model_name'] = 'Github'
+
+        data = []
+        cache.set('th_github_' + str(trigger_id), data)
+
+        with patch.object(ServiceGithub, 'read_data') as mock_read_data:
+            se = ServiceGithub(self.token)
+            se.read_data(**kwargs)
+        mock_read_data.assert_called_once_with(**kwargs)
+
+    def test_save_data(self):
+        token = self.token
+        trigger_id = self.trigger_id
+
+        self.assertTrue(token)
+        self.assertTrue(isinstance(trigger_id, int))
+        self.assertIn('content', self.data)
+        self.assertIn('summary_detail', self.data)
+        self.assertIn('description', self.data)
+        self.assertIn('title', self.data)
+        self.assertNotEqual(self.data['title'], '')
+
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(trigger_id, **self.data)
+
+        self.assertTrue(the_return)

@@ -1,8 +1,15 @@
 # coding: utf-8
+from unittest.mock import patch, MagicMock
+
 from django.conf import settings
+from django.core.cache import caches
+
 from th_twitter.models import Twitter
 from th_twitter.forms import TwitterProviderForm, TwitterConsumerForm
+from th_twitter.my_twitter import ServiceTwitter
 from django_th.tests.test_main import MainTest
+
+cache = caches['th_twitter']
 
 
 class TwitterTest(MainTest):
@@ -66,3 +73,51 @@ class TwitterTest(MainTest):
     def test_invalid_consumer_form(self):
         form = TwitterConsumerForm(data={})
         self.assertFalse(form.is_valid())
+
+
+class ServiceTwitterTest(TwitterTest):
+    """
+       ServiceTwitterTest
+    """
+
+    def setUp(self):
+        super(ServiceTwitterTest, self).setUp()
+        self.data = {'text': 'something #thatworks'}
+        self.token = 'QWERTY123#TH#12345'
+        self.trigger_id = 1
+        self.service = ServiceTwitter(self.token)
+
+    def test_read_data(self):
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': self.trigger_id,
+                       'model_name': 'Twitter'})
+
+        # date_triggered = kwargs.get('date_triggered')
+        trigger_id = kwargs.get('trigger_id')
+
+        kwargs['model_name'] = 'Twitter'
+
+        # filter_string = se.set_twitter_filter(date_triggered, self.ev)
+        # twitter_filter = se.set_note_filter(filter_string)
+        data = []
+        cache.set('th_twitter_' + str(trigger_id), data)
+
+        with patch.object(ServiceTwitter, 'read_data') as mock_read_data:
+            se = ServiceTwitter(self.token)
+            se.read_data(**kwargs)
+        mock_read_data.assert_called_once_with(**kwargs)
+
+    def test_save_data(self):
+        token = self.token
+        trigger_id = self.trigger_id
+
+        the_return = False
+        self.assertTrue(token)
+        self.assertTrue(isinstance(trigger_id, int))
+        self.assertIn('text', self.data)
+        self.assertNotEqual(self.data['text'], '')
+
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(trigger_id, **self.data)
+
+        self.assertTrue(the_return)

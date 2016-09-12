@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 import datetime
 from pocket import Pocket
 
@@ -77,12 +77,6 @@ class PocketTest(MainTest):
         self.assertTrue(form.is_valid())
 
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
-
-
 class ServicePocketTest(TestCase):
     """
        ServicePocketTest
@@ -94,6 +88,7 @@ class ServicePocketTest(TestCase):
                      'title': 'what else'}
         self.token = 'AZERTY123'
         self.trigger_id = 1
+        self.service = ServicePocket(self.token)
 
     def test_read_data(self):
         kwargs = {'date_triggered': self.date_triggered,
@@ -114,7 +109,6 @@ class ServicePocketTest(TestCase):
 
     def test_save_data(self):
 
-        the_return = False
         self.assertTrue(self.token)
         self.assertTrue(isinstance(self.trigger_id, int))
         self.assertIn('link', self.data)
@@ -122,22 +116,10 @@ class ServicePocketTest(TestCase):
         self.assertIsNotNone(self.data['link'])
         self.assertNotEqual(self.data['title'], '')
 
-        # from th_pocket.models import Pocket as PocketModel
-        # trigger = PocketModel.objects.get(trigger_id=trigger_id)
-        # tags = trigger.tag.lower()
-        tags = ('test',)
+        self.service.save_data = MagicMock(name='save_data')
+        the_return = self.service.save_data(self.trigger_id, **self.data)
 
-        title = (self.data['title'] if 'title' in self.data else '')
-
-        pocket_instance = mock.Mock(return_value=True)
-        pocket_instance.method(url=self.data['link'], title=title, tags=tags)
-        pocket_instance.method.assert_called_with(url=self.data['link'],
-                                                  title=title, tags=tags)
-
-        if pocket_instance():
-            the_return = True
-
-        return the_return
+        self.assertTrue(the_return)
 
     def test_get_config_th(self):
         """
