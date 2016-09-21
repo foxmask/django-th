@@ -94,9 +94,9 @@ class ServicePocket(ServicesMgr):
             content = ''
             if pockets is not None and len(pockets[0]['list']) > 0:
                 for my_pocket in pockets[0]['list'].values():
-                    if my_pocket['excerpt']:
+                    if my_pocket.get('excerpt'):
                         content = my_pocket['excerpt']
-                    elif my_pocket['given_title']:
+                    elif my_pocket.get('given_title'):
                         content = my_pocket['given_title']
                     my_date = arrow.get(str(date_triggered),
                                         'YYYY-MM-DD HH:mm:ss')\

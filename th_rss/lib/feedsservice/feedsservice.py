@@ -19,8 +19,12 @@ class Feeds(object):
                             url_to_parse=\'http://domain.com/file.rss\'')
 
     def datas(self):
-        '''
+        """
             read the data from a given URL or path to a local file
-        '''
-        datas = feedparser.parse(self.URL_TO_PARSE, agent=self.USER_AGENT)
-        return datas
+        """
+        data = feedparser.parse(self.URL_TO_PARSE, agent=self.USER_AGENT)
+        # invalid Feed
+        if data.bozo == 1:
+            data.entries = ''
+
+        return data
