@@ -53,8 +53,6 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         # 'th_holidays',
         # 'th_trello',
         # 'th_github',
-        # 'haystack',  # mandatory  if you plan to use th_search
-        # 'th_search', # then follow instructions from http://django-haystack.readthedocs.org/
         # 'th_pelican',
         # 'th_wallabag',
         # 'th_todoist',

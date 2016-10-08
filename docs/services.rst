@@ -17,13 +17,11 @@ For all the services, the installation is the same :
 
    evernote
    github
-   holidays
    instapush
    pelican
    pocket
    pushbullet
    rss
-   search
    todoist
    trello
    twitter

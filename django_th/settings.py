@@ -120,13 +120,10 @@ INSTALLED_APPS = (
     # uncomment the lines to enable the service you need
     # 'th_evernote',
     # 'th_github',
-    # 'th_holidays',
     # 'th_instapush',
-    # 'haystack',
     # 'th_pelican',
     # 'th_pocket',
     # 'th_pushbullet',
-    # 'th_search',
     # 'th_trello',
     # 'th_twitter',
     'th_wallabag',
