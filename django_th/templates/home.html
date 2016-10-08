@@ -61,11 +61,14 @@
                         &nbsp;-&nbsp;
                         <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
                     </p>
+                    <p class="text-{% if trigger.result == 'OK' %}info{%  else  %}warning{%  endif %}">
+                        <span class="glyphicon glyphicon-bullhorn"></span> {{ trigger.result }} - {{ trigger.date_result }}
+                    </p>
                 </div>
             </footer>
         </div>
         {% else %}
-        <div id="trigger-record-{{ trigger.id }}" class="trigger-record col-xs-12 col-md-12 col-lg-12 {{ trigger|trigger_disabled }}">
+        <div id="trigger-record-{{ trigger.id }}" class="trigger-record col-xs-12 col-md-12 col-lg-12 {{ trigger|trigger_disabled }}">
             <div class="col-xs-7 col-md-7 col-lg-7">
                 <a class="btn btn-sm btn-md btn-lg btn-default" role="button"> {{ trigger.description|safe|escape }}</a>
                 <a class="btn btn-sm btn-md btn-lg btn-default" role="button" title="{{ trigger.provider.name|service_readable|lower }}" >{{ trigger.provider.name|service_readable|lower }} <i class="fa fa-{{ trigger.provider.name|service_readable_class|lower }}" aria-hidden="true"></i></a>

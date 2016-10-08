@@ -20,12 +20,16 @@ class Trello(Services):
         app_label = 'django_th'
         db_table = 'django_th_trello'
 
+    def show(self):
+        """
+
+        :return: string representing object
+        """
+        return "My Trello %s %s %s" % (self.board_name,
+                                       self.list_name,
+                                       self.card_title)
+
     def __str__(self):
         return "%s %s %s" % (self.board_name,
                              self.list_name,
                              self.card_title)
-
-    def show(self):
-        return "My Trello %s %s %s" % (self.board_name,
-                                       self.list_name,
-                                       self.card_title)

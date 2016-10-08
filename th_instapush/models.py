@@ -20,8 +20,12 @@ class Instapush(Services):
         app_label = 'django_th'
         db_table = 'django_th_instapush'
 
-    def __str__(self):
-        return self.name
-
     def show(self):
+        """
+
+        string representing object
+        """
         return "My Instapush %s" % self.name
+
+    def __str__(self):
+        return "%s" % self.name

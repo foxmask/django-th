@@ -15,7 +15,7 @@ from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated
+from django_th.models import UserService, ServicesActivated, update_result
 from th_evernote.models import Evernote
 from th_evernote.evernote_mgr import create_note, set_notebook, get_notebook, \
     set_header, set_tag, get_tag, set_note_attribute, set_note_footer, \
@@ -46,7 +46,9 @@ cache = caches['th_evernote']
 
 
 class ServiceEvernote(ServicesMgr):
-
+    """
+        Service Evernote
+    """
     def __init__(self, token=None, **kwargs):
         super(ServiceEvernote, self).__init__(token, **kwargs)
         self.sandbox = settings.TH_EVERNOTE['sandbox']
@@ -183,21 +185,24 @@ class ServiceEvernote(ServicesMgr):
         except EDAMSystemException as e:
             # rate limit reach have to wait 1 hour !
             if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                logger.warn("Rate limit reached {code}\n"
-                            "Retry your request in {msg} seconds\n"
-                            "Data set to cache again until"
+                sentence = "Rate limit reached {code}\n" \
+                            "Retry your request in {msg} seconds\n" \
+                            "Data set to cache again until" \
                             " limit reached".format(code=e.errorCode,
                                                     msg=e.rateLimitDuration)
-                            )
+                logger.warn(sentence)
                 cache.set('th_evernote_' + str(trigger_id),
                           data,
                           version=2)
+                update_result(trigger_id, msg=sentence)
                 return True
             else:
                 logger.critical(e)
+                update_result(trigger_id, msg=e)
                 return False
         except Exception as e:
             logger.critical(e)
+            update_result(trigger_id, msg=e)
             return False
 
     @staticmethod

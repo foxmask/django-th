@@ -2,7 +2,7 @@
 import arrow
 
 # Twitter lib
-from twython import Twython
+from twython import Twython, TwythonAuthError
 
 # django classes
 from django.conf import settings
@@ -12,6 +12,7 @@ from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from django_th.models import update_result
 from th_twitter.models import Twitter
 
 """
@@ -30,8 +31,15 @@ cache = caches['th_twitter']
 
 
 class ServiceTwitter(ServicesMgr):
-
+    """
+        Service Twitter
+    """
     def __init__(self, token=None, **kwargs):
+        """
+
+        :param token:
+        :param kwargs:
+        """
         super(ServiceTwitter, self).__init__(token, **kwargs)
         self.consumer_key = settings.TH_TWITTER['consumer_key']
         self.consumer_secret = settings.TH_TWITTER['consumer_secret']
@@ -106,7 +114,11 @@ class ServiceTwitter(ServicesMgr):
                 search['count'] = count
                 search['screen_name'] = twitter_obj.screen
                 # call the user timeline and get his tweet
-                statuses = self.twitter_api.get_user_timeline(**search)
+                try:
+                    statuses = self.twitter_api.get_user_timeline(**search)
+                except TwythonAuthError as e:
+                    logger.error(e.msg, e.error_code)
+                    update_result(trigger_id, msg=e.msg)
 
             return count, search, statuses
 
@@ -192,6 +204,7 @@ class ServiceTwitter(ServicesMgr):
                 status = True
             except Exception as inst:
                 logger.critical("Twitter ERR {}".format(inst))
+                update_result(trigger_id, msg=inst)
                 status = False
         return status
 

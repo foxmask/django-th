@@ -23,7 +23,9 @@ logger = getLogger('django_th.trigger_happy')
 
 
 class ServicePelican(ServicesMgr):
-
+    """
+        Service Pelican
+    """
     def __init__(self, token=None, **kwargs):
         super(ServicePelican, self).__init__(token, **kwargs)
         self.AUTHOR = settings.TH_PELICAN_AUTHOR \

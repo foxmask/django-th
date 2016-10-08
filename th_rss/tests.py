@@ -28,7 +28,9 @@ class RssTest(MainTest):
         r = self.create_rss()
         self.assertTrue(isinstance(r, Rss))
         self.assertEqual(
-            r.show(), "Services RSS {} {}".format(r.url, r.trigger))
+            r.show(),
+            "Services RSS %s %s" % (r.url, r.trigger)
+        )
         self.assertEqual(r.__str__(), r.url)
 
     """

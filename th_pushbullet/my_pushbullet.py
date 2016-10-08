@@ -10,6 +10,7 @@ from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from django_th.models import update_result
 from th_pushbullet.models import Pushbullet
 
 
@@ -34,7 +35,9 @@ cache = caches['th_pushbullet']
 
 
 class ServicePushbullet(ServicesMgr):
-
+    """
+        Service Pushbullet
+    """
     def __init__(self, token=None, **kwargs):
         super(ServicePushbullet, self).__init__(token, **kwargs)
         self.AUTH_URL = 'https://pushbullet.com/authorize'
@@ -109,10 +112,14 @@ class ServicePushbullet(ServicesMgr):
                 logger.debug(sentence)
             else:
                 # no valid type of pushbullet specified
-                logger.critical("no valid type of pushbullet specified")
+                msg = "no valid type of pushbullet specified"
+                logger.critical(msg)
+                update_result(trigger_id, msg=msg)
                 status = False
         else:
-            logger.critical("no token or link provided for "
-                            "trigger ID {} ".format(trigger_id))
+            msg = "no token or link provided for trigger " \
+                  "ID {} ".format(trigger_id)
+            logger.critical(msg)
+            update_result(trigger_id, msg=msg)
             status = False
         return status

@@ -33,7 +33,9 @@ cache = caches['th_todoist']
 
 
 class ServiceTodoist(ServicesMgr):
-
+    """
+        service Todoist
+    """
     def __init__(self, token=None, **kwargs):
         super(ServiceTodoist, self).__init__(token, **kwargs)
         self.AUTH_URL = 'https://todoist.com/oauth/authorize'

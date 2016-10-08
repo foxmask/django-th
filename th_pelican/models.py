@@ -19,8 +19,12 @@ class Pelican(Services):
         app_label = 'django_th'
         db_table = 'django_th_pelican'
 
-    def __str__(self):
-        return self.name
-
     def show(self):
-        return "My Pelican {}".format(self.name)
+        """
+
+        :return: string representing object
+        """
+        return "My Pelican %s" % self.name
+
+    def __str__(self):
+        return '%s' % self.name

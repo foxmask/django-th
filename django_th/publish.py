@@ -10,7 +10,8 @@ from django.utils.log import getLogger
 
 # trigger happy
 from django_th.services import default_provider
-from django_th.models import TriggerService
+from django_th.models import TriggerService, update_result
+
 
 logger = getLogger('django_th.trigger_happy')
 
@@ -41,9 +42,13 @@ def log_update(service, to_update, status, count):
     """
     if to_update:
         if status:
-            logger.info("{} - {} new data".format(service, count))
+            msg = "{} - {} new data".format(service, count)
+            update_result(service.id, msg="OK")
+            logger.info(msg)
         else:
-            logger.warn("{} AN ERROR OCCURS ".format(service))
+            msg = "{} AN ERROR OCCURS ".format(service)
+            update_result(service.id, msg=msg)
+            logger.warn(msg)
     else:
         logger.debug("{} nothing new ".format(service))
 

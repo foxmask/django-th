@@ -19,8 +19,12 @@ class Holidays(models.Model):
         app_label = 'django_th'
         db_table = 'django_th_holidays'
 
+    def show(self):
+        """
+
+        :return: string representing object
+        """
+        return "Holidays for service %s" % self.trigger
+
     def __str__(self):
         return self.trigger
-
-    def show(self):
-        return "Holidays for service %s" % self.trigger

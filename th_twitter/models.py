@@ -34,13 +34,21 @@ class Twitter(Services):
         db_table = 'django_th_twitter'
 
     def clean(self):
+        """
+        validate if tag or screen is filled
+        :return:
+        """
         # check if one of the field is filled
         if self.tag == '' and self.screen == '':
             raise ValidationError(
                 _("You have to fill ONE of the both fields (or all together)"))
 
-    def __str__(self):
-        return self.screen
-
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "My Twitter %s %s" % (self.screen, self.tag)
+
+    def __str__(self):
+        return "%s" % self.screen

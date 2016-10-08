@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -20,6 +21,10 @@ class ServicesActivated(models.Model):
         verbose_name_plural = 'Services'
 
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "Service Activated %s %s %s %s" % (self.name, self.status,
                                                   self.auth_required,
                                                   self.description)
@@ -48,6 +53,10 @@ class UserService(models.Model):
         _('client secret'), max_length=255, default='', blank=True)
 
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "User Service %s %s %s" % (self.user, self.token, self.name)
 
     def __str__(self):
@@ -66,15 +75,31 @@ class TriggerService(models.Model):
     date_created = models.DateField(auto_now_add=True)
     date_triggered = models.DateTimeField(null=True)
     status = models.BooleanField(default=False)
-
-    def __str__(self):
-        return "{} - {} - {} - {}".format(self.user,
-                                          self.provider.name,
-                                          self.consumer.name,
-                                          self.description)
+    result = models.CharField(max_length=255, default='')
+    date_result = models.DateTimeField(auto_now=True, null=True)
 
     def show(self):
-        return "My Service {} {} {} {}".format(self.user,
-                                               self.provider.name,
-                                               self.consumer.name,
-                                               self.description)
+        """
+
+        :return: string representing object
+        """
+        return "My Service %s - %s - %s - %s" % (self.user,
+                                                 self.provider.name,
+                                                 self.consumer.name,
+                                                 self.description)
+
+    def __str__(self):
+        return "%s - %s - %s - %s" % (self.user,
+                                      self.provider.name,
+                                      self.consumer.name,
+                                      self.description)
+
+
+def update_result(trigger_id, msg):
+    """
+    :param trigger_id: trigger id
+    :param msg: result msg
+    :return:
+    """
+    TriggerService.objects.filter(id=trigger_id).update(result=msg,
+                                                        date_result=now())

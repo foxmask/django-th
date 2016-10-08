@@ -8,6 +8,8 @@ from django.utils.translation import ugettext as _
 from django.utils.log import getLogger
 from django.core.cache import caches
 
+from django_th.models import update_result
+
 logger = getLogger('django_th.trigger_happy')
 cache = caches['th_evernote']
 
@@ -109,13 +111,13 @@ def create_note(note_store, note, trigger_id, data):
     except EDAMSystemException as e:
         if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
             sentence = "Rate limit reached {code} " \
-                       "Retry your request in {msg} seconds"
-            logger.warn(sentence.format(
-                code=e.errorCode,
-                msg=e.rateLimitDuration))
+                       "Retry your request in {msg} seconds".format(
+                        code=e.errorCode, msg=e.rateLimitDuration)
+            logger.warn(sentence)
             # put again in cache the data that could not be
             # published in Evernote yet
             cache.set('th_evernote_' + str(trigger_id), data, version=2)
+            update_result(trigger_id, msg=sentence)
             return True
         else:
             logger.critical(e)
@@ -123,13 +125,14 @@ def create_note(note_store, note, trigger_id, data):
     except EDAMUserException as e:
         if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
             sentence = "Data ignored due to validation" \
-                       " error : err {code} {msg}"
-            logger.warn(sentence.format(
-                code=e.errorCode,
-                msg=e.parameter))
+                       " error : err {code} {msg}".format(
+                        code=e.errorCode, msg=e.parameter)
+            logger.warn(sentence)
+            update_result(trigger_id, msg=sentence)
             return True
     except Exception as e:
         logger.critical(e)
+        update_result(trigger_id, msg=e)
         return False
 
 

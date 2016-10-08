@@ -10,6 +10,7 @@ from django.utils.translation import ugettext as _
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from django_th.models import update_result
 from th_github.models import Github
 
 """
@@ -38,7 +39,9 @@ cache = caches['th_github']
 
 
 class ServiceGithub(ServicesMgr):
-
+    """
+        Service Github
+    """
     def __init__(self, token=None, **kwargs):
         super(ServiceGithub, self).__init__(token, **kwargs)
         self.scope = ['public_repo']
@@ -103,8 +106,10 @@ class ServiceGithub(ServicesMgr):
             else:
                 # rate limit reach, do nothing right now
                 logger.warn("Rate limit reached")
+                update_result(trigger_id, msg="Rate limit reached")
         else:
             logger.critical("no token provided")
+            update_result(trigger_id, msg="No token provided")
         return data
 
     def save_data(self, trigger_id, **data):
@@ -136,6 +141,7 @@ class ServiceGithub(ServicesMgr):
             else:
                 # rate limit reach
                 logger.warn("Rate limit reached")
+                update_result(trigger_id, msg="Rate limit reached")
                 # put again in cache the data that could not be
                 # published in Github yet
                 cache.set('th_github_' + str(trigger_id), data, version=2)
@@ -144,8 +150,10 @@ class ServiceGithub(ServicesMgr):
             logger.debug(sentence)
             status = True
         else:
-            sentence = "no token or link provided for trigger ID {} "
-            logger.critical(sentence.format(trigger_id))
+            sentence = "no token or link provided for " \
+                       "trigger ID {} ".format(trigger_id)
+            logger.critical(sentence)
+            update_result(trigger_id, msg=sentence)
             status = False
 
         return status

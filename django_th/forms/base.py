@@ -19,7 +19,7 @@ class TriggerServiceForm(forms.ModelForm):
         """
         model = TriggerService
         exclude = ['provider', 'consumer', 'user', 'date_triggered',
-                   'date_created', 'status']
+                   'date_created', 'status', 'result', 'date_result']
         widgets = {
             'description': TextInput(attrs={'class': 'form-control'}),
         }

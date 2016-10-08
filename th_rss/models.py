@@ -16,8 +16,12 @@ class Rss(Services):
         app_label = 'django_th'
         db_table = 'django_th_rss'
 
-    def __str__(self):
-        return self.url
-
     def show(self):
-        return "Services RSS {} {}".format(self.url, self.trigger)
+        """
+
+        :return: string representing object
+        """
+        return "Services RSS %s %s" % (self.url, self.trigger)
+
+    def __str__(self):
+        return "%s" % self.url

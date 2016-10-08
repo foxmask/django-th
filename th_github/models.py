@@ -19,8 +19,12 @@ class Github(Services):
         app_label = 'django_th'
         db_table = 'django_th_github'
 
+    def show(self):
+        """
+
+        :return: string representing object
+        """
+        return "My Github %s" % self.name
+
     def __str__(self):
         return self.name
-
-    def show(self):
-        return "My Github %s" % self.name

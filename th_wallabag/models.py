@@ -19,8 +19,12 @@ class Wallabag(Services):
         app_label = 'django_th'
         db_table = 'django_th_wallabag'
 
-    def __str__(self):
-        return self.url
-
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "My Wallabag %s" % self.url
+
+    def __str__(self):
+        return "%s" % self.url

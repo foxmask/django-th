@@ -23,7 +23,9 @@ logger = getLogger('django_th.trigger_happy')
 
 
 class ServiceInstapush(ServicesMgr):
-
+    """
+        Service Instapush
+    """
     def __init__(self, token=None, **kwargs):
         super(ServiceInstapush, self).__init__(token, **kwargs)
         self.token = token

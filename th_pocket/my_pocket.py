@@ -12,6 +12,7 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
+from django_th.models import update_result
 from django_th.services.services import ServicesMgr
 from django_th.html_entities import HtmlEntities
 
@@ -37,7 +38,9 @@ cache = caches['th_pocket']
 
 
 class ServicePocket(ServicesMgr):
-
+    """
+        Service Pocket
+    """
     def __init__(self, token=None, **kwargs):
         super(ServicePocket, self).__init__(token, **kwargs)
         self.consumer_key = settings.TH_POCKET['consumer_key']
@@ -62,6 +65,7 @@ class ServicePocket(ServicesMgr):
             status = True
         except Exception as e:
             logger.critical(e)
+            update_result(self.trigger_id, msg=e)
             status = False
         return status
 
@@ -136,13 +140,15 @@ class ServicePocket(ServicesMgr):
                                             title=title,
                                             tags=(trigger.tag.lower()))
             else:
-                logger.warning(
-                    "no link provided for trigger ID {},"
-                    " so we ignore it".format(trigger_id))
+                msg = "no link provided for trigger ID {}," \
+                      " so we ignore it".format(trigger_id)
+                logger.warning(msg)
+                update_result(self.trigger_id, msg=msg)
                 status = True
         else:
-            logger.critical(
-                "no token provided for trigger ID {}".format(trigger_id))
+            msg = "no token provided for trigger ID {}".format(trigger_id)
+            logger.critical(msg)
+            update_result(self.trigger_id, msg=msg)
             status = False
         return status
 

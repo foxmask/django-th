@@ -11,6 +11,7 @@ from django.core.cache import caches
 # django_th classes
 from django_th.apps import DjangoThConfig
 from django_th.services.services import ServicesMgr
+from django_th.models import update_result
 
 """
     handle process with Trello
@@ -35,7 +36,9 @@ cache = caches['th_trello']
 
 
 class ServiceTrello(ServicesMgr):
-
+    """
+        Serivce Trello
+    """
     # Boards own Lists own Cards
 
     def __init__(self, token=None, **kwargs):
@@ -143,8 +146,9 @@ class ServiceTrello(ServicesMgr):
             logger.debug(sentence)
             status = True
         else:
-            sentence = "no token or link provided for trigger ID {}"
-            logger.critical(sentence.format(trigger_id))
+            sentence = "no token or link provided for trigger ID " \
+                       "{}".format(trigger_id)
+            update_result(trigger_id, msg=sentence)
             status = False
 
         return status

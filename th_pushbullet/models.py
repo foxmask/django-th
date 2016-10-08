@@ -18,8 +18,12 @@ class Pushbullet(Services):
         app_label = 'django_th'
         db_table = 'django_th_pushbullet'
 
-    def __str__(self):
-        return self.name
-
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "My Pushbullet %s" % self.name
+
+    def __str__(self):
+        return "%s" % self.name

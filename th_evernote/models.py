@@ -19,8 +19,12 @@ class Evernote(Services):
         app_label = 'django_th'
         db_table = 'django_th_evernote'
 
-    def __str__(self):
-        return self.title
-
     def show(self):
+        """
+
+        :return: string representing object
+        """
         return "My Evernote %s" % self.title
+
+    def __str__(self):
+        return "%s" % self.title
