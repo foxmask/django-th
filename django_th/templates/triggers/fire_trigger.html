@@ -1,0 +1,9 @@
+{% load i18n %}
+                    <p>
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Created" %}&nbsp;{{ trigger.date_created }}
+                        &nbsp;-&nbsp;
+                        <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
+                    </p>
+                    <p  class="{% if date == '*' %}alert alert-{% if trigger.result == 'OK' %}success {% else %}warning {% endif %}{% endif %}text-{% if trigger.result == 'OK' %}info{%  else  %}warning{% endif %}">
+                        <span class="glyphicon glyphicon-bullhorn"></span> {{ trigger.result }} - {{ trigger.date_result }} {% trans "trigger executed successsfully" %}
+                    </p>
