@@ -47,15 +47,17 @@
                 <a class="btn btn-sm btn-md btn-lg btn-default" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" >{{ trigger.consumer.name|service_readable|lower }} <i class="fa fa-{{ trigger.consumer.name|service_readable_class|lower }}" aria-hidden="true"></i></a>
             </div>
             <div class="col-xs-5 col-md-5 col-lg-5">
+                <a class="btn btn-sm btn-md btn-lg btn-default" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Fire this trigger now !' %}"><span class="glyphicon glyphicon-fire icon-white"></span></a>
                 {% if trigger.status %}
                 <a class="btn btn-sm btn-md btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% else %}
                 <a class="btn btn-sm btn-md btn-lg btn-success" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger on' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% endif %}
                 <a class="btn btn-sm btn-md btn-lg btn-danger" role="button" href="{% url 'delete_trigger' trigger.id %}" title="{% trans 'Delete this trigger ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a><br/>
+
             </div>
             <footer>
-                <div class="col-xs-12 col-md-12 col-lg-12">
+                <div id="trigger-footer-{{ trigger.id }}" class="col-xs-12 col-md-12 col-lg-12">
                     <p>
                         <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Created" %}&nbsp;{{ trigger.date_created }}
                         &nbsp;-&nbsp;
@@ -78,11 +80,14 @@
                 Trigger disabled due to admin activity who disable one of the 2 services {{ trigger.provider.name|service_readable|lower }} or {{ trigger.consumer.name|service_readable|lower }} or both of them
             </div>
             <footer>
-                <div class="col-xs-12 col-md-12 col-lg-12">
+                <div id="trigger-footer-{{ trigger.id }}" class="col-xs-12 col-md-12 col-lg-12">
                     <p>
                         <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Created" %}&nbsp;{{ trigger.date_created }}
                         &nbsp;-&nbsp;
                         <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
+                    </p>
+                    <p class="text-{% if trigger.result == 'OK' %}info{%  else  %}warning{%  endif %}">
+                        <span class="glyphicon glyphicon-bullhorn"></span> {{ trigger.result }} - {{ trigger.date_result }}
                     </p>
                 </div>
             </footer>
@@ -138,6 +143,19 @@
 <script src="{% url 'js_reverse' %}" type="text/javascript"></script>
 <script type="text/javascript">
 //<![CDATA[
+$(document).on("click","a.btn.btn-md.btn-default", function () {
+    triggerId = $(this).attr('data')
+    var request = $.ajax({
+        url: Urls.fire_trigger(triggerId),
+        type: 'get',
+        dataType: 'html',
+        success: showResponse,
+    });
+    function showResponse(response) {
+        $('#trigger-footer-'+triggerId).html(response);
+    }
+});
+
 $(document).on("click","a.btn.btn-md.btn-primary, a.btn.btn-md.btn-success", function () {
     triggerId = $(this).attr('data')
     var request = $.ajax({

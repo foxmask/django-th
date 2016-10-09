@@ -19,13 +19,13 @@ class TriggerSettingsTestCase(unittest.TestCase):
         self.assertIs(type(settings.DJANGO_TH.get('paginate_by')), int)
         self.assertIs(type(settings.DJANGO_TH.get('publishing_limit')), int)
         self.assertIs(type(settings.DJANGO_TH.get('processes')), int)
+        self.assertIn('django_th', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = (
             'th_rss.my_rss.ServiceRss',
             # 'th_pocket.my_pocket.ServicePocket',
             # 'th_evernote.my_evernote.ServiceEvernote',
-            # 'th_readability.my_readability.ServiceReadability',
             # 'th_twitter.my_twitter.ServiceTwitter',
             # 'th_trello.my_trello.ServiceTrello',
         )

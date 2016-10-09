@@ -2,17 +2,18 @@
 from __future__ import unicode_literals
 
 import arrow
-from django.conf import settings
-from django.shortcuts import render, redirect
-from django.shortcuts import get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.http import HttpResponseRedirect
+# django
+from django.core import management
+from django.core.cache import caches
 from django.core.urlresolvers import reverse_lazy, reverse
+from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
-
+from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.db.models import Q
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext as _
 
 
@@ -24,7 +25,7 @@ from django_th.forms.base import TriggerServiceForm
 import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
-
+cache = caches['django_th']
 
 """
    Part I : Trigger Part
@@ -87,6 +88,44 @@ def trigger_on_off(request, trigger_id):
                             'title': title,
                             'title_trigger': title_trigger,
                             'btn': btn})
+
+
+def fire_trigger(request, trigger_id):
+    """
+        start the handling of only ONE trigger
+        :param request: request object
+        :param trigger_id: the trigger ID to switch the status to True or False
+        :type request: HttpRequest object
+        :type trigger_id: int
+        :return render
+        :rtype HttpResponse
+    """
+    date = ''
+
+    if cache.get('django_th' + '_fire_trigger_' + str(trigger_id)):
+        template = 'triggers/fire_trigger_ko.html'
+        trigger = TriggerService.objects.get(id=trigger_id)
+        kwargs = {'trigger': trigger}
+    else:
+        now = arrow.utcnow().to(settings.TIME_ZONE).format(
+            'YYYY-MM-DD HH:mm:ssZZ')
+
+        cache.set('django_th' + '_fire_trigger_' + str(trigger_id), '*')
+        management.call_command('read_n_pub', trigger_id=trigger_id)
+
+        trigger = TriggerService.objects.get(id=trigger_id)
+        date_result = arrow.get(trigger.date_result).to(settings.TIME_ZONE)\
+            .format('YYYY-MM-DD HH:mm:ssZZ')
+        date_triggered = arrow.get(trigger.date_triggered).\
+            to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
+
+        if date_result < date_triggered and date_triggered > now:
+            date = '*'
+
+        template = 'triggers/fire_trigger.html'
+        kwargs = {'trigger': trigger, 'date': date}
+
+    return render(request, template, kwargs)
 
 
 def service_related_triggers_switch_to(request, user_service_id, switch):

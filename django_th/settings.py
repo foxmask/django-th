@@ -326,7 +326,16 @@ CACHES = {
             "MAX_ENTRIES": 5000,
         }
     },
-
+    'django_th':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/12",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 5000,
+        }
+    },
 }
 
 DJANGO_TH = {

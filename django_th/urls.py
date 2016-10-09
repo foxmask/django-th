@@ -1,11 +1,11 @@
-from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django_th.forms.wizard import DummyForm, ProviderForm
 from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
 
 from django_th.views import TriggerListView, TriggerDeleteView
 from django_th.views import TriggerUpdateView, TriggerEditedTemplateView
-from django_th.views import TriggerDeletedTemplateView, trigger_on_off
+from django_th.views import TriggerDeletedTemplateView, trigger_on_off,\
+    fire_trigger
 from django_th.views import trigger_switch_all_to, trigger_edit
 from django_th.views import service_related_triggers_switch_to
 
@@ -74,6 +74,9 @@ urlpatterns = \
              url(r'^th/trigger/onoff/(?P<trigger_id>\d+)$',
                  trigger_on_off,
                  name="trigger_on_off"),
+             url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
+                 fire_trigger,
+                 name="fire_trigger"),
              url(r'^th/trigger/all/(?P<switch>(on|off))$',
                  trigger_switch_all_to,
                  name="trigger_switch_all_to"),
@@ -163,12 +166,3 @@ urlpatterns = \
                  ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
              )
-
-
-if 'th_holidays' in settings.INSTALLED_APPS:
-    urlpatterns += patterns('',
-                            url(r'^th/holidays/', include('th_holidays.urls')))
-
-if 'th_search' in settings.INSTALLED_APPS:
-    urlpatterns += patterns('',
-                            url(r'^th/search/', include('th_search.urls')))
