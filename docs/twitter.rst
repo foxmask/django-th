@@ -54,8 +54,6 @@ add this line to the TH_SERVICES setting
         'th_twitter.my_twitter.ServiceTwitter',
     )
 
-
-
 4) The service keys
 
 I strongly recommend that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
@@ -69,7 +67,6 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
         'consumer_key': '<your twitter key>',
         'consumer_secret': '<your twitter secret>',
     }
-
 
 creation of the table of the services
 -------------------------------------

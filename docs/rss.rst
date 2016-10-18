@@ -54,7 +54,6 @@ add this line to the TH_SERVICES setting
         'th_rss.my_rss.ServiceRss',
     )
 
-
 creation of the table of the services
 -------------------------------------
 

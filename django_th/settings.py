@@ -124,6 +124,7 @@ INSTALLED_APPS = (
     # 'th_pelican',
     # 'th_pocket',
     # 'th_pushbullet',
+    # 'th_todoist',
     # 'th_trello',
     # 'th_twitter',
     'th_wallabag',
@@ -226,52 +227,12 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Pocket Cache
-    'th_pocket':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # RSS Cache
-    'th_rss':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/3",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Twitter Cache
-    'th_twitter':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/4",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Trello
-    'th_trello':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/5",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
     # GitHub
     'th_github':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/6",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -281,7 +242,37 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/7",
+        "LOCATION": "redis://127.0.0.1:6379/3",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Pocket Cache
+    'th_pocket':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/4",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Pushbullet
+    'th_pushbullet':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/5",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # RSS Cache
+    'th_rss':
+    {
+        'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/6",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -291,23 +282,33 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/7",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Trello
+    'th_trello':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/8",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Wallabag
-    'th_wallabag':
+    # Twitter Cache
+    'th_twitter':
     {
-        'TIMEOUT': 3600,
+        'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/9",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
-    # Pushbullet
-    'th_pushbullet':
+    # Wallabag
+    'th_wallabag':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
@@ -401,8 +402,8 @@ TH_TODOIST = {
 }
 
 TH_TRELLO = {
-    'consumer_key': '<your twitter key>',
-    'consumer_secret': '<your twitter secret>',
+    'consumer_key': '<your trello key>',
+    'consumer_secret': '<your trello secret>',
 }
 
 TH_TWITTER = {
@@ -413,14 +414,6 @@ TH_TWITTER = {
 }
 
 SECRET_KEY = 'to be defined :P'
-
-
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
 
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them

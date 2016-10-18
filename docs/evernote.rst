@@ -64,7 +64,7 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
 .. code-block:: python
 
     TH_EVERNOTE = {
-        'sandbox': True,
+        'sandbox': True,  # set it to False when in production
         'consumer_key': 'my key',
         'consumer_secret': 'my secret',
     }

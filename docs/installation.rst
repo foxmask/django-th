@@ -53,7 +53,7 @@ Installation From Pypi
     pip install django-th[all]
 
 
-or to make your own "receipe", for example to install some of the component and no all of them:
+or to make your own "recipe", for example to install some of the component and not all of them:
 
 
 .. code-block:: bash
@@ -78,7 +78,7 @@ Requirements
 
 for evernote support
 
-* `Evernote for python 3 <https://pypi.python.org/pypi/evernote3>`_ (does not support python 3.5 yet)
+* `Evernote for python 3 <https://pypi.python.org/pypi/evernote3>`_
 * `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
@@ -98,17 +98,9 @@ for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.6
 
-for readability support
-
-* `readability <https://pypi.python.org/pypi/readability-api>`_ == 1.0.2
-
 for rss support
 
 * `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.2.1
-
-for search engine
-
-* `django-haystack <https://github.com/django-haystack/django-haystack>`_ == 2.4.1
 
 for trello support
 

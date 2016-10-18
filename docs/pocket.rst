@@ -54,8 +54,6 @@ add this line to the TH_SERVICES setting
         'th_pocket.my_pocket.ServicePocket',
     )
 
-
-
 4) The service keys
 
 I strongly recommend that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
@@ -67,7 +65,6 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
         # get your credential by subscribing to http://getpocket.com/developer/
         'consumer_key': '<your pocket key>',
     }
-
 
 creation of the table of the services
 -------------------------------------

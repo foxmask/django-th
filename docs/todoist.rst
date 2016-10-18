@@ -56,8 +56,6 @@ add this line to the TH_SERVICES setting
         'th_todoist.my_todoist.ServiceTodoist',
     )
 
-
-
 4) The service keys
 
 I strongly recommend that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
@@ -71,7 +69,6 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
         'client_id': '<your todoist id>',
         'client_secret': '<your todoist secret>',
     }
-
 
 creation of the table of the services
 -------------------------------------

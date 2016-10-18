@@ -70,7 +70,6 @@ I strongly recommend that your put the following in a local_settings.py, to avoi
         'consumer_secret': 'my secret'
     }
 
-
 creation of the table of the services
 -------------------------------------
 

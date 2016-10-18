@@ -40,7 +40,6 @@ edit local_settings.py and put the consumer_key of your pocket account (you can 
         'consumer_key': 'abcdefghijklmnopqrstuvwxyz',
     }
 
-
 Once the settings is done, enter the following command to sync the database :
 
 

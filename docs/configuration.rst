@@ -46,7 +46,6 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'th_rss',
         # uncomment the lines to enable the service you need
         # 'th_pocket',
-        # 'th_readability',
         # 'evernote',
         # 'th_evernote',
         # 'th_twitter',
@@ -75,11 +74,10 @@ TH_SERVICES is a list of the services, like for example,
         'th_rss.my_rss.ServiceRss',
         # 'th_pocket.my_pocket.ServicePocket',
         # 'th_evernote.my_evernote.ServiceEvernote',
-        # 'th_readability.my_readability.ServiceReadability',
         # 'th_trello.my_trello.ServiceTrello',
         # 'th_twitter.my_twitter.ServiceTwitter',
         # 'th_github.my_github.ServiceGithub',
-        # 'th_wallabag.my_wallabag.ServiceWallabag',
+        'th_wallabag.my_wallabag.ServiceWallabag',
     )
 
 do not forget to uncomment one of the line to enable another service, or the application wont work.
@@ -224,7 +222,7 @@ For each TriggerHappy component, define one cache like below
             'LOCATION': BASE_DIR + '/cache/',
             'TIMEOUT': 600,
             'OPTIONS': {
-                'MAX_ENTRIES': 10000
+                'MAX_ENTRIES': 1000
             }
         },
         # Evernote Cache
@@ -237,12 +235,42 @@ For each TriggerHappy component, define one cache like below
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
+        # GitHub
+        'th_github':
+        {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/2",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Pelican
+        'th_pelican':
+        {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/3",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
         # Pocket Cache
         'th_pocket':
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/2",
+            "LOCATION": "redis://127.0.0.1:6379/4",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
+        },
+        # Pushbullet
+        'th_pushbullet':
+        {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/5",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
@@ -252,27 +280,27 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/3",
+            "LOCATION": "redis://127.0.0.1:6379/6",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
-        # Readability
-        'th_readability':
+        # Todoist
+        'th_todoist':
         {
-            'TIMEOUT': 500,
+            'TIMEOUT': 3600,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/4",
+            "LOCATION": "redis://127.0.0.1:6379/7",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
         },
-        # Trello Cache
+        # Trello
         'th_trello':
         {
-            'TIMEOUT': 500,
+            'TIMEOUT': 3600,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/5",
+            "LOCATION": "redis://127.0.0.1:6379/8",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
@@ -282,18 +310,7 @@ For each TriggerHappy component, define one cache like below
         {
             'TIMEOUT': 500,
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/6",
-            "OPTIONS": {
-                "DB": 6,
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-        # Github Cache
-        'th_github':
-        {
-            'TIMEOUT': 500,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/7",
+            "LOCATION": "redis://127.0.0.1:6379/9",
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             }
@@ -301,14 +318,33 @@ For each TriggerHappy component, define one cache like below
         # Wallabag
         'th_wallabag':
         {
-                'TIMEOUT': 3600,
-                "BACKEND": "django_redis.cache.RedisCache",
-                "LOCATION": "redis://127.0.0.1:6379/9",
-                "OPTIONS": {
-                    "CLIENT_CLASS": "django_redis.client.DefaultClient",
-                }
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/10",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            }
         },
-
+        'redis-cache':
+        {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://localhost:6379/11",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "MAX_ENTRIES": 5000,
+            }
+        },
+        'django_th':
+        {
+            'TIMEOUT': 3600,
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://localhost:6379/12",
+            "OPTIONS": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+                "MAX_ENTRIES": 5000,
+            }
+        },
     }
 
 in the settings, 'default' may already exist in your settings.py, so dont use it, otherwise, if it doesnt, django will complain, so add it.
@@ -355,30 +391,3 @@ Suppose my virtualenv is created in /home/trigger-happy and the django app is lo
     */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/django_th/ && ./manage.py read
     */15 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py publish
     */20 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py recycle
-
-TH_HOLIDAYS
-~~~~~~~~~~~
-
-To use the Holidays feature, just add this piece of HTML in the template templates/mark_all.html :
-
-
-.. code:: html
-
-    <li role="presentation"><a role="menuitem" href="{% url 'holidays' %}" title="{% trans 'Set Triggers on Holidays ?' %}"><span class="glyphicon glyphicon-flag"></span>&nbsp;&nbsp;{% trans 'Set Triggers on Holidays ?' %}</a></li>
-
-
-HAYSTACK
-~~~~~~~~
-
-if you plan to use the search feature, put the engine of your choice, for example :
-
-.. code:: python
-
-    # needed to th_search and haystack
-    HAYSTACK_CONNECTIONS = {
-        'default': {
-            'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
-            'URL': 'http://127.0.0.1:9200/',
-            'INDEX_NAME': 'haystack',
-        },
-    }
