@@ -66,6 +66,7 @@ class PushbulletTest(TestCase):
         d = self.create_pushb()
         self.assertTrue(isinstance(d, Pushbullet))
         self.assertEqual(d.show(), "My Pushbullet %s" % d.name)
+        self.assertEqual(d.__str__(), "%s" % d.name)
 
     """
         Form

@@ -1,12 +1,13 @@
 # coding: utf-8
 import unittest
-from django.test import RequestFactory
+from django.test import RequestFactory, Client
 from django.contrib.auth.models import User
 
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView
-from django_th.views import TriggerListView
+from django_th.views import TriggerListView, can_modify_trigger, trigger_on_off
 from django_th.models import TriggerService
+from django_th.tests.test_main import MainTest
 
 
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):
@@ -86,6 +87,27 @@ class TriggerListViewTestCase(unittest.TestCase):
         self.assertEqual(context['nb_triggers']['enabled'], triggers_enabled)
         self.assertEqual(context['nb_triggers']['disabled'], triggers_disabled)
         self.assertEqual(context['nb_services'], services_activated)
+
+
+class ViewFunction(MainTest):
+
+    def test_can_modify_trigger(self):
+        request = RequestFactory().get('/')
+        self.assertFalse(can_modify_trigger(request, provider='ServiceRss',
+                                            consumer='ServiceTwitter'))
+
+    def test_logout(self):
+        c = Client()
+        c.logout()
+
+    def test_trigger_on_off(self):
+        s = self.create_triggerservice()
+        c = Client()
+        response = c.get('/')
+        self.assertTrue(response.status_code, 200)
+
+        response = trigger_on_off(request=c, trigger_id=s.id)
+        self.assertTrue(response.status_code, 200)
 
 
 def setup_view(view, request, *args, **kwargs):

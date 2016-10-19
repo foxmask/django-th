@@ -120,6 +120,7 @@ class PelicanTest(MainTest):
     def test_save_data(self):
         pelican = self.create_pelican()
         data = {'title': 'my title', 'category': 'News',
+                'tags': 'web',
                 'my_date': '2016-08-20 13:23:58+00:00'}
 
         s = ServicePelican()

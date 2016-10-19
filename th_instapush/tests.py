@@ -84,6 +84,7 @@ class InstapushTest(TestCase):
         d = self.create_instapush()
         self.assertTrue(isinstance(d, InstapushModel))
         self.assertEqual(d.show(), "My Instapush %s" % d.name)
+        self.assertEqual(d.__str__(), "%s" % d.name)
 
     # consumer
     def test_valid_consumer_form(self):

@@ -26,7 +26,7 @@ class WallabagTest(TestCase):
         except User.DoesNotExist:
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
-        self.token = 'AZERTY'
+        self.token = 'AZERTY1234'
         self.trigger_id = 1
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
@@ -48,7 +48,8 @@ class WallabagTest(TestCase):
                                               token="",
                                               name=service_provider)
         consumer = UserService.objects.create(user=user,
-                                              token="AZERTY1234",
+                                              token=self.token,
+                                              host='http://localhost',
                                               name=service_consumer)
         return TriggerService.objects.create(provider=provider,
                                              consumer=consumer,
@@ -78,6 +79,7 @@ class WallabagTest(TestCase):
         d = self.create_wallabag()
         self.assertTrue(isinstance(d, Wallabag))
         self.assertEqual(d.show(), "My Wallabag %s" % d.url)
+        self.assertEqual(d.__str__(), "%s" % d.url)
 
     """
         Form
@@ -116,10 +118,10 @@ class ServiceWallabagTest(WallabagTest):
 
         kwargs['model_name'] = 'Wallabag'
 
-        token = 'AZERTY'
+        self.token = 'AZERTY1234'
 
         with patch.object(ServiceWallabag, 'read_data') as mock_read_data:
-            se = ServiceWallabag(token)
+            se = ServiceWallabag(self.token)
             se.read_data(**kwargs)
         mock_read_data.assert_called_once_with(**kwargs)
 

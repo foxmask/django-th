@@ -1,10 +1,16 @@
 # coding: utf-8
-from django.conf import settings
-from th_rss.models import Rss
-from th_rss.forms import RssProviderForm
-from django_th.tests.test_main import MainTest
 import uuid
 import arrow
+
+from django.conf import settings
+from django.test import RequestFactory
+
+from th_rss.models import Rss
+from th_rss.forms import RssProviderForm
+from th_rss.views import MyRssFeed
+
+import django_th
+from django_th.tests.test_main import MainTest
 
 
 class RssTest(MainTest):
@@ -18,7 +24,8 @@ class RssTest(MainTest):
         name = 'TriggerHappy RSS'
         url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
         status = True
-        return Rss.objects.create(uuid=uuid.uuid4(),
+        self.uuid = uuid.uuid4()
+        return Rss.objects.create(uuid=self.uuid,
                                   url=url,
                                   name=name,
                                   trigger=trigger,
@@ -72,3 +79,30 @@ class RssTest(MainTest):
         data = s.read_data(**kwargs)
 
         self.assertTrue(type(data) is list)
+
+
+class TestMyRssFeed(MainTest):
+
+    def create_rss(self):
+        trigger = self.create_triggerservice(consumer_name='ServiceRss')
+        name = 'TriggerHappy RSS'
+        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
+        status = True
+        return Rss.objects.create(uuid=uuid.uuid4(),
+                                  url=url,
+                                  name=name,
+                                  trigger=trigger,
+                                  status=status)
+
+    def test_get(self):
+        template = 'rss/my_feed.html'
+        # Setup request and view.
+        request = RequestFactory().get('/th/my_feeds')
+        view = MyRssFeed.as_view(template_name=template)
+        response = view(request)
+        # Check.
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], template)
+        self.assertEqual(response.context_data['lang'], settings.LANGUAGE_CODE)
+        self.assertEqual(response.context_data['version'],
+                         django_th.__version__)

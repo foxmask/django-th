@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django_th.models import TriggerService
-from django_th.models import UserService, ServicesActivated
+from django_th.models import UserService, ServicesActivated, update_result
 from django_th.forms.base import TriggerServiceForm
 from django_th.forms.base import UserServiceForm
 from django_th.tests.test_main import MainTest
@@ -125,3 +125,8 @@ class TriggerServiceTest(MainTest):
         data = {'description': t.description, }
         form = TriggerServiceForm(data=data)
         self.assertFalse(form.is_valid())
+
+    def test_update_result(self):
+        t = self.create_triggerservice()
+        self.assertTrue(isinstance(t, TriggerService))
+        update_result(trigger_id=t.id, msg='a dummy result message')
