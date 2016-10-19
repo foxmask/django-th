@@ -1,16 +1,15 @@
 # coding: utf-8
 from unittest.mock import MagicMock
 
-from django.test import TestCase
 from django.contrib.auth.models import User
 
-from django_th.models import TriggerService, UserService, ServicesActivated
+from django_th.tests.test_main import MainTest
 from th_instapush.models import Instapush as InstapushModel
 from th_instapush.forms import InstapushConsumerForm
 from th_instapush.my_instapush import ServiceInstapush
 
 
-class InstapushTest(TestCase):
+class InstapushTest(MainTest):
 
     """
         InstapushTest Model
@@ -36,37 +35,11 @@ class InstapushTest(TestCase):
         self.trigger_id = 1
         self.service = ServiceInstapush(self.token)
 
-    def create_triggerservice(self, date_created="20130610",
-                              description="My first Service", status=True):
-        """
-           create a TriggerService
-        """
-        user = self.user
-
-        service_provider = ServicesActivated.objects.create(
-            name='ServiceRSS', status=True,
-            auth_required=False, description='Service RSS')
-        service_consumer = ServicesActivated.objects.create(
-            name='ServiceInstapush', status=True,
-            auth_required=True, description='Service Instapush')
-        provider = UserService.objects.create(user=user,
-                                              token="",
-                                              name=service_provider)
-        consumer = UserService.objects.create(user=user,
-                                              token="AZERTY1234",
-                                              name=service_consumer)
-        return TriggerService.objects.create(provider=provider,
-                                             consumer=consumer,
-                                             user=user,
-                                             date_created=date_created,
-                                             description=description,
-                                             status=status)
-
     def create_instapush(self):
         """
             Create a Instapush object related to the trigger object
         """
-        trigger = self.create_triggerservice()
+        trigger = self.create_triggerservice(consumer_name='ServiceInstapush')
         event_name = 'signups'
         tracker_name = 'email'
         status = True

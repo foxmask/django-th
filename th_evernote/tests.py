@@ -10,6 +10,12 @@ from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
 from th_evernote.my_evernote import ServiceEvernote
 from th_evernote.sanitize import sanitize
 
+try:
+    from unittest import mock
+except ImportError:
+    import mock
+
+
 cache = caches['th_evernote']
 
 
@@ -28,6 +34,9 @@ class EvernoteTest(MainTest):
         return Evernote.objects.create(tag=tag, title=title,
                                        notebook=notebook, trigger=trigger,
                                        status=status)
+
+
+class EvernoteView(EvernoteTest):
 
     def test_evernote(self):
         ev = self.create_evernote()
@@ -72,26 +81,11 @@ class EvernoteTest(MainTest):
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
 
-
-class ServiceEvernoteTest(MainTest):
+class ServiceEvernoteTest(EvernoteTest):
     """
        ServiceEvernoteTest
     """
-
-    def create_evernote(self):
-        trigger = self.create_triggerservice(consumer_name='ServiceEvernote')
-        tag = 'test'
-        notebook = 'my notebook'
-        title = 'a new note'
-        status = True
-        return Evernote.objects.create(tag=tag, title=title,
-                                       notebook=notebook, trigger=trigger,
-                                       status=status)
 
     def setUp(self):
         super(ServiceEvernoteTest, self).setUp()
