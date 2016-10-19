@@ -53,23 +53,15 @@ def filter_term(att):
         return True
 
 
-def remove_prohibited_attributes(element):
-    """
-        To fit the Evernote DTD need, drop this attribute name
-    """
-    """
-    filter_term = lambda att: att.startswith("on") or\
-        att.startswith("data-") or\
-        att in ["id", "class", "accesskey",
-                "data",  "dynsrc", "tabindex",
-                "frame", "rules", "width", "trbidi",
-                "imageanchor"]
-    """
-    to_be_removed_atts = [att for att in element.attributes.keys()
-                          if filter_term(att.lower())]
+def remove_child_prohibited_attr(element):
 
-    for attribute in to_be_removed_atts:
-        element.removeAttribute(attribute)
+    list_on_children = element.childNodes
+    for child in list_on_children:
+        if child.nodeType == 1:
+            remove_prohibited_attributes(child)
+
+
+def remove_href_prohibited_attr(element):
     try:
         if element.hasAttribute("href"):
             t = element.toxml()
@@ -80,7 +72,19 @@ def remove_prohibited_attributes(element):
     except:
         pass
 
-    list_on_children = element.childNodes
-    for child in list_on_children:
-        if child.nodeType == 1:
-            remove_prohibited_attributes(child)
+
+def remove_attr_prohibited(element):
+    to_be_removed_atts = [att for att in element.attributes.keys()
+                          if filter_term(att.lower())]
+
+    for attribute in to_be_removed_atts:
+        element.removeAttribute(attribute)
+
+
+def remove_prohibited_attributes(element):
+    """
+        To fit the Evernote DTD need, drop this attribute name
+    """
+    remove_attr_prohibited(element)
+    remove_href_prohibited_attr(element)
+    remove_child_prohibited_attr(element)

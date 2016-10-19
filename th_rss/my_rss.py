@@ -25,6 +25,27 @@ class ServiceRss(ServicesMgr):
     def __init__(self, token=None, **kwargs):
         super(ServiceRss, self).__init__(token, **kwargs)
 
+    def _get_published(self, entry):
+        """
+        get the 'published' attribute
+        :param entry:
+        :return:
+        """
+        published = ''
+        if hasattr(entry, 'published_parsed'):
+            if entry.published_parsed is not None:
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.published_parsed))
+        elif hasattr(entry, 'created_parsed'):
+            if entry.created_parsed is not None:
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.created_parsed))
+        elif hasattr(entry, 'updated_parsed'):
+            if entry.updated_parsed is not None:
+                published = datetime.datetime.utcfromtimestamp(
+                    time.mktime(entry.updated_parsed))
+        return published
+
     def read_data(self, **kwargs):
         """
             get the data from the service
@@ -43,7 +64,6 @@ class ServiceRss(ServicesMgr):
         logger.debug("RSS Feeds from %s : url %s", rss.name, rss.url)
 
         now = arrow.utcnow().to(settings.TIME_ZONE)
-        published = ''
         my_feeds = []
 
         # retrieve the data
@@ -52,18 +72,7 @@ class ServiceRss(ServicesMgr):
         for entry in feeds.entries:
             # entry.*_parsed may be None when the date in a RSS Feed is invalid
             # so will have the "now" date as default
-            if hasattr(entry, 'published_parsed'):
-                if entry.published_parsed is not None:
-                    published = datetime.datetime.utcfromtimestamp(
-                        time.mktime(entry.published_parsed))
-            elif hasattr(entry, 'created_parsed'):
-                if entry.created_parsed is not None:
-                    published = datetime.datetime.utcfromtimestamp(
-                        time.mktime(entry.created_parsed))
-            elif hasattr(entry, 'updated_parsed'):
-                if entry.updated_parsed is not None:
-                    published = datetime.datetime.utcfromtimestamp(
-                        time.mktime(entry.updated_parsed))
+            published = self._get_published(entry)
 
             if published == '':
                 published = now
