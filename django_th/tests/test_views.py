@@ -4,8 +4,8 @@ from django.test import RequestFactory, Client
 from django.contrib.auth.models import User
 
 from django_th.views import TriggerEditedTemplateView
-from django_th.views import TriggerDeletedTemplateView
-from django_th.views import TriggerListView, can_modify_trigger, trigger_on_off
+from django_th.views import TriggerDeletedTemplateView, TriggerListView
+from django_th.views_fbv import can_modify_trigger, trigger_on_off
 from django_th.models import TriggerService
 from django_th.tests.test_main import MainTest
 
@@ -13,35 +13,31 @@ from django_th.tests.test_main import MainTest
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template = "triggers/thanks_trigger.html"
+        template = "triggers/edited_thanks_trigger.html"
         # Setup request and view.
         request = RequestFactory().get('/th/trigger/edit/thanks')
         view = TriggerEditedTemplateView.as_view(template_name=template)
-        sentence = 'Your trigger has been successfully modified'
         # Run.
         response = view(request)
         # Check.
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name[0],
-                         'triggers/thanks_trigger.html')
-        self.assertEqual(response.context_data['sentence'], sentence)
+                         'triggers/edited_thanks_trigger.html')
 
 
 class TriggerDeletedTemplateViewTestCase(unittest.TestCase):
 
     def test_get(self):
-        template = "triggers/thanks_trigger.html"
+        template = "triggers/deleted_thanks_trigger.html"
         # Setup request and view.
         request = RequestFactory().get('/th/trigger/delete/thanks')
         view = TriggerDeletedTemplateView.as_view(template_name=template)
-        sentence = 'Your trigger has been successfully deleted'
         # Run.
         response = view(request)
         # Check.
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name[0],
-                         'triggers/thanks_trigger.html')
-        self.assertEqual(response.context_data['sentence'], sentence)
+                         'triggers/deleted_thanks_trigger.html')
 
 
 class TriggerListViewTestCase(unittest.TestCase):

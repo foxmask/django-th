@@ -4,10 +4,9 @@ from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
 
 from django_th.views import TriggerListView, TriggerDeleteView
 from django_th.views import TriggerUpdateView, TriggerEditedTemplateView
-from django_th.views import TriggerDeletedTemplateView, trigger_on_off,\
-    fire_trigger
-from django_th.views import trigger_switch_all_to, trigger_edit
-from django_th.views import service_related_triggers_switch_to
+from django_th.views import TriggerDeletedTemplateView
+from django_th.views_fbv import trigger_switch_all_to, trigger_edit,\
+    trigger_on_off, fire_trigger, service_related_triggers_switch_to
 
 from django_th.views_userservices import UserServiceListView
 from django_th.views_userservices import UserServiceCreateView
@@ -35,7 +34,7 @@ urlpatterns = \
              # customized logout action
              # ****************************************
              url(r'^logout/$',
-                 'django_th.views.logout_view', name='logout'),
+                 'django_th.views_fbv.logout_view', name='logout'),
 
              # ****************************************
              # trigger happy module
