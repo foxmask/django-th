@@ -2,7 +2,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from django_th.models import TriggerService, UserService, ServicesActivated
-from th_evernote.models import Evernote
+from th_wallabag.models import Wallabag
 
 
 class MainTest(TestCase):
@@ -18,7 +18,7 @@ class MainTest(TestCase):
 
     def create_triggerservice(self, trigger_id=1, date_created="20130610",
                               description="My first Service", status=True,
-                              consumer_name="ServiceEvernote",
+                              consumer_name="ServiceWallabag",
                               provider_name="ServiceRss"):
         """
            create a TriggerService
@@ -30,7 +30,7 @@ class MainTest(TestCase):
             auth_required=False, description='Service RSS')
         service_consumer = ServicesActivated.objects.create(
             name=consumer_name, status=True,
-            auth_required=True, description='Service Evernote')
+            auth_required=False, description='Service Wallabag')
         provider = UserService.objects.create(user=user,
                                               token="",
                                               name=service_provider)
@@ -45,8 +45,8 @@ class MainTest(TestCase):
                                                 description=description,
                                                 status=status)
 
-        Evernote.objects.create(trigger=trigger, notebook='Test', tag='test',
-                                title='title test', text='some content')
+        Wallabag.objects.create(trigger=trigger, url='https://trigger-happy.eu',
+                                tag='test', title='title test')
 
         return trigger
 
