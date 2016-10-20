@@ -1,12 +1,18 @@
 # coding: utf-8
 import unittest
+import uuid
 from django.test import RequestFactory, Client
-
+from django.core.cache import caches
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView, TriggerListView
-from django_th.views_fbv import can_modify_trigger, trigger_on_off
+from django_th.views_fbv import can_modify_trigger, trigger_on_off, \
+    trigger_edit, trigger_switch_all_to, list_services, \
+    service_related_triggers_switch_to, fire_trigger
 from django_th.models import TriggerService
 from django_th.tests.test_main import MainTest, setup_view
+from th_rss.models import Rss
+
+cache = caches['django_th']
 
 
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):
@@ -82,20 +88,93 @@ class TriggerListViewTestCase(MainTest):
 
 class ViewFunction(MainTest):
 
+    def setUp(self):
+        super(ViewFunction, self).setUp()
+        self.request = RequestFactory().get('/')
+
     def test_can_modify_trigger(self):
-        request = RequestFactory().get('/')
-        self.assertFalse(can_modify_trigger(request, provider='ServiceRss',
+        self.assertFalse(can_modify_trigger(self.request, provider='ServiceRss',
                                             consumer='ServiceTwitter'))
+        # self.assertTrue(can_modify_trigger(request, consumer='', provider=''))
 
     def test_logout(self):
         c = Client()
         c.logout()
 
     def test_trigger_on_off(self):
-        s = self.create_triggerservice()
-        c = Client()
-        response = c.get('/')
+        t = self.create_triggerservice()
+        response = trigger_on_off(request=self.request, trigger_id=t.id)
+        self.assertTrue(response.status_code, 200)
+        TriggerService.objects.filter(id=t.id).update(status=False)
+
+        response = trigger_on_off(request=self.request, trigger_id=t.id)
         self.assertTrue(response.status_code, 200)
 
-        response = trigger_on_off(request=c, trigger_id=s.id)
+    def test_fire_trigger(self):
+        self.create_triggerservice()
+        cache.set('django_th_fire_trigger_1', '*')
+        response = fire_trigger(self.request, 1)
         self.assertTrue(response.status_code, 200)
+        cache.delete('django_th_fire_trigger_1')
+        response = fire_trigger(self.request, 1)
+        self.assertTrue(response.status_code, 200)
+
+    def test_service_related_triggers_switch_to(self):
+        user_service_id = 1
+        response = service_related_triggers_switch_to(self.request,
+                                                      user_service_id, 'off')
+        self.assertEqual(response.status_code, 302)
+        response = service_related_triggers_switch_to(self.request,
+                                                      user_service_id, 'on')
+        self.assertEqual(response.status_code, 302)
+
+    def test_trigger_switch_all_to(self):
+        self.request.user = self.user
+
+        response = trigger_switch_all_to(self.request, 'off')
+        self.assertEqual(response.status_code, 302)
+
+        response = trigger_switch_all_to(self.request, 'on')
+        self.assertEqual(response.status_code, 302)
+
+    def test_list_services(self):
+        self.create_triggerservice()
+
+        self.request.id = 1
+
+        data = list_services(self.request, step='0')
+        self.assertTrue(len(data) > 0)
+
+        data = list_services(self.request, step='3')
+        self.assertTrue(len(data) > 0)
+
+    def test_trigger_edit_failed(self):
+        trigger_id = 1
+        edit_what = 'blackhole'
+        response = trigger_edit(self.request, trigger_id, edit_what)
+
+        self.assertEqual(response.status_code, 302)
+
+    def test_trigger_edit(self):
+        trigger = self.create_triggerservice()
+
+        edit_what = 'Consumer'
+        response = trigger_edit(self.request, trigger.id, edit_what)
+        self.assertEqual(response.status_code, 200)
+
+        edit_what = 'Provider'
+
+        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
+        self.uuid = uuid.uuid4()
+        Rss.objects.create(uuid=self.uuid,
+                           url=url,
+                           name='TriggerHappy RSS',
+                           trigger=trigger,
+                           status=True)
+
+        response = trigger_edit(self.request, trigger.id, edit_what)
+        self.assertEqual(response.status_code, 200)
+
+        self.request.method = 'POST'
+        response = trigger_edit(self.request, trigger.id, edit_what)
+        self.assertEqual(response.status_code, 200)

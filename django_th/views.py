@@ -11,7 +11,6 @@ from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 
-
 # trigger_happy
 from django_th.models import TriggerService, UserService
 
@@ -86,7 +85,7 @@ class TriggerListView(ListView):
         # otherwise return nothing when user is not connected
         return TriggerService.objects.none()
 
-    def get_context_data(self, **kw):
+    def get_context_data(self, **kwargs):
         """
             get the data of the view
 
@@ -98,7 +97,7 @@ class TriggerListView(ListView):
         """
         triggers_enabled = triggers_disabled = services_activated = ()
 
-        context = super(TriggerListView, self).get_context_data(**kw)
+        context = super(TriggerListView, self).get_context_data(**kwargs)
 
         if self.kwargs.get('trigger_filtered_by'):
             page_link = reverse('trigger_filter_by',

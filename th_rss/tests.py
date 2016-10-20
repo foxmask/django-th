@@ -16,7 +16,8 @@ from django_th.tests.test_main import MainTest, setup_view
 class RssTest(MainTest):
 
     def create_rss(self):
-        trigger = self.create_triggerservice(consumer_name='ServiceRss')
+        trigger = self.create_triggerservice(consumer_name='ServiceRss',
+                                             provider_name='ServiceEvernote')
         name = 'TriggerHappy RSS'
         url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
         status = True

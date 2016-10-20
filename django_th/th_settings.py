@@ -9,7 +9,7 @@ DJANGO_TH = {
     'publishing_limit': 5,
     # number of process to spawn from multiprocessing.Pool
     'processes': 5,
-    'services_wo_cache': ['th_instapush',]
+    'services_wo_cache': ['th_instapush', ],
 }
 
 TH_SERVICES = (

@@ -41,6 +41,6 @@ class Command(BaseCommand):
                 result = pool.map_async(publishing, trigger)
                 result.get(timeout=360)
 
-                cache.delete('django_th' + '_fire_trigger_' + trigger_id)
+                cache.delete('django_th' + '_fire_trigger_' + str(trigger_id))
         except TimeoutError as e:
             logger.warn(e)

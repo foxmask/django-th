@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.conf import settings
-from django_th.models import TriggerService, UserService, ServicesActivated
+
 from django_th.tests.test_main import MainTest
 from th_pelican.models import Pelican
 from th_pelican.forms import PelicanProviderForm, PelicanConsumerForm
@@ -12,41 +12,11 @@ class PelicanTest(MainTest):
     """
         pelicanTest Model
     """
-
-    def create_triggerservice(self,
-                              date_created="20130610",
-                              description="My first Service",
-                              status=True,
-                              consumer_name="ServicePelican"):
-        """
-           create a TriggerService
-        """
-        user = self.user
-
-        service_provider = ServicesActivated.objects.create(
-            name='ServiceRSS', status=True,
-            auth_required=False, description='Service RSS')
-        service_consumer = ServicesActivated.objects.create(
-            name=consumer_name, status=True,
-            auth_required=True, description='Service Pelican')
-        provider = UserService.objects.create(user=user,
-                                              token="",
-                                              name=service_provider)
-        consumer = UserService.objects.create(user=user,
-                                              token="AZERTY1234",
-                                              name=service_consumer)
-        return TriggerService.objects.create(provider=provider,
-                                             consumer=consumer,
-                                             user=user,
-                                             date_created=date_created,
-                                             description=description,
-                                             status=status)
-
     def create_pelican(self):
         """
             Create a Pelican object related to the trigger object
         """
-        trigger = self.create_triggerservice()
+        trigger = self.create_triggerservice(consumer_name='ServicePelican')
         name = 'pelican'
         status = True
         return Pelican.objects.create(trigger=trigger,

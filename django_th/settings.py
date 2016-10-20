@@ -342,7 +342,8 @@ CACHES = {
 try:
     from .th_settings import *
 except ImportError:
-    raise ImportError("you should create a th_settings.py with everything related to TriggerHappy, see th_settings_sample.py")
+    raise ImportError("you should create a th_settings.py with "
+                      "everything related to TriggerHappy, see th_settings_sample.py")
 
 SECRET_KEY = 'to be defined :P'
 
