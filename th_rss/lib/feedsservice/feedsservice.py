@@ -14,9 +14,9 @@ class Feeds(object):
         if 'url_to_parse' in kwargs and kwargs['url_to_parse'] != '':
             self.URL_TO_PARSE = kwargs['url_to_parse']
         else:
-            raise Exception('Missing argument "url_to_parse" eg. \
-                            url_to_parse=\'/path/to/local/file.rss\' or \
-                            url_to_parse=\'http://domain.com/file.rss\'')
+            raise KeyError('Missing argument "url_to_parse" eg.'
+                           ' url_to_parse="/path/to/local/file.rss" or'
+                           ' url_to_parse="http://domain.com/file.rss"')
 
     def datas(self):
         """

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 from __future__ import absolute_import
 
 # django
+from django.conf import settings
 from django.core.cache import caches
 from django.utils.log import getLogger
 
@@ -20,7 +21,7 @@ def recycle():
     logger = getLogger('django_th.trigger_happy')
     all_packages = MyService.all_packages()
     for package in all_packages:
-        if package == 'th_instapush':
+        if package in settings.DJANGO_TH.get('services_wo_cache'):
             continue
         cache = caches[package]
         # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk

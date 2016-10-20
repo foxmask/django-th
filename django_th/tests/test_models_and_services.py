@@ -1,6 +1,6 @@
 # coding: utf-8
 from django.test import TestCase
-from django.contrib.auth.models import User
+
 from django_th.models import TriggerService
 from django_th.models import UserService, ServicesActivated, update_result
 from django_th.forms.base import TriggerServiceForm
@@ -8,19 +8,11 @@ from django_th.forms.base import UserServiceForm
 from django_th.tests.test_main import MainTest
 
 
-class UserServiceTest(TestCase):
+class UserServiceTest(MainTest):
 
     """
         UserService Model
     """
-
-    def setUp(self):
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
     def create_userservice(self, token="AZERTY12345"):
         user = self.user
         name = ServicesActivated.objects.create(name='ServiceEvernote',

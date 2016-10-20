@@ -2,7 +2,6 @@
 from unittest.mock import patch
 
 from django.conf import settings
-from django.contrib.auth.models import User
 
 from django_th.tests.test_main import MainTest
 
@@ -20,11 +19,7 @@ class TrelloTest(MainTest):
         """
            create a user
         """
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
+        super(TrelloTest, self).setUp()
 
         self.token = 'AZERTY123#TH#FOOBAR'
         self.trigger_id = 1

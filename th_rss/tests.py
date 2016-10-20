@@ -10,14 +10,10 @@ from th_rss.forms import RssProviderForm
 from th_rss.views import MyRssFeed
 
 import django_th
-from django_th.tests.test_main import MainTest
+from django_th.tests.test_main import MainTest, setup_view
 
 
 class RssTest(MainTest):
-
-    """
-        RssTest Model
-    """
 
     def create_rss(self):
         trigger = self.create_triggerservice(consumer_name='ServiceRss')
@@ -31,6 +27,12 @@ class RssTest(MainTest):
                                   trigger=trigger,
                                   status=status)
 
+
+class RssModelTest(RssTest):
+    """
+        RssModelTest Model
+    """
+
     def test_rss(self):
         r = self.create_rss()
         self.assertTrue(isinstance(r, Rss))
@@ -40,10 +42,11 @@ class RssTest(MainTest):
         )
         self.assertEqual(r.__str__(), r.url)
 
+
+class RssFormTest(RssTest):
     """
-        Form
+        RssFormTest
     """
-    # provider
 
     def test_valid_provider_form(self):
         r = self.create_rss()
@@ -81,28 +84,35 @@ class RssTest(MainTest):
         self.assertTrue(type(data) is list)
 
 
-class TestMyRssFeed(MainTest):
+class TestMyRssFeed(RssTest):
 
-    def create_rss(self):
-        trigger = self.create_triggerservice(consumer_name='ServiceRss')
-        name = 'TriggerHappy RSS'
-        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
-        status = True
-        return Rss.objects.create(uuid=uuid.uuid4(),
-                                  url=url,
-                                  name=name,
-                                  trigger=trigger,
-                                  status=status)
+    def setUp(self):
+        super(TestMyRssFeed, self).setUp()
+        self.create_rss()
+        self.template = 'rss/my_feed.html'
+        self.request = RequestFactory().get('/th/myfeeds/{}'.format(self.uuid))
 
     def test_get(self):
-        template = 'rss/my_feed.html'
-        # Setup request and view.
-        request = RequestFactory().get('/th/my_feeds')
-        view = MyRssFeed.as_view(template_name=template)
-        response = view(request)
+        view = MyRssFeed.as_view(template_name=self.template)
+        response = view(self.request)
         # Check.
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.template_name[0], template)
+        self.assertEqual(response.template_name[0], self.template)
         self.assertEqual(response.context_data['lang'], settings.LANGUAGE_CODE)
         self.assertEqual(response.context_data['version'],
                          django_th.__version__)
+
+    def test_context_data(self):
+        kwargs = {'uuid': self.uuid}
+
+        view = MyRssFeed(template_name=self.template)
+        view = setup_view(view, self.request)
+
+        context = view.get_context_data(**kwargs)
+        context['lang'] = settings.LANGUAGE_CODE
+        context['version'] = django_th.__version__
+        context['uuid'] = self.uuid
+
+        self.assertTrue('lang' in context)
+        self.assertTrue('version' in context)
+        self.assertTrue('uuid' in context)

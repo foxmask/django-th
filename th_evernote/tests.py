@@ -92,7 +92,8 @@ class ServiceEvernoteTest(EvernoteTest):
         self.ev = self.create_evernote()
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else',
-                     'content': 'foobar',
+                     'content': 'A nice content with a nice '
+                                '<a href="http://domain.tld">foobar link</a>',
                      'summary_detail': 'summary foobar',
                      'description': 'description foobar'}
         self.token = 'AZERTY123'

@@ -1,6 +1,5 @@
 # coding: utf-8
 from django.conf import settings
-from django.contrib.auth.models import User
 
 from django_th.tests.test_main import MainTest
 from th_pushbullet.models import Pushbullet
@@ -12,16 +11,6 @@ class PushbulletTest(MainTest):
     """
         PushbulletTest Model
     """
-    def setUp(self):
-        """
-           create a user
-        """
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
     def create_pushb(self):
         """
             Create a Pushbullet object related to the trigger object

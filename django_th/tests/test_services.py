@@ -1,6 +1,5 @@
 # coding: utf-8
 from django.test import Client
-from django.contrib.auth.models import User
 
 try:
     from django.apps import apps
@@ -15,6 +14,7 @@ from django_th.tests.test_main import MainTest
 class ServicesMgrTestCase(MainTest):
 
     def setUp(self):
+        super(ServicesMgrTestCase, self).setUp()
         arg = ''
         self.service = ServicesMgr(arg)
         self.service.consumer_key = 'azerty'
@@ -22,11 +22,6 @@ class ServicesMgrTestCase(MainTest):
 
         self.oauth = 'oauth1'
         self.request = Client()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
 
     def test_set_title(self):
         data = {'title': 'foobar'}

@@ -14,7 +14,6 @@ from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import UserServiceForm, activated_services
 from django_th.services import default_provider
 
-
 """
    Part II : User Service
 """

@@ -50,11 +50,7 @@ class MyRssFeeds(ListView):
             Get the number of items to paginate by,
             from the settings
         """
-        paginate_by = 3
-        if hasattr(settings, 'DJANGO_TH'):
-            if 'paginate_by' in settings.DJANGO_TH:
-                paginate_by = settings.DJANGO_TH['paginate_by']
-        return paginate_by
+        return settings.DJANGO_TH.get('paginate_by', self.paginate_by)
 
     def get_queryset(self):
         # connected ?

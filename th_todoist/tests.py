@@ -2,7 +2,6 @@
 from unittest.mock import patch, MagicMock
 
 from django.conf import settings
-from django.contrib.auth.models import User
 
 from django_th.tests.test_main import MainTest
 from th_todoist.models import Todoist
@@ -12,9 +11,6 @@ from th_todoist.my_todoist import ServiceTodoist
 
 class TodoistTest(MainTest):
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_todoist', settings.CACHES)
-
     """
         TodoistTest Model
     """
@@ -22,11 +18,7 @@ class TodoistTest(MainTest):
         """
            create a user
         """
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
+        super(TodoistTest, self).setUp()
 
         self.token = 'AZERTY123'
         self.trigger_id = 1
@@ -105,3 +97,6 @@ class TodoistTest(MainTest):
         the_return = self.service.save_data(self.trigger_id, **data)
 
         self.assertTrue(the_return)
+
+    def test_get_config_th_cache(self):
+        self.assertIn('th_todoist', settings.CACHES)

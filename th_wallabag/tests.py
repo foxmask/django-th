@@ -1,17 +1,16 @@
 # coding: utf-8
 from unittest.mock import patch
 
-from django.test import TestCase
 from django.conf import settings
-from django.contrib.auth.models import User
 
-from django_th.models import TriggerService, UserService, ServicesActivated
+from django_th.tests.test_main import MainTest
+
 from th_wallabag.models import Wallabag
 from th_wallabag.forms import WallabagProviderForm, WallabagConsumerForm
 from th_wallabag.my_wallabag import ServiceWallabag
 
 
-class WallabagTest(TestCase):
+class WallabagTest(MainTest):
 
     """
         wallabagTest Model
@@ -21,48 +20,17 @@ class WallabagTest(TestCase):
         """
            create a user
         """
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
+        super(WallabagTest, self).setUp()
         self.token = 'AZERTY1234'
         self.trigger_id = 1
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
 
-    def create_triggerservice(self, date_created="20130610",
-                              description="My first Service", status=True):
-        """
-           create a TriggerService
-        """
-        user = self.user
-
-        service_provider = ServicesActivated.objects.create(
-            name='ServiceRSS', status=True,
-            auth_required=False, description='Service RSS')
-        service_consumer = ServicesActivated.objects.create(
-            name='ServiceWallabag', status=True,
-            auth_required=True, description='Service Wallabag')
-        provider = UserService.objects.create(user=user,
-                                              token="",
-                                              name=service_provider)
-        consumer = UserService.objects.create(user=user,
-                                              token=self.token,
-                                              host='http://localhost',
-                                              name=service_consumer)
-        return TriggerService.objects.create(provider=provider,
-                                             consumer=consumer,
-                                             user=user,
-                                             date_created=date_created,
-                                             description=description,
-                                             status=status)
-
     def create_wallabag(self):
         """
             Create a Wallabag object related to the trigger object
         """
-        trigger = self.create_triggerservice()
+        trigger = self.create_triggerservice(consumer_name='ServiceWallabag')
         url = 'http://trigger-happy.eu'
         title = 'Trigger Happy'
         status = True

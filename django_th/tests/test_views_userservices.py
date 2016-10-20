@@ -1,22 +1,18 @@
-import unittest
+# coding: utf-8
 from django.test import RequestFactory
-from django.contrib.auth.models import User
 
 from django_th.views_userservices import UserServiceListView
 from django_th.models import UserService
 from django_th.tests.test_views import setup_view
+from django_th.tests.test_main import MainTest
 
 
-class UserServiceListViewTestCase(unittest.TestCase):
+class UserServiceListViewTestCase(MainTest):
 
     def setUp(self):
+        super(UserServiceListViewTestCase, self).setUp()
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
 
     def test_context_data(self):
         # Setup request and view

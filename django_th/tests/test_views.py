@@ -1,13 +1,12 @@
 # coding: utf-8
 import unittest
 from django.test import RequestFactory, Client
-from django.contrib.auth.models import User
 
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView, TriggerListView
 from django_th.views_fbv import can_modify_trigger, trigger_on_off
 from django_th.models import TriggerService
-from django_th.tests.test_main import MainTest
+from django_th.tests.test_main import MainTest, setup_view
 
 
 class TriggerEditedTemplateViewTestCase(unittest.TestCase):
@@ -40,16 +39,12 @@ class TriggerDeletedTemplateViewTestCase(unittest.TestCase):
                          'triggers/deleted_thanks_trigger.html')
 
 
-class TriggerListViewTestCase(unittest.TestCase):
+class TriggerListViewTestCase(MainTest):
 
     def setUp(self):
+        super(TriggerListViewTestCase, self).setUp()
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
 
     def test_context_data(self):
         """
@@ -104,15 +99,3 @@ class ViewFunction(MainTest):
 
         response = trigger_on_off(request=c, trigger_id=s.id)
         self.assertTrue(response.status_code, 200)
-
-
-def setup_view(view, request, *args, **kwargs):
-    """Mimic as_view() returned callable, but returns view instance.
-
-    args and kwargs are the same you would pass to ``reverse()``
-
-    """
-    view.request = request
-    view.args = args
-    view.kwargs = kwargs
-    return view

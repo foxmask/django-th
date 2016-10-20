@@ -31,23 +31,22 @@ class PublishingLimit(object):
 
                 cache = caches[service]
 
-                if 'publishing_limit' in settings.DJANGO_TH:
-                    limit = settings.DJANGO_TH['publishing_limit']
+                limit = settings.DJANGO_TH.get('publishing_limit', 0)
 
-                    # publishing of all the data
-                    if limit == 0:
-                        return cache_data
-                    # or just a set of them
-                    if cache_data is not None and len(cache_data) > limit:
-                        for data in cache_data[limit:]:
-                            service_str = ''.join((service, '_',
-                                                   str(trigger_id)))
-                            # put that data in a version 2 of the cache
-                            cache.set(service_str, data, version=2)
-                            # delete data from cache version=1
-                            # https://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
-                            cache.delete_pattern(service_str)
-                        # put in cache unpublished data
-                        cache_data = cache_data[:limit]
+                # publishing of all the data
+                if limit == 0:
+                    return cache_data
+                # or just a set of them
+                if cache_data is not None and len(cache_data) > limit:
+                    for data in cache_data[limit:]:
+                        service_str = ''.join((service, '_',
+                                               str(trigger_id)))
+                        # put that data in a version 2 of the cache
+                        cache.set(service_str, data, version=2)
+                        # delete data from cache version=1
+                        # https://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
+                        cache.delete_pattern(service_str)
+                    # put in cache unpublished data
+                    cache_data = cache_data[:limit]
 
         return cache_data

@@ -1,9 +1,8 @@
 # coding: utf-8
 from unittest.mock import MagicMock
 
-from django.contrib.auth.models import User
-
 from django_th.tests.test_main import MainTest
+
 from th_instapush.models import Instapush as InstapushModel
 from th_instapush.forms import InstapushConsumerForm
 from th_instapush.my_instapush import ServiceInstapush
@@ -20,12 +19,6 @@ class InstapushTest(MainTest):
            create a user
         """
         super(InstapushTest, self).setUp()
-        try:
-            self.user = User.objects.get(username='john')
-        except User.DoesNotExist:
-            self.user = User.objects.create_user(
-                username='john', email='john@doe.info', password='doe')
-
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else',
                      'content': 'foobar',

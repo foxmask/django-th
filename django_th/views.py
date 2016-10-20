@@ -23,6 +23,10 @@ import logging
 logger = logging.getLogger(__name__)
 cache = caches['django_th']
 
+"""
+   Part I : Triggers
+"""
+
 
 class TriggerListView(ListView):
     """
@@ -39,11 +43,7 @@ class TriggerListView(ListView):
             Get the number of items to paginate by,
             from the settings
         """
-        paginate_by = 3
-        if hasattr(settings, 'DJANGO_TH'):
-            if settings.DJANGO_TH.get('paginate_by'):
-                paginate_by = settings.DJANGO_TH['paginate_by']
-        return paginate_by
+        return settings.DJANGO_TH.get('paginate_by', self.paginate_by)
 
     def get_queryset(self):
         filtered_by = None
