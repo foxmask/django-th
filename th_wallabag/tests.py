@@ -26,25 +26,12 @@ class WallabagTest(MainTest):
         self.data = {'link': 'http://foo.bar/some/thing/else/what/else',
                      'title': 'what else'}
 
-    def create_wallabag(self):
-        """
-            Create a Wallabag object related to the trigger object
-        """
-        trigger = self.create_triggerservice(consumer_name='ServiceWallabag')
-        url = 'http://trigger-happy.eu'
-        title = 'Trigger Happy'
-        status = True
-        self.trigger_id = trigger.id
-        return Wallabag.objects.create(trigger=trigger,
-                                       url=url,
-                                       title=title,
-                                       status=status)
-
     def test_wallabag(self):
         """
            Test if the creation of the wallabag object looks fine
         """
-        d = self.create_wallabag()
+        t = self.create_triggerservice()
+        d = self.create_wallabag(t)
         self.assertTrue(isinstance(d, Wallabag))
         self.assertEqual(d.show(), "My Wallabag %s" % d.url)
         self.assertEqual(d.__str__(), "%s" % d.url)
@@ -58,7 +45,9 @@ class WallabagTest(MainTest):
         """
            test if that form is a valid provider one
         """
-        d = self.create_wallabag()
+        t = self.create_triggerservice()
+        d = self.create_wallabag(t)
+
         data = {'url': d.url}
         form = WallabagProviderForm(data=data)
         self.assertTrue(form.is_valid())
@@ -68,7 +57,9 @@ class WallabagTest(MainTest):
         """
            test if that form is a valid consumer one
         """
-        d = self.create_wallabag()
+        t = self.create_triggerservice()
+        d = self.create_wallabag(t)
+
         data = {'url': d.url}
         form = WallabagConsumerForm(data=data)
         self.assertTrue(form.is_valid())
@@ -79,6 +70,9 @@ class WallabagTest(MainTest):
 
 class ServiceWallabagTest(WallabagTest):
 
+    def setUp(self):
+        super(ServiceWallabagTest, self).setUp()
+
     def test_read_data(self):
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'trigger_id': 1,
@@ -88,13 +82,13 @@ class ServiceWallabagTest(WallabagTest):
 
         self.token = 'AZERTY1234'
 
-        with patch.object(ServiceWallabag, 'read_data') as mock_read_data:
+        with patch.object(ServiceWallabag, '_get_wall_data') as mock_read_data:
             se = ServiceWallabag(self.token)
             se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with(**kwargs)
+        mock_read_data.assert_called_once()
 
     def test_save_data(self):
-        kwargs = dict({})
+        kwargs = dict({'title': 'foobar', 'data': {}})
         with patch.object(ServiceWallabag, 'save_data') as mock_save_data:
             se = ServiceWallabag(self.token)
             se.save_data(self.trigger_id, **kwargs)

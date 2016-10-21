@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.cache import caches
@@ -8,6 +8,9 @@ from th_twitter.models import Twitter
 from th_twitter.forms import TwitterProviderForm, TwitterConsumerForm
 from th_twitter.my_twitter import ServiceTwitter
 from django_th.tests.test_main import MainTest
+
+
+from twython import Twython
 
 cache = caches['th_twitter']
 
@@ -34,13 +37,14 @@ class TwitterTest(MainTest):
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
 
-    def create_twitter(self):
+    def create_twitter(self, tag='twitter', screen='@jondoe'):
         trigger = self.create_triggerservice(consumer_name='ServiceTwitter')
-        tag = 'twitter'
-        screen = '@johndoe'
         status = True
-        return Twitter.objects.create(tag=tag, screen=screen,
-                                      trigger=trigger, status=status)
+        return Twitter.objects.create(tag=tag,
+                                      screen=screen,
+                                      since_id=1,
+                                      trigger=trigger,
+                                      status=status)
 
     def test_twitter(self):
         t = self.create_twitter()
@@ -87,37 +91,60 @@ class ServiceTwitterTest(TwitterTest):
         self.trigger_id = 1
         self.service = ServiceTwitter(self.token)
 
-    def test_read_data(self):
+    @patch.object(Twython, 'search')
+    def test_read_data_tag(self, mock1):
+        t = self.create_twitter(tag='twitter', screen='')
+        search = {'count': 100,
+                  'q': 'twitter',
+                  'result_type': 'recent',
+                  'since_id': 1}
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
-                       'trigger_id': self.trigger_id,
-                       'model_name': 'Twitter'})
+                       'model_name': 'Twitter',
+                       'trigger_id': t.trigger_id})
 
-        # date_triggered = kwargs.get('date_triggered')
-        trigger_id = kwargs.get('trigger_id')
+        se = ServiceTwitter(self.token)
+        se.read_data(**kwargs)
+        mock1.assert_called_with(**search)
 
-        kwargs['model_name'] = 'Twitter'
+    @patch.object(Twython, 'get_user_timeline')
+    def test_read_data_screen(self, mock1):
+        search = {'count': 200, 'screen_name': 'johndoe', 'since_id': 1}
+        t = self.create_twitter(tag='', screen='johndoe')
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'model_name': 'Twitter',
+                       'trigger_id': t.trigger_id})
 
-        # filter_string = se.set_twitter_filter(date_triggered, self.ev)
-        # twitter_filter = se.set_note_filter(filter_string)
-        data = []
-        cache.set('th_twitter_' + str(trigger_id), data)
+        se = ServiceTwitter(self.token)
+        se.read_data(**kwargs)
+        mock1.assert_called_with(**search)
 
-        with patch.object(ServiceTwitter, 'read_data') as mock_read_data:
-            se = ServiceTwitter(self.token)
-            se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with(**kwargs)
-
-    def test_save_data(self):
+    @patch.object(Twython, 'update_status')
+    def test_save_data(self, mock1):
         token = self.token
         trigger_id = self.trigger_id
+        content = 'foobar #tag'
+        self.data['title'] = 'a title'
 
-        the_return = False
         self.assertTrue(token)
         self.assertTrue(isinstance(trigger_id, int))
         self.assertIn('text', self.data)
         self.assertNotEqual(self.data['text'], '')
 
-        self.service.save_data = MagicMock(name='save_data')
-        the_return = self.service.save_data(trigger_id, **self.data)
+        se = ServiceTwitter(self.token)
+        se.save_data(trigger_id, **self.data)
+        mock1.assert_called_once(status=content)
 
-        self.assertTrue(the_return)
+    def test_get_tag(self):
+        self.create_twitter()
+        se = ServiceTwitter(self.token)
+        my_tags = se.get_tags(self.trigger_id)
+        tags = ''
+        if len(my_tags) > 0:
+            # is there several tag ?
+            tags = ["#" + tag.strip() for tag in my_tags.split(',')
+                    ] if ',' in my_tags else "#" + my_tags
+
+            tags = str(','.join(tags)) if isinstance(tags, list) else tags
+            tags = ' ' + tags
+
+        self.assertIsInstance(tags, str)

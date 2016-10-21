@@ -17,9 +17,7 @@ from django.core.cache import caches
 from django_th.services.services import ServicesMgr
 from django_th.models import UserService, ServicesActivated, update_result
 from th_evernote.models import Evernote
-from th_evernote.evernote_mgr import create_note, set_notebook, get_notebook, \
-    set_header, set_tag, get_tag, set_note_attribute, set_note_footer, \
-    set_evernote_spec, set_note_filter
+from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.sanitize import sanitize
 
 """
@@ -86,7 +84,8 @@ class ServiceEvernote(ServicesMgr):
         filter_string = self.set_evernote_filter(date_triggered, trigger)
         evernote_filter = self.set_note_filter(filter_string)
         data = self.get_evernote_notes(evernote_filter)
-        cache.set('th_evernote_' + str(trigger_id), data)
+        if len(data):
+            cache.set('th_evernote_' + str(trigger_id), data)
 
         return data
 
@@ -111,12 +110,9 @@ class ServiceEvernote(ServicesMgr):
         data = []
 
         note_store = self.client.get_note_store()
-        our_note_list = note_store.findNotesMetadata(self.token,
-                                                     evernote_filter,
-                                                     0,
-                                                     100,
-                                                     set_evernote_spec()
-                                                     )
+        our_note_list = note_store.\
+            findNotesMetadata(self.token, evernote_filter,
+                              0, 100, EvernoteMgr.set_evernote_spec())
 
         for note in our_note_list.notes:
             whole_note = note_store.getNote(self.token,
@@ -169,7 +165,8 @@ class ServiceEvernote(ServicesMgr):
                 # its content
                 note = self._content(note, content)
                 # create a note
-                return create_note(note_store, note, trigger_id, data)
+                return EvernoteMgr.create_note(note_store, note,
+                                               trigger_id, data)
             else:
                 # so its note an evernote object, so something wrong happens
                 return note_store
@@ -215,17 +212,21 @@ class ServiceEvernote(ServicesMgr):
         note = Types.Note()
         if trigger.notebook:
             # get the notebookGUID ...
-            notebook_id = get_notebook(note_store, trigger.notebook)
+            notebook_id = EvernoteMgr.get_notebook(note_store,
+                                                   trigger.notebook)
             # create notebookGUID if it does not exist then return its id
-            note.notebookGuid = set_notebook(note_store,
-                                             trigger.notebook,
-                                             notebook_id)
+            note.notebookGuid = EvernoteMgr.set_notebook(note_store,
+                                                         trigger.notebook,
+                                                         notebook_id)
 
             if trigger.tag:
                 # ... and get the tagGUID if a tag has been provided
-                tag_id = get_tag(note_store, trigger.tag)
+                tag_id = EvernoteMgr.get_tag(note_store,
+                                             trigger.tag)
                 if tag_id is False:
-                    tag_id = set_tag(note_store, trigger.tag, tag_id)
+                    tag_id = EvernoteMgr.set_tag(note_store,
+                                                 trigger.tag,
+                                                 tag_id)
                     # set the tag to the note if a tag has been provided
                     note.tagGuids = tag_id
 
@@ -241,7 +242,7 @@ class ServiceEvernote(ServicesMgr):
         :return:
         """
         # attribute of the note: the link to the website
-        note_attribute = set_note_attribute(data)
+        note_attribute = EvernoteMgr.set_note_attribute(data)
         if note_attribute:
             note.attributes = note_attribute
         return note
@@ -256,7 +257,7 @@ class ServiceEvernote(ServicesMgr):
         :return: content string
         """
         # footer of the note
-        footer = set_note_footer(data, trigger)
+        footer = EvernoteMgr.set_note_footer(data, trigger)
         content += footer
         return content
 
@@ -268,7 +269,7 @@ class ServiceEvernote(ServicesMgr):
         :param content: content string to make the main body of the note
         :return:
         """
-        note.content = set_header()
+        note.content = EvernoteMgr.set_header()
         note.content += sanitize(content)
         return note
 
@@ -279,7 +280,7 @@ class ServiceEvernote(ServicesMgr):
         :param filter_string:
         :return: note filter object
         """
-        return set_note_filter(filter_string)
+        return EvernoteMgr.set_note_filter(filter_string)
 
     def get_evernote_client(self, token=None):
         """

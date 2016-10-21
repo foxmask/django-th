@@ -16,6 +16,11 @@ class MainTest(TestCase):
             self.user = User.objects.create_user(
                 username='john', email='john@doe.info', password='doe')
 
+    def create_wallabag(self, trigger):
+        return Wallabag.objects.create(trigger=trigger,
+                                       url='https://trigger-happy.eu',
+                                       tag='test', title='title test')
+
     def create_triggerservice(self, trigger_id=1, date_created="20130610",
                               description="My first Service", status=True,
                               consumer_name="ServiceWallabag",
@@ -44,10 +49,7 @@ class MainTest(TestCase):
                                                 date_created=date_created,
                                                 description=description,
                                                 status=status)
-
-        Wallabag.objects.create(trigger=trigger, url='https://trigger-happy.eu',
-                                tag='test', title='title test')
-
+        self.create_wallabag(trigger)
         return trigger
 
 

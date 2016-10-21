@@ -1,5 +1,5 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 
 from django.conf import settings
 from django.core.cache import caches
@@ -8,6 +8,7 @@ from django_th.tests.test_main import MainTest
 from th_evernote.models import Evernote
 from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
 from th_evernote.my_evernote import ServiceEvernote
+from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.sanitize import sanitize
 
 try:
@@ -102,22 +103,16 @@ class ServiceEvernoteTest(EvernoteTest):
 
     def test_read_data(self):
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
-                       'trigger_id': self.trigger_id,
-                       'model_name': 'Evernote'})
+                       'trigger_id': self.trigger_id})
 
-        trigger_id = kwargs.get('trigger_id')
-
-        kwargs['model_name'] = 'Evernote'
-
-        data = []
-        cache.set('th_evernote_' + str(trigger_id), data)
-
-        with patch.object(ServiceEvernote, 'read_data') as mock_read_data:
+        with patch.object(ServiceEvernote, 'get_evernote_notes') as mock_ev:
             se = ServiceEvernote(self.token)
             se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with(**kwargs)
+        mock_ev.assert_called_once()
 
-    def test_save_data(self):
+    @patch.object(ServiceEvernote, '_notestore')
+    @patch.object(EvernoteMgr, 'create_note')
+    def test_save_data(self, mock1, mock2):
         token = self.token
         trigger_id = self.trigger_id
 
@@ -131,10 +126,14 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertNotEqual(self.data['title'], '')
         self.assertIn('sandbox', settings.TH_EVERNOTE)
 
-        self.service.save_data = MagicMock(name='save_data')
-        the_return = self.service.save_data(trigger_id, **self.data)
+        # self.service.save_data = MagicMock(name='save_data')
+        # the_return = self.service.save_data(trigger_id, **self.data)
+        se = ServiceEvernote(self.token)
+        se.save_data(trigger_id, **self.data)
+        mock1.assert_called_once()
+        mock2.assert_called_once()
 
-        self.assertTrue(the_return)
+        # self.assertTrue(the_return)
 
     def test_get_config_th(self):
         """
