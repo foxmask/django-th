@@ -123,9 +123,14 @@ class ServiceTwitterTest(TwitterTest):
         self.create_twitter()
         token = self.token
         trigger_id = self.trigger_id
-        content = 'foobar #tag'
+
         self.data['title'] = 'a title'
         self.data['link'] = 'http://domain.ltd'
+
+        content = str("{title} {link}").format(
+            title=self.data.get('title'),
+            link=self.data.get('link'))
+        content += ' #twitter'
 
         self.assertTrue(token)
         self.assertTrue(isinstance(trigger_id, int))
@@ -134,4 +139,4 @@ class ServiceTwitterTest(TwitterTest):
 
         se = ServiceTwitter(self.token)
         se.save_data(trigger_id, **self.data)
-        mock1.assert_called_once(status=content)
+        mock1.assert_called_once_with(status=content)
