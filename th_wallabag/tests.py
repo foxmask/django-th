@@ -85,7 +85,7 @@ class ServiceWallabagTest(WallabagTest):
         with patch.object(ServiceWallabag, '_get_wall_data') as mock_read_data:
             se = ServiceWallabag(self.token)
             se.read_data(**kwargs)
-        mock_read_data.assert_called_once()
+        mock_read_data.assert_called_once_with()
 
     def test_save_data(self):
         kwargs = dict({'title': 'foobar', 'data': {}})
