@@ -120,10 +120,12 @@ class ServiceTwitterTest(TwitterTest):
 
     @patch.object(Twython, 'update_status')
     def test_save_data(self, mock1):
+        self.create_twitter()
         token = self.token
         trigger_id = self.trigger_id
         content = 'foobar #tag'
         self.data['title'] = 'a title'
+        self.data['link'] = 'http://domain.ltd'
 
         self.assertTrue(token)
         self.assertTrue(isinstance(trigger_id, int))
@@ -133,18 +135,3 @@ class ServiceTwitterTest(TwitterTest):
         se = ServiceTwitter(self.token)
         se.save_data(trigger_id, **self.data)
         mock1.assert_called_once(status=content)
-
-    def test_get_tag(self):
-        self.create_twitter()
-        se = ServiceTwitter(self.token)
-        my_tags = se.get_tags(self.trigger_id)
-        tags = ''
-        if len(my_tags) > 0:
-            # is there several tag ?
-            tags = ["#" + tag.strip() for tag in my_tags.split(',')
-                    ] if ',' in my_tags else "#" + my_tags
-
-            tags = str(','.join(tags)) if isinstance(tags, list) else tags
-            tags = ' ' + tags
-
-        self.assertIsInstance(tags, str)
