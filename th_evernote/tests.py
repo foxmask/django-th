@@ -10,7 +10,7 @@ from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
 from th_evernote.my_evernote import ServiceEvernote
 from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.sanitize import sanitize
-
+from evernote.api.client import EvernoteClient
 try:
     from unittest import mock
 except ImportError:
@@ -41,7 +41,7 @@ class EvernoteView(EvernoteTest):
 
     def test_evernote(self):
         ev = self.create_evernote()
-        self.assertTrue(isinstance(ev, Evernote))
+        self.assertIsInstance(ev, Evernote)
         self.assertEqual(ev.show(), "My Evernote {}".format(ev.title))
         self.assertEqual(ev.__str__(), ev.title)
 
@@ -105,19 +105,19 @@ class ServiceEvernoteTest(EvernoteTest):
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'trigger_id': self.trigger_id})
 
-        with patch.object(ServiceEvernote, 'get_evernote_notes') as mock_ev:
+        with patch.object(EvernoteClient, 'get_note_store') as mock_ev:
             se = ServiceEvernote(self.token)
             se.read_data(**kwargs)
-        mock_ev.assert_called_once()
+        mock_ev.assert_called_once_with()
 
-    @patch.object(ServiceEvernote, '_notestore')
+    @patch.object(EvernoteClient, 'get_note_store')
     @patch.object(EvernoteMgr, 'create_note')
     def test_save_data(self, mock1, mock2):
         token = self.token
         trigger_id = self.trigger_id
 
         self.assertTrue(token)
-        self.assertTrue(isinstance(trigger_id, int))
+        self.assertIsInstance(trigger_id, int)
         self.assertIn('content', self.data)
         self.assertIn('summary_detail', self.data)
         self.assertIn('description', self.data)
@@ -126,14 +126,10 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertNotEqual(self.data['title'], '')
         self.assertIn('sandbox', settings.TH_EVERNOTE)
 
-        # self.service.save_data = MagicMock(name='save_data')
-        # the_return = self.service.save_data(trigger_id, **self.data)
         se = ServiceEvernote(self.token)
         se.save_data(trigger_id, **self.data)
         mock1.assert_called_once()
         mock2.assert_called_once()
-
-        # self.assertTrue(the_return)
 
     def test_get_config_th(self):
         """
@@ -167,8 +163,6 @@ class ServiceEvernoteTest(EvernoteTest):
                                          consumer_secret=consumer_secret,
                                          sandbox=sandbox)
 
-        return client
-
     def test_auth(self):
         pass
 
@@ -188,3 +182,18 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertTrue("ftp" not in html)
         self.assertTrue("data-foobar" not in html)
         self.assertTrue("http" in html)
+
+    def test_set_header(self):
+        header = EvernoteMgr.set_header()
+        self.assertTrue('DOCTYPE en-note SYSTEM "http://xml.evernote.'
+                        'com/pub/enml2.dtd' in header)
+
+    def test_footer(self):
+        content = ''
+        se = ServiceEvernote(self.token)
+        footer = se._footer(self.ev, self.data, content)
+        self.assertIsInstance(footer, str)
+
+    def test_cleaning_content(self):
+        se = ServiceEvernote(self.token)
+        self.assertIsInstance(se._cleaning_content('foobar'), str)

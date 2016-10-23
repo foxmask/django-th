@@ -148,32 +148,27 @@ class ServiceEvernote(ServicesMgr):
         title, content = super(ServiceEvernote, self).save_data(trigger_id,
                                                                 **data)
 
-        if len(title):
-            # get the evernote data of this trigger
-            trigger = Evernote.objects.get(trigger_id=trigger_id)
-            # initialize notestore process
-            note_store = self._notestore(trigger_id, data)
-            if isinstance(note_store, evernote.api.client.Store):
-                # note object
-                note = self._notebook(trigger, note_store)
-                # its attributes
-                note = self._attributes(note, data)
-                # its footer
-                content = self._footer(trigger, data, content)
-                # its title
-                note.title = title if len(title) <= 255 else title[:255]
-                # its content
-                note = self._content(note, content)
-                # create a note
-                return EvernoteMgr.create_note(note_store, note,
-                                               trigger_id, data)
-            else:
-                # so its note an evernote object, so something wrong happens
-                return note_store
+        # get the evernote data of this trigger
+        trigger = Evernote.objects.get(trigger_id=trigger_id)
+        # initialize notestore process
+        note_store = self._notestore(trigger_id, data)
+        if isinstance(note_store, evernote.api.client.Store):
+            # note object
+            note = self._notebook(trigger, note_store)
+            # its attributes
+            note = self._attributes(note, data)
+            # its footer
+            content = self._footer(trigger, data, content)
+            # its title
+            note.title = title if len(title) <= 255 else title[:255]
+            # its content
+            note = self._content(note, content)
+            # create a note
+            return EvernoteMgr.create_note(note_store, note,
+                                           trigger_id, data)
         else:
-            logger.critical("no title provided "
-                            "for trigger ID {}".format(trigger_id))
-            return False
+            # so its note an evernote object, so something wrong happens
+            return note_store
 
     def _notestore(self, trigger_id, data):
         try:
