@@ -113,11 +113,8 @@ class ServiceEvernoteTest(EvernoteTest):
     @patch.object(EvernoteClient, 'get_note_store')
     @patch.object(EvernoteMgr, 'create_note')
     def test_save_data(self, mock1, mock2):
-        token = self.token
-        trigger_id = self.trigger_id
-
-        self.assertTrue(token)
-        self.assertIsInstance(trigger_id, int)
+        self.assertTrue(self.token)
+        self.assertIsInstance(self.trigger_id, int)
         self.assertIn('content', self.data)
         self.assertIn('summary_detail', self.data)
         self.assertIn('description', self.data)
@@ -127,7 +124,7 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertIn('sandbox', settings.TH_EVERNOTE)
 
         se = ServiceEvernote(self.token)
-        se.save_data(trigger_id, **self.data)
+        se.save_data(self.trigger_id, **self.data)
         mock1.assert_called_once()
         mock2.assert_called_once()
 
