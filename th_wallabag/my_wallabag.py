@@ -80,7 +80,7 @@ class ServiceWallabag(ServicesMgr):
         """
         self.date_triggered = arrow.get(kwargs.get('date_triggered'))
         self.trigger_id = kwargs.get('trigger_id')
-        self.user = kwargs.get('user') if kwargs.get('user') else ''
+        self.user = kwargs.get('user', '')
 
         responses = self._get_wall_data()
 

@@ -1,5 +1,6 @@
 # coding: utf-8
 from unittest.mock import patch
+import requests
 
 from django.conf import settings
 
@@ -9,6 +10,8 @@ from th_wallabag.models import Wallabag
 from th_wallabag.forms import WallabagProviderForm, WallabagConsumerForm
 from th_wallabag.my_wallabag import ServiceWallabag
 
+from wallabag_api.wallabag import Wallabag as Wall
+
 
 class WallabagTest(MainTest):
 
@@ -17,9 +20,6 @@ class WallabagTest(MainTest):
     """
 
     def setUp(self):
-        """
-           create a user
-        """
         super(WallabagTest, self).setUp()
         self.token = 'AZERTY1234'
         self.trigger_id = 1
@@ -74,22 +74,49 @@ class ServiceWallabagTest(WallabagTest):
         super(ServiceWallabagTest, self).setUp()
 
     def test_read_data(self):
+        self.create_triggerservice()
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
-                       'trigger_id': 1,
+                       'trigger_id': self.trigger_id,
+                       'user': self.user,
                        'model_name': 'Wallabag'})
-
-        kwargs['model_name'] = 'Wallabag'
-
         self.token = 'AZERTY1234'
 
-        with patch.object(ServiceWallabag, '_get_wall_data') as mock_read_data:
+        params = dict({'access_token': self.token,
+                       'archive': 0,
+                       'star': 0,
+                       'delete': 0,
+                       'sort': 'created',
+                       'order': 'desc',
+                       'page': 1,
+                       'perPage': 30,
+                       'tags': []})
+
+        with patch.object(requests, 'get') as mock_read_data:
+            mock_read_data.return_value.status_code = 200
             se = ServiceWallabag(self.token)
             se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with()
+        mock_read_data.assert_called_once_with('http://localhost/api'
+                                               '/entries.json', params=params)
+
+    def test_refresh_token(self):
+        self.create_triggerservice()
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'trigger_id': self.trigger_id,
+                       'user': self.user,
+                       'model_name': 'Wallabag'})
+        with patch.object(Wall, 'get_token') as mock_get_token:
+            se = ServiceWallabag(self.token, **kwargs)
+            se._refresh_token()
+        mock_get_token.assert_called_once_with(client_id='',
+                                               client_secret='',
+                                               host='http://localhost',
+                                               password='',
+                                               username='')
 
     def test_save_data(self):
-        kwargs = dict({'title': 'foobar', 'data': {}})
-        with patch.object(ServiceWallabag, 'save_data') as mock_save_data:
+        self.create_triggerservice()
+        kwargs = {'title': 'foobar', 'link': 'https://google.com'}
+        with patch.object(ServiceWallabag, 'new_wall') as mock_save_data:
             se = ServiceWallabag(self.token)
             se.save_data(self.trigger_id, **kwargs)
-        mock_save_data.assert_called_once_with(self.trigger_id, **kwargs)
+        mock_save_data.assert_called_once_with(self.token)

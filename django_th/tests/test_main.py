@@ -41,6 +41,7 @@ class MainTest(TestCase):
                                               name=service_provider)
         consumer = UserService.objects.create(user=user,
                                               token="AZERTY1234",
+                                              host='http://localhost',
                                               name=service_consumer)
         trigger = TriggerService.objects.create(id=trigger_id,
                                                 provider=provider,
