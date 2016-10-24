@@ -43,11 +43,6 @@
     :alt: License
 
 
-.. image:: http://img.shields.io/pypi/dm/django-th.svg
-   :target: https://pypi.python.org/pypi/django-th/
-   :alt: Downloads per month
-
-
 =============
 Trigger Happy
 =============
