@@ -1,6 +1,7 @@
 *.log
 *.pot
 *.pyc
+th_settings.py
 local_settings.py
 run.sh
 *.sqlite3*
