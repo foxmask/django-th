@@ -7,26 +7,35 @@ install_requires = [
     'arrow<0.7.0',
     'django-js-reverse==0.7.1',
     'django-redis==4.4.2',
-    'pytidylib==0.2.4',
-    'pypandoc==1.1.3',
     'requests-oauthlib==0.6.1',
+    'pypandoc==1.1.3',
     'flake8==2.5.4',
 ]
 
 extras_require_evernote = [
     'evernote3',
+    'pytidylib==0.2.4',
 ]
 extras_require_github = [
     'github3.py==1.0.0a4',
 ]
+extras_require_instapush = [
+    'instapush==0.1.2'
+]
+extras_require_pelican = [
+    'awesome-slugify==1.6.5',
+]
 extras_require_pocket = [
     'pocket==0.3.6',
+]
+extras_require_pushbullet = [
+    'pushbullet.py==0.10.0'
 ]
 extras_require_rss = [
     'feedparser==5.2.1',
 ]
-extras_require_search = [
-    'django-haystack==2.4.1',
+extras_require_todoist = [
+    'todoist-python==7.0',
 ]
 extras_require_trello = [
     'py-trello==0.5.0',
@@ -34,29 +43,24 @@ extras_require_trello = [
 extras_require_twitter = [
     'twython==3.4.0',
 ]
-extras_require_pelican = [
-    'awesome-slugify==1.6.5',
-]
 extras_require_wallabag = [
     'wallabag_api==1.1.0',
 ]
-extras_require_todoist = [
-    'todoist-python==7.0',
-]
-extras_require_pushbullet = [
-    'pushbullet.py==0.10.0'
-]
 
-extras_require_instapush = [
-    'instapush==0.1.2'
-]
 
-extras_require_all = extras_require_github\
-    + extras_require_pocket + extras_require_rss\
-    + extras_require_search + extras_require_trello + extras_require_twitter\
-    + extras_require_pelican + extras_require_wallabag\
-    + extras_require_evernote + extras_require_todoist\
-    + extras_require_pushbullet + extras_require_instapush
+extras_require_all = \
+    extras_require_evernote\
+    + extras_require_github\
+    + extras_require_instapush\
+    + extras_require_pelican\
+    + extras_require_pocket\
+    + extras_require_pushbullet\
+    + extras_require_rss\
+    + extras_require_todoist\
+    + extras_require_trello\
+    + extras_require_twitter\
+    + extras_require_wallabag
+
 
 setup(
     name='django_th',
@@ -88,15 +92,15 @@ setup(
         'all': extras_require_all,
         'evernote': extras_require_evernote,
         'github': extras_require_github,
+        'instapush': extras_require_instapush,
+        'pelican': extras_require_pelican,
         'pocket': extras_require_pocket,
+        'pushbullet': extras_require_pushbullet,
         'rss': extras_require_rss,
-        'search': extras_require_search,
+        'todoist': extras_require_todoist,
         'trello': extras_require_trello,
         'twitter': extras_require_twitter,
-        'pelican': extras_require_pelican,
         'wallabag': extras_require_wallabag,
-        'todoist': extras_require_todoist,
-        'pushbullet': extras_require_pushbullet,
     },
     include_package_data=True,
 )

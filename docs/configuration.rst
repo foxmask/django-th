@@ -45,18 +45,16 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         'django_th',
         'th_rss',
         # uncomment the lines to enable the service you need
-        # 'th_pocket',
-        # 'evernote',
         # 'th_evernote',
-        # 'th_twitter',
-        # 'th_holidays',
-        # 'th_trello',
         # 'th_github',
-        # 'th_pelican',
-        # 'th_wallabag',
-        # 'th_todoist',
+        # 'th_instapush',
+        # 'th_pelican',
+        # 'th_pocket',
         # 'th_pushbullet',
-
+        # 'th_todoist',
+        # 'th_trello',
+        # 'th_twitter',
+        'th_wallabag',
     )
 
 
@@ -71,12 +69,17 @@ TH_SERVICES is a list of the services, like for example,
 
     TH_SERVICES = (
         # uncomment the lines to enable the service you need
-        'th_rss.my_rss.ServiceRss',
-        # 'th_pocket.my_pocket.ServicePocket',
+        # uncomment the lines to enable the service you need
         # 'th_evernote.my_evernote.ServiceEvernote',
+        # 'th_github.my_github.ServiceGithub',
+        # 'th_instapush.my_instapush.ServiceInstapush',
+        # 'th_pelican.my_pelican.ServicePelican',
+        # 'th_pocket.my_pocket.ServicePocket',
+        # 'th_pushbullet.my_pushbullet.ServicePushbullet',
+        'th_rss.my_rss.ServiceRss',
+        # 'th_todoist.my_todoist.ServiceTodoist',
         # 'th_trello.my_trello.ServiceTrello',
         # 'th_twitter.my_twitter.ServiceTwitter',
-        # 'th_github.my_github.ServiceGithub',
         'th_wallabag.my_wallabag.ServiceWallabag',
     )
 
