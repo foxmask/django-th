@@ -345,6 +345,7 @@ except ImportError:
     raise ImportError("you should create a th_settings.py with "
                       "everything related to TriggerHappy, see th_settings_sample.py")
 
+
 SECRET_KEY = 'to be defined :P'
 
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'

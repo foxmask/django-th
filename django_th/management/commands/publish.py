@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.log import getLogger
 # trigger happy
 from django_th.models import TriggerService
-from django_th.publish import publishing
+from django_th.publish import Pub
 
 # create logger
 logger = getLogger('django_th.trigger_happy')
@@ -34,7 +34,8 @@ class Command(BaseCommand):
 
         try:
             with Pool(processes=settings.DJANGO_TH.get('processes')) as pool:
-                result = pool.map_async(publishing, trigger)
+                p = Pub()
+                result = pool.map_async(p.publishing, trigger)
                 result.get(timeout=360)
         except TimeoutError as e:
             logger.warn(e)

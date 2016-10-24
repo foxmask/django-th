@@ -143,12 +143,12 @@ class ServicePocket(ServicesMgr):
                 msg = "no link provided for trigger ID {}," \
                       " so we ignore it".format(trigger_id)
                 logger.warning(msg)
-                update_result(self.trigger_id, msg=msg)
+                update_result(trigger_id, msg=msg)
                 status = True
         else:
             msg = "no token provided for trigger ID {}".format(trigger_id)
             logger.critical(msg)
-            update_result(self.trigger_id, msg=msg)
+            update_result(trigger_id, msg=msg)
             status = False
         return status
 

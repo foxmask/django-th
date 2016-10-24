@@ -23,8 +23,15 @@ class Feeds(object):
             read the data from a given URL or path to a local file
         """
         data = feedparser.parse(self.URL_TO_PARSE, agent=self.USER_AGENT)
-        # invalid Feed
-        if data.bozo == 1:
-            data.entries = ''
+
+        # when chardet says
+        # >>> chardet.detect(data)
+        # {'confidence': 0.99, 'encoding': 'utf-8'}
+        # bozo says sometimes
+        # >>> data.bozo_exception
+        # CharacterEncodingOverride('document declared as us-ascii, but parsed as utf-8', )  # invalid Feed
+        # so I remove this detection :(
+        # if data.bozo == 1:
+        #     data.entries = ''
 
         return data

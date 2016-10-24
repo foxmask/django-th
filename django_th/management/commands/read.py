@@ -8,7 +8,7 @@ from django.conf import settings
 from django.utils.log import getLogger
 # trigger happy
 from django_th.models import TriggerService
-from django_th.read import reading
+from django_th.read import Read
 
 # create logger
 logger = getLogger('django_th.trigger_happy')
@@ -34,7 +34,8 @@ class Command(BaseCommand):
 
         try:
             with Pool(processes=settings.DJANGO_TH.get('processes')) as pool:
-                result = pool.map_async(reading, trigger)
+                r = Read()
+                result = pool.map_async(r.reading, trigger)
                 result.get(timeout=360)
         except TimeoutError as e:
             logger.warn(e)

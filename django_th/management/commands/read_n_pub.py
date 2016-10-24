@@ -8,8 +8,8 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 # trigger happy
 from django_th.models import TriggerService
-from django_th.read import reading
-from django_th.publish import publishing
+from django_th.read import Read
+from django_th.publish import Pub
 
 # create logger
 logger = getLogger('django_th.trigger_happy')
@@ -36,9 +36,11 @@ class Command(BaseCommand):
         ).select_related('consumer__name', 'provider__name')
         try:
             with Pool(processes=1) as pool:
-                result = pool.map_async(reading, trigger)
+                r = Read()
+                result = pool.map_async(r.reading, trigger)
                 result.get(timeout=360)
-                result = pool.map_async(publishing, trigger)
+                p = Pub()
+                result = pool.map_async(p.publishing, trigger)
                 result.get(timeout=360)
 
                 cache.delete('django_th' + '_fire_trigger_' + str(trigger_id))
