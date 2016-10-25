@@ -1,8 +1,10 @@
 # coding: utf-8
 import unittest
 import uuid
+
 from django.test import RequestFactory, Client
 from django.core.cache import caches
+
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView, TriggerListView
 from django_th.views_fbv import can_modify_trigger, trigger_on_off, \
@@ -111,7 +113,12 @@ class ViewFunction(MainTest):
         self.assertTrue(response.status_code, 200)
 
     def test_fire_trigger(self):
-        self.create_triggerservice()
+        service = self.create_triggerservice()
+        name = 'TriggerHappy RSS'
+        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
+        status = True
+        Rss.objects.create(uuid=uuid.uuid4(), url=url, name=name,
+                           trigger=service, status=status)
         cache.set('django_th_fire_trigger_1', '*')
         response = fire_trigger(self.request, 1)
         self.assertTrue(response.status_code, 200)

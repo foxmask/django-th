@@ -91,10 +91,8 @@ class ServiceTodoist(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        kwargs = {}
-
         title, content = super(ServiceTodoist, self).save_data(trigger_id,
-                                                               data, **kwargs)
+                                                               **data)
 
         if self.token:
             if title or content or \

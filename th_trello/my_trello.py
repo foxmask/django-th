@@ -75,6 +75,7 @@ class ServiceTrello(ServicesMgr):
         trigger_id = kwargs.get('trigger_id')
         data = list()
         cache.set('th_trello_' + str(trigger_id), data)
+        return data
 
     def save_data(self, trigger_id, **data):
         """

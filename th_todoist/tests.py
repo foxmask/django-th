@@ -1,5 +1,6 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
+from todoist.api import TodoistAPI
 
 from django.conf import settings
 
@@ -79,10 +80,10 @@ class TodoistTest(MainTest):
                        'trigger_id': self.trigger_id,
                        'model_name': 'Todoist'})
 
-        with patch.object(ServiceTodoist, 'read_data') as mock_read_data:
+        with patch.object(TodoistAPI, 'sync') as mock_read_data:
             se = ServiceTodoist(self.token)
             se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with(**kwargs)
+        mock_read_data.assert_called_once_with()
 
     def test_save_data(self):
         """
@@ -92,11 +93,12 @@ class TodoistTest(MainTest):
         data = {'link': 'http://foo.bar/some/thing/else/what/else',
                 'title': 'what else',
                 'content': 'foobar'}
-
-        self.service.save_data = MagicMock(name='save_data')
-        the_return = self.service.save_data(self.trigger_id, **data)
-
-        self.assertTrue(the_return)
+        content = data['title'] + ' ' + data['content'] + ' ' + data['link']
+        print(content)
+        with patch.object(TodoistAPI, 'add_item') as mock_save_data:
+            se = ServiceTodoist(self.token)
+            se.save_data(self.trigger_id, **data)
+        mock_save_data.assert_called_once_with(content)
 
     def test_get_config_th_cache(self):
         self.assertIn('th_todoist', settings.CACHES)

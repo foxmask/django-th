@@ -1,5 +1,6 @@
 # coding: utf-8
 from unittest.mock import patch
+from trello import TrelloClient
 
 from django.conf import settings
 
@@ -11,6 +12,19 @@ from th_trello.my_trello import ServiceTrello
 
 
 class TrelloTest(MainTest):
+
+    def create_trello(self):
+        trigger = self.create_triggerservice(consumer_name='ServiceTrello')
+        board_name = 'Trigger Happy'
+        list_name = 'To Do'
+        status = True
+        return Trello.objects.create(trigger=trigger,
+                                     board_name=board_name,
+                                     list_name=list_name,
+                                     status=status)
+
+
+class TrelloModelAndFormTest(TrelloTest):
 
     """
         TrelloTest Model
@@ -39,16 +53,6 @@ class TrelloTest(MainTest):
         th_service = ('th_trello.my_trello.ServiceTrello',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
-
-    def create_trello(self):
-        trigger = self.create_triggerservice(consumer_name='ServiceTrello')
-        board_name = 'Trigger Happy'
-        list_name = 'To Do'
-        status = True
-        return Trello.objects.create(trigger=trigger,
-                                     board_name=board_name,
-                                     list_name=list_name,
-                                     status=status)
 
     def test_trello(self):
         t = self.create_trello()
@@ -97,16 +101,43 @@ class TrelloTest(MainTest):
         self.assertTrue(type(data) is list)
         self.assertTrue('trigger_id' in kwargs)
 
-    def test_save_data(self):
+
+class ServiceTrelloTest(TrelloTest):
+
+    def setUp(self):
         """
-           Test if the creation of the Trello object looks fine
+           create a user
+        """
+        super(ServiceTrelloTest, self).setUp()
+
+        self.token = 'AZERTY123#TH#FOOBAR'
+        self.trigger_id = 1
+
+    def test_read_data(self):
+        """
+           Test if the reading of the Trello object looks fine
         """
         self.create_trello()
         data = {'link': 'http://foo.bar/some/thing/else/what/else',
                 'title': 'what else',
                 'content': 'foobar'}
 
-        with patch.object(ServiceTrello, 'save_data') as mock_save_data:
-            se = ServiceTrello(self.token)
-            se.save_data(self.trigger_id, **data)
-        mock_save_data.assert_called_once_with(self.trigger_id, **data)
+        se = ServiceTrello(self.token)
+        data = se.read_data(**data)
+        self.assertIsInstance(data, list)
+
+    def test_save_data(self):
+        """
+           Test if the creation of the Trello object looks fine
+        """
+        t = self.create_trello()
+        data = {'link': 'http://foo.bar/some/thing/else/what/else',
+                'title': 'what else',
+                'content': 'foobar'}
+
+        with patch.object(TrelloClient, 'add_board') as mock_save_data2:
+            with patch.object(TrelloClient, 'list_boards') as mock_save_data:
+                se = ServiceTrello(self.token)
+                se.save_data(self.trigger_id, **data)
+            mock_save_data.assert_called_once_with()
+        mock_save_data2.assert_called_once_with(t.board_name)

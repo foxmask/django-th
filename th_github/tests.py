@@ -1,5 +1,6 @@
 # coding: utf-8
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, PropertyMock
+from github3 import GitHub
 
 from django.conf import settings
 from django.core.cache import caches
@@ -28,6 +29,9 @@ class GithubTest(MainTest):
                                      status=status,
                                      repo=repo,
                                      project=project)
+
+
+class GithubModelAndFormTest(GithubTest):
 
     def test_github(self):
         """
@@ -97,33 +101,36 @@ class ServiceGithubTest(GithubTest):
     """
     def setUp(self):
         super(ServiceGithubTest, self).setUp()
-        self.data = {'content': 'this is the body of the issue;)',
+        self.data = {'content': 'this is the content of the issue;)',
                      'summary_detail': 'a nice issue ;)',
                      'title': 'a nice issue ;)',
-                     'description': 'this is the body of the issue'}
+                     'description': 'this is the description of the issue'}
         self.token = 'QWERTY123#TH#12345'
         self.trigger_id = 1
         self.service = ServiceGithub(self.token)
 
     def test_read_data(self):
+        self.create_github()
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'trigger_id': self.trigger_id,
                        'model_name': 'Github'})
 
-        # date_triggered = kwargs.get('date_triggered')
         trigger_id = kwargs.get('trigger_id')
-
-        kwargs['model_name'] = 'Github'
 
         data = []
         cache.set('th_github_' + str(trigger_id), data)
 
-        with patch.object(ServiceGithub, 'read_data') as mock_read_data:
-            se = ServiceGithub(self.token)
-            se.read_data(**kwargs)
-        mock_read_data.assert_called_once_with(**kwargs)
+        with patch('github3.GitHub.ratelimit_remaining',
+                   new_callable=PropertyMock) as mock_read_data:
+            mock_read_data.return_value = 2
+            with patch.object(GitHub, 'issues_on') as mock_read_data2:
+                se = ServiceGithub(self.token)
+                se.read_data(**kwargs)
+                mock_read_data2.assert_called_once()
+        mock_read_data.assert_called_once()
 
     def test_save_data(self):
+        g = self.create_github()
         token = self.token
         trigger_id = self.trigger_id
 
@@ -135,7 +142,14 @@ class ServiceGithubTest(GithubTest):
         self.assertIn('title', self.data)
         self.assertNotEqual(self.data['title'], '')
 
-        self.service.save_data = MagicMock(name='save_data')
-        the_return = self.service.save_data(trigger_id, **self.data)
-
-        self.assertTrue(the_return)
+        with patch('github3.GitHub.ratelimit_remaining',
+                   new_callable=PropertyMock) as mock_save_data:
+            mock_save_data.return_value = 2
+            with patch.object(GitHub, 'create_issue') as mock_save_data2:
+                se = ServiceGithub(self.token)
+                se.save_data(self.trigger_id, **self.data)
+            mock_save_data2.assert_called_once_with(g.repo,
+                                                    g.project,
+                                                    self.data['title'],
+                                                    self.data['content'])
+        mock_save_data.assert_called_once_with()
