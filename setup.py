@@ -8,7 +8,7 @@ install_requires = [
     'django-js-reverse==0.7.1',
     'django-redis==4.4.2',
     'requests-oauthlib==0.6.1',
-    'pypandoc==1.1.3',
+    'pypandoc==1.2.0',
     'flake8==2.5.4',
 ]
 
