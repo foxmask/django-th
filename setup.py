@@ -2,19 +2,19 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django<1.9a',
+    'Django==1.8.15',
     'django-formtools==1.0',
-    'arrow<0.7.0',
-    'django-js-reverse==0.7.1',
-    'django-redis==4.4.2',
-    'requests-oauthlib==0.6.1',
-    'pypandoc==1.2.0',
-    'flake8==2.5.4',
+    'arrow==0.8.0',
+    'django-js-reverse==0.7.2',
+    'django-redis==4.6.0',
+    'requests-oauthlib==0.7.0',
+    'pypandoc==1.3.3',
+    'flake8==3.0.4',
 ]
 
 extras_require_evernote = [
     'evernote3',
-    'pytidylib==0.2.4',
+    'pytidylib==0.3.1',
 ]
 extras_require_github = [
     'github3.py==1.0.0a4',
@@ -35,10 +35,10 @@ extras_require_rss = [
     'feedparser==5.2.1',
 ]
 extras_require_todoist = [
-    'todoist-python==7.0',
+    'todoist-python==7.0.13',
 ]
 extras_require_trello = [
-    'py-trello==0.5.0',
+    'py-trello==0.6.1',
 ]
 extras_require_twitter = [
     'twython==3.4.0',
@@ -68,7 +68,9 @@ setup(
     description='Trigger Happy - take the control of your data '
                 'with this bridge between your internet services',
     author='FoxMaSk',
+    maintainer='FoxMaSk',
     author_email='foxmask@trigger-happy.eu',
+    maintainer_email='foxmask@trigger-happy.eu',
     url='https://github.com/foxmask/django-th',
     download_url="https://github.com/foxmask/django-th/"
                  "archive/trigger-happy-" + version + ".zip",

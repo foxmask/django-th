@@ -9,19 +9,28 @@ recursive-include th_evernote *.html
 recursive-include th_evernote/templates *
 recursive-include th_evernote/migrations *
 
-recursive-include th_holidays *.html
-recursive-include th_holidays/templates *
-recursive-include th_holidays/migrations *
+recursive-include th_instapush *.html
+recursive-include th_instapush/templates *
+recursive-include th_instapush/migrations *
+
+recursive-include th_pelican *.html
+recursive-include th_pelican/templates *
+recursive-include th_pelican/migrations *
 
 recursive-include th_pocket *.html
 recursive-include th_pocket/templates *
 recursive-include th_pocket/migrations *
 
+recursive-include th_pushbullet *.html
+recursive-include th_pushbullet/templates *
+recursive-include th_pushbullet/migrations *
+
 recursive-include th_rss *.html
 recursive-include th_rss/templates *
 
-recursive-include th_search *.html
-recursive-include th_search/templates *
+recursive-include th_todoist *.html
+recursive-include th_todoist/templates *
+recursive-include th_todoist/migrations *
 
 recursive-include th_trello *.html
 recursive-include th_trello/templates *
@@ -31,25 +40,9 @@ recursive-include th_twitter *.html
 recursive-include th_twitter/templates *
 recursive-include th_twitter/migrations *
 
-recursive-include th_pelican *.html
-recursive-include th_pelican/templates *
-recursive-include th_pelican/migrations *
-
 recursive-include th_wallabag *.html
 recursive-include th_wallabag/templates *
 recursive-include th_wallabag/migrations *
-
-recursive-include th_pushbullet *.html
-recursive-include th_pushbullet/templates *
-recursive-include th_pushbullet/migrations *
-
-recursive-include th_instapush *.html
-recursive-include th_instapush/templates *
-recursive-include th_instapush/migrations *
-
-recursive-include th_todoist *.html
-recursive-include th_todoist/templates *
-recursive-include th_todoist/migrations *
 
 recursive-exclude * __pycache__
 recursive-exclude * *.py[co]
