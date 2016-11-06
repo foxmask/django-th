@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django==1.8.15',
+    'Django==1.8.16',
     'django-formtools==1.0',
     'arrow==0.8.0',
     'django-js-reverse==0.7.2',
@@ -76,7 +76,7 @@ setup(
                  "archive/trigger-happy-" + version + ".zip",
     packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
