@@ -49,7 +49,7 @@ just clone [django-th-ansible](https://github.com/foxmask/django-th-ansible), mo
 some explanation on the labels of the issues
 
 * **up-for-grabs** : for new users that have never been involved in any other opensource project
-* **start-with-label** : this label tells you that you can start the module by cloning the django-th-dummy moduly
+* **ansible** : this label tells you that you can start the new module very quickly by cloning the [django-th-ansible](https://github.com/foxmask/django-th-ansible) module
 * **easy** : this label tells you this issue is easy to fix
 * **middle** : this label tells you this issue is not complicate to fix, just take a little more time
 * **hard** : this label tells you this issue need you to know the core of the projet or a knwoledge of a new lib
