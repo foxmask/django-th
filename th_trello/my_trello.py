@@ -149,7 +149,7 @@ class ServiceTrello(ServicesMgr):
         else:
             sentence = "no token or link provided for trigger ID " \
                        "{}".format(trigger_id)
-            update_result(trigger_id, msg=sentence)
+            update_result(trigger_id, msg=sentence, status=False)
             status = False
 
         return status

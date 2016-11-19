@@ -30,7 +30,10 @@ class Pub(object):
         """
         now = arrow.utcnow().to(settings.TIME_ZONE).format(
             'YYYY-MM-DD HH:mm:ssZZ')
-        TriggerService.objects.filter(id=service.id).update(date_triggered=now)
+        TriggerService.objects.filter(id=service.id).update(date_triggered=now,
+                                                            consumer_failed=0,
+                                                            provider_failed=0,
+                                                            )
 
     def log_update(self, service, to_update, status, count):
         """
@@ -47,11 +50,11 @@ class Pub(object):
         if to_update:
             if status:
                 msg = "{} - {} new data".format(service, count)
-                update_result(service.id, msg="OK")
+                update_result(service.id, msg="OK", status=status)
                 logger.info(msg)
             else:
                 msg = "{} AN ERROR OCCURS ".format(service)
-                update_result(service.id, msg=msg)
+                update_result(service.id, msg=msg, status=status)
                 logger.warn(msg)
         else:
             logger.debug("{} nothing new ".format(service))

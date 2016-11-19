@@ -118,7 +118,7 @@ class ServiceTwitter(ServicesMgr):
                     statuses = self.twitter_api.get_user_timeline(**search)
                 except TwythonAuthError as e:
                     logger.error(e.msg, e.error_code)
-                    update_result(trigger_id, msg=e.msg)
+                    update_result(trigger_id, msg=e.msg, status=False)
 
             return count, search, statuses
 
@@ -204,7 +204,7 @@ class ServiceTwitter(ServicesMgr):
                 status = True
             except Exception as inst:
                 logger.critical("Twitter ERR {}".format(inst))
-                update_result(trigger_id, msg=inst)
+                update_result(trigger_id, msg=inst, status=False)
                 status = False
         return status
 

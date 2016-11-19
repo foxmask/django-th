@@ -29,7 +29,9 @@ class Command(BaseCommand):
             status=True,
             user__is_active=True,
             provider__name__status=True,
-            consumer__name__status=True
+            consumer__name__status=True,
+            provider_failed__lt=settings.DJANGO_TH.get('failed_tries', 10),
+            consumer_failed__lt=settings.DJANGO_TH.get('failed_tries', 10),
         ).select_related('consumer__name', 'provider__name')
 
         try:

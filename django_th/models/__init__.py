@@ -1,8 +1,12 @@
 # coding: utf-8
-from django.db import models
+
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+
+from django_th.tools import warn_user_and_admin
 
 
 class ServicesActivated(models.Model):
@@ -77,6 +81,8 @@ class TriggerService(models.Model):
     status = models.BooleanField(default=False)
     result = models.CharField(max_length=255, default='')
     date_result = models.DateTimeField(auto_now=True, null=True)
+    provider_failed = models.IntegerField(db_index=True, default=0)
+    consumer_failed = models.IntegerField(db_index=True, default=0)
 
     def show(self):
         """
@@ -95,11 +101,28 @@ class TriggerService(models.Model):
                                       self.description)
 
 
-def update_result(trigger_id, msg):
+def update_result(trigger_id, msg, status):
     """
     :param trigger_id: trigger id
     :param msg: result msg
+    :param status: status of the handling of the current trigger
     :return:
     """
-    TriggerService.objects.filter(id=trigger_id).update(result=msg,
-                                                        date_result=now())
+    # if status is True, reset *_failed counter
+    if status:
+        TriggerService.objects.filter(id=trigger_id).update(result=msg,
+                                                            date_result=now(),
+                                                            provider_failed=0,
+                                                            consumer_failed=0)
+    # otherwise, add 1 to the consumer_failed
+    else:
+        service = TriggerService.objects.get(id=trigger_id)
+        failed = service.consumer_failed + 1
+        if failed > settings.DJANGO_TH.get('failed_tries', 10):
+            TriggerService.objects.filter(id=trigger_id).\
+                update(result=msg, date_result=now(), status=False)
+        else:
+            TriggerService.objects.filter(id=trigger_id).\
+                update(result=msg, date_result=now(), consumer_failed=failed)
+
+        warn_user_and_admin('consumer', service)

@@ -6,9 +6,12 @@ import arrow
 # django
 from django.utils.log import getLogger
 from django.conf import settings
+from django.utils.timezone import now
 
 # trigger happy
 from django_th.services import default_provider
+from django_th.models import TriggerService
+from django_th.tools import warn_user_and_admin
 
 logger = getLogger('django_th.trigger_happy')
 
@@ -27,6 +30,22 @@ class Read(object):
         getattr(service_provider, '__init__')(kwargs.get('token'))
         return getattr(service_provider, 'read_data')(**kwargs)
 
+    def is_ceil_reached(self, service):
+        """
+            check if the ceil of nb of tries is reached
+        :param service:
+        :return:
+        """
+        failed = service.provider_failed + 1
+        if failed > settings.DJANGO_TH.get('failed_tries', 10):
+            TriggerService.objects.filter(id=service.id).\
+                update(date_result=now(), status=False)
+        else:
+            TriggerService.objects.filter(id=service.id).\
+                update(date_result=now(), provider_failed=failed)
+
+        warn_user_and_admin('provider', service)
+
     def reading(self, service):
         """
            get the data from the service and put theme in cache
@@ -35,9 +54,6 @@ class Read(object):
         """
         now = arrow.utcnow().to(settings.TIME_ZONE).format(
             'YYYY-MM-DD HH:mm:ssZZ')
-        # flag to know if we have to update
-        to_update = False
-
         # counting the new data to store to display them in the log
         # provider - the service that offer data
         provider_token = service.provider.token
@@ -55,10 +71,10 @@ class Read(object):
                   'trigger_id': service.id,
                   'date_triggered': date_triggered}
         data = self.provider(service_provider, **kwargs)
-        # counting the new data to store to display them in the log
-        count_new_data = len(data) if data else 0
-        if count_new_data > 0:
-            to_update = True
 
-        if to_update:
-            logger.info("{} - {} new data".format(service, count_new_data))
+        if data:
+            if len(data) > 0:
+                logger.info("{} - {} new data".format(service, len(data)))
+        else:
+            # if data is False, something went wrong
+            self.is_ceil_reached(service)

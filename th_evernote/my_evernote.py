@@ -186,15 +186,15 @@ class ServiceEvernote(ServicesMgr):
                 cache.set('th_evernote_' + str(trigger_id),
                           data,
                           version=2)
-                update_result(trigger_id, msg=sentence)
+                update_result(trigger_id, msg=sentence, status=True)
                 return True
             else:
                 logger.critical(e)
-                update_result(trigger_id, msg=e)
+                update_result(trigger_id, msg=e, status=False)
                 return False
         except Exception as e:
             logger.critical(e)
-            update_result(trigger_id, msg=e)
+            update_result(trigger_id, msg=e, status=False)
             return False
 
     @staticmethod
@@ -223,7 +223,8 @@ class ServiceEvernote(ServicesMgr):
                                                  trigger.tag,
                                                  tag_id)
                     # set the tag to the note if a tag has been provided
-                    note.tagGuids = tag_id
+                    if tag_id:
+                        note.tagGuids = tag_id
 
             logger.debug("notebook that will be used %s", trigger.notebook)
         return note

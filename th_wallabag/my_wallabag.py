@@ -99,7 +99,7 @@ class ServiceWallabag(ServicesMgr):
                 cache.set('th_wallabag_' + str(self.trigger_id), data)
         except Exception as e:
                 logger.critical(e)
-                update_result(self.trigger_id, msg=e)
+                update_result(self.trigger_id, msg=e, status=False)
         return data
 
     def new_wall(self, token):
@@ -145,7 +145,7 @@ class ServiceWallabag(ServicesMgr):
                     logger.critical('issue with something else that a token'
                                     ' link ? : {}'.format(data.get('link')))
                     logger.critical(e.errno, e.strerror)
-                    update_result(self.trigger_id, msg=e)
+                    update_result(self.trigger_id, msg=e, status=False)
                     status = False
         else:
             status = True  # we ignore empty link
@@ -184,7 +184,7 @@ class ServiceWallabag(ServicesMgr):
         except Exception as e:
             logger.critical('could not create a post link ? : {}'.format(link))
             logger.critical(e)
-            update_result(self.trigger_id, msg=e)
+            update_result(self.trigger_id, msg=e, status=False)
             status = False
         return status
 
