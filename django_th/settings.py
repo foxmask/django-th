@@ -124,10 +124,13 @@ INSTALLED_APPS = (
     # 'th_pelican',
     # 'th_pocket',
     # 'th_pushbullet',
+    # 'th_slack',
+    # 'th_taiga',
     # 'th_todoist',
     # 'th_trello',
     # 'th_twitter',
     'th_wallabag',
+
 )
 
 TEMPLATES = [
@@ -271,6 +274,26 @@ CACHES = {
     'th_rss':
     {
         'TIMEOUT': 500,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/6",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    },
+    # Slack
+    'th_slack':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/6",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+},
+    # Taiga
+    'th_taiga':
+    {
+        'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/6",
         "OPTIONS": {
