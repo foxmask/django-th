@@ -16,3 +16,4 @@ django_th.egg-info/
 admin
 .tox
 build
+th_tox
