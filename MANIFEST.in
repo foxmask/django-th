@@ -1,4 +1,4 @@
-exclude django_th/local_settings.py manage.py
+exclude django_th/local_settings.py manage.py django_th/settigngs_docker.py requirements-docker.txt Dockerfile docker-compose.yml
 include *.txt *.rst 
 
 recursive-include django_th *.html *.png *.css *.gif *.jpg *.jpeg
