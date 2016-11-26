@@ -1,0 +1,9 @@
+version: '2'
+services:
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000 --settings=django_th.settings_docker
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
