@@ -11,6 +11,30 @@ class Taiga(Services):
     webhook_secret_key = models.CharField(max_length=50,
                                           blank=True,
                                           unique=True)
+
+    notify_epic_create = models.BooleanField(default=True)
+    notify_epic_change = models.BooleanField(default=True)
+    notify_epic_delete = models.BooleanField(default=True)
+
+    notify_relateduserstory_create = models.BooleanField(default=True)
+    notify_relateduserstory_delete = models.BooleanField(default=True)
+
+    notify_issue_create = models.BooleanField(default=True)
+    notify_issue_change = models.BooleanField(default=True)
+    notify_issue_delete = models.BooleanField(default=True)
+
+    notify_userstory_create = models.BooleanField(default=True)
+    notify_userstory_change = models.BooleanField(default=True)
+    notify_userstory_delete = models.BooleanField(default=True)
+
+    notify_task_create = models.BooleanField(default=True)
+    notify_task_change = models.BooleanField(default=True)
+    notify_task_delete = models.BooleanField(default=True)
+
+    notify_wikipage_create = models.BooleanField(default=True)
+    notify_wikipage_change = models.BooleanField(default=True)
+    notify_wikipage_delete = models.BooleanField(default=True)
+
     trigger = models.ForeignKey('TriggerService')
 
     class Meta:

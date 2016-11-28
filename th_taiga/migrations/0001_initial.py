@@ -14,12 +14,30 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Taiga',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('status', models.BooleanField(default=False)),
                 ('description', models.CharField(max_length=255)),
-                ('project_name', models.CharField(max_length=50)),
-                ('webhook_secret_key', models.CharField(max_length=50)),
+                ('project_name', models.CharField(max_length=50, blank=True)),
+                ('webhook_secret_key', models.CharField(max_length=50, unique=True, blank=True)),
+                ('notify_epic_create', models.BooleanField(default=True)),
+                ('notify_epic_change', models.BooleanField(default=True)),
+                ('notify_epic_delete', models.BooleanField(default=True)),
+                ('notify_relateduserstory_create', models.BooleanField(default=True)),
+                ('notify_relateduserstory_delete', models.BooleanField(default=True)),
+                ('notify_issue_create', models.BooleanField(default=True)),
+                ('notify_issue_change', models.BooleanField(default=True)),
+                ('notify_issue_delete', models.BooleanField(default=True)),
+                ('notify_userstory_create', models.BooleanField(default=True)),
+                ('notify_userstory_change', models.BooleanField(default=True)),
+                ('notify_userstory_delete', models.BooleanField(default=True)),
+                ('notify_task_create', models.BooleanField(default=True)),
+                ('notify_task_change', models.BooleanField(default=True)),
+                ('notify_task_delete', models.BooleanField(default=True)),
+                ('notify_wikipage_create', models.BooleanField(default=True)),
+                ('notify_wikipage_change', models.BooleanField(default=True)),
+                ('notify_wikipage_delete', models.BooleanField(default=True)),
+                ('trigger', models.ForeignKey(to='django_th.TriggerService')),
             ],
             options={
                 'db_table': 'django_th_taiga',
@@ -31,3 +49,5 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(to='django_th.TriggerService'),
         ),
     ]
+
+
