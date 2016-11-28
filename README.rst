@@ -55,6 +55,11 @@ automatically create a note on your Evernote account or create a bookmark to
 your own Wallabag or Pocket account and so on.
 
 
+.. image:: https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg
+    :target: https://saythanks.io/to/foxmask
+    :alt: Say thanks to foxmask
+
+
 Description
 ===========
 
