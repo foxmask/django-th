@@ -48,15 +48,20 @@ class ServiceSlack(ServicesMgr):
             :rtype: dict
         """
         status = False
-        slack = Slack.objects.get(trigger_id=trigger_id)
-        title = self.set_title(data)
         service = TriggerService.objects.get(id=trigger_id)
+        desc = service.description
+
+        slack = Slack.objects.get(trigger_id=trigger_id)
+
+        title = data.get('subject')
+        type_action = data.get('type_action')
+
         # set the bot username of Slack to the name of the
         # provider service
         username = service.provider.name.name.split('Service')[1]
         # 'build' a link
-        title_link = '<' + data.get('link') + '|' + title + '>'
-        data = service.description + ': ' + title_link
+        title_link = '<' + data.get('permalink') + '|' + title + '>'
+        data = '*' + desc + '*: ' + type_action + ': ' + title_link
 
         payload = {'username': username,
                    'text': data}
