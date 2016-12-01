@@ -7,7 +7,10 @@ class Slack(Services):
     """
         Model for Slack Service
     """
-    webhook_url = models.URLField(max_length=2000)
+    webhook_url = models.URLField(max_length=2000, blank=True, null=True)
+    slack_token = models.CharField(max_length=2000, blank=True, null=True)
+    team_id = models.CharField(max_length=100, blank=True, null=True)
+    channel = models.CharField(max_length=100, blank=True, null=True)
     trigger = models.ForeignKey('TriggerService')
 
     class Meta:

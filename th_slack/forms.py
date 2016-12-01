@@ -16,8 +16,14 @@ class SlackForm(forms.ModelForm):
 
 
 class SlackProviderForm(SlackForm):
-    pass
+
+    class Meta:
+        model = Slack
+        fields = ('team_id', 'slack_token', 'channel')
 
 
 class SlackConsumerForm(SlackForm):
-    pass
+
+    class Meta:
+        model = Slack
+        fields = ('webhook_url', )

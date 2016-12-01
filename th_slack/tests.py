@@ -17,6 +17,9 @@ class SlackTest(MainTest):
         status = True
         return Slack.objects.create(name=name,
                                     webhook_url=url,
+                                    channel='triggerhappy',
+                                    team_id='A0001',
+                                    slack_token='ADEPARTPOUSANSSUR',
                                     trigger=trigger,
                                     status=status)
 
@@ -43,13 +46,12 @@ class SlackFormTest(SlackTest):
 
     def test_valid_provider_form(self):
         r = self.create_slack()
-        data = {'webhook_url': r.webhook_url}
+        data = {'webhook_url': r.webhook_url,
+                'channel': r.channel,
+                'team_id': r.team_id,
+                'slack_token': r.slack_token}
         form = SlackConsumerForm(data=data)
         self.assertTrue(form.is_valid())
-
-    def test_invalid_provider_form(self):
-        form = SlackConsumerForm(data={})
-        self.assertFalse(form.is_valid())
 
     def test_get_config_th_cache(self):
         self.assertIn('th_slack', settings.CACHES)

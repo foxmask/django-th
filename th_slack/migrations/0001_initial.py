@@ -14,11 +14,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Slack',
             fields=[
-                ('id', models.AutoField(primary_key=True, verbose_name='ID', auto_created=True, serialize=False)),
+                ('id', models.AutoField(verbose_name='ID', primary_key=True, auto_created=True, serialize=False)),
                 ('name', models.CharField(max_length=255)),
                 ('status', models.BooleanField(default=False)),
                 ('description', models.CharField(max_length=255)),
-                ('webhook_url', models.URLField(max_length=2000)),
+                ('webhook_url', models.URLField(null=True, max_length=2000, blank=True)),
+                ('slack_token', models.CharField(null=True, max_length=2000, blank=True)),
+                ('team_id', models.CharField(null=True, max_length=100, blank=True)),
+                ('channel', models.CharField(null=True, max_length=100, blank=True)),
             ],
             options={
                 'db_table': 'django_th_slack',
