@@ -34,11 +34,11 @@ def consumer(trigger_id, data):
 def slack(request):
     data = {}
     # check that the data are ok with the provided signature
-    slack = Slack.objects.filter(token=request.token,
-                                 team_id=request.team_id).get()
+    slack = Slack.objects.filter(slack_token=request.data['token'],
+                                 team_id=request.data['team_id']).get()
     if slack:
-        data['title'] = 'From Slack #{}'.format(request.channel_name)
-        data['content'] = request.text
+        data['title'] = 'From Slack #{}'.format(request.data['channel_name'])
+        data['content'] = request.data['text']
         consumer(slack.trigger_id, data)
         return Response({"message": "Success"})
     else:

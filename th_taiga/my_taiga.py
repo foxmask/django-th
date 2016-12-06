@@ -61,15 +61,12 @@ class ServiceTaiga(ServicesMgr):
         """
         status = False
         taiga = Taiga.objects.get(trigger_id=trigger_id)
-
         title = self.set_title(data)
         body = self.set_content(data)
         # add a 'story' to the project
         if taiga.project_name:
             api = self.taiga_api()
-            print(api)
             new_project = api.projects.get_by_slug(taiga.project_name)
-            print(new_project)
             userstory = new_project.add_user_story(title, description=body)
             if userstory:
                 status = True
