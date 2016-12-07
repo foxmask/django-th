@@ -17,3 +17,14 @@ omit =
     django_th/management/commands/recycle.py
     django_th/management/commands/read_n_pub.py
     */from_*.py
+
+
+build:
+    tests:
+        override:
+            -
+                command: 'coverage run --source='.' manage.py test'
+                coverage:
+                    file: '.coverage'
+                    config_file: '.coveragerc'
+                    format: 'py-cc'
