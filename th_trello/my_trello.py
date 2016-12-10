@@ -111,7 +111,7 @@ class ServiceTrello(ServicesMgr):
             board_id = ''
             my_list = ''
             for board in boards:
-                if t.board_name == board.name.decode('utf-8'):
+                if t.board_name == board.name:
                     board_id = board.id
                     break
 
@@ -122,7 +122,7 @@ class ServiceTrello(ServicesMgr):
                 # just get the open list ; not all the archive ones
                 for list_in_board in lists:
                     # search the name of the list we set in the form
-                    if t.list_name == list_in_board.name.decode('utf-8'):
+                    if t.list_name == list_in_board.name:
                         # return the (trello) list object
                         # to be able to add card at step 3
                         my_list = my_board.get_list(list_in_board.id)

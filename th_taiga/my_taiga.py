@@ -46,7 +46,7 @@ class ServiceTaiga(ServicesMgr):
         kwargs['model_name'] = 'Taiga'
 
         super(ServiceTaiga, self).read_data(**kwargs)
-        data = kwargs.get('data')
+        data = kwargs.get('data', ())
         cache.set('th_taiga_' + str(trigger_id), data)
         # return the data
         return data

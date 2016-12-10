@@ -32,9 +32,9 @@ class ServiceSlack(ServicesMgr):
         """
         trigger_id = kwargs.get('trigger_id')
         kwargs['model_name'] = 'Slack'
-
         # get the URL from the trigger id
-        data = super(ServiceSlack, self).read_data(**kwargs)
+        super(ServiceSlack, self).read_data(**kwargs)
+        data = kwargs.get('data', ())
         cache.set('th_slack_' + str(trigger_id), data)
         # return the data
         return data

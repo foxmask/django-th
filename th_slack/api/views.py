@@ -15,6 +15,7 @@ def consumer(trigger_id, data):
         :param data:
         :return:
     """
+    status = True
     # consumer - the service which uses the data
     default_provider.load_services()
     service = TriggerService.objects.get(id=trigger_id)
@@ -27,7 +28,9 @@ def consumer(trigger_id, data):
 
         getattr(service_consumer, '__init__')(service.consumer.token,
                                               **kwargs)
-        getattr(service_consumer, 'save_data')(service.id, **data)
+        status = getattr(service_consumer, 'save_data')(service.id, **data)
+
+    return status
 
 
 @api_view(['POST'])
@@ -39,7 +42,8 @@ def slack(request):
     if slack:
         data['title'] = 'From Slack #{}'.format(request.data['channel_name'])
         data['content'] = request.data['text']
-        consumer(slack.trigger_id, data)
-        return Response({"message": "Success"})
-    else:
-        return Response({"message": "Bad request"})
+        status = consumer(slack.trigger_id, data)
+        if status:
+            return Response({"message": "Success"})
+        else:
+            return Response({"message": "Bad request"})
