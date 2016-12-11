@@ -3,7 +3,9 @@ from django.conf import settings
 
 from th_taiga.models import Taiga
 from th_taiga.forms import TaigaProviderForm
+from th_taiga.my_taiga import ServiceTaiga
 
+from unittest.mock import patch
 from django_th.tests.test_main import MainTest
 
 
@@ -56,3 +58,22 @@ class TaigaFormTest(TaigaTest):
         th_service = ('th_taiga.my_taiga.ServiceTaiga',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
+
+
+class ServiceTaigaTest(TaigaTest):
+    def setUp(self):
+        super(ServiceTaigaTest, self).setUp()
+        self.ta = self.create_taiga()
+        self.data = {'title': 'foobar test',
+                     'content': 'a nice userstory'}
+
+    @patch.object(ServiceTaiga, 'taiga_api')
+    def test_save_data(self, mock1):
+        se = ServiceTaiga()
+        se.save_data(self.ta.trigger_id, **self.data)
+        mock1.assert_called_once()
+
+    def test_read_data(self):
+        sl = ServiceTaiga()
+        data = {'trigger_id': self.ta.trigger_id}
+        sl.read_data(**data)

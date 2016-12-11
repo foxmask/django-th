@@ -30,13 +30,7 @@ class ServiceSlack(ServicesMgr):
             :type kwargs: dict
             :rtype: dict
         """
-        trigger_id = kwargs.get('trigger_id')
-        kwargs['model_name'] = 'Slack'
-        # get the URL from the trigger id
-        super(ServiceSlack, self).read_data(**kwargs)
-        data = kwargs.get('data', ())
-        cache.set('th_slack_' + str(trigger_id), data)
-        # return the data
+        data = ()
         return data
 
     def save_data(self, trigger_id, **data):
@@ -53,15 +47,19 @@ class ServiceSlack(ServicesMgr):
 
         slack = Slack.objects.get(trigger_id=trigger_id)
 
-        title = data.get('subject')
+        title = self.set_title(data)
+        if title is None:
+            title = data.get('subject')
         type_action = data.get('type_action')
 
         # set the bot username of Slack to the name of the
         # provider service
         username = service.provider.name.name.split('Service')[1]
         # 'build' a link
-        title_link = '<' + data.get('permalink') + '|' + title + '>'
-        data = '*' + desc + '*: ' + type_action + ': ' + title_link
+        title_link = ''
+        if data.get('permalink'):
+            title_link = ': <' + data.get('permalink') + '|' + title + '>'
+        data = '*' + desc + '*: ' + type_action + title_link
 
         payload = {'username': username,
                    'text': data}

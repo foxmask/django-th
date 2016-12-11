@@ -42,13 +42,7 @@ class ServiceTaiga(ServicesMgr):
             :type kwargs: dict
             :rtype: dict
         """
-        trigger_id = kwargs.get('trigger_id')
-        kwargs['model_name'] = 'Taiga'
-
-        super(ServiceTaiga, self).read_data(**kwargs)
-        data = kwargs.get('data', ())
-        cache.set('th_taiga_' + str(trigger_id), data)
-        # return the data
+        data = ()
         return data
 
     def save_data(self, trigger_id, **data):

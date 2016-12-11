@@ -3,8 +3,11 @@ from django.conf import settings
 
 from th_slack.models import Slack
 from th_slack.forms import SlackConsumerForm
+from th_slack.my_slack import ServiceSlack
 
 from django_th.tests.test_main import MainTest
+from unittest.mock import patch
+import requests
 
 
 class SlackTest(MainTest):
@@ -60,3 +63,25 @@ class SlackFormTest(SlackTest):
         th_service = ('th_slack.my_slack.ServiceSlack',)
         for service in th_service:
             self.assertIn(service, settings.TH_SERVICES)
+
+
+class ServiceSlackTest(SlackTest):
+
+    def setUp(self):
+        super(ServiceSlackTest, self).setUp()
+        self.sl = self.create_slack()
+        self.data = {'subject': 'foobar test',
+                     'content': 'a content to publish on slack',
+                     'permalink': 'https://domain.tld/new/post/etc/',
+                     'type_action': 'create'}
+
+    @patch.object(requests, 'post')
+    def test_save_data(self, mock1):
+        sl = ServiceSlack()
+        sl.save_data(self.sl.trigger_id, **self.data)
+        mock1.assert_called_once()
+
+    def test_read_data(self):
+        sl = ServiceSlack()
+        data = {'trigger_id': self.sl.trigger_id}
+        sl.read_data(**data)
