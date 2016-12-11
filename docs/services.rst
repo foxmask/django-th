@@ -22,6 +22,8 @@ For all the services, the installation is the same :
    pocket
    pushbullet
    rss
+   slack
+   taiga
    todoist
    trello
    twitter
