@@ -21,3 +21,13 @@ docker-compose up
 docker-compose run web  python manage.py migrate --settings=django_th.settings_docker
 docker-compose run web  python manage.py createsuperuser --settings=django_th.settings_docker
 ```
+
+
+## Running tasks
+
+2 tasks are usually in the crontab : one to read the data source, one to publish the grabbed data:
+
+```
+docker-compose run web  python manage.py read --settings=django_th.settings_docker
+docker-compose run web  python manage.py publish --settings=django_th.settings_docker
+```
