@@ -6,18 +6,18 @@ but this should do the trick until next time
 ## Build
 
 ```
-docker-compose -f docker-compose.yml build
+docker-compose build
 ```
 
 ## Run
 
 ```
-docker-compose -f docker-compose.yml up -d
+docker-compose up 
 ```
 
 ## Database update/create
 
 ```
-docker-compose -f docker-compose.yml run web  python manage.py migrate
-docker-compose -f docker-compose.yml run web  python manage.py createsuperuser
+docker-compose run web  python manage.py migrate
+docker-compose run web  python manage.py createsuperuser
 ```
