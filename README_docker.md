@@ -1,7 +1,7 @@
 # Docker for Trigger Happy
 
 This is a very very early stage for docker support
-but this should do the trick until next time
+but this should do the trick until next time based on https://docs.docker.com/engine/reference/commandline/build/ and https://docs.docker.com/compose/django/ and a bit of https://hub.docker.com/_/django/
 
 ## Build
 
