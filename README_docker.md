@@ -18,6 +18,6 @@ docker-compose up
 ## Database update/create
 
 ```
-docker-compose run web  python manage.py migrate
-docker-compose run web  python manage.py createsuperuser
+docker-compose run web  python manage.py migrate --settings=django_th.settings_docker
+docker-compose run web  python manage.py createsuperuser --settings=django_th.settings_docker
 ```
