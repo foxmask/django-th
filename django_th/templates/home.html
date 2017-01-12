@@ -63,6 +63,9 @@
                         &nbsp;-&nbsp;
                         <span class="glyphicon glyphicon-calendar"></span>&nbsp;{% trans "Triggered" %}&nbsp;{% if trigger.date_triggered %}{{ trigger.date_triggered }}{% else %}&nbsp;{% trans "Never triggered" %}{% endif %}
                     </p>
+                    {%  if trigger.consumer.name.name == 'ServiceRss' %}
+                    <p class="text-ok"><a href="{% url 'edit_consumer' trigger.id %}" >{% trans "Click here to see your Feeds URL for" %} {{ trigger.provider.name|service_readable_class|lower }}</a></p>
+                    {%  endif %}
                     <p class="text-{% if trigger.result == 'OK' %}info{%  else  %}warning{%  endif %}">
                         <span class="glyphicon glyphicon-bullhorn"></span> {{ trigger.result }} - {{ trigger.date_result }}
                     </p>
