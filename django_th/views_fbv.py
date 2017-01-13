@@ -226,5 +226,7 @@ def trigger_edit(request, trigger_id, edit_what):
     else:
         form = get_service(my_service, 'forms', form_name)(instance=data)
 
-    context = {'description': service.description, 'edit_what': edit_what}
+    context = {'description': service.description,
+               'edit_what': edit_what,
+               'data': data}
     return render(request, template, {'form': form, 'context': context})

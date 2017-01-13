@@ -60,8 +60,8 @@ Start the application
 Now open your browser and go to 127.0.0.1:8000/ to start using the application
 
 
-Adding the service pocket from the Admin
-========================================
+Adding the service Wallabag from the Admin
+==========================================
 
 
 Admin Home of Trigger Happy :

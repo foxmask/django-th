@@ -41,4 +41,5 @@ def import_from_path(path):
     except AttributeError:
         raise ImportError('Unable to import %s' % path)
 
+
 service_provider = ServiceProvider()

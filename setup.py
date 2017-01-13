@@ -2,19 +2,20 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'Django==1.8.16',
+    'djangorestframework==3.5.3',
+    'Django==1.8.17',
     'django-formtools==1.0',
-    'arrow==0.8.0',
+    'arrow==0.10.0',
     'django-js-reverse==0.7.2',
     'django-redis==4.6.0',
     'requests-oauthlib==0.7.0',
     'pypandoc==1.3.3',
-    'flake8==3.0.4',
+    'flake8==3.2.1',
 ]
 
 extras_require_evernote = [
     'evernote3',
-    'pytidylib==0.3.1',
+    'pytidylib==0.3.2',
 ]
 extras_require_github = [
     'github3.py==1.0.0a4',
@@ -34,11 +35,15 @@ extras_require_pushbullet = [
 extras_require_rss = [
     'feedparser==5.2.1',
 ]
+extras_require_taiga = [
+    'python-taiga==0.8.6',
+]
 extras_require_todoist = [
     'todoist-python==7.0.13',
 ]
 extras_require_trello = [
-    'py-trello==0.6.1',
+    'py-trello==0.7.0',
+    'pytz==2016.7',
 ]
 extras_require_twitter = [
     'twython==3.4.0',
@@ -56,6 +61,7 @@ extras_require_all = \
     + extras_require_pocket\
     + extras_require_pushbullet\
     + extras_require_rss\
+    + extras_require_taiga\
     + extras_require_todoist\
     + extras_require_trello\
     + extras_require_twitter\
@@ -99,6 +105,7 @@ setup(
         'pocket': extras_require_pocket,
         'pushbullet': extras_require_pushbullet,
         'rss': extras_require_rss,
+        'taiga': extras_require_taiga,
         'todoist': extras_require_todoist,
         'trello': extras_require_trello,
         'twitter': extras_require_twitter,

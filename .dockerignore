@@ -1,0 +1,11 @@
+.*
+!.coveragerc
+*.log
+th_tox
+.cache
+.tox
+Dockerfile
+.dockerfileignore
+.gitignore
+.git/
+*.sqlite3

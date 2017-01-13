@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of the properties for' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <div class="form-group{% if form.project_name.errors %} has-error{% endif %}">
+                {% if form.project_name.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.project_name.errors }}</div>
+                {% endif %}
+                <label for="id_project_name" class="col-sm-2 control-label">{% trans "Project name" %}</label>
+                <div class="col-sm-10">{{ form.project_name }}</div>
+            </div>
+
+            <div class="form-group{% if form.webhook_secret_key.errors %} has-error{% endif %}">
+                {% if form.webhook_secret_key.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.webhook_secret_key.errors }}</div>
+                {% endif %}
+                <label for="id_webhook_secret_key" class="col-sm-2 control-label">{% trans "Secret key" %}</label>
+                <div class="col-sm-10">{{ form.webhook_secret_key }}</div>
+            </div>
+
+            <h3>Notify Epics</h3>
+            <div class="form-group{% if form.notify_epic_create.errors %} has-error{% endif %}">
+                {% if form.notify_epic_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_epic_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_epic_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_epic_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_epic_change.errors %} has-error{% endif %}">
+                {% if form.notify_epic_change.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_epic_change.errors }}</div>
+                {% endif %}
+                <label for="id_notify_epic_change" class="col-sm-2 control-label">{% trans "Change" %}</label>
+                <div class="col-sm-10">{{ form.notify_epic_change }}</div>
+            </div>
+            <div class="form-group{% if form.notify_epic_delete.errors %} has-error{% endif %}">
+                {% if form.notify_epic_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_epic_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_epic_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_epic_delete }}</div>
+            </div>
+            <h3>Notify Epics related User stories</h3>
+            <div class="form-group{% if form.notify_relateduserstory_create.errors %} has-error{% endif %}">
+                {% if form.notify_relateduserstory_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_relateduserstory_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_relateduserstory_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_relateduserstory_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_relateduserstory_delete.errors %} has-error{% endif %}">
+                {% if form.notify_relateduserstory_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_relateduserstory_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_relateduserstory_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_relateduserstory_delete }}</div>
+            </div>
+            <h3>Notify User stories</h3>
+            <div class="form-group{% if form.notify_userstory_create.errors %} has-error{% endif %}">
+                {% if form.notify_userstory_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_userstory_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_userstory_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_userstory_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_userstory_change.errors %} has-error{% endif %}">
+                {% if form.notify_userstory_change.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_userstory_change.errors }}</div>
+                {% endif %}
+                <label for="id_notify_userstory_change" class="col-sm-2 control-label">{% trans "Change" %}</label>
+                <div class="col-sm-10">{{ form.notify_userstory_change }}</div>
+            </div>
+            <div class="form-group{% if form.notify_userstory_delete.errors %} has-error{% endif %}">
+                {% if form.notify_userstory_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_userstory_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_userstory_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_userstory_delete }}</div>
+            </div>
+            <h3>Notify Issues</h3>
+            <div class="form-group{% if form.notify_issue_create.errors %} has-error{% endif %}">
+                {% if form.notify_issue_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_issue_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_issue_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_issue_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_issue_change.errors %} has-error{% endif %}">
+                {% if form.notify_userstory_change.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_issue_change.errors }}</div>
+                {% endif %}
+                <label for="id_notify_issue_change" class="col-sm-2 control-label">{% trans "Change" %}</label>
+                <div class="col-sm-10">{{ form.notify_issue_change }}</div>
+            </div>
+            <div class="form-group{% if form.notify_issue_delete.errors %} has-error{% endif %}">
+                {% if form.notify_issue_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_issue_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_issue_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_issue_delete }}</div>
+            </div>
+            <h3>Notify Tasks</h3>
+            <div class="form-group{% if form.notify_task_create.errors %} has-error{% endif %}">
+                {% if form.notify_task_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_task_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_task_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_task_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_task_change.errors %} has-error{% endif %}">
+                {% if form.notify_task_change.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_task_change.errors }}</div>
+                {% endif %}
+                <label for="id_notify_task_change" class="col-sm-2 control-label">{% trans "Change" %}</label>
+                <div class="col-sm-10">{{ form.notify_task_change }}</div>
+            </div>
+            <div class="form-group{% if form.notify_task_delete.errors %} has-error{% endif %}">
+                {% if form.notify_task_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_task_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_issue_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_task_delete }}</div>
+            </div>
+            <h3>Notify Wiki</h3>
+            <div class="form-group{% if form.notify_wikipage_create.errors %} has-error{% endif %}">
+                {% if form.notify_wikipage_create.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_wikipage_create.errors }}</div>
+                {% endif %}
+                <label for="id_notify_wikipage_create" class="col-sm-2 control-label">{% trans "Create" %}</label>
+                <div class="col-sm-10">{{ form.notify_wikipage_create }}</div>
+            </div>
+            <div class="form-group{% if form.notify_wikipage_change.errors %} has-error{% endif %}">
+                {% if form.notify_wikipage_change.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_wikipage_change.errors }}</div>
+                {% endif %}
+                <label for="id_notify_wikipage_change" class="col-sm-2 control-label">{% trans "Change" %}</label>
+                <div class="col-sm-10">{{ form.notify_wikipage_change }}</div>
+            </div>
+            <div class="form-group{% if form.notify_wikipage_delete.errors %} has-error{% endif %}">
+                {% if form.notify_wikipage_delete.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.notify_wikipage_delete.errors }}</div>
+                {% endif %}
+                <label for="id_notify_wikipage_delete" class="col-sm-2 control-label">{% trans "Delete" %}</label>
+                <div class="col-sm-10">{{ form.notify_wikipage_delete }}</div>
+            </div>
+
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <input type="hidden" name="id" value="{{ id }}" />
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div> 
+{% endblock %}

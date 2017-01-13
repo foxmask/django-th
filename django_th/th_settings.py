@@ -25,6 +25,8 @@ TH_SERVICES = (
     # 'th_pocket.my_pocket.ServicePocket',
     # 'th_pushbullet.my_pushbullet.ServicePushbullet',
     'th_rss.my_rss.ServiceRss',
+    # 'th_slack.my_slack.ServiceSlack',
+    # 'th_taiga.my_taiga.ServiceTaiga',
     # 'th_todoist.my_todoist.ServiceTodoist',
     # 'th_trello.my_trello.ServiceTrello',
     # 'th_twitter.my_twitter.ServiceTwitter',

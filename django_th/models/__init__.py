@@ -43,7 +43,7 @@ class UserService(models.Model):
         UserService a model to link service and user
     """
     user = models.ForeignKey(User)
-    token = models.CharField(max_length=255)
+    token = models.CharField(max_length=255, blank=True)
     name = models.ForeignKey(
         ServicesActivated, to_field='name', related_name='+')
     username = models.CharField(

@@ -52,7 +52,12 @@ And instead of giving your credentials to them, become the owner of yours !
 
 For example a new RSS item is published, "Trigger Happy" will be able to
 automatically create a note on your Evernote account or create a bookmark to
-your own Wallabag or Pocket account and so on
+your own Wallabag or Pocket account and so on.
+
+
+.. image:: https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg
+    :target: https://saythanks.io/to/foxmask
+    :alt: Say thanks to foxmask
 
 
 Description
@@ -62,7 +67,7 @@ The goal of this project is to be independent from any other solution like
 IFTTT, CloudWork or others.
 
 Thus you could host your own solution and manage your own triggers without
-depending any non-free solution.
+depending on any non-free solution.
 
 With this project you can host triggers for you.
 

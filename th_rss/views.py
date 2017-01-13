@@ -7,7 +7,6 @@ from th_rss.models import Rss
 from django_th.models import TriggerService
 
 import django_th
-cache = caches['th_rss']
 
 
 class MyRssFeed(TemplateView):
@@ -26,6 +25,7 @@ class MyRssFeed(TemplateView):
             trigger = TriggerService.objects.get(id=rss.trigger_id)
             # cut 'Service' to get the service name itself
             provider = trigger.provider.name.name.split('Service')[1].lower()
+            cache = caches['th_' + provider]
             pattern = 'th_{provider}_{id}'.format(provider=provider,
                                                   id=rss.trigger_id)
             context['data'] = cache.get(pattern)

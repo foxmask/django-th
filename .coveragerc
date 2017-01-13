@@ -8,6 +8,7 @@ exclude_lines =
 omit =
     */migrations/*
     setup.py
+    django_th/th_tox
     django_th/wsgi.py
     django_th/th_settings_sample.py
     django_th/local_settings_sample.py
@@ -15,4 +16,4 @@ omit =
     django_th/management/commands/publish.py
     django_th/management/commands/recycle.py
     django_th/management/commands/read_n_pub.py
-
+    */from_*.py

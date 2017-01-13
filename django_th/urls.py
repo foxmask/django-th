@@ -159,4 +159,7 @@ urlpatterns = \
                  name="wallabag_callback",
                  ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
+
+             url(r'^th/api/taiga/webhook/', include('th_taiga.urls')),
+             url(r'^th/api/slack/webhook/', include('th_slack.urls'))
              )
