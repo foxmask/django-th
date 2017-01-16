@@ -13,7 +13,7 @@ DJANGO_TH = {
     # number of tries before disabling a trigger
     # when management commands run each 15min
     # with 4 'tries' this permit to try on 1 hour
-    'failed_tries': 4,  # can exceed 99 - when
+    'failed_tries': 2,  # can exceed 99 - when
 }
 
 TH_SERVICES = (

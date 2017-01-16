@@ -118,7 +118,7 @@ def update_result(trigger_id, msg, status):
     else:
         service = TriggerService.objects.get(id=trigger_id)
         failed = service.consumer_failed + 1
-        if failed > settings.DJANGO_TH.get('failed_tries', 10):
+        if failed > settings.DJANGO_TH.get('failed_tries', 5):
             TriggerService.objects.filter(id=trigger_id).\
                 update(result=msg, date_result=now(), status=False)
         else:

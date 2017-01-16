@@ -99,8 +99,8 @@ def warn_user_and_admin(consumer_provider, service):
     else:
         service_name = service.consumer.name.name.split('Service')[1]
 
-    title = 'Trigger {} disabled'.format(service.description)
-    body = 'The trigger "{}" has been disabled due to an issue with {}. ' \
+    title = 'Trigger "{}" disabled'.format(service.description)
+    body = 'The trigger "{}" has been disabled due to an issue with "{}". ' \
            'Try to renew it to refresh the token to try to fix the issue'. \
         format(service.description, service_name)
     # for enduser

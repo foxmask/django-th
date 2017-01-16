@@ -8,7 +8,7 @@ import uuid
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('django_th', '0008_update_date_result'),
+        ('django_th', '0009_auto_20161113_1553'),
     ]
 
     operations = [

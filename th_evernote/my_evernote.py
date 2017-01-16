@@ -5,7 +5,7 @@ import arrow
 import evernote
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
-from evernote.edam.error.ttypes import EDAMSystemException
+from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 
 # django classes
@@ -63,7 +63,12 @@ class ServiceEvernote(ServicesMgr):
         if self.token:
             kwargs = {'token': token, 'sandbox': self.sandbox}
 
-        self.client = EvernoteClient(**kwargs)
+        try:
+            self.client = EvernoteClient(**kwargs)
+        except EDAMUserException as e:
+            us = UserService.objects.get(token=token)
+            logger.error(e.msg, e.error_code)
+            update_result(us.trigger_id, msg=e.msg, status=False)
 
     def read_data(self, **kwargs):
         """
@@ -182,7 +187,7 @@ class ServiceEvernote(ServicesMgr):
                             "Data set to cache again until" \
                             " limit reached".format(code=e.errorCode,
                                                     msg=e.rateLimitDuration)
-                logger.warn(sentence)
+                logger.warning(sentence)
                 cache.set('th_evernote_' + str(trigger_id),
                           data,
                           version=2)
