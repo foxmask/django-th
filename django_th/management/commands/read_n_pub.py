@@ -4,6 +4,7 @@ from __future__ import unicode_literals
 from multiprocessing import Pool, TimeoutError
 # django
 from django.core.management.base import BaseCommand
+from django.conf import settings
 from django.utils.log import getLogger
 from django.core.cache import caches
 # trigger happy
@@ -33,6 +34,8 @@ class Command(BaseCommand):
             id=int(trigger_id),
             status=True,
             user__is_active=True,
+            provider_failed__lt=settings.DJANGO_TH.get('failed_tries', 10),
+            consumer_failed__lt=settings.DJANGO_TH.get('failed_tries', 10)
         ).select_related('consumer__name', 'provider__name')
         try:
             with Pool(processes=1) as pool:

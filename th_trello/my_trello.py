@@ -1,6 +1,6 @@
 # coding: utf-8
 # Trello API
-from trello import TrelloClient
+from trello import TrelloClient, ResourceUnavailable
 
 # django classes
 from django.conf import settings
@@ -11,7 +11,7 @@ from django.core.cache import caches
 # django_th classes
 from django_th.apps import DjangoThConfig
 from django_th.services.services import ServicesMgr
-from django_th.models import update_result
+from django_th.models import update_result, UserService
 
 """
     handle process with Trello
@@ -60,10 +60,15 @@ class ServiceTrello(ServicesMgr):
         self.consumer_secret = settings.TH_TRELLO['consumer_secret']
         if token:
             token_key, token_secret = token.split('#TH#')
-            self.trello_instance = TrelloClient(self.consumer_key,
-                                                self.consumer_secret,
-                                                token_key,
-                                                token_secret)
+            try:
+                self.trello_instance = TrelloClient(self.consumer_key,
+                                                    self.consumer_secret,
+                                                    token_key,
+                                                    token_secret)
+            except ResourceUnavailable as e:
+                us = UserService.objects.get(token=token)
+                logger.error(e.msg, e.error_code)
+                update_result(us.trigger_id, msg=e.msg, status=False)
 
     def read_data(self, **kwargs):
         """
@@ -149,7 +154,7 @@ class ServiceTrello(ServicesMgr):
         else:
             sentence = "no token or link provided for trigger ID " \
                        "{}".format(trigger_id)
-            update_result(trigger_id, msg=sentence)
+            update_result(trigger_id, msg=sentence, status=False)
             status = False
 
         return status

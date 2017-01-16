@@ -4,7 +4,7 @@ import time
 import arrow
 
 # pocket API
-from pocket import Pocket
+from pocket import Pocket, AuthException, RateLimitException
 
 # django classes
 from django.conf import settings
@@ -12,7 +12,7 @@ from django.utils.log import getLogger
 from django.core.cache import caches
 
 # django_th classes
-from django_th.models import update_result
+from django_th.models import update_result, UserService
 from django_th.services.services import ServicesMgr
 from django_th.html_entities import HtmlEntities
 
@@ -48,7 +48,12 @@ class ServicePocket(ServicesMgr):
         self.oauth = 'oauth1'
         self.service = 'ServicePocket'
         if token:
-            self.pocket = Pocket(self.consumer_key, token)
+            try:
+                self.pocket = Pocket(self.consumer_key, token)
+            except (AuthException, RateLimitException) as e:
+                us = UserService.objects.get(token=token)
+                logger.error(e.msg, e.error_code)
+                update_result(us.trigger_id, msg=e.msg, status=False)
 
     def _create_entry(self, url, title, tags):
         """
@@ -65,7 +70,7 @@ class ServicePocket(ServicesMgr):
             status = True
         except Exception as e:
             logger.critical(e)
-            update_result(self.trigger_id, msg=e)
+            update_result(self.trigger_id, msg=e, status=False)
             status = False
         return status
 
@@ -143,12 +148,12 @@ class ServicePocket(ServicesMgr):
                 msg = "no link provided for trigger ID {}," \
                       " so we ignore it".format(trigger_id)
                 logger.warning(msg)
-                update_result(trigger_id, msg=msg)
+                update_result(trigger_id, msg=msg, status=True)
                 status = True
         else:
             msg = "no token provided for trigger ID {}".format(trigger_id)
             logger.critical(msg)
-            update_result(trigger_id, msg=msg)
+            update_result(trigger_id, msg=msg, status=False)
             status = False
         return status
 

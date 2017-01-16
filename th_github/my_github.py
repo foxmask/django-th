@@ -106,10 +106,11 @@ class ServiceGithub(ServicesMgr):
             else:
                 # rate limit reach, do nothing right now
                 logger.warn("Rate limit reached")
-                update_result(trigger_id, msg="Rate limit reached")
+                update_result(trigger_id, msg="Rate limit reached",
+                              status=True)
         else:
             logger.critical("no token provided")
-            update_result(trigger_id, msg="No token provided")
+            update_result(trigger_id, msg="No token provided", status=True)
         return data
 
     def save_data(self, trigger_id, **data):
@@ -141,7 +142,8 @@ class ServiceGithub(ServicesMgr):
             else:
                 # rate limit reach
                 logger.warn("Rate limit reached")
-                update_result(trigger_id, msg="Rate limit reached")
+                update_result(trigger_id, msg="Rate limit reached",
+                              status=True)
                 # put again in cache the data that could not be
                 # published in Github yet
                 cache.set('th_github_' + str(trigger_id), data, version=2)
@@ -153,7 +155,7 @@ class ServiceGithub(ServicesMgr):
             sentence = "no token or link provided for " \
                        "trigger ID {} ".format(trigger_id)
             logger.critical(sentence)
-            update_result(trigger_id, msg=sentence)
+            update_result(trigger_id, msg=sentence, status=False)
             status = False
 
         return status

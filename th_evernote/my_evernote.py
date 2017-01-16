@@ -5,7 +5,7 @@ import arrow
 import evernote
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
-from evernote.edam.error.ttypes import EDAMSystemException
+from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 
 # django classes
@@ -63,7 +63,12 @@ class ServiceEvernote(ServicesMgr):
         if self.token:
             kwargs = {'token': token, 'sandbox': self.sandbox}
 
-        self.client = EvernoteClient(**kwargs)
+        try:
+            self.client = EvernoteClient(**kwargs)
+        except EDAMUserException as e:
+            us = UserService.objects.get(token=token)
+            logger.error(e.msg, e.error_code)
+            update_result(us.trigger_id, msg=e.msg, status=False)
 
     def read_data(self, **kwargs):
         """
@@ -182,19 +187,19 @@ class ServiceEvernote(ServicesMgr):
                             "Data set to cache again until" \
                             " limit reached".format(code=e.errorCode,
                                                     msg=e.rateLimitDuration)
-                logger.warn(sentence)
+                logger.warning(sentence)
                 cache.set('th_evernote_' + str(trigger_id),
                           data,
                           version=2)
-                update_result(trigger_id, msg=sentence)
+                update_result(trigger_id, msg=sentence, status=True)
                 return True
             else:
                 logger.critical(e)
-                update_result(trigger_id, msg=e)
+                update_result(trigger_id, msg=e, status=False)
                 return False
         except Exception as e:
             logger.critical(e)
-            update_result(trigger_id, msg=e)
+            update_result(trigger_id, msg=e, status=False)
             return False
 
     @staticmethod
@@ -223,7 +228,8 @@ class ServiceEvernote(ServicesMgr):
                                                  trigger.tag,
                                                  tag_id)
                     # set the tag to the note if a tag has been provided
-                    note.tagGuids = tag_id
+                    if tag_id:
+                        note.tagGuids = tag_id
 
             logger.debug("notebook that will be used %s", trigger.notebook)
         return note

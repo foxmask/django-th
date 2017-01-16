@@ -82,11 +82,18 @@ class EvernoteMgr(object):
         if ',' in my_tags:
             for my_tag in my_tags.split(','):
                 new_tag.name = my_tag
-                tag_id.append(EvernoteMgr.create_tag(note_store, new_tag))
+                note_tag_id = EvernoteMgr.create_tag(note_store, new_tag)
+                if note_tag_id is not False:
+                    tag_id.append(note_tag_id)
+                else:
+                    return False
         elif my_tags:
             new_tag.name = my_tags
-            tag_id.append(EvernoteMgr.create_tag(note_store, new_tag))
-
+            note_tag_id = EvernoteMgr.create_tag(note_store, new_tag)
+            if note_tag_id is not False:
+                tag_id.append(note_tag_id)
+            else:
+                return False
         return tag_id
 
     @staticmethod
@@ -119,7 +126,7 @@ class EvernoteMgr(object):
                 # put again in cache the data that could not be
                 # published in Evernote yet
                 cache.set('th_evernote_' + str(trigger_id), data, version=2)
-                update_result(trigger_id, msg=sentence)
+                update_result(trigger_id, msg=sentence, status=True)
                 return True
             else:
                 logger.critical(e)
@@ -130,11 +137,11 @@ class EvernoteMgr(object):
                            " error : err {code} {msg}".format(
                             code=e.errorCode, msg=e.parameter)
                 logger.warn(sentence)
-                update_result(trigger_id, msg=sentence)
+                update_result(trigger_id, msg=sentence, status=True)
                 return True
         except Exception as e:
             logger.critical(e)
-            update_result(trigger_id, msg=e)
+            update_result(trigger_id, msg=e, status=False)
             return False
 
     @staticmethod
@@ -151,6 +158,7 @@ class EvernoteMgr(object):
                 logger.info("Evernote Data Conflict Err {0}".format(e))
             elif e.errorCode == EDAMErrorCode.BAD_DATA_FORMAT:
                 logger.critical("Evernote Err {0}".format(e))
+            return False
 
     @staticmethod
     def set_header():

@@ -114,12 +114,12 @@ class ServicePushbullet(ServicesMgr):
                 # no valid type of pushbullet specified
                 msg = "no valid type of pushbullet specified"
                 logger.critical(msg)
-                update_result(trigger_id, msg=msg)
+                update_result(trigger_id, msg=msg, status=False)
                 status = False
         else:
             msg = "no token or link provided for trigger " \
                   "ID {} ".format(trigger_id)
             logger.critical(msg)
-            update_result(trigger_id, msg=msg)
+            update_result(trigger_id, msg=msg, status=False)
             status = False
         return status

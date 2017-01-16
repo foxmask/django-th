@@ -31,6 +31,7 @@ def renew_service(request, pk):
     service_name = str(service.name)
     service_object = default_provider.get_service(service_name)
     lets_auth = getattr(service_object, 'auth')
+    getattr(service_object, 'reset_failed')(pk=pk)
     return redirect(lets_auth(request))
 
 

@@ -6,6 +6,7 @@ from multiprocessing import Pool, TimeoutError
 from django.core.management.base import BaseCommand
 from django.conf import settings
 from django.utils.log import getLogger
+from django.db.models import Q
 # trigger happy
 from django_th.models import TriggerService
 from django_th.publish import Pub
@@ -25,17 +26,19 @@ class Command(BaseCommand):
         """
         from django.db import connection
         connection.close()
+        failed_tries = settings.DJANGO_TH.get('failed_tries', 10)
         trigger = TriggerService.objects.filter(
+            Q(provider_failed__gte=failed_tries) |
+            Q(consumer_failed__gte=failed_tries),
             status=True,
             user__is_active=True,
             provider__name__status=True,
-            consumer__name__status=True
+            consumer__name__status=True,
         ).select_related('consumer__name', 'provider__name')
-
         try:
             with Pool(processes=settings.DJANGO_TH.get('processes')) as pool:
                 p = Pub()
                 result = pool.map_async(p.publishing, trigger)
-                result.get(timeout=360)
+                result.get(timeout=60)
         except TimeoutError as e:
-            logger.warn(e)
+            logger.warning(e)

@@ -121,4 +121,4 @@ class TriggerServiceTest(MainTest):
     def test_update_result(self):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
-        update_result(trigger_id=t.id, msg='a dummy result message')
+        update_result(t.id, msg='a dummy result message', status=True)

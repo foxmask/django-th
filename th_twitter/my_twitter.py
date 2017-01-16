@@ -2,7 +2,7 @@
 import arrow
 
 # Twitter lib
-from twython import Twython, TwythonAuthError
+from twython import Twython, TwythonAuthError, TwythonRateLimitError
 
 # django classes
 from django.conf import settings
@@ -12,7 +12,7 @@ from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import update_result
+from django_th.models import update_result, UserService
 from th_twitter.models import Twitter
 
 """
@@ -48,8 +48,14 @@ class ServiceTwitter(ServicesMgr):
         self.service = 'ServiceTwitter'
         if self.token is not None:
             token_key, token_secret = self.token.split('#TH#')
-            self.twitter_api = Twython(self.consumer_key, self.consumer_secret,
-                                       token_key, token_secret)
+            try:
+                self.twitter_api = Twython(self.consumer_key,
+                                           self.consumer_secret,
+                                           token_key, token_secret)
+            except (TwythonAuthError, TwythonRateLimitError) as e:
+                us = UserService.objects.get(token=token)
+                logger.error(e.msg, e.error_code)
+                update_result(us.trigger_id, msg=e.msg, status=False)
 
     def read_data(self, **kwargs):
         """
@@ -65,7 +71,7 @@ class ServiceTwitter(ServicesMgr):
         search = {}
         since_id = None
         trigger_id = kwargs['trigger_id']
-        date_triggered = kwargs['date_triggered']
+        date_triggered = arrow.get(kwargs['date_triggered'])
 
         def _get_tweets(twitter_obj, search):
             """
@@ -118,7 +124,7 @@ class ServiceTwitter(ServicesMgr):
                     statuses = self.twitter_api.get_user_timeline(**search)
                 except TwythonAuthError as e:
                     logger.error(e.msg, e.error_code)
-                    update_result(trigger_id, msg=e.msg)
+                    update_result(trigger_id, msg=e.msg, status=False)
 
             return count, search, statuses
 
@@ -204,7 +210,7 @@ class ServiceTwitter(ServicesMgr):
                 status = True
             except Exception as inst:
                 logger.critical("Twitter ERR {}".format(inst))
-                update_result(trigger_id, msg=inst)
+                update_result(trigger_id, msg=inst, status=False)
                 status = False
         return status
 
