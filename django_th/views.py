@@ -139,6 +139,7 @@ class TriggerListView(ListView):
         context['nb_services'] = services_activated
 
         context['page_link'] = page_link
+        context['fire'] = settings.DJANGO_TH.get('fire', False)
 
         return context
 
