@@ -28,8 +28,8 @@ class Command(BaseCommand):
         connection.close()
         failed_tries = settings.DJANGO_TH.get('failed_tries', 10)
         trigger = TriggerService.objects.filter(
-            Q(provider_failed__gte=failed_tries) |
-            Q(consumer_failed__gte=failed_tries),
+            Q(provider_failed__lte=failed_tries) |
+            Q(consumer_failed__lte=failed_tries),
             status=True,
             user__is_active=True,
             provider__name__status=True,

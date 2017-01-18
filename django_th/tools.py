@@ -5,7 +5,7 @@ import datetime
 import time
 
 from django.conf import settings
-from django.core.mail import send_mass_mail
+from django.core.mail import send_mail, mail_admins
 
 
 """
@@ -89,10 +89,7 @@ def to_datetime(data):
 
 def warn_user_and_admin(consumer_provider, service):
 
-    from_mail = settings.ADMINS if len(settings.ADMINS) > 0 else ''
-    from_mail = settings.MANAGERS if len(settings.MANAGERS) > 0 else ''
-    if len(from_mail) == 0:
-        from_mail = settings.DEFAULT_FROM_EMAIL
+    from_mail = settings.DEFAULT_FROM_EMAIL
 
     if consumer_provider == 'provider':
         service_name = service.provider.name.name.split('Service')[1]
@@ -100,20 +97,20 @@ def warn_user_and_admin(consumer_provider, service):
         service_name = service.consumer.name.name.split('Service')[1]
 
     title = 'Trigger "{}" disabled'.format(service.description)
+
     body = 'The trigger "{}" has been disabled due to an issue with "{}". ' \
            'Try to renew it to refresh the token to try to fix the issue'. \
         format(service.description, service_name)
     # for enduser
-    message1 = (title,
+    send_mail(title,
+              body,
+              from_mail,
+              [service.user.email],
+              fail_silently=False)
+    # for admins
+    body = 'The trigger "{}" has been disabled due to an issue with "{}". ' \
+           'User {}\'s trigger'.format(service.description, service_name,
+                                       service.user.email)
+    mail_admins(title,
                 body,
-                from_mail,
-                [service.user.email])
-    # for admin
-
-    message2 = (title,
-                body,
-                from_mail,
-                [from_mail])
-    # send the two mails
-
-    send_mass_mail((message1, message2), fail_silently=False)
+                fail_silently=False)
