@@ -68,7 +68,10 @@ def trigger_on_off(request, trigger_id):
                            {'trigger': trigger,
                             'title': title,
                             'title_trigger': title_trigger,
-                            'btn': btn})
+                            'btn': btn,
+                            'fire': settings.DJANGO_TH.get('fire', False)
+                            }
+                  )
 
 
 def fire_trigger(request, trigger_id):

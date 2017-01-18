@@ -6,7 +6,9 @@
                 <a class="btn btn-sm btn-md btn-lg btn-default" role="button" href="{% url 'edit_consumer' trigger.id %}" title="{% trans 'Edit your service' %} {{ trigger.consumer.name|service_readable|lower }}" >{{ trigger.consumer.name|service_readable|lower }} <i class="fa fa-{{ trigger.consumer.name|service_readable|lower }}" aria-hidden="true"></i></a>
             </div>
             <div class="col-xs-5 col-md-5">
+                {%  if fire %}
                 <a class="btn btn-sm btn-md btn-lg btn-default" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Fire this trigger now !' %}"><span class="glyphicon glyphicon-fire icon-white"></span></a>
+                {%  endif  %}
                 {% if trigger.status %}
                 <a class="btn btn-sm btn-md btn-lg btn-primary" data="{{ trigger.id }}" role="button" href="#" title="{% trans 'Set this trigger off' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                 {% else %}

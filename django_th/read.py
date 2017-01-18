@@ -72,9 +72,8 @@ class Read(object):
                   'date_triggered': date_triggered}
         data = self.provider(service_provider, **kwargs)
 
-        if data:
-            if len(data) > 0:
-                logger.info("{} - {} new data".format(service, len(data)))
-        else:
+        if len(data) > 0:
+            logger.info("{} - {} new data".format(service, len(data)))
+        elif data is False:
             # if data is False, something went wrong
             self.is_ceil_reached(service)
