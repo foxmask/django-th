@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, include, url
+from django.conf import settings
 from django_th.forms.wizard import DummyForm, ProviderForm
 from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
 
@@ -73,9 +74,6 @@ urlpatterns = \
              url(r'^th/trigger/onoff/(?P<trigger_id>\d+)$',
                  trigger_on_off,
                  name="trigger_on_off"),
-             url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
-                 fire_trigger,
-                 name="fire_trigger"),
              url(r'^th/trigger/all/(?P<switch>(on|off))$',
                  trigger_switch_all_to,
                  name="trigger_switch_all_to"),
@@ -163,3 +161,7 @@ urlpatterns = \
              url(r'^th/api/taiga/webhook/', include('th_taiga.urls')),
              url(r'^th/api/slack/webhook/', include('th_slack.urls'))
              )
+
+if settings.DJANGO_TH.get('fire'):
+    urlpatterns += patterns(url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
+                                fire_trigger, name="fire_trigger"),)
