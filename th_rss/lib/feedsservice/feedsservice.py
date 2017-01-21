@@ -31,7 +31,9 @@ class Feeds(object):
         # >>> data.bozo_exception
         # CharacterEncodingOverride('document declared as us-ascii, but parsed as utf-8', )  # invalid Feed
         # so I remove this detection :(
-        # if data.bozo == 1:
-        #     data.entries = ''
+        # the issue come from the server that return a charset different from the feeds
+        # it is not related to Feedparser but from the HTTP server itself
+        if data.bozo == 1:
+            data.entries = ''
 
         return data
