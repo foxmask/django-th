@@ -1,12 +1,16 @@
 # coding: utf-8
-
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from django.utils.log import getLogger
 
 from django_th.tools import warn_user_and_admin
+
+logger = getLogger('django_th.trigger_happy')
 
 
 class ServicesActivated(models.Model):
@@ -126,3 +130,26 @@ def update_result(trigger_id, msg, status):
                 update(result=msg, date_result=now(), consumer_failed=failed)
 
         warn_user_and_admin('consumer', service)
+
+
+def th_create_user_profile(sender, instance, created, **kwargs):
+    # create the default service that does not
+    # need any third party auth
+    user = instance
+    if user.last_login is None:
+        services = ('ServiceRss', 'ServicePelican', )
+        for service in services:
+            if any(service in s for s in settings.TH_SERVICES):
+                try:
+                    sa = ServicesActivated.objects.get(name=service)
+                    UserService.objects.get_or_create(user=user, name=sa)
+                except ObjectDoesNotExist:
+                    logger.debug("A new user %s has been connected but %s "
+                                 "could not be added to his services because "
+                                 "the service is present in TH_SERVICES but not"
+                                 " activated from the Admin Panel" %
+                                 (user, service))
+
+
+post_save.connect(th_create_user_profile, sender=User,
+                  dispatch_uid="create_user_profile")
