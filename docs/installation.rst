@@ -7,11 +7,11 @@ TriggerHappy can be installed inside an existing project, or from scratch
 Installation from scratch
 =========================
 
-We just create a virtualenv with python 3.4 (or 3.5)
+We just create a virtualenv with python 3.6 (or 3.5)
 
 .. code-block:: bash
 
-    virtualenv --pytyhon=/usr/bin/python34 myproject
+    python3.6 -m venv myproject
     cd $_
     source bin/activate
     
@@ -69,43 +69,42 @@ Once it's done, you can continue to the [configuration process](http://trigger-h
 Requirements
 ============
 
-* Python 3.4.x, 3.5.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
-* `arrow <https://pypi.python.org/pypi/arrow>`_ < 0.7.0
-* `django-formtools <https://pypi.python.org/pypi/django-formtools`_ == 1.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.1
+* Python 3.6.x, 3.5.x
+* `Django <https://pypi.python.org/pypi/Django/>`_
+* `arrow <https://pypi.python.org/pypi/arrow>`_
+* `django-formtools <https://pypi.python.org/pypi/django-formtools>`_
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_
 
 
 for evernote support
 
 * `Evernote for python 3 <https://pypi.python.org/pypi/evernote3>`_
-* `libtidy-dev <http://tidy.sourceforge.net/>`_  >= 0.99
+* `libtidy-dev <http://tidy.sourceforge.net/>`_
 
 The latest libtidy-dev should be installed with your operating system package manager, not from pip.
+
 On a Debian/Ubuntu system:
 
 .. code:: bash
 
     apt-get install libtidy-dev
 
-
-
 for github support
 
-* `github <https://pypi.python.org/pypi/github3.py>`_ == 1.0.0a4
+* `github <https://pypi.python.org/pypi/github3.py>`_
 
 for pocket support
 
-* `pocket <https://pypi.python.org/pypi/pocket>`_  == 0.3.6
+* `pocket <https://pypi.python.org/pypi/pocket>`_
 
 for rss support
 
-* `feedparser <https://pypi.python.org/pypi/feedparser>`_  == 5.2.1
+* `feedparser <https://pypi.python.org/pypi/feedparser>`_
 
 for trello support
 
-* `trello <https://github.com/sarumont/py-trello>`_  == 0.5.0
-* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_  == 1.1.3
+* `trello <https://github.com/sarumont/py-trello>`_
+* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_
 
 Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
 
@@ -116,26 +115,26 @@ Pandoc is also needed of the system, that you can install on a Debian/Ubuntu sys
 
 for twitter support
 
-* `twython <https://github.com/ryanmcgrath/twython>`_  == 3.4.0
+* `twython <https://github.com/ryanmcgrath/twython>`_
 
 
 for redis support
 
-* `django-redis <https://pypi.python.org/pypi/django-redis>`_ == 4.1.0
+* `django-redis <https://pypi.python.org/pypi/django-redis>`_
 
 
 for pelican support
 
-* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_ == 1.6.5
+* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_
 
 for wallabag support
 
-* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_ == 1.1.0
+* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_
 
 for todoist support
 
-* `todoist-python <https://pypi.python.org/pypi/todoist-python>`_ == 7.0
+* `todoist-python <https://pypi.python.org/pypi/todoist-python>`_
 
 for pushbullet support
 
-* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_ == 0.10.0
+* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_

@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.core.exceptions import ObjectDoesNotExist
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from django.utils.log import getLogger
+from logging import getLogger
 
 from django_th.tools import warn_user_and_admin
 

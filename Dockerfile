@@ -1,6 +1,6 @@
 FROM redis:3.2.6
 FROM postgres:9.6
-FROM python:3.5
+FROM python:3.6
 MAINTAINER FoxMaSk <foxmask@trigger-happy.eu>
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /app

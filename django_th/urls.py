@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.conf import settings
 from django_th.forms.wizard import DummyForm, ProviderForm
 from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
@@ -6,8 +6,10 @@ from django_th.forms.wizard import ConsumerForm, ServicesDescriptionForm
 from django_th.views import TriggerListView, TriggerDeleteView
 from django_th.views import TriggerUpdateView, TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView
-from django_th.views_fbv import trigger_switch_all_to, trigger_edit,\
-    trigger_on_off, fire_trigger, service_related_triggers_switch_to
+from django_th.views_fbv import trigger_switch_all_to, trigger_edit
+from django_th.views_fbv import trigger_on_off, fire_trigger
+from django_th.views_fbv import service_related_triggers_switch_to
+from django_th.views_fbv import logout_view
 
 from django_th.views_userservices import UserServiceListView
 from django_th.views_userservices import UserServiceCreateView
@@ -15,14 +17,16 @@ from django_th.views_userservices import UserServiceUpdateView
 from django_th.views_userservices import UserServiceDeleteView
 from django_th.views_userservices import renew_service
 from django_th.views_wizard import UserServiceWizard
+from django_th.views_wizard import finalcallback
+
+from django_js_reverse.views import urls_js
+
 
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = \
-    patterns('',
-             url(r'^jsreverse/$', 'django_js_reverse.views.urls_js',
-                 name='js_reverse'),
+urlpatterns = [
+             url(r'^jsreverse/$', urls_js, name='js_reverse'),
              # ****************************************
              # admin module
              # ****************************************
@@ -34,8 +38,7 @@ urlpatterns = \
              # ****************************************
              # customized logout action
              # ****************************************
-             url(r'^logout/$',
-                 'django_th.views_fbv.logout_view', name='logout'),
+             url(r'^logout/$', logout_view, name='logout'),
 
              # ****************************************
              # trigger happy module
@@ -117,42 +120,42 @@ urlpatterns = \
              # and give the service_name value to use to
              # trigger the real callback
              url(r"^th/callbackevernote/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceEvernote', },
                  name="evernote_callback",
                  ),
              url(r"^th/callbackgithub/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceGithub', },
                  name="github_callback",
                  ),
              url(r"^th/callbackpocket/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServicePocket', },
                  name="pocket_callback",
                  ),
              url(r"^th/callbackpushbullet/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServicePushbullet', },
                  name="pushbullet_callback",
                  ),
              url(r"^th/callbacktodoist/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceTodoist', },
                  name="todoist_callback",
                  ),
              url(r"^th/callbacktrello/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceTrello', },
                  name="trello_callback",
                  ),
              url(r"^th/callbacktwitter/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceTwitter', },
                  name="twitter_callback",
                  ),
              url(r"^th/callbackwallabag/$",
-                 "django_th.views_wizard.finalcallback",
+                 finalcallback,
                  {'service_name': 'ServiceWallabag', },
                  name="wallabag_callback",
                  ),
@@ -160,8 +163,8 @@ urlpatterns = \
 
              url(r'^th/api/taiga/webhook/', include('th_taiga.urls')),
              url(r'^th/api/slack/webhook/', include('th_slack.urls'))
-             )
+             ]
 
 if settings.DJANGO_TH.get('fire'):
-    urlpatterns += patterns(url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
-                                fire_trigger, name="fire_trigger"),)
+    urlpatterns += url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
+                       fire_trigger, name="fire_trigger"),

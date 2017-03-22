@@ -2,15 +2,15 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'djangorestframework==3.5.3',
-    'Django==1.8.17',
-    'django-formtools==1.0',
+    'djangorestframework==3.6.2',
+    'Django==1.11rc1',
+    'django-formtools==2.0',
     'arrow==0.10.0',
-    'django-js-reverse==0.7.2',
-    'django-redis==4.6.0',
-    'requests-oauthlib==0.7.0',
+    'django-js-reverse==0.7.3',
+    'django-redis==4.7.0',
+    'requests-oauthlib==0.8.0',
     'pypandoc==1.3.3',
-    'flake8==3.2.1',
+    'flake8==3.3.0',
 ]
 
 extras_require_evernote = [
@@ -39,11 +39,11 @@ extras_require_taiga = [
     'python-taiga==0.8.6',
 ]
 extras_require_todoist = [
-    'todoist-python==7.0.13',
+    'todoist-python==7.0.14',
 ]
 extras_require_trello = [
-    'py-trello==0.7.0',
-    'pytz==2016.7',
+    'py-trello==0.9.0',
+    'pytz==2016.10',
 ]
 extras_require_twitter = [
     'twython==3.4.0',
@@ -84,12 +84,14 @@ setup(
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
+        'Framework :: Django',
+        'Framework :: Django :: 1.11',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
         'Framework :: Django',
         'Topic :: Internet',
         'Topic :: Communications',

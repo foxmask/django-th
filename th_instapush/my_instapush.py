@@ -2,7 +2,7 @@
 from instapush import Instapush, App
 
 # django classes
-from django.utils.log import getLogger
+from logging import getLogger
 
 # django_th classes
 from django_th.services.services import ServicesMgr

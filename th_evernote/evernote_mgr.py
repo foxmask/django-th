@@ -5,7 +5,7 @@ from evernote.edam.error.ttypes import EDAMErrorCode
 from evernote.edam.notestore import NoteStore
 
 from django.utils.translation import ugettext as _
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 
 from django_th.models import update_result

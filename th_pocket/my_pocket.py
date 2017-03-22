@@ -8,7 +8,7 @@ from pocket import Pocket, AuthException, RateLimitException
 
 # django classes
 from django.conf import settings
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes

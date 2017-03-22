@@ -79,11 +79,11 @@ Requirements
 
 The minimum are the following :
 
-* Python 3.4.x or 3.5.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ < 1.9a
-* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.8.0
-* `django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 1.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.2
+* Python 3.5.x or 3.6.x
+* `Django <https://pypi.python.org/pypi/Django/>`_ == 1.11rc1
+* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.10.0
+* `django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 2.0
+* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.3
 
 
 

@@ -2,7 +2,7 @@
 import requests
 
 # django classes
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes

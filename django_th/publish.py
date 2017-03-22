@@ -6,7 +6,7 @@ import arrow
 
 # django
 from django.conf import settings
-from django.utils.log import getLogger
+from logging import getLogger
 
 # trigger happy
 from django_th.services import default_provider

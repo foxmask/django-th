@@ -5,7 +5,7 @@ from multiprocessing import Pool, TimeoutError
 # django
 from django.core.management.base import BaseCommand
 from django.conf import settings
-from django.utils.log import getLogger
+from logging import getLogger
 from django.db.models import Q
 # trigger happy
 from django_th.models import TriggerService

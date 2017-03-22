@@ -6,7 +6,7 @@ from twython import Twython, TwythonAuthError, TwythonRateLimitError
 
 # django classes
 from django.conf import settings
-from django.utils.log import getLogger
+from logging import getLogger
 from django.utils.translation import ugettext as _
 from django.core.cache import caches
 

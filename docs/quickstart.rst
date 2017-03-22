@@ -7,11 +7,11 @@ We will say we start from scratch
 Create a virtualenv
 ===================
 
-We just create a virtualenv with python 3.4 (or 3.5)
+We just create a virtualenv with python 3.6 (or 3.5)
 
 .. code-block:: bash
 
-    virtualenv --pytyhon=/usr/bin/python34 myproject
+    python3.6 -m venv myproject
     cd $_
     source bin/activate
 
@@ -24,9 +24,8 @@ We install TriggerHappy from Pypi
 .. code-block:: bash
 
     git clone https://github.com/foxmask/django-th
-    pip install  Django<1.9a django-formtools arrow==0.6.0 django-js-reverse django-redis requests-oauthlib feedparser
+    pip install Django django-formtools arrow django-js-reverse django-redis requests-oauthlib feedparser
 
-I dont want to use django 1.9 now, and arrow 0.7.0 got a very annoying bug for the project so 0.6.0 is important to get
 
 Configuration
 =============

@@ -131,7 +131,7 @@ The complete code of this class :
 
     # django classes
     from django.conf import settings
-    from django.utils.log import getLogger
+    from logging import getLogger
 
     # django_th classes
     from django_th.services.services import ServicesMgr

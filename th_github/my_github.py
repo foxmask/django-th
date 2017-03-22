@@ -4,7 +4,7 @@ from github3 import GitHub
 
 # django classes
 from django.conf import settings
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 from django.utils.translation import ugettext as _
 

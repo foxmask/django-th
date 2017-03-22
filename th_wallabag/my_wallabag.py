@@ -7,7 +7,7 @@ from requests import HTTPError
 from wallabag_api.wallabag import Wallabag as Wall
 # django classes
 from django.core.urlresolvers import reverse
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes

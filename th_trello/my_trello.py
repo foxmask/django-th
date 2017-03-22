@@ -5,7 +5,7 @@ from trello import TrelloClient, ResourceUnavailable
 # django classes
 from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.utils.log import getLogger
+from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes

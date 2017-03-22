@@ -2,7 +2,6 @@
 from __future__ import unicode_literals
 
 from django.core.cache import caches
-from django.core.urlresolvers import reverse_lazy, reverse
 from django.conf import settings
 
 from django.contrib.auth.decorators import login_required
@@ -10,6 +9,11 @@ from django.http import HttpResponseRedirect
 from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.db.models import Q
 from django.utils.decorators import method_decorator
+
+try:
+    from django.urls import reverse, reverse_lazy
+except ImportError:  # Django 1.9 and earlier
+    from django.core.urlresolvers import reverse, reverse_lazy
 
 # trigger_happy
 from django_th.models import TriggerService, UserService

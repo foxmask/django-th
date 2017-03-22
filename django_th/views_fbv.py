@@ -5,11 +5,17 @@ import arrow
 from django.core.cache import caches
 from django.core import management
 from django.conf import settings
-from django.core.urlresolvers import reverse
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import logout
 from django.utils.translation import ugettext as _
 from django.http import HttpResponseRedirect
+
+try:
+    from django.urls import reverse
+except ImportError:  # Django 1.9 and earlier
+    from django.core.urlresolvers import reverse
+
 # django_th
 from django_th.tools import get_service
 from django_th.models import TriggerService, ServicesActivated

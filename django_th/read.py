@@ -4,7 +4,7 @@ from __future__ import absolute_import
 
 import arrow
 # django
-from django.utils.log import getLogger
+from logging import getLogger
 from django.conf import settings
 from django.utils.timezone import now
 
