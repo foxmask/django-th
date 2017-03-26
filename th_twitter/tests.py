@@ -64,7 +64,7 @@ class TwitterTest(MainTest):
         self.assertTrue(form.is_valid())
 
     def test_invalid_provider_form(self):
-        form = TwitterProviderForm(data={})
+        form = TwitterProviderForm(data={'screen': '', 'tag': ''})
         self.assertFalse(form.is_valid())
 
     # consumer
@@ -75,7 +75,8 @@ class TwitterTest(MainTest):
         self.assertTrue(form.is_valid())
 
     def test_invalid_consumer_form(self):
-        form = TwitterConsumerForm(data={})
+        # when a field is empty the clean() function set it as None
+        form = TwitterConsumerForm(data={'screen': '', 'tag': ''})
         self.assertFalse(form.is_valid())
 
 

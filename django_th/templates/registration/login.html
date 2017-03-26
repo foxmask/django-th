@@ -12,7 +12,7 @@
     </div>
     {% endif %}
     
-    <form role="form" method="post" class="form-horizontal" action="{% url 'django.contrib.auth.views.login' %}">
+    <form role="form" method="post" class="form-horizontal" action="{% url 'login' %}">
     {% csrf_token %}
         <div class="form-group">
             <label class="form-label col-md-2" for="id_username">{% trans 'Username' %}</label>

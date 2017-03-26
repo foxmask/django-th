@@ -28,7 +28,7 @@
     :alt: Documentation status
 
 
-.. image:: http://img.shields.io/badge/python-3.4-orange.svg
+.. image:: http://img.shields.io/badge/python-3.6-orange.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: Python version supported
 

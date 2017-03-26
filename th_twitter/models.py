@@ -1,7 +1,5 @@
 # coding: utf-8
 from django.db import models
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext as _
 from django_th.models.services import Services
 
 """
@@ -32,16 +30,6 @@ class Twitter(Services):
     class Meta:
         app_label = 'django_th'
         db_table = 'django_th_twitter'
-
-    def clean(self):
-        """
-        validate if tag or screen is filled
-        :return:
-        """
-        # check if one of the field is filled
-        if self.tag == '' and self.screen == '':
-            raise ValidationError(
-                _("You have to fill ONE of the both fields (or all together)"))
 
     def show(self):
         """
