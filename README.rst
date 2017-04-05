@@ -74,17 +74,25 @@ With this project you can host triggers for you.
 All you need is to have a hosting provider (or simply your own server ;) )
 who permits to use a manager of tasks like "cron" and, of course Python.
 
+
+.. image:: https://trigger-happy.eu/static/th_esb.png
+   :alt: Trigger Happy Architecture
+
+
 Requirements
 ============
 
 The minimum are the following :
 
 * Python 3.5.x or 3.6.x
-* `Django <https://pypi.python.org/pypi/Django/>`_ == 1.11rc1
-* `arrow <https://pypi.python.org/pypi/arrow>`_ == 0.10.0
-* `django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 2.0
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.3
-
+* `DjangoRestFramework <http://www.django-rest-framework.org/>`_ == 3.6.2
+* `Django <https://www.djangoproject.com/>`_ == 1.11
+* `Arrow <https://pypi.python.org/pypi/arrow>`_ == 0.10.0
+* `Django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 2.0
+* `Django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.3
+* `Django-Redis <https://pypi.python.org/pypi/django-redis/>`_ == 4.7.0
+* `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_ == 1.3.3
+* `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_ == 0.8.0
 
 
 Installation
@@ -100,6 +108,7 @@ or to make your own "recipe" :
 
 .. code-block:: bash
 
+    pip install django-th[min]  # will just install RSS and Wallabag
     pip install django-th[rss,wallabag]
     pip install django-th[rss,wallabag,twitter,github]
     pip install django-th[all]

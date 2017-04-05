@@ -3,7 +3,7 @@ from django_th import __version__ as version
 
 install_requires = [
     'djangorestframework==3.6.2',
-    'Django==1.11rc1',
+    'Django==1.11',
     'django-formtools==2.0',
     'arrow==0.10.0',
     'django-js-reverse==0.7.3',
@@ -39,7 +39,7 @@ extras_require_taiga = [
     'python-taiga==0.8.6',
 ]
 extras_require_todoist = [
-    'todoist-python==7.0.14',
+    'todoist-python==7.0.15',
 ]
 extras_require_trello = [
     'py-trello==0.9.0',
@@ -52,6 +52,7 @@ extras_require_wallabag = [
     'wallabag_api==1.1.0',
 ]
 
+extras_require_min = extras_require_rss + extras_require_wallabag
 
 extras_require_all = \
     extras_require_evernote\
@@ -98,6 +99,7 @@ setup(
     ],
     install_requires=install_requires,
     extras_require={
+        'min': extras_require_min,
         'all': extras_require_all,
         'evernote': extras_require_evernote,
         'github': extras_require_github,

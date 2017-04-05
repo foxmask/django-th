@@ -1,6 +1,6 @@
-=============
+============
 Installation
-=============
+============
 
 TriggerHappy can be installed inside an existing project, or from scratch
 
@@ -58,6 +58,7 @@ or to make your own "recipe", for example to install some of the component and n
 
 .. code-block:: bash
 
+    pip install django-th[min]   # will just install rss and Wallabag
     pip install django-th[rss,wallabag]
     pip install django-th[rss,twitter,wallabag,github]
 
@@ -69,11 +70,15 @@ Once it's done, you can continue to the [configuration process](http://trigger-h
 Requirements
 ============
 
-* Python 3.6.x, 3.5.x
+* Python 3.5.x or 3.6.x
+* `DjangoRestFramework <https://pypi.python.org/pypi/Django/>`_
 * `Django <https://pypi.python.org/pypi/Django/>`_
-* `arrow <https://pypi.python.org/pypi/arrow>`_
-* `django-formtools <https://pypi.python.org/pypi/django-formtools>`_
-* `django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_
+* `Arrow <https://pypi.python.org/pypi/arrow>`_
+* `Django-formtools <https://pypi.python.org/pypi/django-formtools>`_
+* `Django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_
+* `Django-Redis <https://pypi.python.org/pypi/django-redis/>`_
+* `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_
+* `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_
 
 
 for evernote support

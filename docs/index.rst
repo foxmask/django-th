@@ -60,12 +60,12 @@ your own Wallabag or Pocket account and so on
     :alt: Documentation status
 
 
-.. image:: http://img.shields.io/badge/python-3.4-orange.svg
+.. image:: http://img.shields.io/badge/python-3.5-orange.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: Python version supported
 
 
-.. image:: http://img.shields.io/badge/python-3.5-orange.svg
+.. image:: http://img.shields.io/badge/python-3.6-orange.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: Python version supported
 
