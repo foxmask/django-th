@@ -6,7 +6,7 @@ from twython import Twython, TwythonAuthError, TwythonRateLimitError
 
 # django classes
 from django.conf import settings
-from logging import getLogger
+from django.utils import html
 from django.utils.translation import ugettext as _
 from django.core.cache import caches
 
@@ -14,6 +14,8 @@ from django.core.cache import caches
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
 from th_twitter.models import Twitter
+
+from logging import getLogger
 
 """
     handle process with twitter
@@ -200,10 +202,14 @@ class ServiceTwitter(ServicesMgr):
 
         if data.get('link') and len(data.get('link')) > 0:
 
-            content = str("{title} {link}").format(
-                title=title, link=data.get('link'))
+            if self.title_or_content(title):
 
-            content += self.get_tags(trigger_id)
+                content = str("{title} {link}").format(
+                    title=title, link=data.get('link'))
+
+                content += self.get_tags(trigger_id)
+            else:
+                content = self.set_twitter_content(content)
 
             try:
                 self.twitter_api.update_status(status=content)
@@ -282,3 +288,27 @@ class ServiceTwitter(ServicesMgr):
                           oauth_token_secret)
         access_token = twitter.get_authorized_tokens(oauth_verifier)
         return access_token
+
+    def title_or_content(self, title):
+        """
+        If the title always contains 'New status from'
+        drop the title and get 'the content' instead
+        :param title:  
+        :return: 
+        """
+        if "New status by" in title:
+            return False
+        return True
+
+    def set_twitter_content(self, content):
+        """
+        cleaning content by removing any existing html tag 
+        :param content: 
+        :return: 
+        """
+        content = html.strip_tags(content)
+
+        if len(content) > 140:
+            return content[:140]
+
+        return content
