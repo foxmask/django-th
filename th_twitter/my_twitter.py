@@ -293,8 +293,8 @@ class ServiceTwitter(ServicesMgr):
         """
         If the title always contains 'New status from'
         drop the title and get 'the content' instead
-        :param title:  
-        :return: 
+        :param title:
+        :return:
         """
         if "New status by" in title:
             return False
@@ -302,9 +302,9 @@ class ServiceTwitter(ServicesMgr):
 
     def set_twitter_content(self, content):
         """
-        cleaning content by removing any existing html tag 
-        :param content: 
-        :return: 
+        cleaning content by removing any existing html tag
+        :param content:
+        :return:
         """
         content = html.strip_tags(content)
 
