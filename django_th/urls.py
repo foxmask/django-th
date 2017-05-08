@@ -161,8 +161,11 @@ urlpatterns = [
                  ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
 
-             url(r'^th/api/taiga/webhook/', include('th_taiga.urls')),
-             url(r'^th/api/slack/webhook/', include('th_slack.urls'))
+             url(r'^th/api/', include('django_th.urls_api')),
+
+             url(r'^th/o/', include('oauth2_provider.urls',
+                                    namespace='oauth2_provider')),
+
              ]
 
 if settings.DJANGO_TH.get('fire'):

@@ -3,6 +3,8 @@ from django_th import __version__ as version
 
 install_requires = [
     'djangorestframework==3.6.2',
+    'django-oauth-toolkit==0.12.0',
+    'django-cors-middleware==1.3.1',
     'Django==1.11',
     'django-formtools==2.0',
     'arrow==0.10.0',

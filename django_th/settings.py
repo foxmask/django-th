@@ -2,6 +2,7 @@
 import os
 from django.core.urlresolvers import reverse_lazy
 
+
 DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
@@ -83,12 +84,14 @@ STATICFILES_FINDERS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'oauth2_provider.middleware.OAuth2TokenMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 )
 
 ROOT_URLCONF = 'django_th.urls'
@@ -115,6 +118,9 @@ INSTALLED_APPS = (
     # 'django.contrib.admindocs',
     'formtools',
     'django_js_reverse',
+    'rest_framework',
+    'oauth2_provider',
+    'corsheaders',
     'django_th',
     'th_rss',
     # uncomment the lines to enable the service you need
@@ -363,6 +369,29 @@ CACHES = {
     },
 }
 
+
+# Oauth settings see https://django-oauth-toolkit.readthedocs.io/en/latest/tutorial/tutorial_01.html
+
+
+OAUTH2_PROVIDER = {
+    'SCOPES': {
+        'read': 'Read scope',
+        'write': 'Write scope',
+    },
+}
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+#AUTHENTICATION_BACKENDS = (
+#    'oauth2_provider.backends.OAuth2Backend',
+#)
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.ext.rest_framework.OAuth2Authentication',
+    )
+}
+
 try:
     from .th_settings import *
 except ImportError:
@@ -374,7 +403,7 @@ SECRET_KEY = 'to be defined :P'
 
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
-TEST_RUNNER_WHITELIST = ('django_rq',)
+TEST_RUNNER_WHITELIST = ('django_rq', 'oauth2_provider', 'corsheaders')
 
 # for the pelican website generator, set the author's name of the posts here
 TH_PELICAN_AUTHOR = 'Foxmask'
@@ -384,3 +413,6 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+
+LOGIN_URL = '/auth/login'
