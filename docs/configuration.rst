@@ -42,6 +42,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
         ...
         'formtools',
         'django_js_reverse',
+        'rest_framework',
         'django_th',
         'th_rss',
         # uncomment the lines to enable the service you need
@@ -391,6 +392,6 @@ Suppose my virtualenv is created in /home/trigger-happy and the django app is lo
 
 .. code-block:: bash
 
-    */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/django_th/ && ./manage.py read
+    */12 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py read
     */15 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py publish
     */20 * * * * . /home/trigger-happy/bin/activate && cd /home/trigger-happy/th/ && ./manage.py recycle
