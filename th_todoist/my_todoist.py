@@ -68,17 +68,21 @@ class ServiceTodoist(ServicesMgr):
         data = []
         project_name = 'Main Project'
         items = self.todoist.sync()
-        for item in items.get('items'):
-            date_added = arrow.get(item.get('date_added'),
-                                   'ddd DD MMM YYYY HH:mm:ss ZZ')
-            if date_added > date_triggered:
-                for project in items.get('projects'):
-                    if item.get('project_id') == project.get('id'):
-                        project_name = project.get('name')
-                data.append({'title': "From TodoIst Project {0}"
-                                      ":".format(project_name),
-                             'content': item.get('content')})
-        cache.set('th_todoist_' + str(trigger_id), data)
+        try:
+            for item in items.get('items'):
+                date_added = arrow.get(item.get('date_added'),
+                                       'ddd DD MMM YYYY HH:mm:ss ZZ')
+                if date_added > date_triggered:
+                    for project in items.get('projects'):
+                        if item.get('project_id') == project.get('id'):
+                            project_name = project.get('name')
+                    data.append({'title': "From TodoIst Project {0}"
+                                          ":".format(project_name),
+                                 'content': item.get('content')})
+            cache.set('th_todoist_' + str(trigger_id), data)
+        except AttributeError:
+            logger.error(items)
+
         return data
 
     def save_data(self, trigger_id, **data):
