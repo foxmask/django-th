@@ -1,5 +1,5 @@
 from django import forms
-from django_th.models import ServicesActivated
+from django_th.models import UserService
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -13,17 +13,18 @@ class ServiceChoiceForm(forms.Form):
             :return: list of activated services
             :rtype: list
         """
-        services = ServicesActivated.objects.filter(status=1)
+        services = UserService.objects.filter(name__status=1)
 
         choices = []
-        datas = ()
+        data = ()
 
         if provider is not None:
             services = services.exclude(name__exact=provider)
 
         for class_name in services:
-            datas = (class_name.name, class_name.name.rsplit('Service', 1)[1])
-            choices.append(datas)
+            data = (class_name.name,
+                    class_name.name.name.rsplit('Service', 1)[1])
+            choices.append(data)
 
         return choices
 
