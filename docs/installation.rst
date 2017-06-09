@@ -24,7 +24,7 @@ Installation from an existing project
 .. code-block:: bash
 
     cd /to/the/path/of/my/existing/project
-    source bin/activate (if you have a virtualenv)
+    source bin/activate   # (if you have a virtualenv)
  
 then you can continue with one of the two choice "From GitHub" or "From Pypi"
 
@@ -41,7 +41,7 @@ then continue by installing :
 .. code-block:: bash
 
     cd django-th
-    python setup.py install
+    pip install -e .[min]
 
 
 Installation From Pypi
@@ -71,6 +71,8 @@ Requirements
 ============
 
 * Python 3.5.x or 3.6.x
+* `Redis <https://redis.io/>`_
+
 * `DjangoRestFramework <https://pypi.python.org/pypi/Django/>`_
 * `Django <https://pypi.python.org/pypi/Django/>`_
 * `Arrow <https://pypi.python.org/pypi/arrow>`_
