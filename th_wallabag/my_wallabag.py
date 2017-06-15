@@ -202,10 +202,16 @@ class ServiceWallabag(ServicesMgr):
         trigger = Wallabag.objects.get(trigger_id=trigger_id)
 
         title = self.set_title(data)
-        # convert htmlentities
-        title = HtmlEntities(title).html_entity_decode
+        if title is not None:
+            # convert htmlentities
+            title = HtmlEntities(title).html_entity_decode
 
-        return self._create_entry(title, data, trigger.tag)
+            return self._create_entry(title, data, trigger.tag)
+        else:
+            # we ignore data without title so return True to let
+            # the process continue without
+            # raising exception
+            return True
 
     def auth(self, request):
         """
