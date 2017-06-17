@@ -18,6 +18,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
    quickstart
    installation
    configuration
+   running
    usage
    services
    new_module

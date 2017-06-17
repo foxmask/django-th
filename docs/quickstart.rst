@@ -67,7 +67,7 @@ and fill the fields.
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_details.png
 
 
-For the service RSS (dont check auth required) and Pocket (check auth required)
+For the service RSS (dont check auth required) and Wallabag (check auth required)
 
 
 This will give something like :
@@ -79,7 +79,7 @@ This will give something like :
 Activating the service
 =======================
 
-Now that the 2 service RSS and Pocket are enabled, go activate them for you :
+Now that the 2 service RSS and Wallabag are enabled, go activate them for you :
 
 "Activated services" (http://127.0.0.1:8000/th/service/):
 
@@ -92,7 +92,7 @@ Why this process from admin and non admin part ?
 * The project is hosted by yourself for your own need, but the project is able to handle trigger for your and your friends if you need.
 * Thus the 'admin' who hosts the project need to do some work of his admin part to add the service he will offer to user
 * Thus the user will go the his "my activated services" page to activate his service too.
-* But as you are all alone for the moment, you have the two hats : admin and end user, this is why you will need to do the two steps "Adding the service pocket from the Admin" and "Activating the service"
+* But as you are all alone for the moment, you have the two hats : admin and end user, this is why you will need to do the two steps "Adding the service wallabag from the Admin" and "Activating the service"
 
 Create a trigger
 ================

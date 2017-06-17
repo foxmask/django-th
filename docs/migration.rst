@@ -23,7 +23,7 @@ to find
 
     11 | django_th         | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
-if you dont have it then do :
+if you don't have it then do :
 
 .. code-block:: sql
 

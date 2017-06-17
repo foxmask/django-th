@@ -11,15 +11,36 @@ modifications of settings.py
 
 1) INSTALLED_APPS :
 
+add or uncomment the following line
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # 'th_slack',
+    )
+
+to get
+
 .. code-block:: python
 
     INSTALLED_APPS = (
         'th_slack',
     )
 
-2) TH_SERVICES
+modifications of th_settings.py
+-------------------------------
 
-add this line to the TH_SERVICES setting
+1) TH_SERVICES
+
+add or uncomment the following line
+
+.. code-block:: python
+
+    TH_SERVICES = (
+        # 'th_slack.my_slack.ServiceSlack',
+    )
+
+to get
 
 .. code-block:: python
 

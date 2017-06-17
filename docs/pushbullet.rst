@@ -13,6 +13,16 @@ modifications of settings.py
 
 1) INSTALLED_APPS :
 
+uncomment the following line
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # 'th_pushbullet',
+    )
+
+to get
+
 .. code-block:: python
 
     INSTALLED_APPS = (
@@ -46,9 +56,20 @@ After the default cache add :
             }
         },
 
-3) TH_SERVICES
+modifications of th_settings.py
+-------------------------------
 
-add this line to the TH_SERVICES setting
+1) TH_SERVICES
+
+add or uncomment the following line
+
+.. code-block:: python
+
+    TH_SERVICES = (
+        # 'th_pushbullet.my_pushbullet.ServicePushbullet',
+    )
+
+to get
 
 .. code-block:: python
 
@@ -56,9 +77,9 @@ add this line to the TH_SERVICES setting
         'th_pushbullet.my_pushbullet.ServicePushbullet',
     )
 
-4) The service keys
+2) The service keys
 
-I strongly recommend that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
+It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
 
 
 .. code-block:: python

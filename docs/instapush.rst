@@ -12,15 +12,36 @@ modifications of settings.py
 
 1) INSTALLED_APPS :
 
+uncomment the following line
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # 'th_instapsuh',
+    )
+
+to get
+
 .. code-block:: python
 
     INSTALLED_APPS = (
         'th_instapsuh',
     )
 
-2) TH_SERVICES
+modifications of th_settings.py
+-------------------------------
 
-add this line to the TH_SERVICES setting
+1) TH_SERVICES
+
+uncomment the following line
+
+.. code-block:: python
+
+    TH_SERVICES = (
+        # 'th_instapush.my_instapush.ServiceInstapush',
+    )
+
+to get
 
 .. code-block:: python
 

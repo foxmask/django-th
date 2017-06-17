@@ -11,6 +11,16 @@ modifications of settings.py
 
 1) INSTALLED_APPS :
 
+add or uncomment the following line
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # 'th_rss',
+    )
+
+to get
+
 .. code-block:: python
 
     INSTALLED_APPS = (
@@ -44,9 +54,20 @@ After the default cache add :
             }
         },
 
-3) TH_SERVICES
+modifications of th_settings.py
+-------------------------------
 
-add this line to the TH_SERVICES setting
+1) TH_SERVICES
+
+uncomment the following line
+
+.. code-block:: python
+
+    TH_SERVICES = (
+        # 'th_rss.my_rss.ServiceRss',
+    )
+
+to get
 
 .. code-block:: python
 

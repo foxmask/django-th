@@ -11,6 +11,16 @@ a self hostable application for saving web pages
 modifications of settings.py
 ----------------------------
 
+add or uncomment the following lines
+
+.. code-block:: python
+
+    INSTALLED_APPS = (
+        # 'th_wallabag',
+    )
+
+to get
+
 1) INSTALLED_APPS :
 
 .. code-block:: python
@@ -46,9 +56,20 @@ After the default cache add :
             }
         },
 
-3) TH_SERVICES
+modifications of th_settings.py
+-------------------------------
 
-add this line to the TH_SERVICES setting
+1) TH_SERVICES
+
+add or uncomment the following line
+
+.. code-block:: python
+
+    TH_SERVICES = (
+        # 'th_wallabag.my_wallabag.ServiceWallabag',
+    )
+
+to get
 
 .. code-block:: python
 

@@ -100,13 +100,37 @@ for github support
 
 * `github <https://pypi.python.org/pypi/github3.py>`_
 
+for pelican support
+
+* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_
+
 for pocket support
 
 * `pocket <https://pypi.python.org/pypi/pocket>`_
 
+for pushbullet support
+
+* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_
+
+for redis support
+
+* `django-redis <https://pypi.python.org/pypi/django-redis>`_
+
 for rss support
 
 * `feedparser <https://pypi.python.org/pypi/feedparser>`_
+
+for taiga support
+
+* `python-taiga <https://pypi.python.org/pypi/python-taiga>`_
+
+for slack support
+
+* `requests <http://docs.python-requests.org/en/master>`_
+
+for todoist support
+
+* `todoist-python <https://pypi.python.org/pypi/todoist-python>`_
 
 for trello support
 
@@ -125,23 +149,7 @@ for twitter support
 * `twython <https://github.com/ryanmcgrath/twython>`_
 
 
-for redis support
-
-* `django-redis <https://pypi.python.org/pypi/django-redis>`_
-
-
-for pelican support
-
-* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_
-
 for wallabag support
 
 * `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_
 
-for todoist support
-
-* `todoist-python <https://pypi.python.org/pypi/todoist-python>`_
-
-for pushbullet support
-
-* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_
