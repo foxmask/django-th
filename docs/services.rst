@@ -95,6 +95,10 @@ Why this process ?
 * Other details : you need to activate the service from the admin panel, BECAUSE, TriggerHappy is planed to be used by many other users soon. So the admin of the instance of TriggerHappy will decide if he wants to offer the possibility to use this service of this other one. Once the admin has done his job, the end user, from the "public part" can go to the list of services and add the new one etc.
 
 
+Supported services
+------------------
+
+Here are the service that will follow almost the same previous path
 
 .. toctree::
    :maxdepth: 2
