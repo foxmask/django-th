@@ -1,6 +1,4 @@
 # coding: utf-8
-import datetime
-import time
 import arrow
 
 # pocket API
@@ -92,9 +90,7 @@ class ServicePocket(ServicesMgr):
 
         data = list()
         # pocket uses a timestamp date format
-        since = int(
-            time.mktime(datetime.datetime.timetuple(date_triggered)))
-
+        since = arrow.get(date_triggered).timestamp
         if self.token is not None:
 
             # get the data from the last time the trigger have been started

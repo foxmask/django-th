@@ -1,4 +1,5 @@
 # coding: utf-8
+import arrow
 from unittest.mock import patch
 import datetime
 from pocket import Pocket
@@ -103,7 +104,7 @@ class ServicePocketTest(PocketTest):
         kwargs = {'date_triggered': self.date_triggered,
                   'link': 'http://foo.bar/some/thing/else/what/else',
                   'title': 'what else'}
-        since = int(1370815200)
+        since = arrow.get(self.date_triggered).timestamp
 
         sp = ServicePocket(self.token)
         sp.read_data(**kwargs)
