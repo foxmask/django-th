@@ -31,7 +31,8 @@ TH_SERVICES = (
     # 'th_taiga.my_taiga.ServiceTaiga',
     # 'th_todoist.my_todoist.ServiceTodoist',
     # 'th_trello.my_trello.ServiceTrello',
-    # 'th_twitter.my_twitter.ServiceTwitter',
+    'th_tumblr.my_tumblr.ServiceTumblr',
+    'th_twitter.my_twitter.ServiceTwitter',
     'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
@@ -67,6 +68,11 @@ TH_PUSHBULLET = {
 TH_TODOIST = {
     'client_id': '<your todoist key>',
     'client_secret': '<your todoist secret>',
+}
+
+TH_TUMBLR = {
+    'consumer_key': '<your tumblr key>',
+    'consumer_secret': '<your tumblr secret>',
 }
 
 TH_TRELLO = {

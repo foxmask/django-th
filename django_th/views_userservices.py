@@ -90,7 +90,6 @@ class UserServiceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(UserServiceCreateView, self).get_context_data(**kwargs)
         context['services'] = len(activated_services(self.request.user))
-        print(context)
         return context
 
     @method_decorator(login_required)
