@@ -129,8 +129,8 @@ INSTALLED_APPS = (
     # 'th_taiga',
     # 'th_todoist',
     # 'th_trello',
-    'th_tumblr',
-    'th_twitter',
+    # 'th_tumblr',
+    # 'th_twitter',
     'th_wallabag',
 
 )

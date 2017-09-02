@@ -21,3 +21,4 @@ todoist-python==7.0.17
 pushbullet.py==0.10.0
 instapush==0.1.2
 python-taiga==0.8.6
+PyTumblr==0.0.6

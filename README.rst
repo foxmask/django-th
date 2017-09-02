@@ -33,11 +33,6 @@
     :alt: Python version supported
 
 
-.. image:: http://img.shields.io/badge/python-3.5-orange.svg
-    :target: https://pypi.python.org/pypi/django-th/
-    :alt: Python version supported
-
-
 .. image:: http://img.shields.io/badge/license-BSD-blue.svg
     :target: https://pypi.python.org/pypi/django-th/
     :alt: License
@@ -84,7 +79,7 @@ Requirements
 
 The minimum are the following :
 
-* Python 3.5.x or 3.6.x
+* Python 3.6.x
 * `DjangoRestFramework <http://www.django-rest-framework.org/>`_ == 3.6.2
 * `Django <https://www.djangoproject.com/>`_ == 1.11
 * `Arrow <https://pypi.python.org/pypi/arrow>`_ == 0.10.0

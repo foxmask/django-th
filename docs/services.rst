@@ -114,6 +114,7 @@ Here are the service that will follow almost the same previous path
    taiga
    todoist
    trello
+   tumblr
    twitter
    wallabag
 

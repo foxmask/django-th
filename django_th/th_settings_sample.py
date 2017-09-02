@@ -61,6 +61,11 @@ TH_TODOIST = {
     'client_secret': '<your todoist secret>',
 }
 
+TH_TUMBLR = {
+    'consumer_key': '<your tumblr key>',
+    'consumer_secret': '<your tumblr secret>',
+}
+
 TH_TRELLO = {
     'consumer_key': '<your trello key>',
     'consumer_secret': '<your trello secret>',

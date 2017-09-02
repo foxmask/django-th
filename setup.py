@@ -45,6 +45,9 @@ extras_require_trello = [
     'py-trello==0.9.0',
     'pytz==2016.10',
 ]
+extras_require_tumblr = [
+    'PyTumblr==0.0.6',
+]
 extras_require_twitter = [
     'twython==3.4.0',
 ]
@@ -65,6 +68,7 @@ extras_require_all = \
     + extras_require_taiga\
     + extras_require_todoist\
     + extras_require_trello\
+    + extras_require_tumblr\
     + extras_require_twitter\
     + extras_require_wallabag
 
@@ -111,6 +115,7 @@ setup(
         'taiga': extras_require_taiga,
         'todoist': extras_require_todoist,
         'trello': extras_require_trello,
+        'tumblr': extras_require_tumblr,
         'twitter': extras_require_twitter,
         'wallabag': extras_require_wallabag,
     },
