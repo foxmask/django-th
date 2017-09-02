@@ -129,7 +129,8 @@ INSTALLED_APPS = (
     # 'th_taiga',
     # 'th_todoist',
     # 'th_trello',
-    # 'th_twitter',
+    'th_tumblr',
+    'th_twitter',
     'th_wallabag',
 
 )
@@ -312,12 +313,22 @@ CACHES = {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
+    'th_tumblr':
+    {
+        'TIMEOUT': 3600,
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://localhost:6379/12",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            "MAX_ENTRIES": 5000,
+        }
+    },
     # Trello
     'th_trello':
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/8",
+        "LOCATION": "redis://127.0.0.1:6379/9",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -327,7 +338,7 @@ CACHES = {
     {
         'TIMEOUT': 500,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/9",
+        "LOCATION": "redis://127.0.0.1:6379/10",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -337,7 +348,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/10",
+        "LOCATION": "redis://127.0.0.1:6379/11",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
@@ -346,7 +357,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/11",
+        "LOCATION": "redis://localhost:6379/12",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 5000,
@@ -356,7 +367,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/12",
+        "LOCATION": "redis://localhost:6379/13",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 5000,
