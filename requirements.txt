@@ -1,7 +1,7 @@
 awesome-slugify==1.6.5
 arrow==0.10.0
-djangorestframework==3.6.3
-Django==1.11.3
+djangorestframework==3.6.4
+Django==1.11.5
 django-formtools==2.0
 django-js-reverse==0.7.3
 django-redis==4.8.0
@@ -14,7 +14,7 @@ pytz==2017.2
 pytidylib==0.3.2
 pypandoc==1.4
 requests-oauthlib==0.8.0
-twython==3.5.0
+twython==3.6.0
 wallabag_api==1.1.0
 flake8==3.3.0
 todoist-python==7.0.17

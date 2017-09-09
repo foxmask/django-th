@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'djangorestframework==3.6.2',
-    'Django==1.11',
+    'djangorestframework==3.6.4',
+    'Django==1.11.5',
     'django-formtools==2.0',
     'arrow==0.10.0',
     'django-js-reverse==0.7.3',
@@ -49,7 +49,7 @@ extras_require_tumblr = [
     'PyTumblr==0.0.6',
 ]
 extras_require_twitter = [
-    'twython==3.4.0',
+    'twython==3.6.0',
 ]
 extras_require_wallabag = [
     'wallabag_api==1.1.0',
