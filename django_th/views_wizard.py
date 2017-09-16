@@ -37,6 +37,15 @@ class UserServiceWizard(SessionWizardView):
 
         return '%s/wz-%s-form.html' % (folder.lower(), self.steps.current)
 
+    def get_form_initial(self, step):
+        """
+        get the services provider/consumer of the current user
+        :param step: current set
+        :return: dict with initial data
+        """
+        data = {'user': self.request.user}
+        return self.initial_dict.get(step, data)
+
     def get_form(self, step=None, data=None, files=None):
         """
             change the form instance dynamically from the data we entered
@@ -57,7 +66,8 @@ class UserServiceWizard(SessionWizardView):
         elif step == '2':
             step0_data = self.get_cleaned_data_for_step('0')
             form = ConsumerForm(
-                data, initial={'provider': step0_data.get('provider')})
+                data, initial={'provider': step0_data.get('provider'),
+                               'user': self.request.user})
 
         elif step == '3':
 

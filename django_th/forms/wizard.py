@@ -5,15 +5,17 @@ from django.utils.translation import ugettext_lazy as _
 
 class ServiceChoiceForm(forms.Form):
 
-    def activated_services(self, provider=None):
+    def activated_services(self, user, provider=None):
         """
             get the activated services added from the administrator
+            :param user: user
             :param provider: the selected provider
+            :type user: current user
             :type provider: string
             :return: list of activated services
             :rtype: list
         """
-        services = UserService.objects.filter(name__status=1)
+        services = UserService.objects.filter(name__status=1, user=user)
 
         choices = []
         data = ()
@@ -38,7 +40,9 @@ class ProviderForm(ServiceChoiceForm):
 
     def __init__(self, *args, **kwargs):
         super(ProviderForm, self).__init__(*args, **kwargs)
-        self.fields['provider'].choices = self.activated_services()
+        self.fields['provider'].choices = self.activated_services(
+            user=self.initial['user']
+        )
         self.fields['provider'].widget.attrs['class'] = 'form-control'
 
 
@@ -54,7 +58,9 @@ class ConsumerForm(ServiceChoiceForm):
         # get the list of service without the one selected in
         # the provider form
         self.fields['consumer'].choices = self.activated_services(
-            self.initial['provider'])
+            user=self.initial['user'],
+            provider=self.initial['provider']
+        )
         self.fields['consumer'].widget.attrs['class'] = 'form-control'
 
 
