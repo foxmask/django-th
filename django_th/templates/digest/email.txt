@@ -1,0 +1,5 @@
+Digest of your service
+
+{% for data in digest %}
+{{ data.title }} - {{ data.link }}
+{% endfor %}

@@ -13,6 +13,7 @@ except ImportError:
     from django.db.models.loading import get_model
 
 # django_th stuff
+from django_th import signals
 from django_th.models import UserService, ServicesActivated, TriggerService
 from django_th.publishing_limit import PublishingLimit
 from django_th.html_entities import HtmlEntities
@@ -308,3 +309,14 @@ class ServicesMgr(object):
             consumer_failed=0, provider_failed=0)
         TriggerService.objects.filter(provider__name__id=pk).update(
             consumer_failed=0, provider_failed=0)
+
+    def send_signal(self, trigger_id, title, link=''):
+
+        t = TriggerService.objects.get(id=trigger_id)
+
+        if t.provider.duration != 'n':
+
+            kwargs = {'user': t.user, 'title': title,
+                      'link': link, 'duration': t.provider.duration}
+
+            signals.digest_event.send(sender=t.provider.name, **kwargs)

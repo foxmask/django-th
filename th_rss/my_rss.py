@@ -1,11 +1,11 @@
 # coding: utf-8
+import arrow
 import datetime
 import time
-import arrow
+from logging import getLogger
 
 # django classes
 from django.conf import settings
-from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes
@@ -86,6 +86,9 @@ class ServiceRss(ServicesMgr):
                published is not None and\
                now >= published >= date_triggered:
                 my_feeds.append(entry)
+
+                # digester
+                self.send_signal(trigger_id, entry.title, entry.link)
 
         cache.set('th_rss_' + str(trigger_id), my_feeds)
         cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)

@@ -76,9 +76,12 @@ class ServiceTodoist(ServicesMgr):
                     for project in items.get('projects'):
                         if item.get('project_id') == project.get('id'):
                             project_name = project.get('name')
-                    data.append({'title': "From TodoIst Project {0}"
-                                          ":".format(project_name),
+                    title = 'From TodoIst Project {0}:'.format(project_name)
+                    data.append({'title': title,
                                  'content': item.get('content')})
+                    # digester
+                    self.send_signal(trigger_id, title, link='')
+
             cache.set('th_todoist_' + str(trigger_id), data)
         except AttributeError:
             logger.error(items)

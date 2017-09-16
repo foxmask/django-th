@@ -1,13 +1,18 @@
 # coding: utf-8
+import arrow
+
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models.signals import post_save
-from django.core.exceptions import ObjectDoesNotExist
+from django.dispatch import receiver
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+
 from logging import getLogger
 
+from django_th.signals import digest_event
 from django_th.tools import warn_user_and_admin
 
 logger = getLogger('django_th.trigger_happy')
@@ -46,6 +51,17 @@ class UserService(models.Model):
     """
         UserService a model to link service and user
     """
+    DAY = 'd'
+    WEEK = 'w'
+    MONTH = 'm'
+    NONE = 'n'
+    DURATION = (
+        (DAY, _('Day')),
+        (WEEK, _('Week')),
+        (MONTH, _('Month')),
+        (NONE, _('None'))
+    )
+
     user = models.ForeignKey(User)
     token = models.CharField(max_length=255, blank=True)
     name = models.ForeignKey(
@@ -59,6 +75,7 @@ class UserService(models.Model):
         _('client id'), max_length=255, default='', blank=True)
     client_secret = models.CharField(
         _('client secret'), max_length=255, default='', blank=True)
+    duration = models.CharField(max_length=1, choices=DURATION, default=NONE)
 
     def show(self):
         """
@@ -103,6 +120,32 @@ class TriggerService(models.Model):
                                       self.provider.name,
                                       self.consumer.name,
                                       self.description)
+
+
+class Digest(models.Model):
+    """
+    Digest service to store the data from other service
+    """
+    user = models.ForeignKey(User)
+    title = models.CharField(max_length=600)
+    link = models.URLField()
+    duration = models.CharField(max_length=1)
+    date_end = models.DateField()
+    provider = models.CharField(max_length=40)
+
+    def show(self):
+        """
+
+        :return: string representing object
+        """
+        return "Digest %s - %s - %s - %s - %s - %s" % (
+            self.user, self.provider, self.title, self.link, self.duration,
+            self.date_end)
+
+    def __str__(self):
+        return "%s - %s - %s - %s - %s - %s" % (
+            self.user, self.provider, self.title, self.link, self.duration,
+            self.date_end)
 
 
 def update_result(trigger_id, msg, status):
@@ -153,3 +196,40 @@ def th_create_user_profile(sender, instance, created, **kwargs):
 
 post_save.connect(th_create_user_profile, sender=User,
                   dispatch_uid="create_user_profile")
+
+
+@receiver(digest_event)
+def digest_save(sender, **kwargs):
+    """
+
+    :param sender:
+    :param kwargs:
+    :return:
+    """
+    # set the deadline of the publication of the digest data
+    duration = kwargs.get('duration')
+    if duration not in ('d', 'w', 'm'):
+        return
+    # get the current date
+    now = arrow.utcnow().to(settings.TIME_ZONE)
+
+    # set the deadline
+    if duration == 'd':
+        # set tomorrow
+        tomorrow = now.shift(days=+1)
+        date_end = tomorrow.date()  # noqa extrat the date part
+    elif duration == 'w':
+        # set next week
+        next_week = now.shift(weeks=+1)
+        date_end = next_week.date()
+    else:
+        # set next month
+        next_month = now.shift(months=+1)
+        date_end = next_month.date()
+
+    Digest.objects.create(user=kwargs.get('user'),
+                          title=kwargs.get('title'),
+                          link=kwargs.get('link'),
+                          duration=duration,
+                          date_end=str(date_end),
+                          provider=sender)
