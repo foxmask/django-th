@@ -10,7 +10,17 @@
         <fieldset>
         <legend>{% trans 'Set the parameters of your service' %}</legend>
         {{ form.non_field_errors }}
-            {%  if object.name = 'ServiceInstapush' %}
+            <div class="form-group">
+                <div class="col-sm-12"><h4>Digest retention</h4></div>
+                <label class="col-sm-2 control-label" for="id_duration">{% trans 'Duration' %}</label>
+                <div class="col-sm-6">{{ form.duration }}</div>
+                <div class="col-sm-offset-2 col-sm-8">{{ form.duration.errors }}</div>
+                <div class="col-sm-12">{% trans 'Choose the duration of the retention for the digester of that service. After that duration, you will receive the complet bucket of the grabbed data to your email account' %}</div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-12"><h4>Authentication</h4></div>
+            </div>
+            {%  if object.name == 'ServiceInstapush' %}
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_token">{% trans 'User Token' %}</label>
                 <div class="col-sm-6">{{ form.token }}</div>

@@ -38,7 +38,8 @@ class UserServiceTest(MainTest):
                     'username': 'johndoe',
                     'password': 'password',
                     'client_id': 'the_id',
-                    'client_secret': 'the_secret'
+                    'client_secret': 'the_secret',
+                    'duration': 'd',
                     }
             data2 = {'user': u.user, 'name': u.name, 'token': u.token,
                      'host': 'http://localhost/',

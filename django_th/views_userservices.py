@@ -158,7 +158,7 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
     """
     fields = ['username', 'password',
               'client_secret', 'client_id', 'host',
-              'token']
+              'token', 'duration']
     template_name = "services/edit_service.html"
 
     def get_success_url(self):

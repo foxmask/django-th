@@ -1,0 +1,6 @@
+<h1>Digest of your service </h1>
+<ul>
+{% for data in digest %}
+    <li><a href="{{ data.link }}">{{ data.title }}</a></li>
+{% endfor %}
+</ul>
