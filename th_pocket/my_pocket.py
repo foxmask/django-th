@@ -112,6 +112,10 @@ class ServicePocket(ServicesMgr):
                                  'title': my_pocket['given_title'],
                                  'content': content,
                                  'tweet_id': 0})
+                    # digester
+                    self.send_digest_event(trigger_id,
+                                           my_pocket['given_title'],
+                                           my_pocket['given_url'])
                 cache.set('th_pocket_' + str(trigger_id), data)
 
         return data

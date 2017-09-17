@@ -84,6 +84,10 @@ class ServicePushbullet(ServicesMgr):
 
                 body = p.get('body')
                 data.append({'title': title, 'content': body})
+                # digester
+                self.send_digest_event(trigger_id,
+                                       title,
+                                       '')
 
         cache.set('th_pushbullet_' + str(trigger_id), data)
         return data

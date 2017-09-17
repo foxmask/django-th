@@ -5,6 +5,7 @@ from requests_oauthlib import OAuth1Session, OAuth2Session
 # django stuff
 from django.core.cache import caches
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 try:
     from django.apps import apps
@@ -310,13 +311,21 @@ class ServicesMgr(object):
         TriggerService.objects.filter(provider__name__id=pk).update(
             consumer_failed=0, provider_failed=0)
 
-    def send_signal(self, trigger_id, title, link=''):
+    def send_digest_event(self, trigger_id, title, link=''):
+        """
+        handling of the signal of digest
+        :param trigger_id:
+        :param title:
+        :param link:
+        :return:
+        """
+        if settings.DJANGO_TH.get('digest_event'):
 
-        t = TriggerService.objects.get(id=trigger_id)
+            t = TriggerService.objects.get(id=trigger_id)
 
-        if t.provider.duration != 'n':
+            if t.provider.duration != 'n':
 
-            kwargs = {'user': t.user, 'title': title,
-                      'link': link, 'duration': t.provider.duration}
+                kwargs = {'user': t.user, 'title': title,
+                          'link': link, 'duration': t.provider.duration}
 
-            signals.digest_event.send(sender=t.provider.name, **kwargs)
+                signals.digest_event.send(sender=t.provider.name, **kwargs)

@@ -96,7 +96,9 @@ class ServiceWallabag(ServicesMgr):
                     data.append({'title': d.get('title'),
                                  'content': d.get('content')})
                     # digester
-                    self.send_signal(self.trigger_id, d.get('title'), link='')
+                    self.send_digest_event(self.trigger_id,
+                                           d.get('title'),
+                                           link='')
             if len(data) > 0:
                 cache.set('th_wallabag_' + str(self.trigger_id), data)
         except Exception as e:

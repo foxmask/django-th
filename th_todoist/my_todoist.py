@@ -79,8 +79,11 @@ class ServiceTodoist(ServicesMgr):
                     title = 'From TodoIst Project {0}:'.format(project_name)
                     data.append({'title': title,
                                  'content': item.get('content')})
+
                     # digester
-                    self.send_signal(trigger_id, title, link='')
+                    self.send_digest_event(trigger_id,
+                                           title,
+                                           '')
 
             cache.set('th_todoist_' + str(trigger_id), data)
         except AttributeError:

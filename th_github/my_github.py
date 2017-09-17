@@ -101,7 +101,10 @@ class ServiceGithub(ServicesMgr):
                     content += self.gh_footer(trigger, issue)
 
                     data.append({'title': issue.title, 'content': content})
-
+                    # digester
+                    self.send_digest_event(trigger_id,
+                                           issue.title,
+                                           '')
                 cache.set('th_github_' + str(trigger_id), data)
             else:
                 # rate limit reach, do nothing right now

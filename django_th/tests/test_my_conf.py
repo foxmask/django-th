@@ -18,11 +18,13 @@ class TriggerSettingsTestCase(unittest.TestCase):
         self.assertIn('publishing_limit', settings.DJANGO_TH)
         self.assertIn('services_wo_cache', settings.DJANGO_TH)
         self.assertIn('failed_tries', settings.DJANGO_TH)
+        self.assertIn('digest_event', settings.DJANGO_TH)
         self.assertIs(type(settings.DJANGO_TH.get('paginate_by')), int)
         self.assertIs(type(settings.DJANGO_TH.get('publishing_limit')), int)
         self.assertIs(type(settings.DJANGO_TH.get('processes')), int)
         self.assertIs(type(settings.DJANGO_TH.get('services_wo_cache')), list)
         self.assertIs(type(settings.DJANGO_TH.get('failed_tries')), int)
+        self.assertIs(type(settings.DJANGO_TH.get('digest_event')), bool)
         self.assertIn('django_th', settings.CACHES)
 
     def test_get_services_list(self):

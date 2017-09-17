@@ -88,7 +88,7 @@ class ServiceRss(ServicesMgr):
                 my_feeds.append(entry)
 
                 # digester
-                self.send_signal(trigger_id, entry.title, entry.link)
+                self.send_digest_event(trigger_id, entry.title, entry.link)
 
         cache.set('th_rss_' + str(trigger_id), my_feeds)
         cache.set('th_rss_uuid_{}'.format(rss.uuid), my_feeds)

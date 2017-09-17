@@ -178,7 +178,7 @@ class ServiceTwitter(ServicesMgr):
                                               'link': url,
                                               'my_date': my_date})
                             # digester
-                            self.send_signal(trigger_id, title, url)
+                            self.send_digest_event(trigger_id, title, url)
                     cache.set('th_twitter_' + str(trigger_id), my_tweets)
                     Twitter.objects.filter(trigger_id=trigger_id).update(
                         since_id=since_id,

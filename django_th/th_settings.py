@@ -16,6 +16,8 @@ DJANGO_TH = {
     'failed_tries': 2,  # can exceed 99 - when
     # if you want to authorize the fire button for EACH trigger
     'fire': False,
+    # if you want to allow the digest feature
+    'digest_event': True,
 }
 
 TH_SERVICES = (

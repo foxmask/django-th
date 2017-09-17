@@ -10,6 +10,14 @@ DJANGO_TH = {
     # number of process to spawn from multiprocessing.Pool
     'processes': 5,
     'services_wo_cache': ['th_instapush', ],
+    # number of tries before disabling a trigger
+    # when management commands run each 15min
+    # with 4 'tries' this permit to try on 1 hour
+    'failed_tries': 2,  # can exceed 99 - when
+    # if you want to authorize the fire button for EACH trigger
+    'fire': False,
+    # if you want to allow the digest feature
+    'digest_event': True,
 }
 
 TH_SERVICES = (

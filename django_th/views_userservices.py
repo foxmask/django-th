@@ -1,14 +1,12 @@
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.shortcuts import redirect, get_object_or_404
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
-
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import CreateView, DeleteView, UpdateView
 from django.views.generic import ListView
-
 from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
-
-from django.http import HttpResponseRedirect
 
 from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import UserServiceForm, activated_services
@@ -63,6 +61,7 @@ class UserServiceListView(ListView):
                 context['action'] = 'hide'
             else:
                 context['action'] = 'display'
+
             context['service_list_available'] = service_list_available
 
             # get the activated services
@@ -90,6 +89,7 @@ class UserServiceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(UserServiceCreateView, self).get_context_data(**kwargs)
         context['services'] = len(activated_services(self.request.user))
+        context['digester'] = settings.DJANGO_TH.get('digest_event')
         return context
 
     @method_decorator(login_required)
@@ -163,6 +163,11 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
 
     def get_success_url(self):
         return reverse("user_services", args=["edited"])
+
+    def get_context_data(self, **kwargs):
+        context = super(UserServiceUpdateView, self).get_context_data(**kwargs)
+        context['digester'] = settings.DJANGO_TH.get('digest_event')
+        return context
 
 
 class UserServiceDeleteView(UserServiceMixin, DeleteView):
