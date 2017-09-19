@@ -14,17 +14,25 @@
                 {% if form.tag.errors %}
                 <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.tag.errors }}</div>
                 {% endif %}
-                <label for="id_tag" class="col-sm-2 control-label">{% trans "Tag" %}</label>
+                <label for="id_tag" class="col-sm-2 control-label">{% trans "Tag or Search" %}</label>
                 <div class="col-sm-6">{{ form.tag }}</div>
-                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the tag you want to add to your tweets" %}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the tag or 'string' you want to track from twitter" %}</div>
             </div>
             <div class="form-group{% if form.screen.errors %} has-error{% endif %}">
                 {% if form.screen.errors %}
                 <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.screen.errors }}</div>
                 {% endif %}
-                <label for="id_tag" class="col-sm-2 control-label">{% trans "Screen" %}</label>                
+                <label for="id_screen" class="col-sm-2 control-label">{% trans "Screen" %}</label>
                 <div class="col-sm-6">{{ form.screen }}</div>
-                <div class="col-sm-offset-2 col-sm-6">{% trans "Put your name to add tweet to it" %}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the name of a user you want to get his tweets" %}</div>
+            </div>
+            <div class="form-group{% if form.fav.errors %} has-error{% endif %}">
+                {% if form.fav.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.fav.errors }}</div>
+                {% endif %}
+                <label for="id_fav" class="col-sm-2 control-label">{% trans "Save the favorites" %}</label>
+                <div class="col-sm-6">{{ form.fav }}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Save the favorite of the 'screen' you filled above" %}</div>
             </div>
 
             <div class="form-group form-actions">
@@ -34,5 +42,5 @@
             </div>
         </fieldset>
         </form>
-    </div> 
+    </div>
 {% endblock %}

@@ -67,7 +67,8 @@ class ServiceTwitter(ServicesMgr):
             :type kwargs: dict
             :rtype: list
         """
-        twitter_url = 'https://www.twitter.com/{}/status/{}'
+        twitter_status_url = 'https://www.twitter.com/{}/status/{}'
+        twitter_fav_url = 'https://www.twitter.com/{}/status/{}'
         now = arrow.utcnow().to(settings.TIME_ZONE)
         my_tweets = []
         search = {}
@@ -105,7 +106,7 @@ class ServiceTwitter(ServicesMgr):
             # https://dev.twitter.com/docs/api/1.1/get/search/tweets
             statuses = ''
             count = 100
-            if twitter_obj.tag != '':
+            if twitter_obj.tag:
                 count = 100
                 search['count'] = count
                 search['q'] = twitter_obj.tag
@@ -117,13 +118,21 @@ class ServiceTwitter(ServicesMgr):
 
             # get the tweets from a given user
             # https://dev.twitter.com/docs/api/1.1/get/statuses/user_timeline
-            elif twitter_obj.screen != '':
+            elif twitter_obj.screen:
                 count = 200
                 search['count'] = count
                 search['screen_name'] = twitter_obj.screen
+
                 # call the user timeline and get his tweet
                 try:
-                    statuses = self.twitter_api.get_user_timeline(**search)
+                    if twitter_obj.fav:
+                        count = 20
+                        search['count'] = 20
+                        # get the favorites https://dev.twitter.com/rest/
+                        # reference/get/favorites/list
+                        statuses = self.twitter_api.get_favorites(**search)
+                    else:
+                        statuses = self.twitter_api.get_user_timeline(**search)
                 except TwythonAuthError as e:
                     logger.error(e.msg, e.error_code)
                     update_result(trigger_id, msg=e.msg, status=False)
@@ -163,9 +172,14 @@ class ServiceTwitter(ServicesMgr):
                             max_id = s['id'] - 1
                         screen_name = s['user']['screen_name']
                         # get the text of the tweet + url to this one
-                        url = twitter_url.format(screen_name,
-                                                 s['id_str'])
-                        title = _('Tweet from @{}'.format(screen_name))
+                        if twitter_obj.fav:
+                            url = twitter_fav_url.format(screen_name,
+                                                         s['id_str'])
+                            title = _('Tweet Fav from @{}'.format(screen_name))
+                        else:
+                            url = twitter_status_url.format(screen_name,
+                                                            s['id_str'])
+                            title = _('Tweet from @{}'.format(screen_name))
                         # Wed Aug 29 17:12:58 +0000 2012
                         my_date = arrow.get(s['created_at'],
                                             'ddd MMM DD HH:mm:ss Z YYYY')

@@ -15,7 +15,8 @@ class TwitterForm(forms.ModelForm):
 
     class Meta:
         model = Twitter
-        fields = ('tag', 'screen')
+        fields = ('tag', 'screen', 'fav')
+
         widgets = {
             'tag': TextInput(attrs={'class': 'form-control'}),
             'screen': TextInput(attrs={'class': 'form-control'}),
@@ -34,7 +35,8 @@ class TwitterForm(forms.ModelForm):
         # when a field is empty the clean() function set it as None
         if tag is None and screen is None:
             raise ValidationError(
-                _("You have to fill ONE of the both fields (or all together)"))
+                _("You have to fill ONE of the fields "
+                  "(or tag + screen or screen + fav)"))
 
 
 class TwitterConsumerForm(TwitterForm):

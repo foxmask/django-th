@@ -22,6 +22,7 @@ class Twitter(Services):
     """
     tag = models.CharField(max_length=80, null=True, blank=True)
     screen = models.CharField(max_length=80, null=True, blank=True)
+    fav = models.BooleanField(default=False)
     since_id = models.BigIntegerField(null=True, blank=True)
     max_id = models.BigIntegerField(null=True, blank=True)
     count = models.IntegerField(null=True, blank=True)
@@ -36,7 +37,7 @@ class Twitter(Services):
 
         :return: string representing object
         """
-        return "My Twitter %s %s" % (self.screen, self.tag)
+        return "My Twitter %s %s %s" % (self.screen, self.tag, self.fav)
 
     def __str__(self):
         return "%s" % self.screen
