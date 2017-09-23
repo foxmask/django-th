@@ -133,6 +133,14 @@ class ServiceWallabag(ServicesMgr):
         """
         if data.get('link') and len(data.get('link')) > 0:
             wall = self.new_wall(self.token)
+
+            if wall is None:
+                err = 'the provided informations for Wallabag are boken - ' \
+                      'check you login/pass client_id and host'
+                logger.critical(err)
+                update_result(self.trigger_id, msg=err, status=False)
+                return False
+
             try:
                 wall.post_entries(url=data.get('link').encode(),
                                   title=title,
@@ -140,15 +148,9 @@ class ServiceWallabag(ServicesMgr):
                 logger.debug('wallabag {} created'.format(data.get('link')))
                 status = True
             except Exception as e:
-                if e.errno == 401:
-                    status = self._new_token(data.get('userservice_id'),
-                                             data.get('link').encode(),
-                                             title,
-                                             tags.lower())
-                else:
                     logger.critical('issue with something else that a token'
                                     ' link ? : {}'.format(data.get('link')))
-                    logger.critical(e.errno, e.strerror)
+                    logger.critical(e)
                     update_result(self.trigger_id, msg=e, status=False)
                     status = False
         else:
@@ -179,17 +181,29 @@ class ServiceWallabag(ServicesMgr):
             :return: boolean
         """
         new_token = self._refresh_token()
-        logger.info('new token : {}'.format(new_token))
-        UserService.objects.filter(id=userservice_id).update(token=new_token)
+        status = False
+        if new_token:
+            logger.info('new token : {}'.format(new_token))
+            UserService.objects.filter(id=userservice_id).update(
+                token=new_token)
 
-        new_wall = self.new_wall(new_token)
-        try:
-            status = new_wall.post_entries(url=link, title=title, tags=tags)
-        except Exception as e:
-            logger.critical('could not create a post link ? : {}'.format(link))
-            logger.critical(e)
-            update_result(self.trigger_id, msg=e, status=False)
-            status = False
+            new_wall = self.new_wall(new_token)
+            try:
+                status = new_wall.post_entries(url=link, title=title, tags=tags)
+            except Exception as e:
+                logger.critical('could not create a post link ? '
+                                ': {}'.format(link))
+                logger.critical(e)
+                update_result(self.trigger_id, msg=e, status=False)
+                status = False
+        else:
+            # when token is False, something is broken with
+            # login/pass/client_id/client_secret/url
+            err = 'the provided informations for Wallabag are boken - ' \
+                  'check you login/pass client_id and host'
+            logger.critical(err)
+            update_result(self.trigger_id, msg=err, status=False)
+
         return status
 
     def save_data(self, trigger_id, **data):
@@ -203,6 +217,7 @@ class ServiceWallabag(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
+        self.trigger_id = trigger_id
         trigger = Wallabag.objects.get(trigger_id=trigger_id)
 
         title = self.set_title(data)
