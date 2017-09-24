@@ -119,8 +119,11 @@ class ServiceWallabag(ServicesMgr):
             us = UserService.objects.get(
                 user=self.user, name='ServiceWallabag')
         finally:
-            return Wall(host=us.host, client_secret=us.client_secret,
-                        client_id=us.client_id, token=us.token)
+            wall = None if bool(us.token) is False else Wall(
+                host=us.host,
+                client_secret=us.client_secret,
+                client_id=us.client_id, token=us.token)
+            return wall
 
     def _create_entry(self, title, data, tags):
         """
@@ -131,22 +134,23 @@ class ServiceWallabag(ServicesMgr):
             :return: boolean
         """
         if data.get('link') and len(data.get('link')) > 0:
-            wall = self.new_wall(self.token)
 
+            wall = self.new_wall(self.token)
             if wall is None:
-                err = 'the provided informations for Wallabag are boken - ' \
+                # wall is none when login/pass/client_* things are wrong
+                err = 'The provided informations for Wallabag are boken - ' \
                       'check you login/pass client_id and host'
                 logger.critical(err)
                 update_result(self.trigger_id, msg=err, status=False)
-                return False
-
-            try:
-                wall.post_entries(url=data.get('link').encode(),
-                                  title=title,
-                                  tags=(tags.lower()))
-                logger.debug('wallabag {} created'.format(data.get('link')))
-                status = True
-            except Exception as e:
+                status = False
+            else:
+                try:
+                    wall.post_entries(url=data.get('link').encode(),
+                                      title=title,
+                                      tags=(tags.lower()))
+                    logger.debug('wallabag {} created'.format(data.get('link')))
+                    status = True
+                except Exception as e:
                     logger.critical('issue with something else that a token'
                                     ' link ? : {}'.format(data.get('link')))
                     logger.critical(e)
