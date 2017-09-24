@@ -112,16 +112,15 @@ class ServiceWallabag(ServicesMgr):
             :param token: to get
             :return: Wall instance
         """
-        if token:
-            try:
-                us = UserService.objects.get(
-                    token=self.token, name='ServiceWallabag')
-            except UserService.DoesNotExist:
-                us = UserService.objects.get(
-                    user=self.user, name='ServiceWallabag')
-            finally:
-                return Wall(host=us.host, client_secret=us.client_secret,
-                            client_id=us.client_id, token=us.token)
+        try:
+            us = UserService.objects.get(
+                token=token, name='ServiceWallabag')
+        except UserService.DoesNotExist:
+            us = UserService.objects.get(
+                user=self.user, name='ServiceWallabag')
+        finally:
+            return Wall(host=us.host, client_secret=us.client_secret,
+                        client_id=us.client_id, token=us.token)
 
     def _create_entry(self, title, data, tags):
         """
