@@ -10,8 +10,6 @@ from th_wallabag.models import Wallabag
 from th_wallabag.forms import WallabagProviderForm, WallabagConsumerForm
 from th_wallabag.my_wallabag import ServiceWallabag
 
-from wallabag_api.wallabag import Wallabag as Wall
-
 
 class WallabagTest(MainTest):
 
@@ -98,25 +96,10 @@ class ServiceWallabagTest(WallabagTest):
         mock_read_data.assert_called_once_with('http://localhost/api'
                                                '/entries.json', params=params)
 
-    def test_refresh_token(self):
-        self.create_triggerservice()
-        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
-                       'trigger_id': self.trigger_id,
-                       'user': self.user,
-                       'model_name': 'Wallabag'})
-        with patch.object(Wall, 'get_token') as mock_get_token:
-            se = ServiceWallabag(self.token, **kwargs)
-            se._refresh_token()
-        mock_get_token.assert_called_once_with(client_id='',
-                                               client_secret='',
-                                               host='http://localhost',
-                                               password='',
-                                               username='')
-
     def test_save_data(self):
         self.create_triggerservice()
         kwargs = {'title': 'foobar', 'link': 'https://google.com'}
-        with patch.object(ServiceWallabag, 'new_wall') as mock_save_data:
-            se = ServiceWallabag(self.token)
+        with patch.object(ServiceWallabag, 'wall') as mock_save_data:
+            se = ServiceWallabag()
             se.save_data(self.trigger_id, **kwargs)
-        mock_save_data.assert_called_once_with(self.token)
+        mock_save_data.assert_called_once_with()
