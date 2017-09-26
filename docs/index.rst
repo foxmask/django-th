@@ -21,7 +21,6 @@ And instead of giving your credentials to them, keep them with your own **Trigge
    running
    usage
    services
-   new_module
    migration
 
 
@@ -59,11 +58,6 @@ your own Wallabag or Pocket account and so on
 .. image:: https://readthedocs.org/projects/trigger-happy/badge/?version=latest
     :target: https://readthedocs.org/projects/trigger-happy/?badge=latest
     :alt: Documentation status
-
-
-.. image:: http://img.shields.io/badge/python-3.5-orange.svg
-    :target: https://pypi.python.org/pypi/django-th/
-    :alt: Python version supported
 
 
 .. image:: http://img.shields.io/badge/python-3.6-orange.svg
