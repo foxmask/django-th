@@ -99,6 +99,3 @@ class TodoistTest(MainTest):
             se = ServiceTodoist(self.token)
             se.save_data(self.trigger_id, **data)
         mock_save_data.assert_called_once_with(content)
-
-    def test_get_config_th_cache(self):
-        self.assertIn('th_todoist', settings.CACHES)
