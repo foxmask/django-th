@@ -46,9 +46,6 @@ class TrelloModelAndFormTest(TrelloTest):
         self.assertIn('consumer_key', settings.TH_TRELLO)
         self.assertIn('consumer_secret', settings.TH_TRELLO)
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_trello', settings.CACHES)
-
     def test_get_services_list(self):
         th_service = ('th_trello.my_trello.ServiceTrello',)
         for service in th_service:
