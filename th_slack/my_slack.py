@@ -12,7 +12,7 @@ from th_slack.models import Slack
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_slack']
+cache = caches['django_th']
 
 
 class ServiceSlack(ServicesMgr):
