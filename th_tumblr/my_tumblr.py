@@ -21,7 +21,7 @@ from django_th.services.services import ServicesMgr
 """
 
 logger = getLogger('django_th.trigger_happy')
-cache = caches['th_tumblr']
+cache = caches['django_th']
 
 
 class ServiceTumblr(ServicesMgr):
