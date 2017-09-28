@@ -12,7 +12,7 @@ from django_th.tests.test_main import MainTest
 
 from twython import Twython
 
-cache = caches['th_twitter']
+cache = caches['django_th']
 
 
 class TwitterTest(MainTest):
@@ -28,9 +28,6 @@ class TwitterTest(MainTest):
         self.assertTrue(settings.TH_TWITTER)
         self.assertIn('consumer_key', settings.TH_TWITTER)
         self.assertIn('consumer_secret', settings.TH_TWITTER)
-
-    def test_get_config_th_cache(self):
-        self.assertIn('th_twitter', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_twitter.my_twitter.ServiceTwitter',)
