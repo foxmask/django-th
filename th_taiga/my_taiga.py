@@ -12,7 +12,7 @@ from th_taiga.models import Taiga
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_taiga']
+cache = caches['django_th']
 
 
 class ServiceTaiga(ServicesMgr):
