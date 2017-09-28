@@ -32,7 +32,7 @@ from django_th.html_entities import HtmlEntities
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_pocket']
+cache = caches['django_th']
 
 
 class ServicePocket(ServicesMgr):
