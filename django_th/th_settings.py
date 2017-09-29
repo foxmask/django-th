@@ -1,23 +1,33 @@
+import environ
+
+ROOT_DIR = environ.Path(__file__) - 1
+APPS_DIR = ROOT_DIR.path('django_th')
+env = environ.Env()
+env_file = str(ROOT_DIR.path('.env'))
+print('Loading : {}'.format(env_file))
+env.read_env(env_file)
+print('The .env file has been loaded. See settings.py for more information')
+
 DJANGO_TH = {
     # paginating
-    'paginate_by': 5,
+    'paginate_by': env.int('DJANGO_TH_PAGINATE_BY'),
 
     # this permits to avoid "flood" effect when publishing
     # to the target service - when limit is reached
     # the cache is kept until next time
     # set it to 0 to drop that limit
-    'publishing_limit': 5,
+    'publishing_limit': env.int('DJANGO_TH_PUBLISHING_LIMIT'),
     # number of process to spawn from multiprocessing.Pool
-    'processes': 5,
+    'processes': env.int('DJANGO_TH_PROCESSES'),
     'services_wo_cache': ['th_instapush', ],
     # number of tries before disabling a trigger
     # when management commands run each 15min
     # with 4 'tries' this permit to try on 1 hour
-    'failed_tries': 2,  # can exceed 99 - when
+    'failed_tries': env.int('DJANGO_TH_FAILED_TRIES'),  # can exceed 99 - when
     # if you want to authorize the fire button for EACH trigger
-    'fire': False,
+    'fire': env.bool('DJANGO_TH_FIRE'),
     # if you want to allow the digest feature
-    'digest_event': True,
+    'digest_event': env.bool('DJANGO_TH_DIGEST_EVENT'),
 }
 
 TH_SERVICES = (
@@ -38,53 +48,50 @@ TH_SERVICES = (
     'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
-
-TH_EVERNOTE = {
+TH_EVERNOTE_KEY = {
     # get your credential by subscribing to http://dev.evernote.com/
     # for testing purpose set sandbox to True
     # for production purpose set sandbox to False
-    'sandbox': False,
-    'consumer_key': '<your evernote key>',
-    'consumer_secret': '<your evernote secret>',
+    'sandbox': env.bool('TH_EVERNOTE_SANDBOX'),
+    'consumer_key': env.str('TH_EVERNOTE_CONSUMER_KEY'),
+    'consumer_secret': env.str('TH_EVERNOTE_CONSUMER_SECRET'),
 }
 
-
-TH_GITHUB = {
-    'username': 'username',
-    'password': 'password',
-    'consumer_key': 'my key',
-    'consumer_secret': 'my secret'
+TH_GITHUB_KEY = {
+    'username': env.str('TH_GITHUB_USERNAME'),
+    'password': env.str('TH_GITHUB_PASSWORD'),
+    'consumer_key': env.str('TH_GITHUB_CONSUMER_KEY'),
+    'consumer_secret': env.str('TH_GITHUB_CONSUMER_SECRET'),
 }
 
-
-TH_POCKET = {
+TH_POCKET_KEY = {
     # get your credential by subscribing to http://getpocket.com/developer/
-    'consumer_key': '<your pocket key>',
+    'consumer_key': env.str('TH_POCKET_CONSUMER_KEY'),
 }
 
-TH_PUSHBULLET = {
-    'client_id': '<your pushbullet key>',
-    'client_secret': '<your pushbullet secret>',
+TH_PUSHBULLET_KEY = {
+    'client_id': env.str('TH_PUSHBULLET_CLIENT_ID'),
+    'client_secret': env.str('TH_PUSHBULLET_CLIENT_SECRET'),
 }
 
-TH_TODOIST = {
-    'client_id': '<your todoist key>',
-    'client_secret': '<your todoist secret>',
+TH_TODOIST_KEY = {
+    'client_id': env.str('TH_TODOIST_CLIENT_ID'),
+    'client_secret': env.str('TH_TODOIST_CLIENT_SECRET'),
 }
 
-TH_TUMBLR = {
-    'consumer_key': '<your tumblr key>',
-    'consumer_secret': '<your tumblr secret>',
+TH_TUMBLR_KEY = {
+    'consumer_key': env.str('TH_TUMBLR_CONSUMER_KEY'),
+    'consumer_secret': env.str('TH_TUMBLR_CONSUMER_SECRET'),
 }
 
-TH_TRELLO = {
-    'consumer_key': '<your trello key>',
-    'consumer_secret': '<your trello secret>',
+TH_TRELLO_KEY = {
+    'consumer_key': env.str('TH_TRELLO_CONSUMER_KEY'),
+    'consumer_secret': env.str('TH_TRELLO_CONSUMER_SECRET'),
 }
 
-TH_TWITTER = {
+TH_TWITTER_KEY = {
     # get your credential by subscribing to
     # https://dev.twitter.com/
-    'consumer_key': '<your twitter key>',
-    'consumer_secret': '<your twitter secret>',
+    'consumer_key': env.str('TH_TWITTER_CONSUMER_KEY'),
+    'consumer_secret': env.str('TH_TWITTER_CONSUMER_SECRET'),
 }
