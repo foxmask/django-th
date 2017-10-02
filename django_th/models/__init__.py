@@ -170,13 +170,13 @@ def update_result(trigger_id, msg, status):
                                                             provider_failed=0,
                                                             consumer_failed=0,
                                                             counter_ok=service.counter_ok + 1)
-        UserService.objects.filter(user=service.user, name=consumer.name).update(counter_ok=service.counter_ok + 1)
+        UserService.objects.filter(user=service.user, name=service.consumer.name).update(counter_ok=service.counter_ok + 1)
     # otherwise, add 1 to the consumer_failed
     else:
         service = TriggerService.objects.get(id=trigger_id)
         failed = service.consumer_failed + 1
 
-        UserService.objects.filter(user=service.user, name=consumer.name).update(counter_ok=service.counter_ok + 1)
+        UserService.objects.filter(user=service.user, name=service.consumer.name).update(counter_ko=service.counter_ko + 1)
 
         if failed > settings.DJANGO_TH.get('failed_tries', 5):
             TriggerService.objects.filter(id=trigger_id).\
