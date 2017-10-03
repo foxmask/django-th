@@ -121,7 +121,7 @@ class ServicesMgr(object):
             :type kwargs: dict
             :rtype: model
         """
-        model = get_model('django_th', kwargs['model_name'])
+        model = get_model(kwargs['app_label'], kwargs['model_name'])
 
         return model.objects.get(trigger_id=kwargs['trigger_id'])
 

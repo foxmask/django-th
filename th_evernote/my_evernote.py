@@ -83,6 +83,7 @@ class ServiceEvernote(ServicesMgr):
         trigger_id = kwargs.get('trigger_id')
 
         kwargs['model_name'] = 'Evernote'
+        kwargs['app_label'] = 'th_evernote'
 
         trigger = super(ServiceEvernote, self).read_data(**kwargs)
 

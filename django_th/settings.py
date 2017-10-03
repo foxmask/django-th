@@ -2,7 +2,7 @@
 import os
 from django.core.urlresolvers import reverse_lazy
 
-DEBUG = False
+DEBUG = True  # set to False when using in production
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -292,7 +292,7 @@ CACHES = {
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
-},
+    },
     # Taiga
     'th_taiga':
     {

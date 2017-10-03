@@ -57,7 +57,7 @@ class ServiceRss(ServicesMgr):
         date_triggered = kwargs.get('date_triggered')
         trigger_id = kwargs.get('trigger_id')
         kwargs['model_name'] = 'Rss'
-
+        kwargs['app_label'] = 'django_th'
         # get the URL from the trigger id
         rss = super(ServiceRss, self).read_data(**kwargs)
 
