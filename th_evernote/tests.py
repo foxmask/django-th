@@ -17,7 +17,7 @@ except ImportError:
     import mock
 
 
-cache = caches['th_evernote']
+cache = caches['django_th']
 
 
 class EvernoteTest(MainTest):
@@ -137,9 +137,6 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertIn('consumer_key', settings.TH_EVERNOTE)
         self.assertIn('consumer_secret', settings.TH_EVERNOTE)
         self.assertIn('sandbox', settings.TH_EVERNOTE)
-
-    def test_get_config_th_cache(self):
-        self.assertIn('th_evernote', settings.CACHES)
 
     def test_get_evernote_client(self, token=None):
         """

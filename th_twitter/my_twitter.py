@@ -29,7 +29,7 @@ from logging import getLogger
 """
 
 logger = getLogger('django_th.trigger_happy')
-cache = caches['th_twitter']
+cache = caches['django_th']
 
 
 class ServiceTwitter(ServicesMgr):

@@ -62,10 +62,6 @@ class WallabagTest(MainTest):
         form = WallabagConsumerForm(data=data)
         self.assertTrue(form.is_valid())
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_wallabag', settings.CACHES)
-
-
 class ServiceWallabagTest(WallabagTest):
 
     def setUp(self):

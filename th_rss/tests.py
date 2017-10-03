@@ -59,9 +59,6 @@ class RssFormTest(RssTest):
         form = RssProviderForm(data={})
         self.assertFalse(form.is_valid())
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_rss', settings.CACHES)
-
     def test_get_services_list(self):
         th_service = ('th_rss.my_rss.ServiceRss',)
         for service in th_service:

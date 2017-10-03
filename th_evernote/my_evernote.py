@@ -40,7 +40,7 @@ from th_evernote.sanitize import sanitize
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_evernote']
+cache = caches['django_th']
 
 
 class ServiceEvernote(ServicesMgr):

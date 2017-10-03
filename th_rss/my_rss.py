@@ -15,7 +15,7 @@ from th_rss.lib.feedsservice import Feeds
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_rss']
+cache = caches['django_th']
 
 
 class ServiceRss(ServicesMgr):

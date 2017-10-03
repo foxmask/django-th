@@ -47,9 +47,6 @@ class PocketModelAndFormTest(PocketTest):
         """
         self.assertTrue(settings.TH_POCKET)
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_pocket', settings.CACHES)
-
     def test_get_services_list(self):
         th_service = ('th_pocket.my_pocket.ServicePocket',)
         for service in th_service:
