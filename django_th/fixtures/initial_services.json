@@ -1,0 +1,134 @@
+[
+   {
+      "model":"django_th.servicesactivated",
+      "pk":2,
+      "fields":{
+         "name":"ServiceEvernote",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"For everything you'll do, Evernote is the workspace to get it done."
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":3,
+      "fields":{
+         "name":"ServiceInstapush",
+         "status":true,
+         "auth_required":false,
+         "self_hosted":false,
+         "description":"Instant Notifications for Important Transactions"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":4,
+      "fields":{
+         "name":"ServicePelican",
+         "status":false,
+         "auth_required":false,
+         "self_hosted":true,
+         "description":"Engine for self-hosted static website"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":5,
+      "fields":{
+         "name":"ServicePocket",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"When you find something you want to view later, put it in Pocket."
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":6,
+      "fields":{
+         "name":"ServicePushbullet",
+         "status":false,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"Your devices working better together"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":7,
+      "fields":{
+         "name":"ServiceRss",
+         "status":true,
+         "auth_required":false,
+         "self_hosted":false,
+         "description":"Get all the RSS Feeds you want to read somewhere else"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":8,
+      "fields":{
+         "name":"ServiceSlack",
+         "status":true,
+         "auth_required":false,
+         "self_hosted":false,
+         "description":"Slack"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":9,
+      "fields":{
+         "name":"ServiceTodoist",
+         "status":false,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"To-Do-List | Another Task Manager"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":10,
+      "fields":{
+         "name":"ServiceTrello",
+         "status":false,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"A free, flexible, and visual way to organize anything with anyone."
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":11,
+      "fields":{
+         "name":"ServiceTumblr",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"Tumblr Microblogging"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":12,
+      "fields":{
+         "name":"ServiceTwitter",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"Twitter Social Network in 140 characters"
+      }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":13,
+      "fields":{
+         "name":"ServiceWallabag",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":true,
+         "description":"Wallabag - read it later service"
+      }
+   }
+]
