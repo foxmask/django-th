@@ -49,6 +49,8 @@
                                         <a class="btn btn-xs btn-success" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'off' %}" title="{% trans 'Disable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                                         <a class="btn btn-xs btn-info" role="button" href="{% url 'service_related_triggers_switch_to' service.pk 'on' %}" title="{% trans 'Enable all the triggers of this service' %}"><span class="glyphicon glyphicon-off icon-white"></span></a>
                                         <a class="btn btn-xs btn-danger" role="button" href="{% url 'delete_service' service.id %}" title="{% trans 'Delete this service ?' %}"><span class="glyphicon glyphicon-trash icon-white"></span></a>
+                                        <br>
+                                        <span class="badge">{{ service.counter_ok }}</span> {%  trans "ran successfully" %} - <span class="badge">{{ service.counter_ko }}</span> {%  trans "failed" %}                                        
                                     </p>
                                 </div>
                             </div>

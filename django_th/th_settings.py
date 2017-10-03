@@ -1,3 +1,4 @@
+
 DJANGO_TH = {
     # paginating
     'paginate_by': 5,

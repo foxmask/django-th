@@ -13,6 +13,7 @@ django_th.egg-info/
 *sublim*
 *.tar.gz
 *.json
+!django_th/fixtures/*
 admin
 .tox
 build
