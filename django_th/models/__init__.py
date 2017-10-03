@@ -165,25 +165,31 @@ def update_result(trigger_id, msg, status):
     if status:
         service = TriggerService.objects.get(id=trigger_id)
 
-        TriggerService.objects.filter(id=trigger_id).update(result=msg,
-                                                            date_result=now(),
-                                                            provider_failed=0,
-                                                            consumer_failed=0,
-                                                            counter_ok=service.counter_ok + 1)
-        UserService.objects.filter(user=service.user, name=service.consumer.name).update(counter_ok=service.counter_ok + 1)
+        TriggerService.objects.filter(id=trigger_id).\
+            update(result=msg,
+                   date_result=now(),
+                   provider_failed=0,
+                   consumer_failed=0,
+                   counter_ok=service.counter_ok + 1)
+        UserService.objects.filter(user=service.user,
+                                   name=service.consumer.name).update(
+            counter_ok=service.counter_ok + 1)
     # otherwise, add 1 to the consumer_failed
     else:
         service = TriggerService.objects.get(id=trigger_id)
         failed = service.consumer_failed + 1
 
-        UserService.objects.filter(user=service.user, name=service.consumer.name).update(counter_ko=service.counter_ko + 1)
+        UserService.objects.filter(user=service.user, name=service.consumer.name
+                                   ).update(counter_ko=service.counter_ko + 1)
 
         if failed > settings.DJANGO_TH.get('failed_tries', 5):
             TriggerService.objects.filter(id=trigger_id).\
-                update(result=msg, date_result=now(), status=False, counter_ko=service.counter_ko + 1)
+                update(result=msg, date_result=now(), status=False,
+                       counter_ko=service.counter_ko + 1)
         else:
             TriggerService.objects.filter(id=trigger_id).\
-                update(result=msg, date_result=now(), consumer_failed=failed, counter_ko=service.counter_ko + 1)
+                update(result=msg, date_result=now(), consumer_failed=failed,
+                       counter_ko=service.counter_ko + 1)
 
         warn_user_and_admin('consumer', service)
 
