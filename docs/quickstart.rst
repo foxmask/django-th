@@ -39,6 +39,11 @@ Database
     python manage.py migrate
     python manage.py createsuperuser
 
+You may choose to load the initial services:
+
+.. code-block:: bash
+
+    python manage.py loaddata initial_services
 
 Start the application
 =====================
