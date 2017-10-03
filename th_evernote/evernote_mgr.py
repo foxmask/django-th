@@ -11,7 +11,7 @@ from django.core.cache import caches
 from django_th.models import update_result
 
 logger = getLogger('django_th.trigger_happy')
-cache = caches['th_evernote']
+cache = caches['django_th']
 
 
 class EvernoteMgr(object):

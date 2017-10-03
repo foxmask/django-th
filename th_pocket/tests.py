@@ -142,9 +142,6 @@ class ServicePocketTest(PocketTest):
         self.assertTrue(settings.TH_POCKET)
         self.assertIn('consumer_key', settings.TH_POCKET)
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_pocket', settings.CACHES)
-
     def test_auth(self):
         pass
 

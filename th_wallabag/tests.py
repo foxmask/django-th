@@ -2,8 +2,6 @@
 from unittest.mock import patch
 import requests
 
-from django.conf import settings
-
 from django_th.tests.test_main import MainTest
 
 from th_wallabag.models import Wallabag
@@ -61,6 +59,7 @@ class WallabagTest(MainTest):
         data = {'url': d.url}
         form = WallabagConsumerForm(data=data)
         self.assertTrue(form.is_valid())
+
 
 class ServiceWallabagTest(WallabagTest):
 
