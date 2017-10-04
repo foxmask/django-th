@@ -22,3 +22,4 @@ pushbullet.py==0.10.0
 instapush==0.1.2
 python-taiga==0.8.6
 PyTumblr==0.0.6
+Mastodon.py==1.1.1

@@ -1,5 +1,5 @@
-exclude django_th/local_settings.py manage.py django_th/settigngs_docker.py requirements-docker.txt Dockerfile docker-compose.yml
-include *.txt *.rst 
+exclude django_th/local_settings.py manage.py django_th/settings_docker.py requirements-docker.txt Dockerfile docker-compose.yml
+include *.txt *.rst
 
 recursive-include django_th *.html *.png *.css *.gif *.jpg *.jpeg
 recursive-include django_th/static *
@@ -12,6 +12,10 @@ recursive-include th_evernote/migrations *
 recursive-include th_instapush *.html
 recursive-include th_instapush/templates *
 recursive-include th_instapush/migrations *
+
+recursive-include th_mastodon *.html
+recursive-include th_mastodon/templates *
+recursive-include th_mastodon/migrations *
 
 recursive-include th_pelican *.html
 recursive-include th_pelican/templates *

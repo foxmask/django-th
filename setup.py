@@ -23,6 +23,9 @@ extras_require_github = [
 extras_require_instapush = [
     'instapush==0.1.2'
 ]
+extras_require_mastodon = [
+    'Mastodon.py==1.1.1',
+]
 extras_require_pelican = [
     'awesome-slugify==1.6.5',
 ]
@@ -61,6 +64,7 @@ extras_require_all = \
     extras_require_evernote\
     + extras_require_github\
     + extras_require_instapush\
+    + extras_require_mastodon\
     + extras_require_pelican\
     + extras_require_pocket\
     + extras_require_pushbullet\
@@ -108,6 +112,7 @@ setup(
         'evernote': extras_require_evernote,
         'github': extras_require_github,
         'instapush': extras_require_instapush,
+        'mastodon': extras_require_mastodon,
         'pelican': extras_require_pelican,
         'pocket': extras_require_pocket,
         'pushbullet': extras_require_pushbullet,
