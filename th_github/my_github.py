@@ -35,7 +35,7 @@ from th_github.models import Github
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_github']
+cache = caches['django_th']
 
 
 class ServiceGithub(ServicesMgr):

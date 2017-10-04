@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 
 class Trello(Services):
@@ -14,10 +15,10 @@ class Trello(Services):
     list_name = models.CharField(max_length=80, blank=False)
     card_title = models.CharField(max_length=80)
     card_description = models.CharField(max_length=80, blank=True)
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_trello'
         db_table = 'django_th_trello'
 
     def show(self):

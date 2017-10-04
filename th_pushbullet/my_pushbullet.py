@@ -31,7 +31,7 @@ from th_pushbullet.models import Pushbullet
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_pushbullet']
+cache = caches['django_th']
 
 
 class ServicePushbullet(ServicesMgr):

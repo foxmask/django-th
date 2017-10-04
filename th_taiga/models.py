@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 
 class Taiga(Services):
@@ -35,10 +36,10 @@ class Taiga(Services):
     notify_wikipage_change = models.BooleanField(default=True)
     notify_wikipage_delete = models.BooleanField(default=True)
 
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_taiga'
         db_table = 'django_th_taiga'
 
     def show(self):

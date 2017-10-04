@@ -29,7 +29,7 @@ from logging import getLogger
 """
 
 logger = getLogger('django_th.trigger_happy')
-cache = caches['th_twitter']
+cache = caches['django_th']
 
 
 class ServiceTwitter(ServicesMgr):
@@ -140,7 +140,9 @@ class ServiceTwitter(ServicesMgr):
             return count, search, statuses
 
         if self.token is not None:
-            kw = {'model_name': 'Twitter', 'trigger_id': trigger_id}
+            kw = {'app_label': 'th_twitter',
+                  'model_name': 'Twitter',
+                  'trigger_id': trigger_id}
             twitter_obj = super(ServiceTwitter, self).read_data(**kw)
 
             # https://dev.twitter.com/rest/public/timelines

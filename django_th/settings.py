@@ -2,7 +2,7 @@
 import os
 from django.core.urlresolvers import reverse_lazy
 
-DEBUG = False
+DEBUG = True  # set to False when using in production
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -221,136 +221,6 @@ CACHES = {
         'TIMEOUT': 600,
         'OPTIONS': {
             'MAX_ENTRIES': 1000
-        }
-    },
-    # Evernote Cache
-    'th_evernote':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # GitHub
-    'th_github':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/2",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Pelican
-    'th_pelican':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/3",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Pocket Cache
-    'th_pocket':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/4",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Pushbullet
-    'th_pushbullet':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/5",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # RSS Cache
-    'th_rss':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/6",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Slack
-    'th_slack':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/6",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-},
-    # Taiga
-    'th_taiga':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/6",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Todoist
-    'th_todoist':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/7",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    'th_tumblr':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/12",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "MAX_ENTRIES": 5000,
-        }
-    },
-    # Trello
-    'th_trello':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/9",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Twitter Cache
-    'th_twitter':
-    {
-        'TIMEOUT': 500,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/10",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-        }
-    },
-    # Wallabag
-    'th_wallabag':
-    {
-        'TIMEOUT': 3600,
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/11",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     'redis-cache':

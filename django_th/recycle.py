@@ -23,7 +23,7 @@ def recycle():
     for package in all_packages:
         if package in settings.DJANGO_TH.get('services_wo_cache'):
             continue
-        cache = caches[package]
+        cache = caches['django_th']
         # http://niwinz.github.io/django-redis/latest/#_scan_delete_keys_in_bulk
         for service in cache.iter_keys('th_*'):
             try:

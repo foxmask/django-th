@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 
 class Pushbullet(Services):
@@ -8,14 +9,14 @@ class Pushbullet(Services):
     """
         todoist model to be adapted for the new service
     """
-    type = models.CharField(max_length=4, default='note')
+    type = models.CharField(max_length=4)
     device = models.CharField(max_length=80, blank=True)
     email = models.EmailField(max_length=255, blank=True)
     channel_tag = models.CharField(max_length=80, blank=True)
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_pushbullet'
         db_table = 'django_th_pushbullet'
 
     def show(self):
