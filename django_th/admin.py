@@ -59,6 +59,34 @@ class UserServiceAdmin(admin.ModelAdmin):
     list_display = ('user', 'name', 'token')
     list_filter = ['user', 'name']
 
+class ProviderServiceListFilter(admin.SimpleListFilter):
+    title = 'provider'
+    parameter_name = 'provider'
+
+    def lookups(self, request, model_admin):
+        service_set = set([s for s in ServicesActivated.objects.all()])
+        return [(i,i) for i in service_set]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(provider__name=self.value())
+        else:
+            return queryset
+
+class ComsumerServiceListFilter(admin.SimpleListFilter):
+    title = 'consumer'
+    parameter_name = 'consumer'
+
+    def lookups(self, request, model_admin):
+        service_set = set([s for s in ServicesActivated.objects.all()])
+        return [(i,i) for i in service_set]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(consumer__name=self.value())
+        else:
+            return queryset
+
 
 class TriggerServiceAdmin(admin.ModelAdmin):
 
@@ -67,7 +95,12 @@ class TriggerServiceAdmin(admin.ModelAdmin):
     """
     list_display = ('user', 'provider', 'consumer', 'description',
                     'date_created', 'date_triggered', 'status')
-    list_filter = ['user', 'provider', 'consumer', 'status']
+    list_filter = [
+        'user', 
+        ProviderServiceListFilter, 
+        ComsumerServiceListFilter, 
+        'status'
+    ]
 
 
 admin.site.register(ServicesActivated, ServicesManagedAdmin)
