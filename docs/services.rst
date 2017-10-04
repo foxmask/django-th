@@ -106,6 +106,7 @@ Here are the service that will follow almost the same previous path
    evernote
    github
    instapush
+   mastodon
    pelican
    pocket
    pushbullet

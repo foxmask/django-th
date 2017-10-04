@@ -4,7 +4,7 @@
       "pk":2,
       "fields":{
          "name":"ServiceEvernote",
-         "status":true,
+         "status":false,
          "auth_required":true,
          "self_hosted":false,
          "description":"For everything you'll do, Evernote is the workspace to get it done."
@@ -15,7 +15,7 @@
       "pk":3,
       "fields":{
          "name":"ServiceInstapush",
-         "status":true,
+         "status":false,
          "auth_required":false,
          "self_hosted":false,
          "description":"Instant Notifications for Important Transactions"
@@ -37,7 +37,7 @@
       "pk":5,
       "fields":{
          "name":"ServicePocket",
-         "status":true,
+         "status":false,
          "auth_required":true,
          "self_hosted":false,
          "description":"When you find something you want to view later, put it in Pocket."
@@ -70,7 +70,7 @@
       "pk":8,
       "fields":{
          "name":"ServiceSlack",
-         "status":true,
+         "status":false,
          "auth_required":false,
          "self_hosted":false,
          "description":"Slack"
@@ -103,7 +103,7 @@
       "pk":11,
       "fields":{
          "name":"ServiceTumblr",
-         "status":true,
+         "status":false,
          "auth_required":true,
          "self_hosted":false,
          "description":"Tumblr Microblogging"
@@ -114,7 +114,7 @@
       "pk":12,
       "fields":{
          "name":"ServiceTwitter",
-         "status":true,
+         "status":false,
          "auth_required":true,
          "self_hosted":false,
          "description":"Twitter Social Network in 140 characters"
@@ -130,5 +130,17 @@
          "self_hosted":true,
          "description":"Wallabag - read it later service"
       }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":14,
+      "fields":{
+         "name":"ServiceMastodon",
+         "status":false,
+         "auth_required":true,
+         "self_hosted":true,
+         "description":"Your self-hosted, globally interconnected microblogging community"
+      }
    }
+
 ]
