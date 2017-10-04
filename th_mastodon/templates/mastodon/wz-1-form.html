@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block head %}
+{{ wizard.form.media }}
+{% endblock %}
+
+{% block content %}
+    <div class="span12" id="trigger-content">
+        <h3>Mastodon informations</h3>
+        <h4>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</h4>
+        <form class="form-horizontal" action="" method="post">{% csrf_token %}
+            <fieldset>
+
+                <div class="wizard-fieldset">
+                    <table>
+                    {{ wizard.management_form }}
+                    {% if wizard.form.forms %}
+                        {{ wizard.form.management_form }}
+                        {% for form in wizard.form.forms %}
+                            {{ form }}
+                        {% endfor %}
+                    {% else %}
+                        {{ wizard.form }}
+                    {% endif %}
+                    </table>
+                </div>
+
+                <div class="form-actions">
+                    {% if wizard.steps.prev %}
+                    <button class="btn btn-inverse" type="submit" value="{{ wizard.steps.first }}">{% trans "first step" %}</button>
+                    <button class="btn btn-inverse" type="submit" value="{{ wizard.steps.next }}">{% trans "next step" %}</button>
+                    {% endif %}
+                    <button class="btn btn-primary">{% trans "Submit" %}</button>
+                </div>
+
+            </fieldset>
+        </form>
+    </div>
+{% endblock %}

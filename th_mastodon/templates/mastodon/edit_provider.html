@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block title %}{% trans "My Trigger" %} - {{ user.username }} - Trigger Happy{% endblock %}
+{% block content %}
+    <div class="col-md-12" id="trigger-content">
+        <h3><span class="glyphicon glyphicon-edit"></span> {% trans 'Edition of the properties for' %} {{ context.description }}</h3>
+        <form method="post" class="form-horizontal" action="">
+        {{ form.non_field_errors }}
+        <fieldset>
+        <legend>{{ context.description }}</legend>
+        {% csrf_token %}
+            <div class="form-group{% if form.tag.errors %} has-error{% endif %}">
+                {% if form.tag.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.tag.errors }}</div>
+                {% endif %}
+                <label for="id_tag" class="col-sm-2 control-label">{% trans "Tag or Search" %}</label>
+                <div class="col-sm-6">{{ form.tag }}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the tag or 'string' you want to track from twitter" %}</div>
+            </div>
+            <div class="form-group{% if form.screen.errors %} has-error{% endif %}">
+                {% if form.screen.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.screen.errors }}</div>
+                {% endif %}
+                <label for="id_tooter" class="col-sm-2 control-label">{% trans "Tooter" %}</label>
+                <div class="col-sm-6">{{ form.tooter }}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the name of a user you want to get his toots" %}</div>
+            </div>
+            <div class="form-group{% if form.fav.errors %} has-error{% endif %}">
+                {% if form.fav.errors %}
+                <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.fav.errors }}</div>
+                {% endif %}
+                <label for="id_fav" class="col-sm-2 control-label">{% trans "Save the favorites" %}</label>
+                <div class="col-sm-6">{{ form.fav }}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Save the favorite of the 'tooter' you filled above" %}</div>
+            </div>
+
+            <div class="form-group form-actions">
+                <div class="col-sm-offset-2 col-sm-4">
+                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                </div>
+            </div>
+        </fieldset>
+        </form>
+    </div>
+{% endblock %}
