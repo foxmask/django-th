@@ -4,7 +4,7 @@
       "pk":2,
       "fields":{
          "name":"ServiceEvernote",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"For everything you'll do, Evernote is the workspace to get it done."
@@ -15,7 +15,7 @@
       "pk":3,
       "fields":{
          "name":"ServiceInstapush",
-         "status":false,
+         "status":true,
          "auth_required":false,
          "self_hosted":false,
          "description":"Instant Notifications for Important Transactions"
@@ -26,7 +26,7 @@
       "pk":4,
       "fields":{
          "name":"ServicePelican",
-         "status":false,
+         "status":true,
          "auth_required":false,
          "self_hosted":true,
          "description":"Engine for self-hosted static website"
@@ -37,7 +37,7 @@
       "pk":5,
       "fields":{
          "name":"ServicePocket",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"When you find something you want to view later, put it in Pocket."
@@ -48,7 +48,7 @@
       "pk":6,
       "fields":{
          "name":"ServicePushbullet",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"Your devices working better together"
@@ -70,7 +70,7 @@
       "pk":8,
       "fields":{
          "name":"ServiceSlack",
-         "status":false,
+         "status":true,
          "auth_required":false,
          "self_hosted":false,
          "description":"Slack"
@@ -81,7 +81,7 @@
       "pk":9,
       "fields":{
          "name":"ServiceTodoist",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"To-Do-List | Another Task Manager"
@@ -92,7 +92,7 @@
       "pk":10,
       "fields":{
          "name":"ServiceTrello",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"A free, flexible, and visual way to organize anything with anyone."
@@ -103,7 +103,7 @@
       "pk":11,
       "fields":{
          "name":"ServiceTumblr",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"Tumblr Microblogging"
@@ -114,7 +114,7 @@
       "pk":12,
       "fields":{
          "name":"ServiceTwitter",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":false,
          "description":"Twitter Social Network in 140 characters"
@@ -136,7 +136,7 @@
       "pk":14,
       "fields":{
          "name":"ServiceMastodon",
-         "status":false,
+         "status":true,
          "auth_required":true,
          "self_hosted":true,
          "description":"Your self-hosted, globally interconnected microblogging community"

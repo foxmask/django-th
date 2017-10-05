@@ -164,6 +164,11 @@ urlpatterns = [
                  {'service_name': 'ServiceWallabag', },
                  name="wallabag_callback",
                  ),
+             url(r"^th/callbackmastodon/$",
+                 finalcallback,
+                 {'service_name': 'ServiceMastodon', },
+                 name="mastodon_callback",
+                 ),
              url(r'^th/myfeeds/', include('th_rss.urls')),
 
              url(r'^th/api/taiga/webhook/', include('th_taiga.urls')),

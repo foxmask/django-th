@@ -23,19 +23,20 @@ DJANGO_TH = {
 
 TH_SERVICES = (
     # uncomment the lines to enable the service you need
-    # 'th_evernote.my_evernote.ServiceEvernote',
-    # 'th_github.my_github.ServiceGithub',
-    # 'th_instapush.my_instapush.ServiceInstapush',
-    # 'th_pelican.my_pelican.ServicePelican',
-    # 'th_pocket.my_pocket.ServicePocket',
-    # 'th_pushbullet.my_pushbullet.ServicePushbullet',
+    'th_evernote.my_evernote.ServiceEvernote',
+    'th_github.my_github.ServiceGithub',
+    'th_instapush.my_instapush.ServiceInstapush',
+    'th_mastodon.my_mastodon.ServiceMastodon',
+    'th_pelican.my_pelican.ServicePelican',
+    'th_pocket.my_pocket.ServicePocket',
+    'th_pushbullet.my_pushbullet.ServicePushbullet',
     'th_rss.my_rss.ServiceRss',
-    # 'th_slack.my_slack.ServiceSlack',
-    # 'th_taiga.my_taiga.ServiceTaiga',
-    # 'th_todoist.my_todoist.ServiceTodoist',
-    # 'th_trello.my_trello.ServiceTrello',
-    # 'th_tumblr.my_tumblr.ServiceTumblr',
-    # 'th_twitter.my_twitter.ServiceTwitter',
+    'th_slack.my_slack.ServiceSlack',
+    'th_taiga.my_taiga.ServiceTaiga',
+    'th_todoist.my_todoist.ServiceTodoist',
+    'th_trello.my_trello.ServiceTrello',
+    'th_tumblr.my_tumblr.ServiceTumblr',
+    'th_twitter.my_twitter.ServiceTwitter',
     'th_wallabag.my_wallabag.ServiceWallabag',
 )
 
