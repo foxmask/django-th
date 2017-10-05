@@ -4,7 +4,7 @@ Evernote
 Service Description:
 --------------------
 
-This service permits to take notes, photos, schedules things and so on
+This service allows to take notes, photos, schedules things and so on
 
 modifications of settings.py
 ----------------------------
@@ -110,6 +110,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Evernote",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect the user (or you) to Evernote website to confirm the access of the Evernote account
-* Fill a description
+* Check Auth Required: this will permit to redirect the user (or you) to the Evernote website to confirm the access of the Evernote account
+* Provide a description
 
