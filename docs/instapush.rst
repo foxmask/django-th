@@ -10,7 +10,7 @@ Notification service
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 uncomment the following line
 
@@ -68,4 +68,4 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 * Select "Instapush",
 * Set the Status to "Enabled"
 * Check Auth Required: do not check it
-* Fill a description
+* Provide a description
