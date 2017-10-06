@@ -184,12 +184,16 @@ class ServiceMastodon(ServicesMgr):
         title, content = super(ServiceMastodon, self).save_data(
             trigger_id, **data)
 
+        # check if we have a 'good' title
         if self.title_or_content(title):
 
-            content = str("{title} {link}").format(
-                title=title, link=data.get('link'))
-
-        content += self.get_tags(trigger_id)
+            content = str("{title} {link}").format(title=title,
+                                                   link=data.get('link'))
+            content += self.get_tags(trigger_id)
+        # if not then use the content
+        else:
+            content += " " + data.get('link')
+            content += " " + self.get_tags(trigger_id)
 
         content = self.set_mastodon_content(content)
 
@@ -206,15 +210,16 @@ class ServiceMastodon(ServicesMgr):
             )
         except ValueError as e:
             logger.error(e)
-            update_result(trigger_id, msg=e, status=False)
+            status = False
+            update_result(trigger_id, msg=e, status=status)
 
         try:
             toot_api.toot(content)
             status = True
         except Exception as inst:
             logger.critical("Mastodon ERR {}".format(inst))
-            update_result(trigger_id, msg=inst, status=False)
             status = False
+            update_result(trigger_id, msg=inst, status=status)
 
         return status
 
@@ -240,6 +245,19 @@ class ServiceMastodon(ServicesMgr):
 
         return tags
 
+    def title_or_content(self, title):
+        """
+        If the title always contains 'Tweet from'
+        drop the title and get 'the content' instead
+        this allow to have a complet content and not
+        just a little piece of string
+        :param title:
+        :return:
+        """
+        if "Tweet from" in title:
+            return False
+        return True
+
     def set_mastodon_content(self, content):
         """
         cleaning content by removing any existing html tag
@@ -252,17 +270,6 @@ class ServiceMastodon(ServicesMgr):
             return content[:560]
 
         return content
-
-    def title_or_content(self, title):
-        """
-        If the title always contains 'New status from'
-        drop the title and get 'the content' instead
-        :param title:
-        :return:
-        """
-        if "New status by" in title:
-            return False
-        return True
 
     def auth(self, request):
         """
