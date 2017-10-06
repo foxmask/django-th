@@ -9,7 +9,7 @@ Your self-hosted, globally interconnected microblogging community
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 add or uncomment the following line
 
@@ -66,4 +66,4 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 * Select "Mastodon",
 * Set the Status to "Enabled"
 * Check Auth Required: this will permit to redirect the user (or you) to Mastodon website to confirm the access of the Mastodon account
-* Fill a description to something like "Your self-hosted, globally interconnected microblogging community"
+* Provide a description such as "Your self-hosted, globally interconnected microblogging community"
