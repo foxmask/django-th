@@ -9,7 +9,7 @@ Powerful collaboration, code review, and code management for open source and pri
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 add or uncomment the following line
 
@@ -28,7 +28,7 @@ to get
     )
 
 
-2) Cache :
+2) Cache:
 
 After the default cache add :
 
@@ -79,7 +79,7 @@ to get
 
 2) The service keys
 
-It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
+It's strongly recommended that you put the following in a local_settings.py, to avoid to accidentally push this to a public repository
 
 
 .. code-block:: python
@@ -109,5 +109,5 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 * Select "GitHub",
 * Set the Status to "Enabled"
 * Check Auth Required: this will permit to redirect the user (or you) to GitHub website to confirm the access of the GitHub account
-* Fill a description
+* Provide a description
 
