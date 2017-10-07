@@ -2,13 +2,13 @@
 Configuration
 =============
 
-Here are the details that will permit to make working the application correctly
+Here are the details that will allow the application to work correctly
 
 setup urls.py
 -------------
 
-If TriggerHappy is your only one project installed in your virtualenv, go to "setup settings.py"
-this setup is just needed only when you add TriggerHappy to an **existing** application
+If TriggerHappy is the only project you installed in your virtualenv, go to "setup settings.py"
+this setup is only needed when you add TriggerHappy to an **existing** application
 
 
 add this line to the urls.py to be able to use the complete application
@@ -63,7 +63,7 @@ add the module django_th, and its friends, to the INSTALLED_APPS
     )
 
 
-do not forget to uncomment one of the service th_pocket, th_evernote (and then evernote also) th_twitter, th_trello, th_github otherwise, the application wont work.
+do not forget to uncomment one of the service th_pocket, th_evernote (and then evernote also) th_twitter, th_trello, th_github otherwise, the application won't work.
 
 setup for testing/debugging purpose
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -95,7 +95,7 @@ in the th_settings.py file, setup the TH_SERVICES
 TH_SERVICES
 -----------
 
-TH_SERVICES is a list of the services, like for example,
+TH_SERVICES is a list of services, like for example,
 
 .. code-block:: python
 
@@ -115,7 +115,7 @@ TH_SERVICES is a list of the services, like for example,
         'th_wallabag.my_wallabag.ServiceWallabag',
     )
 
-do not forget to uncomment one of the line to enable another service, or the application wont work.
+do not forget to uncomment one of the line to enable another service, or the application won't work.
 
 Cache
 -----

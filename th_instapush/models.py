@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 
 class Instapush(Services):
@@ -14,10 +15,10 @@ class Instapush(Services):
     app_secret = models.CharField(max_length=255)
     event_name = models.CharField(max_length=255)
     tracker_name = models.CharField(max_length=80)
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_instapush'
         db_table = 'django_th_instapush'
 
     def show(self):

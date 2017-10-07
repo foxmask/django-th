@@ -6,9 +6,9 @@ Welcome to Trigger Happy's documentation!
 Contents:
 ---------
 
-As it exists tools to make his blog or website or even his own cloud system, "Trigger Happy"
+Like there there are to create one's blog, website or one's own cloud system, "Trigger Happy"
 is a free software that provides a bridge to automatically share data between popular services you use on the web.
-And instead of giving your credentials to them, keep them with your own **Trigger Happy** to keep the control of your data !
+And instead of giving your credentials to them, keep them with your own **Trigger Happy** to keep the control of your data!
 
 
 
@@ -27,7 +27,7 @@ And instead of giving your credentials to them, keep them with your own **Trigge
 
 For example a new RSS item is published, **Trigger Happy** will be able to
 automatically create a note on your Evernote account or create a bookmark to
-your own Wallabag or Pocket account and so on
+your own Wallabag or Pocket account and so on.
 
 
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
@@ -81,12 +81,12 @@ The goal of this project is to be independent from any other solution like
 IFTTT, CloudWork or others.
 
 Thus you could host your own solution and manage your own triggers without
-depending any non-free solution.
+depending on any non-open solution.
 
 With this project you can host triggers for you.
 
-All you need is to have a hosting provider (or simply your own server ;) )
-who permits to use a manager of tasks like "cron" and, of course Python.
+All you need is a hosting provider (or simply your own server ;) )
+that works with a manager of tasks like "cron" and, of course Python.
 
 
 Indices and tables

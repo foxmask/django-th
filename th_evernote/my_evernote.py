@@ -40,7 +40,7 @@ from th_evernote.sanitize import sanitize
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_evernote']
+cache = caches['django_th']
 
 
 class ServiceEvernote(ServicesMgr):
@@ -83,6 +83,7 @@ class ServiceEvernote(ServicesMgr):
         trigger_id = kwargs.get('trigger_id')
 
         kwargs['model_name'] = 'Evernote'
+        kwargs['app_label'] = 'th_evernote'
 
         trigger = super(ServiceEvernote, self).read_data(**kwargs)
 

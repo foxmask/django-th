@@ -29,7 +29,7 @@ from django_th.services.services import ServicesMgr
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_todoist']
+cache = caches['django_th']
 
 
 class ServiceTodoist(ServicesMgr):

@@ -56,9 +56,6 @@ class SlackFormTest(SlackTest):
         form = SlackConsumerForm(data=data)
         self.assertTrue(form.is_valid())
 
-    def test_get_config_th_cache(self):
-        self.assertIn('th_slack', settings.CACHES)
-
     def test_get_services_list(self):
         th_service = ('th_slack.my_slack.ServiceSlack',)
         for service in th_service:

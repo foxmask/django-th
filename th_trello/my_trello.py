@@ -32,7 +32,7 @@ from django_th.models import update_result, UserService
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_trello']
+cache = caches['django_th']
 
 
 class ServiceTrello(ServicesMgr):

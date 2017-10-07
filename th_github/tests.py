@@ -10,7 +10,7 @@ from th_github.forms import GithubProviderForm, GithubConsumerForm
 from th_github.my_github import ServiceGithub
 from django_th.tests.test_main import MainTest
 
-cache = caches['th_github']
+cache = caches['django_th']
 
 
 class GithubTest(MainTest):
@@ -85,9 +85,6 @@ class GithubModelAndFormTest(GithubTest):
             does this settings exists ?
         """
         self.assertTrue(settings.TH_GITHUB)
-
-    def test_get_config_th_cache(self):
-        self.assertIn('th_github', settings.CACHES)
 
     def test_get_services_list(self):
         th_service = ('th_github.my_github.ServiceGithub',)

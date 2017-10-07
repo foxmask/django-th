@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 """
     https://dev.twitter.com/rest/public/timelines
@@ -26,10 +27,10 @@ class Twitter(Services):
     since_id = models.BigIntegerField(null=True, blank=True)
     max_id = models.BigIntegerField(null=True, blank=True)
     count = models.IntegerField(null=True, blank=True)
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_twitter'
         db_table = 'django_th_twitter'
 
     def show(self):

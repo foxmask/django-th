@@ -15,7 +15,7 @@ from th_rss.lib.feedsservice import Feeds
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_rss']
+cache = caches['django_th']
 
 
 class ServiceRss(ServicesMgr):
@@ -57,7 +57,7 @@ class ServiceRss(ServicesMgr):
         date_triggered = kwargs.get('date_triggered')
         trigger_id = kwargs.get('trigger_id')
         kwargs['model_name'] = 'Rss'
-
+        kwargs['app_label'] = 'django_th'
         # get the URL from the trigger id
         rss = super(ServiceRss, self).read_data(**kwargs)
 

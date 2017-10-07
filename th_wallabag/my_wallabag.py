@@ -29,7 +29,7 @@ from th_wallabag.models import Wallabag
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_wallabag']
+cache = caches['django_th']
 
 
 class ServiceWallabag(ServicesMgr):

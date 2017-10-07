@@ -121,7 +121,7 @@ class ServicesMgr(object):
             :type kwargs: dict
             :rtype: model
         """
-        model = get_model('django_th', kwargs['model_name'])
+        model = get_model(kwargs['app_label'], kwargs['model_name'])
 
         return model.objects.get(trigger_id=kwargs['trigger_id'])
 
@@ -131,7 +131,7 @@ class ServicesMgr(object):
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
         """
-        cache = caches[kwargs.get('cache_stack')]
+        cache = caches['django_th']
         cache_data = cache.get(kwargs.get('cache_stack') + '_' +
                                kwargs.get('trigger_id'))
         return PublishingLimit.get_data(kwargs.get('cache_stack'),

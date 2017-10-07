@@ -29,7 +29,7 @@ class PublishingLimit(object):
             # ... and check it
             if service_long in settings.TH_SERVICES:
 
-                cache = caches[service]
+                cache = caches['django_th']
 
                 limit = settings.DJANGO_TH.get('publishing_limit', 0)
 

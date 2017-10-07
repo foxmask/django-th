@@ -20,7 +20,8 @@ class TriggerServiceForm(forms.ModelForm):
         model = TriggerService
         exclude = ['provider', 'consumer', 'user', 'date_triggered',
                    'date_created', 'status', 'result', 'date_result',
-                   'consumer_failed', 'provider_failed']
+                   'consumer_failed', 'provider_failed', 'counter_ok',
+                   'counter_ko']
         widgets = {
             'description': TextInput(attrs={'class': 'form-control'}),
         }
@@ -63,7 +64,7 @@ class UserServiceForm(forms.ModelForm):
             meta to add/override anything we need
         """
         model = UserService
-        exclude = ('user',)
+        exclude = ('user', 'counter_ok', 'counter_ko')
         widgets = {
             'host': TextInput(attrs={'class': 'form-control'}),
             'username': TextInput(attrs={'class': 'form-control'}),
