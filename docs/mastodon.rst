@@ -1,23 +1,22 @@
-Instapush
-=========
+Mastodon
+========
 
 Service Description:
 --------------------
 
-Notification service
-
+Your self-hosted, globally interconnected microblogging community
 
 modifications of settings.py
 ----------------------------
 
 1) INSTALLED_APPS:
 
-uncomment the following line
+add or uncomment the following line
 
 .. code-block:: python
 
     INSTALLED_APPS = (
-        # 'th_instapsuh',
+        # 'th_mastodon',
     )
 
 to get
@@ -25,7 +24,7 @@ to get
 .. code-block:: python
 
     INSTALLED_APPS = (
-        'th_instapsuh',
+        'th_mastodon',
     )
 
 modifications of th_settings.py
@@ -33,12 +32,12 @@ modifications of th_settings.py
 
 1) TH_SERVICES
 
-uncomment the following line
+add or uncomment the following line
 
 .. code-block:: python
 
     TH_SERVICES = (
-        # 'th_instapush.my_instapush.ServiceInstapush',
+        # 'th_mastodon.my_mastodon.ServiceMastdoon',
     )
 
 to get
@@ -46,9 +45,8 @@ to get
 .. code-block:: python
 
     TH_SERVICES = (
-        'th_instapush.my_instapush.ServiceInstapush',
+        'th_mastodon.my_mastodon.ServiceMastdoon',
     )
-
 
 creation of the table of the services
 -------------------------------------
@@ -65,7 +63,7 @@ from the admin panel, activation of the service
 
 from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
-* Select "Instapush",
+* Select "Mastodon",
 * Set the Status to "Enabled"
-* Check Auth Required: do not check it
-* Provide a description
+* Check Auth Required: this will permit to redirect the user (or you) to Mastodon website to confirm the access of the Mastodon account
+* Provide a description such as "Your self-hosted, globally interconnected microblogging community"

@@ -9,7 +9,7 @@ a "Read it Later" service
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 add or uncomment the following line
 
@@ -27,9 +27,9 @@ to get
         'th_pocket',
     )
 
-2) Cache :
+2) Cache:
 
-After the default cache add :
+After the default cache add:
 
 .. code-block:: python
 
@@ -104,6 +104,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Pocket",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect the user (or you) to Pocket website to confirm the access of the Pocket account
-* Fill a description
+* Check Auth Required: this will enable redirection of the user (or you) to Pocket website to confirm the access of the Pocket account
+* Provide a description
 
