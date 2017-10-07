@@ -14,8 +14,10 @@ from django.utils.translation import ugettext as _
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+from django_th.tools import download_image
 from th_mastodon.models import Mastodon
 
+import re
 
 logger = getLogger('django_th.trigger_happy')
 
@@ -214,7 +216,19 @@ class ServiceMastodon(ServicesMgr):
             update_result(trigger_id, msg=e, status=status)
 
         try:
-            toot_api.toot(content)
+            media_ids = None
+            if settings.DJANGO_TH['sharing_media']:
+                # do we have a media in the content ?
+                media, mime_type = self.media_in_content(content)
+                if media:
+                    # upload the media first
+                    toot_media = toot_api.media_post(media_file=media,
+                                                     mime_type=mime_type)
+                    # create the post with the media id
+                    media_ids = toot_media['id']
+
+            toot_api.status_post(content, media_ids=media_ids)
+            # toot_api.toot(content)
             status = True
         except Exception as inst:
             logger.critical("Mastodon ERR {}".format(inst))
@@ -254,9 +268,24 @@ class ServiceMastodon(ServicesMgr):
         :param title:
         :return:
         """
-        if "Tweet from" in title:
-            return False
-        return True
+        return "Tweet from" not in title
+
+    def media_in_content(self, content):
+        """
+        check if the content contains and url of an image
+        for the moment, check twitter media url
+        could be elaborate with other service when needed
+        :param content:
+        :return:
+        """
+        if 'https://pbs.twimg.com/media/' in content:
+            mime_type = 'image/jpeg'
+            m = re.search('(.*)https://pbs.twimg.com/media/(.*).jpg(.*)$',
+                          content)
+            url = 'https://pbs.twimg.com/media/{}.jpg'.format(m.group(2))
+            local_file = download_image(url)
+            return local_file, mime_type
+        return '', ''
 
     def set_mastodon_content(self, content):
         """

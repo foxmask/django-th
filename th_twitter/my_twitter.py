@@ -27,7 +27,6 @@ from logging import getLogger
     }
 
 """
-
 logger = getLogger('django_th.trigger_happy')
 cache = caches['django_th']
 
@@ -189,8 +188,19 @@ class ServiceTwitter(ServicesMgr):
                         if date_triggered is not None and \
                            published is not None and \
                            now >= published >= date_triggered:
+                            if s.get('extended_entities'):
+                                # get a media
+                                extended_entities = s['extended_entities']
+                                if extended_entities.get('media'):
+                                    medias = extended_entities.get('media')
+                                    for media in medias:
+                                        text = s['text'] + ' ' + \
+                                               media.get('media_url_https')
+                            else:
+                                text = s['text']
+
                             my_tweets.append({'title': title,
-                                              'content': s['text'],
+                                              'content': text,
                                               'link': url,
                                               'my_date': my_date})
                             # digester

@@ -19,6 +19,11 @@ DJANGO_TH = {
     'fire': False,
     # if you want to allow the digest feature
     'digest_event': True,
+    # if sharing_media set to True
+    # when URL of service contains media
+    # we download them in the BASE_DIR + '/cache/'
+    # and upload them through the API of the other service
+    'sharing_media': False,
 }
 
 TH_SERVICES = (
