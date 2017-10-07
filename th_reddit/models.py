@@ -11,6 +11,7 @@ class Reddit(Services):
     # put whatever you need  here
     # eg title = models.CharField(max_length=80)
     # but keep at least this one
+    subreddit = models.CharField(max_length=80)
     trigger = models.ForeignKey('TriggerService')
 
     class Meta:
