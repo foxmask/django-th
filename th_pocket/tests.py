@@ -45,7 +45,7 @@ class PocketModelAndFormTest(PocketTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_POCKET)
+        self.assertTrue(settings.TH_POCKET_KEY)
 
     def test_get_services_list(self):
         th_service = ('th_pocket.my_pocket.ServicePocket',)
@@ -139,8 +139,8 @@ class ServicePocketTest(PocketTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_POCKET)
-        self.assertIn('consumer_key', settings.TH_POCKET)
+        self.assertTrue(settings.TH_POCKET_KEY)
+        self.assertIn('consumer_key', settings.TH_POCKET_KEY)
 
     def test_auth(self):
         pass

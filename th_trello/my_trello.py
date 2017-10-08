@@ -56,8 +56,8 @@ class ServiceTrello(ServicesMgr):
         self.AUTH_URL = '{}/1/OAuthAuthorizeToken'.format(base)
         self.REQ_TOKEN = '{}/1/OAuthGetRequestToken'.format(base)
         self.ACC_TOKEN = '{}/1/OAuthGetAccessToken'.format(base)
-        self.consumer_key = settings.TH_TRELLO['consumer_key']
-        self.consumer_secret = settings.TH_TRELLO['consumer_secret']
+        self.consumer_key = settings.TH_TRELLO_KEY['consumer_key']
+        self.consumer_secret = settings.TH_TRELLO_KEY['consumer_secret']
         if token:
             token_key, token_secret = token.split('#TH#')
             try:
