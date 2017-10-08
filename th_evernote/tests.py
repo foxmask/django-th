@@ -75,7 +75,7 @@ class EvernoteView(EvernoteTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_EVERNOTE)
+        self.assertTrue(settings.TH_EVERNOTE_KEY)
 
     def test_get_services_list(self):
         th_service = ('th_evernote.my_evernote.ServiceEvernote',)
@@ -122,7 +122,7 @@ class ServiceEvernoteTest(EvernoteTest):
         self.assertIn('title', self.data)
         self.assertIsNotNone(self.data['link'])
         self.assertNotEqual(self.data['title'], '')
-        self.assertIn('sandbox', settings.TH_EVERNOTE)
+        self.assertIn('sandbox', settings.TH_EVERNOTE_KEY)
 
         se = ServiceEvernote(self.token)
         se.save_data(self.trigger_id, **self.data)
@@ -133,23 +133,23 @@ class ServiceEvernoteTest(EvernoteTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_EVERNOTE)
-        self.assertIn('consumer_key', settings.TH_EVERNOTE)
-        self.assertIn('consumer_secret', settings.TH_EVERNOTE)
-        self.assertIn('sandbox', settings.TH_EVERNOTE)
+        self.assertTrue(settings.TH_EVERNOTE_KEY)
+        self.assertIn('consumer_key', settings.TH_EVERNOTE_KEY)
+        self.assertIn('consumer_secret', settings.TH_EVERNOTE_KEY)
+        self.assertIn('sandbox', settings.TH_EVERNOTE_KEY)
 
     def test_get_evernote_client(self, token=None):
         """
             get the token from evernote
         """
-        sandbox = settings.TH_EVERNOTE['sandbox']
+        sandbox = settings.TH_EVERNOTE_KEY['sandbox']
         client = mock.Mock(return_value=True)
         client.method(token=token, sandbox=sandbox)
         client.method.assert_called_with(token=token, sandbox=sandbox)
 
-        sandbox = settings.TH_EVERNOTE['sandbox']
-        consumer_key = settings.TH_EVERNOTE['consumer_key']
-        consumer_secret = settings.TH_EVERNOTE['consumer_secret']
+        sandbox = settings.TH_EVERNOTE_KEY['sandbox']
+        consumer_key = settings.TH_EVERNOTE_KEY['consumer_key']
+        consumer_secret = settings.TH_EVERNOTE_KEY['consumer_secret']
 
         client = mock.Mock(return_value=True)
         client.method(consumer_key=consumer_key,

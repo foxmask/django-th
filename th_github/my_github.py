@@ -48,10 +48,10 @@ class ServiceGithub(ServicesMgr):
         self.REQ_TOKEN = 'https://github.com/login/oauth/authorize'
         self.AUTH_URL = 'https://github.com/login/oauth/authorize'
         self.ACC_TOKEN = 'https://github.com/login/oauth/access_token'
-        self.username = settings.TH_GITHUB['username']
-        self.password = settings.TH_GITHUB['password']
-        self.consumer_key = settings.TH_GITHUB['consumer_key']
-        self.consumer_secret = settings.TH_GITHUB['consumer_secret']
+        self.username = settings.TH_GITHUB_KEY['username']
+        self.password = settings.TH_GITHUB_KEY['password']
+        self.consumer_key = settings.TH_GITHUB_KEY['consumer_key']
+        self.consumer_secret = settings.TH_GITHUB_KEY['consumer_secret']
         self.token = token
         self.oauth = 'oauth1'
         self.service = 'ServiceGithub'

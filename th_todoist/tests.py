@@ -70,7 +70,7 @@ class TodoistTest(MainTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_TODOIST)
+        self.assertTrue(settings.TH_TODOIST_KEY)
 
     def test_read_data(self):
         """

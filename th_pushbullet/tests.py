@@ -55,4 +55,4 @@ class PushbulletTest(MainTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_PUSHBULLET)
+        self.assertTrue(settings.TH_PUSHBULLET_KEY)

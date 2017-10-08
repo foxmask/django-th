@@ -246,6 +246,7 @@ CACHES = {
     },
 }
 
+# dedicated TriggerHappy settings
 try:
     from .th_settings import *
 except ImportError:
@@ -258,9 +259,6 @@ SECRET_KEY = 'to be defined :P'
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
 TEST_RUNNER_WHITELIST = ('oauth2_provider', 'corsheaders')
-
-# for the pelican website generator, set the author's name of the posts here
-TH_PELICAN_AUTHOR = 'Foxmask'
 
 # local settings management
 try:

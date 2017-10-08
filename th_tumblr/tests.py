@@ -110,4 +110,4 @@ class TumblrTest(TestCase):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_TUMBLR)
+        self.assertTrue(settings.TH_TUMBLR_KEY)
