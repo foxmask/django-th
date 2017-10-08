@@ -47,11 +47,9 @@ class ServiceReddit(ServicesMgr):
         self.oauth = 'oauth2'
         if token:
             self.token = token
-            us = UserService.objects.get(token=token)
             self.reddit = RedditApi(client_id=self.consumer_key,
                                     client_secret=self.consumer_secret,
-                                    username=us.username,
-                                    password=us.password,
+                                    refresh_token=self.token,
                                     user_agent=self.user_agent)
 
     def read_data(self, **kwargs):
@@ -96,10 +94,12 @@ class ServiceReddit(ServicesMgr):
             :rtype: boolean
         """
         # convert the format to be released in Markdown
+        status = False
         data['output_format'] = 'md'
         title, content = super(ServiceReddit, self).save_data(trigger_id,
                                                               **data)
         if self.token:
+
             trigger = Reddit.objects.get(trigger_id=trigger_id)
             if trigger.share_link:
                 status = self.reddit.subreddit(trigger.subreddit)\
@@ -128,7 +128,8 @@ class ServiceReddit(ServicesMgr):
                            client_secret=self.consumer_secret,
                            redirect_uri=redirect_uri,
                            user_agent=self.user_agent)
-        auth_url = reddit.auth.url(['identity'], 'redirect_uri')
+        auth_url = reddit.auth.url(['identity', 'read', 'submit', 'save'],
+                                   'redirect_uri')
         return auth_url
 
     def callback(self, request, **kwargs):
