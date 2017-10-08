@@ -23,4 +23,5 @@ pushbullet.py==0.10.0
 instapush==0.1.2
 python-taiga==0.8.6
 Mastodon.py==1.1.1
+praw==5.1.0
 -e git://github.com/dianakhuang/pytumblr.git@diana/python-3-support#egg=pytumblr
