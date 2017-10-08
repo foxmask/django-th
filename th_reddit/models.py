@@ -1,6 +1,7 @@
 # coding: utf-8
 from django.db import models
 from django_th.models.services import Services
+from django_th.models import TriggerService
 
 
 class Reddit(Services):
@@ -13,7 +14,7 @@ class Reddit(Services):
     # but keep at least this one
     subreddit = models.CharField(max_length=80)
     share_link = models.BooleanField(default=False)
-    trigger = models.ForeignKey('TriggerService')
+    trigger = models.ForeignKey(TriggerService)
 
     class Meta:
         app_label = 'th_reddit'

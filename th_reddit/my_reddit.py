@@ -1,18 +1,28 @@
 # coding: utf-8
 # add here the call of any native lib of python like datetime etc.
+import arrow
 
 # add the python API here if needed
-from praw import Reddit
+from praw import Reddit as RedditApi
 # django classes
+from django.conf import settings
 from django.core.cache import caches
-
 from logging import getLogger
 
 # django_th classes
 from django_th.services.services import ServicesMgr
+from django_th.models import update_result
+from th_reddit.models import Reddit
 
 
 """
+    put the following in settings.py
+    TH_REDDIT = {
+        'client_id': 'abcdefghijklmnopqrstuvwxyz',
+        'client_secret': 'abcdefghijklmnopqrstuvwxyz',
+        'user_agent': '<platform>:<app ID>:<version string> (by /u/<reddit username>)'
+    }
+
     TH_SERVICES = (
         ...
         'th_reddit.my_reddit.ServiceReddit',
@@ -26,6 +36,22 @@ cache = caches['django_th']
 
 
 class ServiceReddit(ServicesMgr):
+    """
+        service Reddit
+    """
+    def __init__(self, token=None, **kwargs):
+        super(ServiceReddit, self).__init__(token, **kwargs)
+        self.consumer_key = settings.TH_REDDIT['client_id']
+        self.consumer_secret = settings.TH_REDDIT['client_secret']
+        self.user_agent = settings.TH_REDDIT['user_agent']
+        self.service = 'ServiceReddit'
+        self.oauth = 'oauth2'
+        if token:
+            self.token = token
+            self.reddit = RedditApi(client_id=self.consumer_key,
+                                client_secret=self.consumer_secret,
+                                refresh_token=token,
+                                user_agent=self.user_agent)
 
     def read_data(self, **kwargs):
         """
@@ -41,8 +67,22 @@ class ServiceReddit(ServicesMgr):
             :rtype: list
         """
         trigger_id = kwargs.get('trigger_id')
+        trigger = Reddit.objects.get(trigger_id=trigger_id)
+        date_triggered = kwargs.get('date_triggered')
         data = list()
+        submissions = self.reddit.subreddit(trigger.subreddit).top('all')
+        for submission in submissions:
+            title = 'From Reddit ' + submission.title
+            created = arrow.get(submission.created)
+            if created > date_triggered and\
+                submission.selftext is not None == trigger.share_link:
+                body = submission.selftext if submission.selftext \
+                    else submission.url
+                data.append({'title': title, 'content': body})
+                self.send_digest_event(trigger_id, title, '')
+
         cache.set('th_reddit_' + str(trigger_id), data)
+        return data
 
     def save_data(self, trigger_id, **data):
         """
@@ -54,16 +94,22 @@ class ServiceReddit(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        from th_reddit.models import Reddit
-
-        status = False
-
-        title, content = super(ServiceReddit, self).save_data(trigger_id, **data)
-
-        # get the data of this trigger
-        trigger = Reddit.objects.get(trigger_id=trigger_id)
-        # we suppose we use a tag property for this service
-        status = self.reddit.add(title=title, content=content, tags= trigger.tags)
-
+        title, content = super(ServiceReddit, self).save_data(trigger_id, 
+                                                                **data)
+        if self.token:
+            trigger = Reddit.objects.get(trigger_id=trigger_id)
+            if trigger.share_link:
+                status = self.reddit.subreddit(trigger.subreddit)\
+                    .submit(title=title, url=content)
+            else:
+                status = self.reddit.subreddit(trigger.subreddit)\
+                    .submit(title=title, selftext=content)
+            sentence = str('reddit submission {} created').format(title)
+            logger.debug(sentence)
+        else:
+            msg = "no token or link provided for trigger " \
+                  "ID {} ".format(trigger_id)
+            logger.critical(msg)
+            update_result(trigger_id, msg=msg, status=False)
+            status = False
         return status
-

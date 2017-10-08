@@ -126,6 +126,7 @@ INSTALLED_APPS = (
     'th_pelican',
     'th_pocket',
     'th_pushbullet',
+    'th_reddit',
     'th_slack',
     'th_taiga',
     'th_todoist',
@@ -133,7 +134,6 @@ INSTALLED_APPS = (
     'th_tumblr',
     'th_twitter',
     'th_wallabag',
-
 )
 
 TEMPLATES = [
