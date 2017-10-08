@@ -119,7 +119,7 @@ def warn_user_and_admin(consumer_provider, service):
 def download_image(url):
     import requests
     import os
-    CACHE_DIR = os.path.dirname(os.path.dirname(__file__)) + '/cache/'
+    CACHE_DIR = os.path.dirname(__file__) + '/cache/'
     local_filename = os.path.basename(url)
     local_filename = CACHE_DIR + local_filename
     r = requests.get(url, stream=True)
