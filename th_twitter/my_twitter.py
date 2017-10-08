@@ -43,8 +43,8 @@ class ServiceTwitter(ServicesMgr):
         :param kwargs:
         """
         super(ServiceTwitter, self).__init__(token, **kwargs)
-        self.consumer_key = settings.TH_TWITTER['consumer_key']
-        self.consumer_secret = settings.TH_TWITTER['consumer_secret']
+        self.consumer_key = settings.TH_TWITTER_KEY['consumer_key']
+        self.consumer_secret = settings.TH_TWITTER_KEY['consumer_secret']
         self.token = token
         self.oauth = 'oauth1'
         self.service = 'ServiceTwitter'
