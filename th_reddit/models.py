@@ -12,10 +12,11 @@ class Reddit(Services):
     # eg title = models.CharField(max_length=80)
     # but keep at least this one
     subreddit = models.CharField(max_length=80)
+    share_link = models.BooleanField(default=False)
     trigger = models.ForeignKey('TriggerService')
 
     class Meta:
-        app_label = 'django_th'
+        app_label = 'th_reddit'
         db_table = 'django_th_reddit'
 
     def __str__(self):

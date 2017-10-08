@@ -2,7 +2,7 @@
 # add here the call of any native lib of python like datetime etc.
 
 # add the python API here if needed
-from praw import PRAW
+from praw import Reddit
 # django classes
 from django.core.cache import caches
 
@@ -22,7 +22,7 @@ from django_th.services.services import ServicesMgr
 
 logger = getLogger('django_th.trigger_happy')
 
-cache = caches['th_reddit']
+cache = caches['django_th']
 
 
 class ServiceReddit(ServicesMgr):
