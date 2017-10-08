@@ -1,33 +1,32 @@
 # coding: utf-8
-# add here the call of any native lib of python like datetime etc.
 import arrow
-
 # add the python API here if needed
 from praw import Reddit as RedditApi
 # django classes
 from django.conf import settings
 from django.core.cache import caches
+from django.core.urlresolvers import reverse
 from logging import getLogger
 
 # django_th classes
 from django_th.services.services import ServicesMgr
-from django_th.models import update_result
+from django_th.models import update_result, UserService
 from th_reddit.models import Reddit
 
 
 """
-    put the following in settings.py
-    TH_REDDIT = {
-        'client_id': 'abcdefghijklmnopqrstuvwxyz',
-        'client_secret': 'abcdefghijklmnopqrstuvwxyz',
-        'user_agent': '<platform>:<app ID>:<version string> (by /u/<reddit username>)'
-    }
+put the following in settings.py
+TH_REDDIT_KEY = {
+    'client_id': 'abcdefghijklmnopqrstuvwxyz',
+    'client_secret': 'abcdefghijklmnopqrstuvwxyz',
+    'user_agent': '<platform>:<app ID>:<version> (by /u/<reddit username>)'
+}
 
-    TH_SERVICES = (
-        ...
-        'th_reddit.my_reddit.ServiceReddit',
-        ...
-    )
+TH_SERVICES = (
+    ...
+    'th_reddit.my_reddit.ServiceReddit',
+    ...
+)
 """
 
 logger = getLogger('django_th.trigger_happy')
@@ -41,17 +40,19 @@ class ServiceReddit(ServicesMgr):
     """
     def __init__(self, token=None, **kwargs):
         super(ServiceReddit, self).__init__(token, **kwargs)
-        self.consumer_key = settings.TH_REDDIT['client_id']
-        self.consumer_secret = settings.TH_REDDIT['client_secret']
-        self.user_agent = settings.TH_REDDIT['user_agent']
+        self.consumer_key = settings.TH_REDDIT_KEY['client_id']
+        self.consumer_secret = settings.TH_REDDIT_KEY['client_secret']
+        self.user_agent = settings.TH_REDDIT_KEY['user_agent']
         self.service = 'ServiceReddit'
         self.oauth = 'oauth2'
         if token:
             self.token = token
+            us = UserService.objects.get(token=token)
             self.reddit = RedditApi(client_id=self.consumer_key,
-                                client_secret=self.consumer_secret,
-                                refresh_token=token,
-                                user_agent=self.user_agent)
+                                    client_secret=self.consumer_secret,
+                                    username=us.username,
+                                    password=us.password,
+                                    user_agent=self.user_agent)
 
     def read_data(self, **kwargs):
         """
@@ -74,8 +75,8 @@ class ServiceReddit(ServicesMgr):
         for submission in submissions:
             title = 'From Reddit ' + submission.title
             created = arrow.get(submission.created)
-            if created > date_triggered and\
-                submission.selftext is not None == trigger.share_link:
+            if created > date_triggered and submission.selftext is not None \
+                    and trigger.share_link:
                 body = submission.selftext if submission.selftext \
                     else submission.url
                 data.append({'title': title, 'content': body})
@@ -94,8 +95,10 @@ class ServiceReddit(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        title, content = super(ServiceReddit, self).save_data(trigger_id, 
-                                                                **data)
+        # convert the format to be released in Markdown
+        data['output_format'] = 'md'
+        title, content = super(ServiceReddit, self).save_data(trigger_id,
+                                                              **data)
         if self.token:
             trigger = Reddit.objects.get(trigger_id=trigger_id)
             if trigger.share_link:
@@ -111,5 +114,45 @@ class ServiceReddit(ServicesMgr):
                   "ID {} ".format(trigger_id)
             logger.critical(msg)
             update_result(trigger_id, msg=msg, status=False)
-            status = False
         return status
+
+    def auth(self, request):
+        """
+
+        :param request:
+        :return:
+        """
+        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(),
+                                      reverse("reddit_callback"))
+        reddit = RedditApi(client_id=self.consumer_key,
+                           client_secret=self.consumer_secret,
+                           redirect_uri=redirect_uri,
+                           user_agent=self.user_agent)
+        auth_url = reddit.auth.url(['identity'], 'redirect_uri')
+        return auth_url
+
+    def callback(self, request, **kwargs):
+        """
+            Called from the Service when the user accept to activate it
+            the url to go back after the external service call
+            :param request: contains the current session
+            :param kwargs: keyword args
+            :type request: dict
+            :type kwargs: dict
+            :rtype: string
+        """
+        code = request.GET.get('code', '')
+        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(),
+                                      reverse("reddit_callback"))
+        reddit = RedditApi(client_id=self.consumer_key,
+                           client_secret=self.consumer_secret,
+                           redirect_uri=redirect_uri,
+                           user_agent=self.user_agent)
+
+        token = reddit.auth.authorize(code)
+
+        UserService.objects.filter(user=request.user,
+                                   name='ServiceReddit'
+                                   ).update(token=token)
+
+        return 'reddit/callback.html'

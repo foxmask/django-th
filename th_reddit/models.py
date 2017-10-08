@@ -21,7 +21,7 @@ class Reddit(Services):
         db_table = 'django_th_reddit'
 
     def __str__(self):
-        return self.name
+        return self.subreddit
 
     def show(self):
-        return "My Reddit %s" % self.name
+        return "My Reddit %s" % self.subreddit

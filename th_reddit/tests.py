@@ -53,9 +53,13 @@ class RedditTest(TestCase):
             Create a Reddit object related to the trigger object
         """
         trigger = self.create_triggerservice()
-        name = 'reddit'
+        share_link = False
+        subreddit = 'python'
         status = True
-        return Reddit.objects.create(trigger=trigger, name=name, status=status)
+        return Reddit.objects.create(trigger=trigger,
+                                     subreddit=subreddit,
+                                     share_link=share_link,
+                                     status=status)
 
     def test_reddit(self):
         """
@@ -63,7 +67,7 @@ class RedditTest(TestCase):
         """
         d = self.create_reddit()
         self.assertTrue(isinstance(d, Reddit))
-        self.assertEqual(d.show(), "My Reddit %s" % d.name)
+        self.assertEqual(d.show(), "My Reddit %s" % d.subreddit)
 
     """
         Form
@@ -74,7 +78,7 @@ class RedditTest(TestCase):
            test if that form is a valid provider one
         """
         d = self.create_reddit()
-        data = {'name': d.name}
+        data = {'subreddit': d.subreddit, 'share_link': d.share_link}
         form = RedditProviderForm(data=data)
         self.assertTrue(form.is_valid())
 
@@ -91,7 +95,7 @@ class RedditTest(TestCase):
            test if that form is a valid consumer one
         """
         d = self.create_reddit()
-        data = {'name': d.name}
+        data = {'subreddit': d.subreddit, 'share_link': d.share_link}
         form = RedditConsumerForm(data=data)
         self.assertTrue(form.is_valid())
 
@@ -106,5 +110,4 @@ class RedditTest(TestCase):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_REDDIT)
-
+        self.assertTrue(settings.TH_REDDIT_KEY)

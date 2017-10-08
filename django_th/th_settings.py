@@ -40,6 +40,7 @@ TH_SERVICES = (
     'th_pocket.my_pocket.ServicePocket',
     'th_pushbullet.my_pushbullet.ServicePushbullet',
     'th_rss.my_rss.ServiceRss',
+    'th_reddit.my_reddit.ServiceReddit',
     'th_slack.my_slack.ServiceSlack',
     'th_taiga.my_taiga.ServiceTaiga',
     'th_todoist.my_todoist.ServiceTodoist',
@@ -95,6 +96,14 @@ TH_TWITTER_KEY = {
     # https://dev.twitter.com/
     'consumer_key': env.str('TH_TWITTER_CONSUMER_KEY', ''),
     'consumer_secret': env.str('TH_TWITTER_CONSUMER_SECRET', ''),
+}
+
+TH_REDDIT_KEY = {
+    # get your credential by subscribing to
+    # https://dev.twitter.com/
+    'client_id': env.str('TH_REDDIT_CLIENT_ID', ''),
+    'client_secret': env.str('TH_REDDIT_CLIENT_SECRET', ''),
+    'user_agent': env.str('TH_REDDIT_USER_AGENT', ''),
 }
 
 TH_PELICAN_AUTHOR = env.str('TH_PELICAN_AUTHOR', 'FoxMaSk')

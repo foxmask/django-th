@@ -10,12 +10,21 @@
         <fieldset>
         <legend>{{ context.description }}</legend>
         {% csrf_token %}
-            <div class="form-group{% if form.name.errors %} has-error{% endif %}">
-                {% if form.name.errors %}
-                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.name.errors }}</div>
+            <div class="form-group{% if form.subreddit.errors %} has-error{% endif %}">
+                {% if form.subreddit.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.subreddit.errors }}</div>
                 {% endif %}
-                <label for="id_name" class="col-sm-2 control-label">{% trans "Name" %}</label>
-                <div class="col-sm-10">{{ form.name }}</div>
+                <label for="id_subreddit" class="col-sm-2 control-label">{% trans "Subreddit" %}</label>
+                <div class="col-sm-10">{{ form.subreddit }}</div>
+                <div class="col-sm-offset-1 col-sm-10">in which subreddit to create a post or share a link ? (name without '/r/')</div>
+            </div>
+            <div class="form-group{% if form.share_link.errors %} has-error{% endif %}">
+                {% if form.share_link.errors %}
+                <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.share_link.errors }}</div>
+                {% endif %}
+                <label for="id_share_link" class="col-sm-2 control-label">{% trans "Share a link ?" %}</label>
+                <div class="col-sm-10">{{ form.share_link }}</div>
+                <div class="col-sm-offset-1 col-sm-10">Do you just want ot share link ? if no a post is created</div>
             </div>
 
             <div class="form-group form-actions">
@@ -25,5 +34,5 @@
             </div>
         </fieldset>
         </form>
-    </div> 
+    </div>
 {% endblock %}
