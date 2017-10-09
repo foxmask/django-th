@@ -24,7 +24,12 @@ needs_sphinx = '1.3'
 
 # Add any Sphinx extension module names here, as strings. They can be extensions
 # coming with Sphinx (named 'sphinx.ext.*') or your custom ones.
-extensions = []
+extensions = [
+    'sphinx.ext.autodoc',
+    'sphinx.ext.intersphinx',
+    'sphinx.ext.todo',
+    'sphinx.ext.viewcode',
+]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
@@ -96,6 +101,14 @@ html_theme = 'alabaster'
 # further.  For a list of options available for each theme, see the
 # documentation.
 # html_theme_options = {}
+html_theme_options = {
+    'show_powered_by': False,
+    'github_user': 'foxmask',
+    'github_repo': 'django-th',
+    'github_banner': True,
+    'show_related': False,
+    'note_bg': '#FFF59C'
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
@@ -227,8 +240,7 @@ man_pages = [
 #  dir menu entry, description, category)
 texinfo_documents = [
     ('index', 'TriggerHappy', u'Trigger Happy Documentation',
-     u'foxmask', 'TriggerHappy', 'take the control of your data with this'
-                                 'opensource clone of IFTTT',
+     u'foxmask', 'TriggerHappy', 'Steamer bridge for your internet services'
      'Miscellaneous'),
 ]
 
