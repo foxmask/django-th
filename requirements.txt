@@ -2,6 +2,7 @@ awesome-slugify==1.6.5
 arrow==0.10.0
 djangorestframework==3.6.4
 Django==1.11.5
+django-environ==0.4.4
 django-formtools==2.0
 django-js-reverse==0.7.3
 django-redis==4.8.0
@@ -22,4 +23,5 @@ pushbullet.py==0.10.0
 instapush==0.1.2
 python-taiga==0.8.6
 Mastodon.py==1.1.1
+praw==5.1.0
 -e git://github.com/dianakhuang/pytumblr.git@diana/python-3-support#egg=pytumblr

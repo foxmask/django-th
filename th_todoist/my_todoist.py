@@ -41,8 +41,8 @@ class ServiceTodoist(ServicesMgr):
         self.AUTH_URL = 'https://todoist.com/oauth/authorize'
         self.ACC_TOKEN = 'https://todoist.com/oauth/access_token'
         self.REQ_TOKEN = 'https://todoist.com/oauth/access_token'
-        self.consumer_key = settings.TH_TODOIST['client_id']
-        self.consumer_secret = settings.TH_TODOIST['client_secret']
+        self.consumer_key = settings.TH_TODOIST_KEY['client_id']
+        self.consumer_secret = settings.TH_TODOIST_KEY['client_secret']
         self.scope = 'task:add,data:read,data:read_write'
         self.service = 'ServiceTodoist'
         self.oauth = 'oauth2'

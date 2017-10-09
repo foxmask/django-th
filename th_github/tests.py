@@ -84,7 +84,7 @@ class GithubModelAndFormTest(GithubTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_GITHUB)
+        self.assertTrue(settings.TH_GITHUB_KEY)
 
     def test_get_services_list(self):
         th_service = ('th_github.my_github.ServiceGithub',)

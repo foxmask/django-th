@@ -35,6 +35,9 @@ extras_require_pocket = [
 extras_require_pushbullet = [
     'pushbullet.py==0.10.0'
 ]
+extras_require_reddit = [
+    'praw==5.1.0'
+]
 extras_require_rss = [
     'feedparser==5.2.1',
 ]
@@ -68,6 +71,7 @@ extras_require_all = \
     + extras_require_pelican\
     + extras_require_pocket\
     + extras_require_pushbullet\
+    + extras_require_reddit\
     + extras_require_rss\
     + extras_require_taiga\
     + extras_require_todoist\
@@ -116,6 +120,7 @@ setup(
         'pelican': extras_require_pelican,
         'pocket': extras_require_pocket,
         'pushbullet': extras_require_pushbullet,
+        'reddit': extras_require_reddit,
         'rss': extras_require_rss,
         'taiga': extras_require_taiga,
         'todoist': extras_require_todoist,

@@ -49,9 +49,9 @@ class ServiceEvernote(ServicesMgr):
     """
     def __init__(self, token=None, **kwargs):
         super(ServiceEvernote, self).__init__(token, **kwargs)
-        self.sandbox = settings.TH_EVERNOTE['sandbox']
-        self.consumer_key = settings.TH_EVERNOTE['consumer_key']
-        self.consumer_secret = settings.TH_EVERNOTE['consumer_secret']
+        self.sandbox = settings.TH_EVERNOTE_KEY['sandbox']
+        self.consumer_key = settings.TH_EVERNOTE_KEY['consumer_key']
+        self.consumer_secret = settings.TH_EVERNOTE_KEY['consumer_secret']
         self.token = token
         self.service = 'ServiceEvernote'
         self.oauth = 'oauth1'

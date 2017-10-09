@@ -25,9 +25,9 @@ class TwitterTest(MainTest):
         """
             does this settings exists ?
         """
-        self.assertTrue(settings.TH_TWITTER)
-        self.assertIn('consumer_key', settings.TH_TWITTER)
-        self.assertIn('consumer_secret', settings.TH_TWITTER)
+        self.assertTrue(settings.TH_TWITTER_KEY)
+        self.assertIn('consumer_key', settings.TH_TWITTER_KEY)
+        self.assertIn('consumer_secret', settings.TH_TWITTER_KEY)
 
     def test_get_services_list(self):
         th_service = ('th_twitter.my_twitter.ServiceTwitter',)

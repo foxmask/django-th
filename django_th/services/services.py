@@ -135,7 +135,8 @@ class ServicesMgr(object):
         cache_data = cache.get(kwargs.get('cache_stack') + '_' +
                                kwargs.get('trigger_id'))
         return PublishingLimit.get_data(kwargs.get('cache_stack'),
-                                        cache_data, kwargs.get('trigger_id'))
+                                        cache_data,
+                                        int(kwargs.get('trigger_id')))
 
     def save_data(self, trigger_id, **data):
         """

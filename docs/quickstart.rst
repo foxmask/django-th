@@ -2,8 +2,28 @@
 Quickstart
 ==========
 
-We will say we start from scratch.
-Assuming you already have python3.6 installed, with redis too.
+Requirements:
+
+* Python 3.6
+* Redis
+
+for installing redis, on Linux,
+
+.. code-block:: bash
+
+    apt-get install redis
+
+or
+
+.. code-block:: bash
+
+    yum install redis
+
+for installing redis on macosx: 
+
+.. code-block:: bash
+
+    brew install redis
 
 
 Create a virtualenv
@@ -27,7 +47,7 @@ We install Trigger-Happy from Pypi
 
     git clone https://github.com/foxmask/django-th.git
     cd django-th
-    pip install -e .[min]
+    pip install -e .
 
 
 Database
@@ -39,7 +59,7 @@ Database
     python manage.py migrate
     python manage.py createsuperuser
 
-You may choose to load the initial services:
+Load the initial services:
 
 .. code-block:: bash
 
@@ -53,53 +73,72 @@ Start the application
     python manage.py runserver &
 
 
-Now open your browser and go to http://127.0.0.1:8000/th/ to start using the application
-
-
-Adding the service Wallabag from the Admin
-==========================================
-
-
-Admin Home of Trigger Happy :
-
-click add from
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_home.png
-
-
-and fill the fields.
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_details.png
-
-
-For the service RSS (dont check auth required) and Wallabag (check auth required)
-
-
-This will give something like :
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_list.png
-
+Now open your browser and go to http://127.0.0.1:8000/th/ to start using the application by logged in
 
 
 Activating the service
 =======================
 
-Now that the 2 service RSS and Wallabag are enabled, go activate them for you :
+Go to activate the (at least) 2 services you plan to use:
 
 "Activated services" (http://127.0.0.1:8000/th/service/):
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_services_activated.png
 
+1rst Service
 
-Why this process from admin and non admin part ?
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+* Select Rss and validate
 
-* The project is hosted by yourself for your own need, but the project is able to handle trigger for your and your friends if you need.
-* Thus the 'admin' who hosts the project need to do some work of his admin part to add the service he will offer to user
-* Thus the user will go the his "my activated services" page to activate his service too.
-* But as you are all alone for the moment, you have the two hats : admin and end user, this is why you will need to do the two steps "Adding the service wallabag from the Admin" and "Activating the service"
+2nd Service
 
-Create a trigger
-================
+* Select Wallabag and fill the fields that are required with the parameters, can find in then page http://your-wallabag-instance/developer and validate
+
+
+Create a trigger: in 5 steps
+============================
 
 Once all of this is done, go back to the main page http://127.0.0.1:8000/th/ and create your first trigger
+
+* Step One:
+
+Select Rss
+
+* Step 2:
+
+enter the RSS URL that provide the data you want to grab
+
+* Step 3:
+
+Select Wallabag
+
+* Step 4:
+
+Set a tag (if you need)
+
+* Step 5:
+
+Set a description that will be displayed in the list of your triggers
+
+Turn the engine on:
+===================
+
+Now that everything is setup, you can run the following commands:
+
+.. code-block:: bash
+
+    python manage.py read
+
+
+.. code-block:: bash
+
+    python manage.py publish
+
+the first one, will read of the triggers that are enabled (with the blue "on/off" switch), and will download the data related to each of them, and will put them in the cache (available with Redis)
+
+The second one, will read the data from the cache, and will publish them on Wallabag.
+
+
+Once all of this is ok, you could :ref:`automate this commands <crontab>` later
+
+
+Have Fun, and happy automation ;-)

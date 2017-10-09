@@ -42,8 +42,8 @@ class ServiceTwitter(ServicesMgr):
         :param kwargs:
         """
         super(ServiceTwitter, self).__init__(token, **kwargs)
-        self.consumer_key = settings.TH_TWITTER['consumer_key']
-        self.consumer_secret = settings.TH_TWITTER['consumer_secret']
+        self.consumer_key = settings.TH_TWITTER_KEY['consumer_key']
+        self.consumer_secret = settings.TH_TWITTER_KEY['consumer_secret']
         self.token = token
         self.oauth = 'oauth1'
         self.service = 'ServiceTwitter'
@@ -229,6 +229,8 @@ class ServiceTwitter(ServicesMgr):
             trigger_id, **data)
 
         if data.get('link') and len(data.get('link')) > 0:
+            # remove html tag if any
+            content = html.strip_tags(content)
 
             if self.title_or_content(title):
 
@@ -324,9 +326,7 @@ class ServiceTwitter(ServicesMgr):
         :param title:
         :return:
         """
-        if "New status by" in title:
-            return False
-        return True
+        return "Toot from" not in title
 
     def set_twitter_content(self, content):
         """

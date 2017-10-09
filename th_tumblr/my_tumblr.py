@@ -38,8 +38,8 @@ class ServiceTumblr(ServicesMgr):
         self.AUTH_URL = 'https://www.tumblr.com/oauth/authorize'
         self.ACC_TOKEN = 'https://www.tumblr.com/oauth/access_token'
         self.REQ_TOKEN = 'https://www.tumblr.com/oauth/request_token'
-        self.consumer_key = settings.TH_TUMBLR['consumer_key']
-        self.consumer_secret = settings.TH_TUMBLR['consumer_secret']
+        self.consumer_key = settings.TH_TUMBLR_KEY['consumer_key']
+        self.consumer_secret = settings.TH_TUMBLR_KEY['consumer_secret']
         self.token = token
         self.service = 'ServiceTumblr'
         self.oauth = 'oauth1'

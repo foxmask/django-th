@@ -43,8 +43,8 @@ class ServicePushbullet(ServicesMgr):
         self.AUTH_URL = 'https://pushbullet.com/authorize'
         self.ACC_TOKEN = 'https://pushbullet.com/access_token'
         self.REQ_TOKEN = 'https://api.pushbullet.com/oauth2/token'
-        self.consumer_key = settings.TH_PUSHBULLET['client_id']
-        self.consumer_secret = settings.TH_PUSHBULLET['client_secret']
+        self.consumer_key = settings.TH_PUSHBULLET_KEY['client_id']
+        self.consumer_secret = settings.TH_PUSHBULLET_KEY['client_secret']
         self.scope = 'everything'
         self.service = 'ServicePushbullet'
         self.oauth = 'oauth2'

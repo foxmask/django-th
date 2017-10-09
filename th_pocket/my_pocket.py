@@ -41,7 +41,7 @@ class ServicePocket(ServicesMgr):
     """
     def __init__(self, token=None, **kwargs):
         super(ServicePocket, self).__init__(token, **kwargs)
-        self.consumer_key = settings.TH_POCKET['consumer_key']
+        self.consumer_key = settings.TH_POCKET_KEY['consumer_key']
         self.token = token
         self.oauth = 'oauth1'
         self.service = 'ServicePocket'
