@@ -29,7 +29,7 @@ class ServicesMgr(object):
     body = ''
     data = {}
 
-    class __ServicesMgr:
+    class __ServicesMgr:  # NOQA
 
         def __init__(self, arg):
             self.val = arg

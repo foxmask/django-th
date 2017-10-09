@@ -216,25 +216,21 @@ class ServiceMastodon(ServicesMgr):
             update_result(trigger_id, msg=e, status=status)
 
         try:
-            media_ids = None
             if settings.DJANGO_TH['sharing_media']:
                 # do we have a media in the content ?
-                media, mime_type = self.media_in_content(content)
+                content, media = self.media_in_content(content)
                 if media:
                     # upload the media first
-                    toot_media = toot_api.media_post(media_file=media,
-                                                     mime_type=mime_type)
-                    # create the post with the media id
-                    media_ids = toot_media['id']
+                    media_ids = toot_api.media_post(media_file=media)
+                    toot_api.status_post(content, media_ids=[media_ids])
+            else:
+                toot_api.toot(content)
 
-            toot_api.status_post(content, media_ids=media_ids)
-            # toot_api.toot(content)
             status = True
         except Exception as inst:
             logger.critical("Mastodon ERR {}".format(inst))
             status = False
             update_result(trigger_id, msg=inst, status=status)
-
         return status
 
     def get_tags(self, trigger_id):
@@ -278,14 +274,18 @@ class ServiceMastodon(ServicesMgr):
         :param content:
         :return:
         """
+        if 'https://t.co' in content:
+            content = re.sub(r'https://t.co/(\w+)', '', content)
         if 'https://pbs.twimg.com/media/' in content:
-            mime_type = 'image/jpeg'
-            m = re.search('(.*)https://pbs.twimg.com/media/(.*).jpg(.*)$',
-                          content)
-            url = 'https://pbs.twimg.com/media/{}.jpg'.format(m.group(2))
+            m = re.search('https://pbs.twimg.com/media/([\w\-_]+).jpg', content)
+            url = 'https://pbs.twimg.com/media/{}.jpg'.format(m.group(1))
             local_file = download_image(url)
-            return local_file, mime_type
-        return '', ''
+
+            content = re.sub(r'https://pbs.twimg.com/media/([\w\-_]+).jpg', '',
+                             content)
+
+            return content, local_file
+        return content
 
     def set_mastodon_content(self, content):
         """

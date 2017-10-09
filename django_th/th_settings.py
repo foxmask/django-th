@@ -23,7 +23,7 @@ DJANGO_TH = {
     # when URL of service contains media
     # we download them in the BASE_DIR + '/cache/'
     # and upload them through the API of the other service
-    'sharing_media': False,
+    'sharing_media': True,
 }
 
 TH_SERVICES = (
