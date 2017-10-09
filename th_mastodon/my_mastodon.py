@@ -52,26 +52,22 @@ class ServiceMastodon(ServicesMgr):
 
         def _get_toots(toot_api, toot_obj, search):
             """
-                get the toots from mastodon and return the filters to use :
-                search and count
+                get the toots from mastodon and return the filters to use
 
                 :param toot_obj: from Mastodon model
                 :param search: filter used for MastodonAPI.search()
-                :type toot_obj: Object
+                :type toot_obj: Object ServiceMastodon
                 :type search: dict
-                :return: count that limit the quantity of tweet to retrieve,
-                the filter named search, the tweets
+                :return: the filter named search, the toots
                 :rtype: list
             """
-
+            max_id = 0 if toot_obj.max_id is None else toot_obj.max_id
+            since_id = 0 if toot_obj.since_id is None else toot_obj.since_id
             # get the toots for a given tag
             statuses = ''
-            count = 100
+
             if toot_obj.tag:
-                count = 100
-                search['count'] = count
                 search['q'] = toot_obj.tag
-                search['result_type'] = 'recent'
                 # do a search
                 statuses = toot_api.search(**search)
                 # just return the content of te statuses array
@@ -79,40 +75,32 @@ class ServiceMastodon(ServicesMgr):
 
             # get the tweets from a given user
             elif toot_obj.tooter:
-                count = 200
-                search['count'] = count
-                search['username'] = toot_obj.tooter
-
+                search['id'] = toot_obj.tooter
                 # call the user timeline and get his toot
                 if toot_obj.fav:
-                    count = 20
-                    search['count'] = 20
                     statuses = toot_api.favourites(max_id=max_id,
-                                                   since_id=since_id,
-                                                   limit=count)
+                                                   since_id=since_id)
                 else:
+                    user_id = toot_api.account_search(q=toot_obj.tooter)
                     statuses = toot_api.account_statuses(
-                        id=toot_obj.tooter,
-                        max_id=max_id,
-                        since_id=since_id,
-                        limit=count)
+                        id=user_id[0]['id'], max_id=toot_obj.max_id,
+                        since_id=toot_obj.since_id)
 
-            return count, search, statuses
+            return search, statuses
 
         if self.token is not None:
             kw = {'app_label': 'th_mastodon', 'model_name': 'Mastodon',
                   'trigger_id': trigger_id}
             toot_obj = super(ServiceMastodon, self).read_data(**kw)
 
-            us = UserService.objects.get(user=self.user,
-                                         token=self.token,
+            us = UserService.objects.get(token=self.token,
                                          name='ServiceMastodon')
             try:
                 toot_api = MastodonAPI(
                     client_id=us.client_id,
                     client_secret=us.client_secret,
                     access_token=self.token,
-                    api_base_url=us.host
+                    api_base_url=us.host,
                 )
             except ValueError as e:
                 logger.error(e)
@@ -123,7 +111,7 @@ class ServiceMastodon(ServicesMgr):
                 search = {'since_id': toot_obj.since_id}
 
             # first request to Mastodon
-            count, search, statuses = _get_toots(toot_api, toot_obj, search)
+            search, statuses = _get_toots(toot_api, toot_obj, search)
 
             if len(statuses) > 0:
                 newest = None
@@ -135,8 +123,7 @@ class ServiceMastodon(ServicesMgr):
 
                 since_id = search['since_id'] = statuses[-1]['id'] - 1
 
-                count, search, statuses = _get_toots(toot_api, toot_obj,
-                                                     search)
+                search, statuses = _get_toots(toot_api, toot_obj, search)
 
                 newest = None
                 if len(statuses) > 0:
@@ -147,32 +134,25 @@ class ServiceMastodon(ServicesMgr):
                             max_id = s['id'] - 1
                         toot_name = s['account']['username']
                         # get the text of the tweet + url to this one
-                        if toot_obj.fav:
-                            url = '{0}/api/v1/statuses/{1}'.format(
-                                self.api_base_url, s['id'])
-                            title = _('Toot Fav from @{}'.format(toot_name))
-                        else:
-                            url = '{0}/api/v1/accounts/{1}/statuses'.format(
-                                self.api_base_url, s['id'])
-                            title = _('Toot from @{}'.format(toot_name))
-                        # Wed Aug 29 17:12:58 +0000 2012
-                        my_date = arrow.get(s['created_at'],
-                                            'ddd MMM DD HH:mm:ss Z YYYY')
+
+                        title = _('Toot from <a href="{}">@{}</a>'.
+                                  format(us.host, toot_name))
+
+                        my_date = arrow.get(s['created_at']).to(
+                            settings.TIME_ZONE)
                         published = arrow.get(my_date).to(settings.TIME_ZONE)
                         if date_triggered is not None and \
                            published is not None and \
                            now >= published >= date_triggered:
                             my_toots.append({'title': title,
                                              'content': s['content'],
-                                             'link': url,
+                                             'link': s['url'],
                                              'my_date': my_date})
                             # digester
-                            self.send_digest_event(trigger_id, title, url)
+                            self.send_digest_event(trigger_id, title, s['url'])
                     cache.set('th_mastodon_' + str(trigger_id), my_toots)
                     Mastodon.objects.filter(trigger_id=trigger_id).update(
-                        since_id=since_id,
-                        max_id=max_id,
-                        count=count)
+                        since_id=since_id, max_id=max_id)
         return my_toots
 
     def save_data(self, trigger_id, **data):

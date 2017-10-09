@@ -1,6 +1,7 @@
 # coding: utf-8
 import re
 import html.entities as htmlentities
+from html.parser import HTMLParser
 
 
 class HtmlEntities:
@@ -42,3 +43,25 @@ class HtmlEntities:
         pattern = re.compile(r"&#(\w+?);")
         string = pattern.sub(self.html_entity_decode_char, self.my_string)
         return pattern.sub(self.html_entity_decode_codepoint, string)
+
+
+class MLStripper(HTMLParser):
+
+    def __init__(self):
+
+        self.reset()
+        self.strict = False
+        self.convert_charrefs = True
+        self.fed = []
+
+    def handle_data(self, d):
+        self.fed.append(d)
+
+    def get_data(self):
+        return ''.join(self.fed)
+
+
+def strip_tags(html):
+    s = MLStripper()
+    s.feed(html)
+    return s.get_data()
