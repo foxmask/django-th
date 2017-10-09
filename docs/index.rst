@@ -1,34 +1,7 @@
 .. Trigger Happy documentation master file, created by foxmask
 
-Welcome to Trigger Happy's documentation!
-=========================================
-
-Contents:
----------
-
-Like there there are to create one's blog, website or one's own cloud system, "Trigger Happy"
-is a free software that provides a bridge to automatically share data between popular services you use on the web.
-And instead of giving your credentials to them, keep them with your own **Trigger Happy** to keep the control of your data!
-
-
-
-.. toctree::
-   :maxdepth: 2
-
-   quickstart
-   installation
-   configuration
-   running
-   usage
-   services
-   migration
-
-
-
-For example a new RSS item is published, **Trigger Happy** will be able to
-automatically create a note on your Evernote account or create a bookmark to
-your own Wallabag or Pocket account and so on.
-
+Trigger Happy: Steamer Bridge for your internet services
+========================================================
 
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
@@ -70,23 +43,48 @@ your own Wallabag or Pocket account and so on.
     :alt: License
 
 
+Description:
+------------
+
+`Trigger Happy` is a free software that provides a steamer bridge to automatically share data between popular services you use on the web.
+
+The goal of this project is to be independent from any other solution like IFTTT, CloudWork or others.
+
+Thus you could host your own solution and manage your own triggers without depending on any non-open solution.
+
+And then, instead of giving your credentials to those companies, keep them with your own **Trigger Happy** to keep the control of your data!
+
+
+How is it working ?
+-------------------
+
+For example:
+
+* A news is published on your favorites website, **Trigger Happy** will be able to automatically create a bookmark on your own Wallabag account, for later use, or create a note in your Evernote notebook.
+
+* On your Slack or Mattermost community channel, **Trigger Happy** can publish the issue of github.
+
+* When you add a tweet as favorite, **Trigger Happy** you can "toot" this one, on Mastodon
+
+And so on.
+
 .. image:: https://trigger-happy.eu/static/th_esb.png
    :alt: Trigger Happy Architecture
 
 
-Description:
-------------
 
-The goal of this project is to be independent from any other solution like
-IFTTT, CloudWork or others.
+.. toctree::
+   :maxdepth: 2
 
-Thus you could host your own solution and manage your own triggers without
-depending on any non-open solution.
+   quickstart
+   installation
+   configuration
+   running
+   crontab
+   usage
+   services
+   migration
 
-With this project you can host triggers for you.
-
-All you need is a hosting provider (or simply your own server ;) )
-that works with a manager of tasks like "cron" and, of course Python.
 
 
 Indices and tables
