@@ -73,7 +73,7 @@
          "status":true,
          "auth_required":false,
          "self_hosted":false,
-         "description":"Slack"
+         "description":"Where work happens"
       }
    },
    {
@@ -106,7 +106,7 @@
          "status":true,
          "auth_required":true,
          "self_hosted":false,
-         "description":"Tumblr Microblogging"
+         "description":"Microblogging and social networking website"
       }
    },
    {
@@ -117,7 +117,7 @@
          "status":true,
          "auth_required":true,
          "self_hosted":false,
-         "description":"Twitter Social Network in 140 characters"
+         "description":"Social Network in 140/280 characters"
       }
    },
    {
@@ -128,7 +128,7 @@
          "status":true,
          "auth_required":true,
          "self_hosted":true,
-         "description":"Wallabag - read it later service"
+         "description":"Save the web, freely"
       }
    },
    {
@@ -141,6 +141,16 @@
          "self_hosted":true,
          "description":"Your self-hosted, globally interconnected microblogging community"
       }
+   },
+   {
+      "model":"django_th.servicesactivated",
+      "pk":15,
+      "fields":{
+         "name":"ServiceReddit",
+         "status":true,
+         "auth_required":true,
+         "self_hosted":false,
+         "description":"The front page of internet"
+      }
    }
-
 ]
