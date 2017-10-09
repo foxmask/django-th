@@ -114,3 +114,17 @@ def warn_user_and_admin(consumer_provider, service):
     mail_admins(title,
                 body,
                 fail_silently=False)
+
+
+def download_image(url):
+    import requests
+    import os
+    cache_dir = os.path.dirname(__file__) + '/cache/'
+    local_filename = os.path.basename(url)
+    local_filename = cache_dir + local_filename
+    r = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024):
+            if chunk:
+                f.write(chunk)
+    return local_filename

@@ -28,6 +28,11 @@ DJANGO_TH = {
     'fire': env.bool('DJANGO_TH_FIRE', True),
     # if you want to allow the digest feature
     'digest_event': env.bool('DJANGO_TH_DIGEST_EVENT', True),
+    # if sharing_media set to True
+    # when URL of service contains media
+    # we download them in the BASE_DIR + '/cache/'
+    # and upload them through the API of the other service
+    'sharing_media': env.bool('DJANGO_TH_SHARING_MEDIA', True),
 }
 
 TH_SERVICES = (
