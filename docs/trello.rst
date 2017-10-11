@@ -77,14 +77,13 @@ to get
 
 2) The service keys
 
-It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
-
+Here are the modifications of .env file you will need to do to be able to use your credentials with Trello
 
 .. code-block:: python
 
     TH_TRELLO = {
-        'consumer_key': '<your trello key>',
-        'consumer_secret': '<your trello secret>',
+        TH_TUMBLR_CONSUMER_KEY= 'your trello key'
+        TH_TUMBLR_CONSUMER_SECRET= 'your trello secret'
     }
 
 creation of the table of the services
