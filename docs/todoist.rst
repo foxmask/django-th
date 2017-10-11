@@ -87,8 +87,8 @@ It's strongly recommended that your put the following in a local_settings.py, to
     TH_TODOIST = {
         # get your credential by subscribing to
         # https://developer.todoist.com/appconsole.html
-        'client_id': '<your todoist id>',
-        'client_secret': '<your todoist secret>',
+        TH_TODOIST_CLIENT_ID= 'your todoist id'
+        TH_TODOIST_CLIENT_SECRET= 'your todoist secret'
     }
 
 creation of the table of the services
