@@ -84,7 +84,7 @@ It's strongly recommended that your put the following in a local_settings.py, to
 
     TH_POCKET = {
         # get your credential by subscribing to http://getpocket.com/developer/
-        'consumer_key': '<your pocket key>',
+        TH_POCKET_CONSUMER_KEY= 'your pocket key'
     }
 
 creation of the table of the services
