@@ -52,12 +52,9 @@ Here are the modifications of .env file you will need to do to be able to use yo
 
 .. code-block:: python
 
-    TH_TWITTER = {
-        # get your credential by subscribing to
-        # https://dev.twitter.com/
-        TH_TWITTER_CONSUMER_KEY= 'your twitter key'
-        TH_TWITTER_CONSUMER_SECRET= 'your twitter secret'
-    }
+    TH_TWITTER_CONSUMER_KEY= 'your twitter key'
+    TH_TWITTER_CONSUMER_SECRET= 'your twitter secret'
+
 
 creation of the table of the services
 -------------------------------------
