@@ -10,8 +10,6 @@ Notification service
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS:
-
 uncomment the following line
 
 .. code-block:: python
@@ -30,8 +28,6 @@ to get
 
 modifications of th_settings.py
 -------------------------------
-
-1) TH_SERVICES
 
 uncomment the following line
 
