@@ -87,9 +87,9 @@ It's strongly recommended that your put the following in a local_settings.py, to
 .. code-block:: python
 
     TH_EVERNOTE = {
-        'sandbox': True,  # set it to False when in production
-        'consumer_key': 'my key',
-        'consumer_secret': 'my secret',
+        TH_EVERNOTE_SANDBOX = False 
+        TH_EVERNOTE_CONSUMER_KEY = 'your consumer key'
+        TH_EVERNOTE_CONSUMER_SECRET' =  'your consumer secret'
     }
 
 
