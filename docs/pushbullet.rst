@@ -11,8 +11,6 @@ Nota : to be able to work, this service requires that your host uses HTTPS
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
-
 uncomment the following line
 
 .. code-block:: python
@@ -29,37 +27,8 @@ to get
         'th_pushbullet',
     )
 
-2) Cache :
-
-After the default cache add :
-
-.. code-block:: python
-
-    CACHES = {
-        'default':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/',
-            'TIMEOUT': 600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
-        },
-        # Pushbullet Cache
-        'th_pushbullet':
-        {
-            'TIMEOUT': 500,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/12",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-
 modifications of th_settings.py
 -------------------------------
-
-1) TH_SERVICES
 
 add or uncomment the following line
 
@@ -77,7 +46,8 @@ to get
         'th_pushbullet.my_pushbullet.ServicePushbullet',
     )
 
-2) The service keys
+The service keys
+----------------
 
 Here are the modifications of .env file you will need to do to be able to use your credentials with Pushbullet
 
