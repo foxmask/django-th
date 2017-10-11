@@ -3,9 +3,9 @@
 Crontab
 =======
 
-a crontab is a system that automate tasks for you, at a given moment.
+a crontab is a system that automates tasks for you, at a given moment.
 
-Here are the tasks to be used to run the **Trigger Happy** engine automatically
+Here are the tasks to run the **Trigger Happy** engine automatically
 
 
 .. code-block:: bash
@@ -16,8 +16,8 @@ Here are the tasks to be used to run the **Trigger Happy** engine automatically
     */15 * * * * . /home/trigger-happy/bin/publish
 
 
-The first line is used to recycle the data, that have not been published, for example, because of reaching a rate limit.
-When this behavior occurs, the data stay in the cache, to be used at the next loop
+The first line is used to recycle the data, that is unpublished, for example, because of reaching a rate limit.
+When this behavior occurs, the data stays in the cache, to be used at the next loop.
 
 content of the **recycle** command
 
@@ -41,4 +41,4 @@ content of the **publish** command
 
 You may notice the folder `/home/trigger-happy/th/` in each command, this is a virtualenv given for the example
 
-the periodicity of the execution, is set like this, to avoid to make 2 tasks run in same time, and also, to avoid to reach often the rate limitation of Twitter and others sensitives services
+The periodicity of the execution is set like this, to avoid to make 2 tasks run in same time, and also, to avoid to reach often the rate limitation of Twitter and others sensitives services.
