@@ -79,16 +79,15 @@ to get
 
 2) The service keys
 
-It's strongly recommended that you put the following in a local_settings.py, to avoid to accidentally push this to a public repository
-
+Here are the modifications of .env file you will need to do to be able to use your credentials with Github
 
 .. code-block:: python
 
     TH_GITHUB = {
-        'username': 'username',
-        'password': 'password',
-        'consumer_key': 'my key',
-        'consumer_secret': 'my secret'
+        TH_GITHUB_USERNAME= 'username'
+        TH_GITHUB_PASSWORD= 'password'
+        TH_GITHUB_CONSUMER_KEY= 'your consumer key'
+        TH_GITHUB_CONSUMER_SECRET= 'your consumer secret'
     }
 
 creation of the table of the services

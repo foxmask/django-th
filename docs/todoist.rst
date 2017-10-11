@@ -79,16 +79,15 @@ to get
 
 2) The service keys
 
-It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
-
+Here are the modifications of .env file you will need to do to be able to use your credentials with Todoist
 
 .. code-block:: python
 
     TH_TODOIST = {
         # get your credential by subscribing to
         # https://developer.todoist.com/appconsole.html
-        'client_id': '<your todoist id>',
-        'client_secret': '<your todoist secret>',
+        TH_TODOIST_CLIENT_ID= 'your todoist id'
+        TH_TODOIST_CLIENT_SECRET= 'your todoist secret'
     }
 
 creation of the table of the services

@@ -79,16 +79,15 @@ to get
 
 2) The service keys
 
-It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
-
+Here are the modifications of .env file you will need to do to be able to use your credentials with Pushbullet
 
 .. code-block:: python
 
     TH_PUSHBULLET = {
         # get your credential by subscribing to
         # https://www.pushbullet.com/#settings/clients
-        'client_id': '<your pushbulet id>',
-        'client_secret': '<your pushbulet secret>',
+        TH_PUSHBULLET_CLIENT_ID= 'your pushbulet id'
+        TH_PUSHBULLET_CLIENT_SECRET= 'your pushbulet secret'
     }
 
 creation of the table of the services
