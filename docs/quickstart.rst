@@ -138,7 +138,7 @@ the first one, will read of the triggers that are enabled (with the blue "on/off
 The second one, will read the data from the cache, and will publish them on Wallabag.
 
 
-Once all of this is ok, you could :ref:`automate this commands <crontab>` later
+Once all of this is ok, you could automate this commands with :ref:`crontab` later
 
 
 Have Fun, and happy automation ;-)

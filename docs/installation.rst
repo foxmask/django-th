@@ -41,7 +41,7 @@ then continue by installing :
 .. code-block:: bash
 
     cd django-th
-    pip install -e .[min]
+    pip install -e .[all]
 
 
 Installation From Pypi
@@ -70,9 +70,11 @@ Once it's done, you can continue to the [configuration process](http://trigger-h
 Requirements
 ============
 
+Commons requirements
+--------------------
+
 * Python 3.5.x or 3.6.x
 * `Redis <https://redis.io/>`_
-
 * `DjangoRestFramework <https://pypi.python.org/pypi/Django/>`_
 * `Django <https://pypi.python.org/pypi/Django/>`_
 * `Arrow <https://pypi.python.org/pypi/arrow>`_
@@ -82,6 +84,9 @@ Requirements
 * `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_
 * `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_
 
+
+Service requirements
+--------------------
 
 for evernote support
 
@@ -96,46 +101,17 @@ On a Debian/Ubuntu system:
 
     apt-get install libtidy-dev
 
-for github support
-
-* `github <https://pypi.python.org/pypi/github3.py>`_
-
-for pelican support
-
-* `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_
-
-for pocket support
-
-* `pocket <https://pypi.python.org/pypi/pocket>`_
-
-for pushbullet support
-
-* `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_
-
-for redis support
-
-* `django-redis <https://pypi.python.org/pypi/django-redis>`_
-
-for rss support
-
-* `feedparser <https://pypi.python.org/pypi/feedparser>`_
-
-for taiga support
-
-* `python-taiga <https://pypi.python.org/pypi/python-taiga>`_
-
-for slack support
-
-* `requests <http://docs.python-requests.org/en/master>`_
-
-for todoist support
-
-* `todoist-python <https://pypi.python.org/pypi/todoist-python>`_
-
-for trello support
-
-* `trello <https://github.com/sarumont/py-trello>`_
-* `pypandoc <https://pypi.python.org/pypi/pypandoc>`_
+* for github support  `github <https://pypi.python.org/pypi/github3.py>`_
+* for mastodon support `Mastodon.py <https://pypi.python.org/pypi/mastodon.py>`_
+* for pelican support `awesome-slugify <https://pypi.python.org/pypi/awesome-slugify>`_
+* for pocket support  `pocket <https://pypi.python.org/pypi/pocket>`_
+* for pushbullet support `pushbullet.py <https://pypi.python.org/pypi/pushbullet.py>`_
+* for reddit support `praw <https://pypi.python.org/pypi/feedparser>`_
+* for rss support `feedparser <https://pypi.python.org/pypi/feedparser>`_
+* for taiga support `python-taiga <https://pypi.python.org/pypi/python-taiga>`_
+* for slack/mattermost support `requests <http://docs.python-requests.org/en/master>`_
+* for todoist support `todoist-python <https://pypi.python.org/pypi/todoist-python>`_
+* for trello support  `trello <https://github.com/sarumont/py-trello>`_ + pypandoc
 
 Pandoc is also needed of the system, that you can install on a Debian/Ubuntu system like this:
 
@@ -143,13 +119,6 @@ Pandoc is also needed of the system, that you can install on a Debian/Ubuntu sys
 
     apt-get install pandoc
 
-
-for twitter support
-
-* `twython <https://github.com/ryanmcgrath/twython>`_
-
-
-for wallabag support
-
-* `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_
+* for twitter support `twython <https://github.com/ryanmcgrath/twython>`_
+* for wallabag support `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_
 

@@ -6,59 +6,10 @@ Service Description:
 
 Taiga is a project management platform for agile developers & designers and project managers who want a beautiful tool that makes work truly enjoyable.
 
-modifications of settings.py
-----------------------------
+this app does not need any key, you need to have a Taiga account and being able to provide webhook
 
-add or uncomment the following line
+this webhook can be defined from https://<your community>.slack.com/apps/manage/custom-integrations > "customer integration" > incoming|outgoing webhook
 
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        # 'th_taiga',
-    )
-
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_taiga',
-    )
-
-modifications of th_settings.py
--------------------------------
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_taiga.my_taiga.ServiceTaiga',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_taiga.my_taiga.ServiceTaiga',
-    )
-
-creation of the table of the services
--------------------------------------
-
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
+https://tree.taiga.io/project/<your account>-<your community>/admin/third-parties/webhooks
 
 
-from the admin panel, activation of the service
------------------------------------------------
-
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
-
-* Select "Taiga",
-* Set the Status to "Enabled"
-* Fill a description

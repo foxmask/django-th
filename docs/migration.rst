@@ -4,8 +4,8 @@ MIGRATIONS from 0.10.x to 0.11.x :
 
 Note: in the SQL queries below, I use CURRENT_TIMESTAMP because of Postgresql. Adapt it to your own RDBMS.
 
-Django Trigger Happy tables:
-============================
+Trigger Happy tables
+====================
 
 To migrate, enter,
 
@@ -38,8 +38,8 @@ then replay
 
 
 
-Django Trigger Happy Module tables:
-===================================
+Trigger Happy Module tables
+===========================
 
 Evernote:
 ---------
@@ -67,31 +67,6 @@ if it's not the case, then add the following by hand like that:
     insert into django_migrations (app,name,applied) values('th_evernote','0001_initial',CURRENT_TIMESTAMP);
 
 
-Holidays:
----------
-
-if the migration complains that you've already created the table django_th_holidays then check it by:
-
-.. code-block:: sql
-
-    select * from django_migrations ;
-
-
-check that you don't have those record in the django_migrations table
-
-.. code-block:: sql
-
-    select * from django_migrations ;
-
-    13 | th_holidays       | 0001_initial        | 2015-06-10 10:00:00.977958+02
-
-if it's not the case, then add the following by hand like that:
-
-.. code-block:: sql
-
-    insert into django_migrations (app,name,applied) values('th_holidays','0001_initial',CURRENT_TIMESTAMP);
-
-
 Pocket:
 -------
 
@@ -115,32 +90,6 @@ if it's not the case, then add the following by hand like that:
 .. code-block:: sql
 
     insert into django_migrations (app,name,applied) values('th_pocket','0001_initial',CURRENT_TIMESTAMP);
-
-
-Readability:
-------------
-
-if the migration complains that you've already created the table django_th_readability then check it by:
-
-.. code-block:: sql
-
-    select * from django_migrations ;
-
-
-check that you don't have those record in the django_migrations table
-
-.. code-block:: sql
-
-    select * from django_migrations ;
-
-    13 | th_readability  | 0001_initial        | 2015-06-10 10:00:00.977958+02
-
-
-if it's not the case, then add the following by hand like that:
-
-.. code-block:: sql
-
-    insert into django_migrations (app,name,applied) values('th_readability','0001_initial',CURRENT_TIMESTAMP);
 
 
 Twitter:

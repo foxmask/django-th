@@ -6,64 +6,11 @@ Service Description:
 
 Your self-hosted, globally interconnected microblogging community
 
-modifications of settings.py
-----------------------------
-
-1) INSTALLED_APPS:
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        # 'th_mastodon',
-    )
-
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_mastodon',
-    )
-
-modifications of th_settings.py
--------------------------------
-
-1) TH_SERVICES
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_mastodon.my_mastodon.ServiceMastdoon',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_mastodon.my_mastodon.ServiceMastdoon',
-    )
-
-creation of the table of the services
--------------------------------------
-
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
 
 
-from the admin panel, activation of the service
------------------------------------------------
+Requesting a key
+----------------
 
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
+On https://<your mastodon instance>/settings/applications/new fill the form and get the informations, to be used from the page of the activation of the serivce http://127.0.0.1:8000/th/service/add/
 
-* Select "Mastodon",
-* Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect the user (or you) to Mastodon website to confirm the access of the Mastodon account
-* Provide a description such as "Your self-hosted, globally interconnected microblogging community"
+

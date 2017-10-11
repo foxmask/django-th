@@ -6,59 +6,6 @@ Service Description:
 
 A messaging app for teams who put robots on Mars
 
-modifications of settings.py
-----------------------------
+this app does not need any key, you need to have a Slack account and being able to provide incoming webhook or outgoing webhook
 
-add or uncomment the following line
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        # 'th_slack',
-    )
-
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_slack',
-    )
-
-modifications of th_settings.py
--------------------------------
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_slack.my_slack.ServiceSlack',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_slack.my_slack.ServiceSlack',
-    )
-
-creation of the table of the services
--------------------------------------
-
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
-
-
-from the admin panel, activation of the service
------------------------------------------------
-
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
-
-* Select "Slack",
-* Set the Status to "Enabled"
-* Fill a description
+this webhook can be defined from https://<your community>.slack.com/apps/manage/custom-integrations > "customer integration" > incoming|outgoing webhook

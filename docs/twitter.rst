@@ -6,44 +6,15 @@ Service Description:
 
 a Social Network
 
-modifications of settings.py
-----------------------------
+Requesting a key
+----------------
 
-add or uncomment the following line
+Access to the page https://apps.twitter.com/app/new
 
-.. code-block:: python
+* for the field "WebSite", set https://<yourdomain.com>
+* for the field "Callback URL", set https://<yourdomain.com>/th/callbacktwitter
 
-    INSTALLED_APPS = (
-        # 'th_twitter',
-    )
-
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_twitter',
-    )
-
-modifications of th_settings.py
--------------------------------
-
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_twitter.my_twitter.ServiceTwitter',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_twitter.my_twitter.ServiceTwitter',
-    )
+then validate and grab the key on the next page
 
 The service keys
 ----------------
@@ -55,23 +26,3 @@ Here are the modifications of .env file you will need to do to be able to use yo
     TH_TWITTER_CONSUMER_KEY= 'your twitter key'
     TH_TWITTER_CONSUMER_SECRET= 'your twitter secret'
 
-
-creation of the table of the services
--------------------------------------
-
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
-
-
-from the admin panel, activation of the service
------------------------------------------------
-
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
-
-* Select "Twitter",
-* Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect the user (or you) to Twitter website to confirm the access of the Twitter account
-* Fill a description
