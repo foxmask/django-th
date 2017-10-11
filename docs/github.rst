@@ -9,8 +9,6 @@ Powerful collaboration, code review, and code management for open source and pri
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS:
-
 add or uncomment the following line
 
 .. code-block:: python
@@ -27,38 +25,8 @@ to get
         'th_github',
     )
 
-
-2) Cache:
-
-After the default cache add :
-
-.. code-block:: python
-
-    CACHES = {
-        'default':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/',
-            'TIMEOUT': 600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
-        },
-        # GitHub
-        'th_github':
-        {
-            'TIMEOUT': 3600,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/7",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-
 modifications of th_settings.py
 -------------------------------
-
-1) TH_SERVICES
 
 add or uncomment the following line
 
@@ -77,7 +45,8 @@ to get
     )
 
 
-2) The service keys
+The service keys
+----------------
 
 Here are the modifications of .env file you will need to do to be able to use your credentials with Github
 
