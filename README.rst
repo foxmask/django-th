@@ -13,11 +13,6 @@
     :alt: Code Climate
 
 
-.. image:: https://codeclimate.com/github/foxmask/django-th/badges/coverage.svg
-   :target: https://codeclimate.com/github/foxmask/django-th/coverage
-   :alt: Test Coverage
-
-
 .. image:: https://scrutinizer-ci.com/g/foxmask/django-th/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/foxmask/django-th/?branch=master
    :alt: Scrutinizer Code Quality
@@ -38,37 +33,22 @@
     :alt: License
 
 
-=============
-Trigger Happy
-=============
-
-Automatically share data between popular services you use on the web.
-And instead of giving your credentials to them, become the owner of yours !
-
-For example a new RSS item is published, "Trigger Happy" will be able to
-automatically create a note on your Evernote account or create a bookmark to
-your own Wallabag or Pocket account and so on.
-
-
 .. image:: https://img.shields.io/badge/SayThanks.io-%E2%98%BC-1EAEDB.svg
     :target: https://saythanks.io/to/foxmask
     :alt: Say thanks to foxmask
 
 
-Description
-===========
+=============
+Trigger Happy
+=============
 
-The goal of this project is to be independent from any other solution like
-IFTTT, CloudWork or others.
+With this steamer bridge, automate the exchanges of the data, between your applications and services, you use on the web.
 
-Thus you could host your own solution and manage your own triggers without
-depending on any non-free solution.
+Make Twitter talking to Mastodon, make Github talking to Mattermost, store your favorite tweets by creating notes in Evernote, follow a RSS feeds and post each news in Wallabag, Pocket or Evernote.
 
-With this project you can host triggers for you.
+The possibilities are too numerous to be able to name all of them, but with that project you won't have rise your little finger at all, to automate everything and make your life easier.
 
-All you need is to have a hosting provider (or simply your own server ;) )
-who permits to use a manager of tasks like "cron" and, of course Python.
-
+And last but not least, as this is your project, all the credentials you gave to IFTTT and his brothers, are now, safe in your hands
 
 .. image:: https://trigger-happy.eu/static/th_esb.png
    :alt: Trigger Happy Architecture
@@ -80,34 +60,22 @@ Requirements
 The minimum are the following :
 
 * Python 3.6.x
-* `DjangoRestFramework <http://www.django-rest-framework.org/>`_ == 3.6.2
-* `Django <https://www.djangoproject.com/>`_ == 1.11
-* `Arrow <https://pypi.python.org/pypi/arrow>`_ == 0.10.0
-* `Django-formtools <https://pypi.python.org/pypi/django-formtools>`_ == 2.0
-* `Django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_ == 0.7.3
-* `Django-Redis <https://pypi.python.org/pypi/django-redis/>`_ == 4.7.0
-* `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_ == 1.3.3
-* `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_ == 0.8.0
-
+* `Redis <https://redis.io/>`_
+* `Django <https://www.djangoproject.com/>`_
+* `DjangoRestFramework <http://www.django-rest-framework.org/>`_
+* `Django-formtools <https://pypi.python.org/pypi/django-formtools>`_
+* `Django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_
+* `Django-Redis <https://pypi.python.org/pypi/django-redis/>`_
+* `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_
+* `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_
+* `Arrow <https://pypi.python.org/pypi/arrow>`_
 
 Installation
 ============
 
 .. code-block:: bash
 
-    pip install django-th[all]
-
-
-or to make your own "recipe" :
-
-
-.. code-block:: bash
-
-    pip install django-th[min]  # will just install RSS and Wallabag
-    pip install django-th[rss,wallabag]
-    pip install django-th[rss,wallabag,twitter,github]
-    pip install django-th[all]
-
+    pip install django-th
 
 
 Documentation

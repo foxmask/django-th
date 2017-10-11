@@ -36,11 +36,13 @@ Issue labels
 -----------
 :snake: some explanation on the labels of the issues
 
-* **Hacktoberfest** : for [the Hacktoberfest event](https://hacktoberfest.digitalocean.com)
-* **up-for-grabs** : for new users that have never been involved in any other opensource project
-* **easy** : this label tells you this issue is easy to fix
-* **middle** : this label tells you this issue is not complicate to fix, just take a little more time
-* **hard** : this label tells you this issue need you to know the core of the projet or a knwoledge of a new lib
+* **Hacktoberfest**: for [the Hacktoberfest event](https://hacktoberfest.digitalocean.com)
+* **up-for-grabs**: for new users that have never been involved in any other opensource project
+* **easy**: this label tells you this issue is easy to fix
+* **middle**: this label tells you this issue is not complicate to fix, just take a little more time
+* **hard**: this label tells you this issue need you to know the core of the projet or a knwoledge of a new lib
+* **help wanted**: this label tells you this issue needs YOU :)
+* **good first issue**: for new users on the project
 
 Unit Test
 -----------
@@ -62,3 +64,9 @@ exit 0
 ```
 
 Thus, if the tests pass, the commit will be done and you could push without any problem.
+
+If you don't plan to make `unit test`, the continuous integration tool (Travis CI) will analyze the code, and if it fails, this will take a lot of time to be validated by hand as we will need to:
+* create a dedicated branch <github-name>-issue<number>
+* pull your code
+* run the tests
+* debug 
