@@ -53,10 +53,8 @@ Here are the modifications of .env file you will need to do to be able to use yo
 
 .. code-block:: python
 
-    TH_POCKET = {
-        # get your credential by subscribing to http://getpocket.com/developer/
-        TH_POCKET_CONSUMER_KEY= 'your pocket key'
-    }
+    TH_POCKET_CONSUMER_KEY= 'your pocket key'
+
 
 creation of the table of the services
 -------------------------------------
