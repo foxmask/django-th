@@ -77,16 +77,15 @@ to get
 
 2) The service keys
 
-It's strongly recommended that your put the following in a local_settings.py, to avoid to accidentally push this to a public repository
-
+Here are the modifications of .env file you will need to do to be able to use your credentials with Twitter
 
 .. code-block:: python
 
     TH_TWITTER = {
         # get your credential by subscribing to
         # https://dev.twitter.com/
-        'consumer_key': '<your twitter key>',
-        'consumer_secret': '<your twitter secret>',
+        TH_TWITTER_CONSUMER_KEY= 'your twitter key'
+        TH_TWITTER_CONSUMER_SECRET= 'your twitter secret'
     }
 
 creation of the table of the services
