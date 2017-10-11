@@ -80,6 +80,7 @@ to get
 2) The service keys
 
 Here are the modifications of .env file you will need to do to be able to use your credentials with Github
+
 .. code-block:: python
 
     TH_GITHUB = {
