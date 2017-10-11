@@ -88,7 +88,7 @@ Here are the modifications of .env file you will need to do to be able to use yo
     TH_EVERNOTE = {
         TH_EVERNOTE_SANDBOX = False 
         TH_EVERNOTE_CONSUMER_KEY = 'your consumer key'
-        TH_EVERNOTE_CONSUMER_SECRET' =  'your consumer secret'
+        TH_EVERNOTE_CONSUMER_SECRET =  'your consumer secret'
     }
 
 
