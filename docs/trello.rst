@@ -82,8 +82,8 @@ Here are the modifications of .env file you will need to do to be able to use yo
 .. code-block:: python
 
     TH_TRELLO = {
-        TH_TUMBLR_CONSUMER_KEY= 'your trello key'
-        TH_TUMBLR_CONSUMER_SECRET= 'your trello secret'
+        TH_TRELLO_CONSUMER_KEY= 'your trello key'
+        TH_TRELLO_CONSUMER_SECRET= 'your trello secret'
     }
 
 creation of the table of the services
