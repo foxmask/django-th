@@ -9,8 +9,6 @@ A messaging app for teams who put robots on Mars
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
-
 add or uncomment the following line
 
 .. code-block:: python
@@ -29,8 +27,6 @@ to get
 
 modifications of th_settings.py
 -------------------------------
-
-1) TH_SERVICES
 
 add or uncomment the following line
 
