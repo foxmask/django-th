@@ -85,10 +85,10 @@ It's strongly recommended that you put the following in a local_settings.py, to 
 .. code-block:: python
 
     TH_GITHUB = {
-        'username': 'username',
-        'password': 'password',
-        'consumer_key': 'my key',
-        'consumer_secret': 'my secret'
+        TH_GITHUB_USERNAME= 'username'
+        TH_GITHUB_PASSWORD= 'password'
+        TH_GITHUB_CONSUMER_KEY= 'your consumer key'
+        TH_GITHUB_CONSUMER_SECRET= 'your consumer secret'
     }
 
 creation of the table of the services
