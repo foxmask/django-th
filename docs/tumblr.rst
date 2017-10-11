@@ -52,12 +52,9 @@ Here are the modifications of .env file you will need to do to be able to use yo
 
 .. code-block:: python
 
-    TH_TUMBLR = {
-        # get your credential by subscribing to
-        # https://dev.twitter.com/
-        TH_TUMBLR_CONSUMER_KEY= 'your tumblr key'
-        TH_TUMBLR_CONSUMER_SECRET= 'your tumblr secret'
-    }
+    TH_TUMBLR_CONSUMER_KEY= 'your tumblr key'
+    TH_TUMBLR_CONSUMER_SECRET= 'your tumblr secret'
+
 
 creation of the table of the services
 -------------------------------------
