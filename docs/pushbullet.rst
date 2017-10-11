@@ -53,12 +53,8 @@ Here are the modifications of .env file you will need to do to be able to use yo
 
 .. code-block:: python
 
-    TH_PUSHBULLET = {
-        # get your credential by subscribing to
-        # https://www.pushbullet.com/#settings/clients
-        TH_PUSHBULLET_CLIENT_ID= 'your pushbulet id'
-        TH_PUSHBULLET_CLIENT_SECRET= 'your pushbulet secret'
-    }
+    TH_PUSHBULLET_CLIENT_ID= 'your pushbulet id'
+    TH_PUSHBULLET_CLIENT_SECRET= 'your pushbulet secret'
 
 creation of the table of the services
 -------------------------------------
