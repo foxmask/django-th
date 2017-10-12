@@ -4,12 +4,12 @@ RSS
 Service Description:
 --------------------
 
-Service that grab RSS all around the web or create also RSS from other services
+Service that grabs RSS all around the web or creates also RSS from other services
 
 modifications of settings.py
 ----------------------------
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 add or uncomment the following line
 
@@ -27,9 +27,9 @@ to get
         'th_rss',
     )
 
-2) Cache :
+2) Cache:
 
-After the default cache add :
+After the default cache add:
 
 .. code-block:: python
 
@@ -92,6 +92,6 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "RSS",
 * Set the Status to "Enabled"
-* Uncheck "Auth Required": this service does not required an authorization to access to something
-* Fill a description
+* Uncheck "Auth Required": this service does not require an authorization to access anything
+* Provide a description
 
