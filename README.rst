@@ -42,13 +42,13 @@
 Trigger Happy
 =============
 
-With this steamer bridge, automate the exchanges of the data, between your applications and services, you use on the web.
+With this steamer bridge, automate the exchanges of the data between the applications and services you use on the web.
 
-Make Twitter talking to Mastodon, make Github talking to Mattermost, store your favorite tweets by creating notes in Evernote, follow a RSS feeds and post each news in Wallabag, Pocket or Evernote.
+Make Twitter talk to Mastodon, make Github talk to Mattermost, store your favorite tweets by creating notes in Evernote, follow RSS feeds and post each news in Wallabag, Pocket or Evernote.
 
-The possibilities are too numerous to be able to name all of them, but with that project you won't have rise your little finger at all, to automate everything and make your life easier.
+The possibilities are too numerous to name all of them, but with that project you won't have to raise your little finger at all: automate everything and make your life easier.
 
-And last but not least, as this is your project, all the credentials you gave to IFTTT and his brothers, are now, safe in your hands
+And last but not least, as this is your project, all the credentials you used to give to IFTTT and consorts, are now safe in your hands.
 
 .. image:: https://trigger-happy.eu/static/th_esb.png
    :alt: Trigger Happy Architecture
@@ -57,7 +57,7 @@ And last but not least, as this is your project, all the credentials you gave to
 Requirements
 ============
 
-The minimum are the following :
+The minimum requirements are the following:
 
 * Python 3.6.x
 * `Redis <https://redis.io/>`_
