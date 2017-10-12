@@ -6,7 +6,7 @@ Service Description:
 
 Your devices working better together
 
-Nota : to be able to work, this service requires that your host uses HTTPS
+Nota: to be able to work, this service requires that your host uses HTTPS
 
 Requesting a key
 ----------------
