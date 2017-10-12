@@ -7,7 +7,6 @@ from django_th.models import TriggerService
 
 
 class ServicesManagedAdmin(admin.ModelAdmin):
-
     """
         get the list of the available services (the activated one)
     """
@@ -50,6 +49,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
         return super(ServicesManagedAdmin, self).get_form(request, obj,
                                                           **defaults)
 
+
 class NameListFilter(admin.SimpleListFilter):
     title = 'name'
     parameter_name = 'name'
@@ -74,7 +74,6 @@ class UserServiceAdmin(admin.ModelAdmin):
     """
     list_display = ('user', 'name', 'token')
     list_filter = ['user', NameListFilter]
-
 
 
 class ProviderServiceListFilter(admin.SimpleListFilter):
@@ -108,7 +107,6 @@ class ComsumerServiceListFilter(admin.SimpleListFilter):
 
 
 class TriggerServiceAdmin(admin.ModelAdmin):
-
     """
         get the list of the User Service
     """
