@@ -2,7 +2,7 @@
 Running
 =======
 
-SETUP THE DATABASE AND RUNNING THE APPLICAITON
+SETUP THE DATABASE AND RUNNING THE APPLICATION
 
 
 Update the database
@@ -16,7 +16,7 @@ Once the settings step is done, enter the following command to sync the database
     python manage.py migrate
 
 
-If you meet some errors with this command, have a look at MIGRATION_0.10.x_to_0.11.x.rst file
+If you meet some errors with this command, have a look at the MIGRATION_0.10.x_to_0.11.x.rst file
 
 
 If you are installing the project from scratch, do not forget to create a super user:
