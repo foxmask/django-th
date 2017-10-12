@@ -1,6 +1,6 @@
-==================================
-MIGRATIONS from 0.10.x to 0.11.x :
-==================================
+=================================
+MIGRATIONS from 0.10.x to 0.11.x:
+=================================
 
 Note: in the SQL queries below, I use CURRENT_TIMESTAMP because of Postgresql. Adapt it to your own RDBMS.
 
@@ -166,4 +166,4 @@ then play again
 
     python manage.py migrate
 
-thus the migration will skip that steps and will continue smoothly.
+thus the migration will skip that step and will continue smoothly.

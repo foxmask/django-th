@@ -1,11 +1,11 @@
-==================================
-MIGRATIONS from 0.10.x to 0.11.x :
-==================================
+=================================
+MIGRATIONS from 0.10.x to 0.11.x:
+=================================
 
-Nota : in the SQL queries below, I use CURRENT_TIMESTAMP because of Postgresql. Adapt it to your own RDBMS.
+Nota: in the SQL queries below, I use CURRENT_TIMESTAMP because of Postgresql. Adapt it to your own RDBMS.
 
-Django Trigger Happy tables :
-=============================
+Django Trigger Happy tables:
+============================
 
 To migrate enter, 
 
@@ -13,7 +13,7 @@ To migrate enter,
 
     python manage.py  migrate
 
-if the migration complains  that you've already created the table django_th_rss then check the follow :
+if the migration complains that you've already created the table django_th_rss then check the following:
 
 .. code-block:: sql
     
@@ -23,7 +23,7 @@ to find
 
     11 | django_th         | 0001_initial        | 2015-06-10 10:00:00.977958+02
 
-if you dont have it then do :
+if you dont have it then do:
 
 .. code-block:: sql
 
@@ -38,20 +38,20 @@ then replay
 
 
 
-Django Trigger Happy Module tables :
-====================================
+Django Trigger Happy Module tables:
+===================================
 
-Evernote :
-----------
+Evernote:
+---------
 
-if the migration complains that you've already created the table django_th_evernote then check it by :
+if the migration complains that you've already created the table django_th_evernote then check it by:
 
 .. code-block:: sql
 
     select * from django_migrations ;
 
 
-check that you dont have those record in the django_migrations table
+check that you don't have those record in the django_migrations table
 
 .. code-block:: sql
     
@@ -60,24 +60,24 @@ check that you dont have those record in the django_migrations table
     13 | th_evernote       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
 
 
-if its not the case, then add the following by hand like that :
+if it's not the case, then add the following by hand like that:
 
 .. code-block:: sql
 
     insert into django_migrations (app,name,applied) values('th_evernote','0001_initial',CURRENT_TIMESTAMP);
 
 
-Holidays :
-----------
+Holidays:
+---------
 
-if the migration complains that you've already created the table django_th_holidays then check it by :
+if the migration complains that you've already created the table django_th_holidays then check it by:
 
 .. code-block:: sql
 
     select * from django_migrations ;
 
 
-check that you dont have those record in the django_migrations table
+check that you don't have those record in the django_migrations table
 
 .. code-block:: sql
     
@@ -85,24 +85,24 @@ check that you dont have those record in the django_migrations table
 
     13 | th_holidays       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
 
-if its not the case, then add the following by hand like that :
+if it's not the case, then add the following by hand like that:
 
 .. code-block:: sql
 
     insert into django_migrations (app,name,applied) values('th_holidays','0001_initial',CURRENT_TIMESTAMP);
 
 
-Pocket :
---------
+Pocket:
+-------
 
-if the migration complains that you've already created the table django_th_pocket then check it by :
+if the migration complains that you've already created the table django_th_pocket then check it by:
 
 .. code-block:: sql
 
     select * from django_migrations ;
 
 
-check that you dont have those record in the django_migrations table
+check that you don't have those record in the django_migrations table
 
 .. code-block:: sql
     
@@ -110,24 +110,24 @@ check that you dont have those record in the django_migrations table
 
     13 | th_pocket       | 0001_initial        | 2015-06-10 10:00:00.977958+02 
 
-if its not the case, then add the following by hand like that :
+if it's not the case, then add the following by hand like that:
 
 .. code-block:: sql
 
     insert into django_migrations (app,name,applied) values('th_pocket','0001_initial',CURRENT_TIMESTAMP);
 
 
-Readability :
--------------
+Readability:
+------------
 
-if the migration complains that you've already created the table django_th_readability then check it by :
+if the migration complains that you've already created the table django_th_readability then check it by:
 
 .. code-block:: sql
 
     select * from django_migrations ;
 
 
-check that you dont have those record in the django_migrations table
+check that you don't have those record in the django_migrations table
 
 .. code-block:: sql
     
@@ -136,24 +136,24 @@ check that you dont have those record in the django_migrations table
     13 | th_readability  | 0001_initial        | 2015-06-10 10:00:00.977958+02 
 
 
-if its not the case, then add the following by hand like that :
+if it's not the case, then add the following by hand like that:
 
 .. code-block:: sql
 
     insert into django_migrations (app,name,applied) values('th_readability','0001_initial',CURRENT_TIMESTAMP);
 
 
-Twitter :
----------
+Twitter:
+--------
 
-if the migration complains that you've already created the table django_th_twitter then check it by :
+if the migration complains that you've already created the table django_th_twitter then check it by:
 
 .. code-block:: sql
 
     select * from django_migrations ;
 
 
-check that you dont have those record in the django_migrations table
+check that you don't have those record in the django_migrations table
 
 .. code-block:: sql
     
@@ -162,7 +162,7 @@ check that you dont have those record in the django_migrations table
     13 | th_twitter     | 0001_initial        | 2015-06-10 10:00:00.977958+02 
 
 
-if its not the case, then add the following by hand like that :
+if it's not the case, then add the following by hand like that:
 
 .. code-block:: sql
 
@@ -185,8 +185,8 @@ otherwise add this too
     insert into django_migrations (app,name,applied) values('th_twitter','0002_int_to_bigint',CURRENT_TIMESTAMP);
 
 
-Table to drop :
----------------
+Table to drop:
+--------------
 
 with the last 
 
@@ -195,7 +195,7 @@ with the last
     python manage.py migrate
 
 
-you will meet this message :
+you will see this message:
 
 
 .. code-block:: bash
@@ -217,4 +217,4 @@ then play again
 
     python manage.py migrate
 
-thus the migration will skip that steps and will continue smoothly
+thus the migration will skip that step and will continue smoothly
