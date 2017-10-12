@@ -4,7 +4,7 @@ Evernote
 Service Description:
 --------------------
 
-This service allows to take notes, photos, schedules things and so on
+This service allows to take notes, photos, schedule things and so on
 
 
 Requesting a key
@@ -18,7 +18,7 @@ Fill the form and get the informations that you will need to provide in the next
 The service keys
 ----------------
 
-Here are the modifications of .env file you will need to do to be able to use your credentials with Evernote
+Here are the modifications of .env file you will need to make to be able to use your credentials with Evernote
 
 .. code-block:: python
 

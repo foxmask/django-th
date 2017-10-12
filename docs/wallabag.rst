@@ -21,7 +21,7 @@ add or uncomment the following lines
 
 to get
 
-1) INSTALLED_APPS :
+1) INSTALLED_APPS:
 
 .. code-block:: python
 
@@ -29,9 +29,9 @@ to get
         'th_wallabag',
     )
 
-2) Cache :
+2) Cache:
 
-After the default cache add :
+After the default cache add:
 
 .. code-block:: python
 
@@ -79,7 +79,7 @@ to get
 
 4) The service keys
 
-Those will be required to be filled when activating the service for each user
+Those will be required when activating the service for each user
 
 Have a look at https://github.com/foxmask/wallabag_api/blob/master/README.rst for more details about them
 
@@ -93,7 +93,7 @@ enter the following command
     python manage.py migrate
 
 
-from the admin panel : activation of the service
+from the admin panel: activation of the service
 ------------------------------------------------
 
 from http://yourdomain.com/admin/django_th/servicesactivated/add/
@@ -104,9 +104,9 @@ from http://yourdomain.com/admin/django_th/servicesactivated/add/
 
 * Select "Wallabag",
 * Set the Status to "Enabled"
-* Check Auth Required: this will permit to redirect the user (or you) to your Wallabag application which will request a token
-* Check Self Hosted: this will permit to enter the details about the service key we speak from point 4
-* Fill a description
+* Check Auth Required: this will redirect the user (or you) to the Wallabag application which will request a token
+* Check Self Hosted: this will allow to enter the details about the service key mentioned at step 4
+* Provide a description
 
 from "My Activated Service" page
 --------------------------------
@@ -117,7 +117,7 @@ Now go to the page of "My Activated services" to enable it http://yourdomain.com
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_service_wallabag_add.png
 
-then fill the fields that are required with the parameters, you got from point 4 earlier
+then fill the fields that are required with the parameters you got from step 4 earlier
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_service_wallabag_settings.png
 
