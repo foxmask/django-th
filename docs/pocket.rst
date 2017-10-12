@@ -11,7 +11,7 @@ Requesting a key
 
 On https://getpocket.com/developer/ , click on 'create a new app'
 
-Fill the form and get the informations that you will need to provide in the next paragraph
+Fill the form and get the information that you will need to provide in the next paragraph
 
 
 The service keys
