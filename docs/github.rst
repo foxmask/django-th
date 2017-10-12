@@ -18,7 +18,7 @@ Fill the form and get the informations that you will need to provide in the next
 The service keys
 ----------------
 
-Here are the modifications of .env file you will need to do to be able to use your credentials with Github
+Here are the modifications of .env file you will need to make to be able to use your credentials with Github
 
 .. code-block:: python
 

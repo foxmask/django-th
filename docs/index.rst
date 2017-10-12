@@ -55,8 +55,8 @@ Thus you could host your own solution and manage your own triggers without depen
 And then, instead of giving your credentials to those companies, keep them with your own **Trigger Happy** to keep the control of your data!
 
 
-How is it working ?
--------------------
+How does it work?
+-----------------
 
 For example:
 
