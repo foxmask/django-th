@@ -1,7 +1,7 @@
 # Docker for Trigger Happy
 
-This is a very very early stage for docker support
-but this should do the trick until next time based on https://docs.docker.com/engine/reference/commandline/build/ and https://docs.docker.com/compose/django/ and a bit of https://hub.docker.com/_/django/
+This is very very early stage for docker support
+but this should do the trick until next time, based on https://docs.docker.com/engine/reference/commandline/build/ and https://docs.docker.com/compose/django/ and a bit of https://hub.docker.com/_/django/
 
 ## Build
 
@@ -25,7 +25,7 @@ docker-compose run web  python manage.py createsuperuser --settings=django_th.se
 
 ## Running tasks
 
-2 tasks are usually in the crontab : one to read the data source, one to publish the grabbed data:
+2 tasks are usually in the crontab: one to read the data source, one to publish the grabbed data:
 
 ```
 docker-compose run web  python manage.py read --settings=django_th.settings_docker

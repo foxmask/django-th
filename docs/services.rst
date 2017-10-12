@@ -3,7 +3,7 @@
 Services
 ========
 
-This page cover the services that are handled by TriggerHappy, and will guide you through their installation
+This page covers the services that are handled by TriggerHappy, and will guide you through their installation
 
 Activate the services
 ---------------------
@@ -12,17 +12,17 @@ to activate a service, you will need to follow those steps
 
 * Requesting a key to the Services
 * Adding the key to your .env file
-* Activate the service from http://127.0.0.1:8000/th/service/add/
+* Activating the service from http://127.0.0.1:8000/th/service/add/
 
 
-in details this gives us :
+in details this gives us:
 
 
 Requesting a key to the Services
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For each service, Trigger Happy expects to have some consumer key coming from the wanted service.
-So for each service, you need to register an account on each of this service, then required a key.
+So you need to register an account on each of the services, then require a key.
 
 
 Adding the key to the .env file
@@ -33,7 +33,7 @@ Adding the key to the .env file
     TH_<SERVICE_NAME>_CONSUMER_KEY = 'your key'
     TH_<SERVICE_NAME>_CONSUMER_SECRET = 'your secret'
 
-For example for Twitter :
+For example for Twitter:
 
 .. code-block:: python
 
@@ -44,7 +44,7 @@ For example for Twitter :
 Activate the service
 ~~~~~~~~~~~~~~~~~~~~
 
-from the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/add/
 
 
 Disable an existing service from the admin panel
@@ -57,7 +57,7 @@ Thus, the service(s) won't be available for anyone.
 Supported services
 ------------------
 
-Here are the service that will follow almost the same previous path
+Here are the services that will follow almost the same previous path
 
 .. toctree::
    :maxdepth: 2
