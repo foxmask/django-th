@@ -1,11 +1,8 @@
 .*
 !.coveragerc
+!django_th/.env
 *.log
 th_tox
-.cache
-.tox
 Dockerfile
-.dockerfileignore
-.gitignore
 .git/
 *.sqlite3
