@@ -7,6 +7,15 @@ New Feature
 ) to request this feature, thus we will check if it matches the spirit of the project.
 
 
+New Module
+----------
+
+You have an idea for a new module ? let's go !
+
+To Create one, [I made this project](https://github.com/foxmask/django-th-ansible) which allow to build a new module from scratch.
+Just launch `ansible` with the parameters you setup in the file `site.yml` and 80% of the code of the module will be done. 
+
+
 Bug Fixing
 ----------
 
@@ -25,24 +34,6 @@ Development
 1. commit and push to your cloned repository
 1. make a Pull Request
 1. wait patiently ;)
-
-
-Pull Request
-------------
-
-:gift: Create first an [issue](https://github.com/foxmask/django-th/issues/new), then follow the step above in 'development' 
-
-Issue labels
-------------
-:snake: some explanation on the labels of the issues
-
-* **Hacktoberfest**: for [the Hacktoberfest event](https://hacktoberfest.digitalocean.com)
-* **up-for-grabs**: for new users that have never been involved in any other opensource project
-* **easy**: this label tells you this issue is easy to fix
-* **middle**: this label tells you this issue is not complicated to fix, it just takes a little more time
-* **hard**: this label tells you this issue needs you to know the core of the project or a knowledge of a new lib
-* **help wanted**: this label tells you this issue needs YOU :)
-* **good first issue**: for new users on the project
 
 Unit Test
 ---------
@@ -70,3 +61,21 @@ If you don't plan to make `unit test`, the continuous integration tool (Travis C
 * pull your code
 * run the tests
 * debug 
+
+Pull Request
+------------
+
+:gift: Create first an [issue](https://github.com/foxmask/django-th/issues/new), then follow the step above in 'development' 
+
+Issue labels
+------------
+:snake: some explanation on the labels of the issues
+
+* **Hacktoberfest**: for [the Hacktoberfest event](https://hacktoberfest.digitalocean.com)
+* **up-for-grabs**: for new users that have never been involved in any other opensource project
+* **easy**: this label tells you this issue is easy to fix
+* **middle**: this label tells you this issue is not complicated to fix, it just takes a little more time
+* **hard**: this label tells you this issue needs you to know the core of the project or a knowledge of a new lib
+* **help wanted**: this label tells you this issue needs YOU :)
+* **good first issue**: for new users on the project
+
