@@ -19,6 +19,7 @@ class ServicesMgrTestCase(MainTest):
         self.service = ServicesMgr(arg)
         self.service.consumer_key = 'azerty'
         self.service.consumer_secret = 'qsdfghjk'
+        self.service.name = 'ServiceRss'
 
         self.oauth = 'oauth1'
         self.request = Client()
@@ -54,12 +55,11 @@ class ServicesMgrTestCase(MainTest):
 
     def test_save_data(self):
         trigger_id = 1
-        data = {'title': 'a title', 'summary_detail': 'a content'}
+        data = dict({'title': 'a title', 'summary_detail': 'a content'})
         data['output_format'] = 'md'
         title, content = self.service.save_data(trigger_id, **data)
         self.assertTrue(title)
         self.assertTrue(content)
 
-    # def test_auth(self):
-    #    request_token = self.service.auth(self.request)
-    #    self.assertTrue(type(request_token) is str)
+    def test_str(self):
+        self.assertEqual(self.service.__str__(), self.service.name)

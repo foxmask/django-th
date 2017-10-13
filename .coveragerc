@@ -6,7 +6,7 @@ exclude_lines =
 
 [run]
 omit =
-    */migrations/*
+    */migrations/*, *tests*
     setup.py
     django_th/th_tox
     django_th/wsgi.py
@@ -17,3 +17,4 @@ omit =
     django_th/management/commands/recycle.py
     django_th/management/commands/read_n_pub.py
     */from_*.py
+

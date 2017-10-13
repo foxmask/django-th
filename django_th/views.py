@@ -10,10 +10,7 @@ from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.db.models import Q
 from django.utils.decorators import method_decorator
 
-try:
-    from django.urls import reverse, reverse_lazy
-except ImportError:  # Django 1.9 and earlier
-    from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 # trigger_happy
 from django_th.models import TriggerService, UserService

@@ -1,7 +1,7 @@
 # coding: utf-8
 from django.test import TestCase
 
-from django_th.models import TriggerService
+from django_th.models import TriggerService, Digest
 from django_th.models import UserService, ServicesActivated, update_result
 from django_th.forms.base import TriggerServiceForm
 from django_th.forms.base import UserServiceForm
@@ -123,3 +123,27 @@ class TriggerServiceTest(MainTest):
         t = self.create_triggerservice()
         self.assertTrue(isinstance(t, TriggerService))
         update_result(t.id, msg='a dummy result message', status=True)
+
+
+class DigestTest(MainTest):
+
+    """
+        Digest Model
+    """
+
+    def test_digest(self):
+        title = 'ServiceRss'
+        duration = 'd'
+        d = Digest.objects.create(user=self.user, title=title,
+                                  duration=duration,
+                                  date_end="2013-06-10")
+
+        self.assertTrue(isinstance(d, Digest))
+        self.assertEqual(d.show(),
+                         "Digest %s - %s - %s - %s - %s - %s" % (
+                             d.user, d.provider, d.title, d.link, d.duration,
+                             d.date_end))
+        self.assertEqual(d.__str__(),
+                         "%s - %s - %s - %s - %s - %s" % (
+                             d.user, d.provider, d.title, d.link, d.duration,
+                             d.date_end))

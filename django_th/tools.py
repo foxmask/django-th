@@ -117,6 +117,11 @@ def warn_user_and_admin(consumer_provider, service):
 
 
 def download_image(url):
+    """
+
+    :param url: url of the image to download
+    :return: local_filename the name of the file in the cache
+    """
     import requests
     import os
     cache_dir = os.path.dirname(__file__) + '/cache/'

@@ -1,6 +1,12 @@
 # coding: utf-8
 from unittest.mock import patch
+from importlib import import_module
 import requests
+
+from django.conf import settings
+
+from django.core.urlresolvers import reverse
+from django.test import RequestFactory
 
 from django_th.tests.test_main import MainTest
 
@@ -65,6 +71,8 @@ class ServiceWallabagTest(WallabagTest):
 
     def setUp(self):
         super(ServiceWallabagTest, self).setUp()
+        self.factory = RequestFactory()
+        # self.user = User.objects.get(username='john')
 
     def test_read_data(self):
         self.create_triggerservice()
@@ -98,3 +106,35 @@ class ServiceWallabagTest(WallabagTest):
             se = ServiceWallabag()
             se.save_data(self.trigger_id, **kwargs)
         mock_save_data.assert_called_once_with()
+
+    def test_auth(self):
+        self.create_triggerservice()
+        request = self.factory.get('/wallabag_callback')
+        callback_url = 'http://%s%s' % (request.get_host(),
+                                        reverse('wallabag_callback'))
+        request.user = self.user
+        engine = import_module(settings.SESSION_ENGINE)
+        session = engine.SessionStore()
+        request.session = session
+        se = ServiceWallabag()
+        response = se.auth(request)
+        self.assertEqual(response, callback_url)
+
+    def test_callback(self):
+        self.create_triggerservice()
+        request = self.factory.get('/wallabag_callback')
+        request.user = self.user
+        se = ServiceWallabag()
+        response = se.callback(request, **{})
+        self.assertEqual(response, 'wallabag/callback.html')
+        # request.user = User.objects.create(id=99)
+        # response = se.callback(request, **{})
+        # self.assertEqual(response, '/')
+
+    def test_create_entry(self):
+        data = dict({'link': ''})
+        title = ''
+        tags = ''
+        se = ServiceWallabag()
+        response = se._create_entry(title, data, tags)
+        self.assertTrue(type(response) is bool)

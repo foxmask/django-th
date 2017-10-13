@@ -192,3 +192,11 @@ class ServiceEvernoteTest(EvernoteTest):
     def test_cleaning_content(self):
         se = ServiceEvernote(self.token)
         self.assertIsInstance(se._cleaning_content('foobar'), str)
+
+    def test_set_note_attribute(self):
+        data = {}
+        attr = EvernoteMgr.set_note_attribute(data)
+        self.assertTrue(type(attr) is bool)
+        data = {'link': 'http://localhost'}
+        attr = EvernoteMgr.set_note_attribute(data)
+        self.assertTrue(type(attr) is not bool)
