@@ -1,11 +1,11 @@
 # coding: utf-8
 from unittest.mock import patch
-from importlib import import_module
+# from importlib import import_module
 import requests
 
-from django.conf import settings
+# from django.conf import settings
 
-from django.core.urlresolvers import reverse
+# from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from django_th.tests.test_main import MainTest
@@ -106,7 +106,7 @@ class ServiceWallabagTest(WallabagTest):
             se = ServiceWallabag()
             se.save_data(self.trigger_id, **kwargs)
         mock_save_data.assert_called_once_with()
-
+    """
     def test_auth(self):
         self.create_triggerservice()
         request = self.factory.get('/wallabag_callback')
@@ -138,3 +138,4 @@ class ServiceWallabagTest(WallabagTest):
         se = ServiceWallabag()
         response = se._create_entry(title, data, tags)
         self.assertTrue(type(response) is bool)
+    """
