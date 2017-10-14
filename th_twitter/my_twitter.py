@@ -336,7 +336,4 @@ class ServiceTwitter(ServicesMgr):
         """
         content = html.strip_tags(content)
 
-        if len(content) > 140:
-            return content[:140]
-
-        return content
+        return content[:140] if len(content) > 140 else content

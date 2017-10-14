@@ -94,8 +94,31 @@ class TodoistTest(MainTest):
                 'title': 'what else',
                 'content': 'foobar'}
         content = data['title'] + ' ' + data['content'] + ' ' + data['link']
-        print(content)
         with patch.object(TodoistAPI, 'add_item') as mock_save_data:
             se = ServiceTodoist(self.token)
             se.save_data(self.trigger_id, **data)
         mock_save_data.assert_called_once_with(content)
+
+    def test_save_data2(self):
+        """
+           data is empty
+        """
+        self.create_todoist()
+        data = {'link': '',
+                'title': '',
+                'content': ''}
+        se = ServiceTodoist(self.token)
+        res = se.save_data(self.trigger_id, **data)
+        self.assertFalse(res)
+
+    def test_save_data3(self):
+        """
+           token is empty
+        """
+        data = {'link': '',
+                'title': '',
+                'content': ''}
+        self.token = ''
+        se = ServiceTodoist(self.token)
+        res = se.save_data(self.trigger_id, **data)
+        self.assertFalse(res)

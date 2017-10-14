@@ -13,6 +13,11 @@
     :alt: Code Climate
 
 
+.. image:: https://codeclimate.com/github/foxmask/django-th/badges/coverage.svg
+   :target: https://codeclimate.com/github/foxmask/django-th/coverage
+   :alt: Test Coverage
+
+
 .. image:: https://scrutinizer-ci.com/g/foxmask/django-th/badges/quality-score.png?b=master
    :target: https://scrutinizer-ci.com/g/foxmask/django-th/?branch=master
    :alt: Scrutinizer Code Quality

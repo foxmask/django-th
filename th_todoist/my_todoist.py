@@ -105,8 +105,7 @@ class ServiceTodoist(ServicesMgr):
                                                                **data)
 
         if self.token:
-            if title or content or \
-                            (data.get('link') and len(data.get('link'))) > 0:
+            if title or content or data.get('link'):
                 content = title + ' ' + content + ' ' + data.get('link')
 
                 self.todoist.add_item(content)

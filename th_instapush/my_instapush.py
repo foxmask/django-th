@@ -1,10 +1,6 @@
 # coding: utf-8
 from instapush import Instapush, App
 
-# django classes
-from logging import getLogger
-
-# django_th classes
 from django_th.services.services import ServicesMgr
 from th_instapush.models import Instapush as InstapushModel
 
@@ -18,8 +14,6 @@ from th_instapush.models import Instapush as InstapushModel
         ...
     )
 """
-
-logger = getLogger('django_th.trigger_happy')
 
 
 class ServiceInstapush(ServicesMgr):
@@ -43,7 +37,7 @@ class ServiceInstapush(ServicesMgr):
 
             :rtype: list
         """
-        pass
+        return {}
 
     def save_data(self, trigger_id, **data):
         """

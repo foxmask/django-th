@@ -2,9 +2,13 @@
 from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
-from th_tumblr.models import Tumblr
 from django_th.models import TriggerService, UserService, ServicesActivated
+from th_tumblr.models import Tumblr
+from th_tumblr.my_tumblr import ServiceTumblr
 from th_tumblr.forms import TumblrProviderForm, TumblrConsumerForm
+
+from pytumblr import TumblrRestClient
+from unittest.mock import patch
 
 
 class TumblrTest(TestCase):
@@ -111,3 +115,35 @@ class TumblrTest(TestCase):
             does this settings exists ?
         """
         self.assertTrue(settings.TH_TUMBLR_KEY)
+
+
+class ServiceTumblrTest(TumblrTest):
+
+    def setUp(self):
+        super(ServiceTumblrTest, self).setUp()
+        self.data = {'title': 'a title post', 'content': 'content of the post'}
+        self.token = 'QWERTY123#TH#12345'
+        self.trigger_id = 1
+        self.service = ServiceTumblr(self.token)
+
+    def test_read_data(self):
+        t = self.create_tumblr()
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'model_name': 'Tumblr',
+                       'trigger_id': t.trigger_id})
+        self.token = '123#TH#truc'
+        se = ServiceTumblr(self.token)
+        res = se.read_data(**kwargs)
+        self.assertTrue(type(res) is list)
+
+    @patch.object(TumblrRestClient, 'create_text')
+    def test_save_data(self, mock1):
+        t = self.create_tumblr()
+
+        se = ServiceTumblr(self.token)
+        se.save_data(self.trigger_id, **self.data)
+        mock1.assert_called_with(blogname=t.blogname,
+                                 title=self.data['title'],
+                                 body=self.data['content'],
+                                 state='published',
+                                 tags=t.tag)

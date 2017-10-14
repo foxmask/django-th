@@ -1,6 +1,6 @@
 # coding: utf-8
-from unittest.mock import MagicMock
-
+from unittest.mock import patch
+from instapush import App
 from django_th.tests.test_main import MainTest
 
 from th_instapush.models import Instapush as InstapushModel
@@ -69,15 +69,19 @@ class InstapushTest(MainTest):
         """
         kwargs = {}
         se = ServiceInstapush()
-        se.read_data(**kwargs)
+        res = se.read_data(**kwargs)
+        self.assertTrue(type(res) is dict)
 
-    def test_save_data(self):
+    @patch.object(App, 'notify')
+    def test_save_data(self, mock1):
         """
            Test if the creation of the Instapush object looks fine
         """
         self.create_instapush()
         data = {'title': 'foo', 'content': 'bar'}
-        self.service.save_data = MagicMock(name='save_data')
-        the_return = self.service.save_data(self.trigger_id, **data)
+        se = ServiceInstapush(self.token)
+        the_return = se.save_data(self.trigger_id, **data)
+        mock1.assert_called_once_with(event_name='signups',
+                                      trackers={'email': data['content']})
 
         self.assertTrue(the_return)

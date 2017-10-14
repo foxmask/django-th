@@ -92,13 +92,10 @@ class ServiceTwitterTest(TwitterTest):
         self.trigger_id = 1
         self.service = ServiceTwitter(self.token)
 
-    @patch.object(Twython, 'search')
-    def test_read_data_tag(self, mock1):
-        t = self.create_twitter(tag='twitter', screen='', fav=False)
-        search = {'count': 100,
-                  'q': 'twitter',
-                  'result_type': 'recent',
-                  'since_id': 1}
+    @patch.object(Twython, 'get_user_timeline')
+    def test_read_data_screen(self, mock1):
+        search = {'count': 200, 'screen_name': 'johndoe', 'since_id': 1}
+        t = self.create_twitter(tag='', screen='johndoe', fav=False)
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'model_name': 'Twitter',
                        'trigger_id': t.trigger_id})
@@ -107,10 +104,23 @@ class ServiceTwitterTest(TwitterTest):
         se.read_data(**kwargs)
         mock1.assert_called_with(**search)
 
-    @patch.object(Twython, 'get_user_timeline')
-    def test_read_data_screen(self, mock1):
-        search = {'count': 200, 'screen_name': 'johndoe', 'since_id': 1}
-        t = self.create_twitter(tag='', screen='johndoe', fav=False)
+    @patch.object(Twython, 'get_favorites')
+    def test_read_data_fav(self, mock1):
+        search = {'count': 20, 'screen_name': 'johndoe', 'since_id': 1}
+        t = self.create_twitter(tag='', screen='johndoe', fav=True)
+        kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
+                       'model_name': 'Twitter',
+                       'trigger_id': t.trigger_id})
+
+        se = ServiceTwitter(self.token)
+        se.read_data(**kwargs)
+        mock1.assert_called_with(**search)
+
+    @patch.object(Twython, 'search')
+    def test_read_data_tag(self, mock1):
+        search = {'count': 100, 'result_type': 'recent', 'since_id': 1,
+                  'q': 'foobar'}
+        t = self.create_twitter(tag='foobar', screen='johndoe', fav=False)
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'model_name': 'Twitter',
                        'trigger_id': t.trigger_id})
@@ -125,13 +135,14 @@ class ServiceTwitterTest(TwitterTest):
         token = self.token
         trigger_id = self.trigger_id
 
-        self.data['title'] = 'a title'
+        self.data['title'] = 'Toot from'
         self.data['link'] = 'http://domain.ltd'
 
         content = str("{title} {link}").format(
             title=self.data.get('title'),
             link=self.data.get('link'))
         content += ' #twitter'
+        self.data['content'] = content
 
         self.assertTrue(token)
         self.assertTrue(isinstance(trigger_id, int))
@@ -140,4 +151,45 @@ class ServiceTwitterTest(TwitterTest):
 
         se = ServiceTwitter(self.token)
         se.save_data(trigger_id, **self.data)
-        mock1.assert_called_once_with(status=content)
+        mock1.assert_called_with(status=content)
+
+    @patch.object(Twython, 'update_status')
+    def test_save_data2(self, mock1):
+        self.create_twitter()
+        token = self.token
+        trigger_id = self.trigger_id
+
+        self.data['title'] = 'a title'
+        self.data['link'] = 'http://domain.ltd'
+
+        content = str("{title} {link}").format(
+            title=self.data.get('title'),
+            link=self.data.get('link'))
+        content += ' #twitter'
+        self.data['content'] = content
+
+        self.assertTrue(token)
+        self.assertTrue(isinstance(trigger_id, int))
+        self.assertIn('text', self.data)
+        self.assertNotEqual(self.data['text'], '')
+
+        se = ServiceTwitter(self.token)
+        se.save_data(trigger_id, **self.data)
+        mock1.assert_called_with(status=content)
+
+    @patch.object(Twython, 'get_authorized_tokens')
+    def test_get_access_token(self, mock1):
+        self.create_twitter(tag='twitter', screen='', fav=False)
+        oauth_token = 'truc'
+        oauth_token_secret = 'secret'
+        oauth_verifier = 'verifier'
+        se = ServiceTwitter(self.token)
+        se.get_access_token(oauth_token, oauth_token_secret,
+                            oauth_verifier)
+        mock1.assert_called_with(oauth_verifier)
+
+    def test_auth(self):
+        pass
+
+    def test_callback(self):
+        pass
