@@ -195,6 +195,7 @@ class ServiceMastodon(ServicesMgr):
             status = False
             update_result(trigger_id, msg=e, status=status)
 
+        media_ids = None
         try:
             if settings.DJANGO_TH['sharing_media']:
                 # do we have a media in the content ?
@@ -202,9 +203,9 @@ class ServiceMastodon(ServicesMgr):
                 if media:
                     # upload the media first
                     media_ids = toot_api.media_post(media_file=media)
-                    toot_api.status_post(content, media_ids=[media_ids])
-            else:
-                toot_api.toot(content)
+                    media_ids = [media_ids]
+
+            toot_api.status_post(content, media_ids=media_ids)
 
             status = True
         except Exception as inst:
@@ -254,18 +255,18 @@ class ServiceMastodon(ServicesMgr):
         :param content:
         :return:
         """
+        local_file = ''
         if 'https://t.co' in content:
             content = re.sub(r'https://t.co/(\w+)', '', content)
         if 'https://pbs.twimg.com/media/' in content:
             m = re.search('https://pbs.twimg.com/media/([\w\-_]+).jpg', content)
             url = 'https://pbs.twimg.com/media/{}.jpg'.format(m.group(1))
             local_file = download_image(url)
-
             content = re.sub(r'https://pbs.twimg.com/media/([\w\-_]+).jpg', '',
                              content)
 
             return content, local_file
-        return content
+        return content, local_file
 
     def set_mastodon_content(self, content):
         """
@@ -275,10 +276,7 @@ class ServiceMastodon(ServicesMgr):
         """
         content = html.strip_tags(content)
 
-        if len(content) > 560:
-            return content[:560]
-
-        return content
+        return content[:560] if len(content) > 560 else content
 
     def auth(self, request):
         """

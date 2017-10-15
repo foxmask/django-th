@@ -1,7 +1,6 @@
 # coding: utf-8
 import arrow
-# add the python API here if needed
-from praw import Reddit as RedditApi
+
 # django classes
 from django.conf import settings
 from django.core.cache import caches
@@ -11,6 +10,9 @@ from logging import getLogger
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+
+from praw import Reddit as RedditApi
+
 from th_reddit.models import Reddit
 
 

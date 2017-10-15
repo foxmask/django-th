@@ -159,7 +159,7 @@ class ServicesMgr(object):
             # pandoc to convert tools
             import pypandoc
             content = pypandoc.convert(content,
-                                       data.get('output_format'),
+                                       str(data.get('output_format')),
                                        format='html')
         return title, content
 
