@@ -25,6 +25,7 @@ class TriggerSettingsTestCase(unittest.TestCase):
         self.assertIs(type(settings.DJANGO_TH.get('services_wo_cache')), list)
         self.assertIs(type(settings.DJANGO_TH.get('failed_tries')), int)
         self.assertIs(type(settings.DJANGO_TH.get('digest_event')), bool)
+        self.assertIs(type(settings.DJANGO_TH.get('sharing_media')), bool)
         self.assertIn('django_th', settings.CACHES)
 
     def test_get_services_list(self):

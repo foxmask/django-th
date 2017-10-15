@@ -1,18 +1,15 @@
 # coding: utf-8
-from unittest.mock import patch
-# from importlib import import_module
-import requests
-
-# from django.conf import settings
-
-# from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from django_th.tests.test_main import MainTest
 
+import requests
+
 from th_wallabag.models import Wallabag
 from th_wallabag.forms import WallabagProviderForm, WallabagConsumerForm
 from th_wallabag.my_wallabag import ServiceWallabag
+
+from unittest.mock import patch
 
 
 class WallabagTest(MainTest):

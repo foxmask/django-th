@@ -226,7 +226,6 @@ class ServicesMgr(object):
                 request.session['oauth_token_secret'],
                 request.GET.get('oauth_verifier', '')
             )
-            print(request.session)
         else:
             access_token = kwargs.get('access_token')
 
@@ -268,7 +267,7 @@ class ServicesMgr(object):
             request.session['oauth_token'] = request_token['oauth_token']
             request.session['oauth_token_secret'] = request_token[
                 'oauth_token_secret']
-            print(request.session)
+
             return request_token
         else:
             callback_url = self.callback_url(request)

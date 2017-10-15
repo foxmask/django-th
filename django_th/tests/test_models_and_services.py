@@ -1,11 +1,32 @@
 # coding: utf-8
 from django.test import TestCase
+from django.test import RequestFactory
 
-from django_th.models import TriggerService, Digest
-from django_th.models import UserService, ServicesActivated, update_result
 from django_th.forms.base import TriggerServiceForm
 from django_th.forms.base import UserServiceForm
+from django_th.models import TriggerService, Digest
+from django_th.models import UserService, ServicesActivated, update_result
+from django_th.services.services import ServicesMgr
 from django_th.tests.test_main import MainTest
+
+
+class ServicesMgrTest(MainTest):
+
+    def test_callback(self):
+        request = RequestFactory().get('/th/')
+        se = ServicesMgr(arg="foobar", token="AZERTY123")
+        se.service = 'ServiceWallabag'
+        callback = se.callback_url(request)
+        self.assertTrue(type(callback) is str)
+
+    def test_reset_failed(self):
+        se = ServicesMgr(arg="foobar", token="AZERTY123")
+        se.reset_failed(1)
+
+    def test_send_digest_event(self):
+        self.create_triggerservice()
+        se = ServicesMgr(arg="foobar", token="AZERTY123")
+        se.send_digest_event(1, 'foobar')
 
 
 class UserServiceTest(MainTest):

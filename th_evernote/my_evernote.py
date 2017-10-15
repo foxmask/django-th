@@ -1,6 +1,14 @@
 # coding: utf-8
 import arrow
 
+# django classes
+from django.conf import settings
+from django.core.cache import caches
+
+# django_th classes
+from django_th.services.services import ServicesMgr
+from django_th.models import UserService, ServicesActivated, update_result
+
 # evernote API
 import evernote
 from evernote.api.client import EvernoteClient
@@ -8,14 +16,8 @@ import evernote.edam.type.ttypes as Types
 from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 
-# django classes
-from django.conf import settings
 from logging import getLogger
-from django.core.cache import caches
 
-# django_th classes
-from django_th.services.services import ServicesMgr
-from django_th.models import UserService, ServicesActivated, update_result
 from th_evernote.models import Evernote
 from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.sanitize import sanitize
@@ -90,12 +92,17 @@ class ServiceEvernote(ServicesMgr):
         filter_string = self.set_evernote_filter(date_triggered, trigger)
         evernote_filter = self.set_note_filter(filter_string)
         data = self.get_evernote_notes(evernote_filter)
-        if len(data):
-            cache.set('th_evernote_' + str(trigger_id), data)
 
+        cache.set('th_evernote_' + str(trigger_id), data)
         return data
 
     def set_evernote_filter(self, date_triggered, trigger):
+        """
+            build the filter that will be used by evernote
+            :param date_triggered:
+            :param trigger:
+            :return: filter
+        """
         new_date_triggered = arrow.get(str(date_triggered)[:-6],
                                        'YYYY-MM-DD HH:mm:ss')
 
@@ -113,6 +120,11 @@ class ServiceEvernote(ServicesMgr):
         return complet_filter
 
     def get_evernote_notes(self, evernote_filter):
+        """
+            get the notes related to the filter
+            :param evernote_filter: filtering
+            :return: notes
+        """
         data = []
 
         note_store = self.client.get_note_store()

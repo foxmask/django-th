@@ -11,12 +11,11 @@ class PushbulletTest(MainTest):
     """
         PushbulletTest Model
     """
-    def create_pushb(self):
+    def create_pushb(self, type='note'):
         """
             Create a Pushbullet object related to the trigger object
         """
         trigger = self.create_triggerservice(consumer_name="ServicePushbullet")
-        type = 'note'
         status = True
         return Pushbullet.objects.create(trigger=trigger, type=type,
                                          status=status)

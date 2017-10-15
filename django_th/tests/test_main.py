@@ -24,25 +24,29 @@ class MainTest(TestCase):
     def create_triggerservice(self, trigger_id=1, date_created="20130610",
                               description="My first Service", status=True,
                               consumer_name="ServiceWallabag",
-                              provider_name="ServiceRss"):
+                              provider_name="ServiceRss",
+                              service_status=True,
+                              duration='d'):
         """
            create a TriggerService
         """
         user = self.user
 
         service_provider = ServicesActivated.objects.create(
-            name=provider_name, status=True,
+            name=provider_name, status=service_status,
             auth_required=False, description='Service RSS')
         service_consumer = ServicesActivated.objects.create(
-            name=consumer_name, status=True,
+            name=consumer_name, status=service_status,
             auth_required=False, description='Service Wallabag')
         provider = UserService.objects.create(user=user,
                                               token="",
-                                              name=service_provider)
+                                              name=service_provider,
+                                              duration=duration)
         consumer = UserService.objects.create(user=user,
                                               token="AZERTY1234",
                                               host='http://localhost',
-                                              name=service_consumer)
+                                              name=service_consumer,
+                                              duration=duration)
         trigger = TriggerService.objects.create(id=trigger_id,
                                                 provider=provider,
                                                 consumer=consumer,

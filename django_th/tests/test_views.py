@@ -1,18 +1,19 @@
 # coding: utf-8
-import unittest
-import uuid
-
-from django.test import RequestFactory, Client
 from django.core.cache import caches
+from django.test import RequestFactory, Client
 
+from django_th.models import TriggerService
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView, TriggerListView
 from django_th.views_fbv import can_modify_trigger, trigger_on_off, \
     trigger_edit, trigger_switch_all_to, list_services, \
     service_related_triggers_switch_to, fire_trigger
-from django_th.models import TriggerService
 from django_th.tests.test_main import MainTest, setup_view
+
 from th_rss.models import Rss
+
+import unittest
+import uuid
 
 cache = caches['django_th']
 

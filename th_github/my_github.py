@@ -108,7 +108,7 @@ class ServiceGithub(ServicesMgr):
                 cache.set('th_github_' + str(trigger_id), data)
             else:
                 # rate limit reach, do nothing right now
-                logger.warn("Rate limit reached")
+                logger.warning("Rate limit reached")
                 update_result(trigger_id, msg="Rate limit reached",
                               status=True)
         else:
