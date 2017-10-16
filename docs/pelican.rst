@@ -19,6 +19,8 @@ Set an author that will be added to the creation of each post
 Configuration from the Admin panel
 ----------------------------------
 
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pelican.png
     :target: https://blog.getpelican.com/
     :alt: Pelican

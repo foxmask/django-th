@@ -16,6 +16,8 @@ https://tree.taiga.io/project/<your account>-<your community>/admin/third-partie
 Configuration from the Admin panel
 ----------------------------------
 
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_taiga.png
     :target: https://taiga.io/
     :alt: Taiga

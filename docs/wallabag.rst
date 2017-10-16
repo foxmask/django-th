@@ -96,7 +96,7 @@ enter the following command
 from the admin panel: activation of the service
 ------------------------------------------------
 
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
 
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/admin_service_details.png

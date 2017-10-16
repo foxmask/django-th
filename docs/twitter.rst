@@ -29,6 +29,8 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_twitter.png
     :target: https://twitter.com/
     :alt: Twitter
