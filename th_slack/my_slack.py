@@ -59,6 +59,9 @@ class ServiceSlack(ServicesMgr):
         title_link = ''
         if data.get('permalink'):
             title_link = ': <' + data.get('permalink') + '|' + title + '>'
+        else:
+            title_link = ': <' + data.get('link') + '|' + title + '>'
+            
         data = '*' + desc + '*: ' + type_action + title_link
 
         payload = {'username': username,
