@@ -16,6 +16,6 @@ https://tree.taiga.io/project/<your account>-<your community>/admin/third-partie
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_taiga.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_taiga.png
     :target: https://taiga.io/
     :alt: Taiga

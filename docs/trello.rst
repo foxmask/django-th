@@ -25,6 +25,6 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_trello.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_trello.png
     :target: https://trello.com/
     :alt: Trello

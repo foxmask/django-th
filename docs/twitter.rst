@@ -29,6 +29,6 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_twitter.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_twitter.png
     :target: https://twitter.com/
     :alt: Twitter

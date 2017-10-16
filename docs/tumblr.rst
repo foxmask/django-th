@@ -24,6 +24,6 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_tumblr.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_tumblr.png
     :target: https://tumblr.com/
     :alt: Tumblr

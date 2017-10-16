@@ -29,6 +29,6 @@ Here are the modifications of .env file you will need to do to be able to use yo
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pushbullet.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pushbullet.png
     :target: https://pushbullet.com/
     :alt: pushbullet

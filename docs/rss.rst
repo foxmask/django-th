@@ -88,5 +88,5 @@ enter the following command
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_rss.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_rss.png
     :alt: rss

@@ -17,6 +17,6 @@ On https://<your mastodon instance>/settings/applications/new fill the form and 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_mastodon.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_mastodon.png
     :target: https://joinmastodon.org/
     :alt: Mastdoon

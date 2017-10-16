@@ -28,6 +28,6 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_todoist.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_todoist.png
     :target: https://todoist.com/
     :alt: Todoist

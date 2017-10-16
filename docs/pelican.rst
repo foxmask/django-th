@@ -19,6 +19,6 @@ Set an author that will be added to the creation of each post
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pelican.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pelican.png
     :target: https://blog.getpelican.com/
     :alt: Pelican

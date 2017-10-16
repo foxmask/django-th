@@ -59,6 +59,6 @@ enter the following command
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_instapush.jpg
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_instapush.png
     :target: https://instapush.im/
     :alt: Instapush
