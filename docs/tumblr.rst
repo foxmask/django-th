@@ -21,4 +21,9 @@ Here are the modifications of .env file you will need to make to be able to use 
     TH_TUMBLR_CONSUMER_KEY= 'your tumblr key'
     TH_TUMBLR_CONSUMER_SECRET= 'your tumblr secret'
 
+Configuration from the Admin panel
+----------------------------------
 
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_tumblr.jpg
+    :target: https://tumblr.com/
+    :alt: Tumblr

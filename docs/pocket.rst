@@ -21,3 +21,9 @@ The service keys
 
     TH_POCKET_CONSUMER_KEY= 'your pocket key'
 
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pocket.jpg
+    :target: https://getpocket.com/
+    :alt: Pocket

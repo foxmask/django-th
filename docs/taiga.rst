@@ -13,3 +13,9 @@ this webhook can be defined from https://<your community>.slack.com/apps/manage/
 https://tree.taiga.io/project/<your account>-<your community>/admin/third-parties/webhooks
 
 
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_taiga.jpg
+    :target: https://taiga.io/
+    :alt: Taiga

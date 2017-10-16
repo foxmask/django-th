@@ -22,7 +22,14 @@ Here are the modifications of .env file you will need to make to be able to use 
 
 .. code-block:: python
 
-    TH_EVERNOTE_SANDBOX = False 
+    TH_EVERNOTE_SANDBOX = False
     TH_EVERNOTE_CONSUMER_KEY = 'your consumer key'
     TH_EVERNOTE_CONSUMER_SECRET =  'your consumer secret'
 
+
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_evernote.jpg
+    :target: https://evernote.com/
+    :alt: Evernote

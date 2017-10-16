@@ -68,7 +68,7 @@ For example:
 
 And so on.
 
-.. image:: https://trigger-happy.eu/static/th_esb.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/th_esb.png
    :alt: Trigger Happy Architecture
 
 

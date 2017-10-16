@@ -26,3 +26,9 @@ Here are the modifications of .env file you will need to make to be able to use 
     TH_TWITTER_CONSUMER_KEY= 'your twitter key'
     TH_TWITTER_CONSUMER_SECRET= 'your twitter secret'
 
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_twitter.jpg
+    :target: https://twitter.com/
+    :alt: Twitter

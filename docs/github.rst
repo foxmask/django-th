@@ -27,3 +27,9 @@ Here are the modifications of .env file you will need to make to be able to use 
     TH_GITHUB_CONSUMER_KEY= 'your consumer key'
     TH_GITHUB_CONSUMER_SECRET= 'your consumer secret'
 
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_github.jpg
+    :target: https://github.com/
+    :alt: Github

@@ -85,13 +85,8 @@ enter the following command
     python manage.py migrate
 
 
-from the admin panel, activation of the service
------------------------------------------------
+Configuration from the Admin panel
+----------------------------------
 
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
-
-* Select "RSS",
-* Set the Status to "Enabled"
-* Uncheck "Auth Required": this service does not require an authorization to access anything
-* Provide a description
-
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_rss.jpg
+    :alt: rss

@@ -56,12 +56,9 @@ enter the following command
     python manage.py migrate
 
 
-from the admin panel, activation of the service
------------------------------------------------
+Configuration from the Admin panel
+----------------------------------
 
-from http://yourdomain.com/admin/django_th/servicesactivated/add/
-
-* Select "Instapush",
-* Set the Status to "Enabled"
-* Check Auth Required: do not check it
-* Provide a description
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_instapush.jpg
+    :target: https://instapush.im/
+    :alt: Instapush

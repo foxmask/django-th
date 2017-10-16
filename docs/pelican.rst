@@ -15,3 +15,10 @@ Set an author that will be added to the creation of each post
 
     TH_PELICAN_AUTHOR = 'Foxmask'
 
+
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pelican.jpg
+    :target: https://blog.getpelican.com/
+    :alt: Pelican

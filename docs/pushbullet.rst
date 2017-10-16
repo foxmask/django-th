@@ -11,7 +11,7 @@ Nota: to be able to work, this service requires that your host uses HTTPS
 Requesting a key
 ----------------
 
-On https://www.pushbullet.com/#settings/account 
+On https://www.pushbullet.com/#settings/account
 
 Fill the form and get the informations that you will need to provide in the next paragraph
 
@@ -25,3 +25,10 @@ Here are the modifications of .env file you will need to do to be able to use yo
 
     TH_PUSHBULLET_CLIENT_ID= 'your pushbulet id'
     TH_PUSHBULLET_CLIENT_SECRET= 'your pushbulet secret'
+
+Configuration from the Admin panel
+----------------------------------
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pushbullet.jpg
+    :target: https://pushbullet.com/
+    :alt: pushbullet
