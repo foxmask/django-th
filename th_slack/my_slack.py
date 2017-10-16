@@ -50,7 +50,7 @@ class ServiceSlack(ServicesMgr):
         title = self.set_title(data)
         if title is None:
             title = data.get('subject')
-        type_action = data.get('type_action')
+        type_action = data.get('type_action', '')
 
         # set the bot username of Slack to the name of the
         # provider service
@@ -59,6 +59,9 @@ class ServiceSlack(ServicesMgr):
         title_link = ''
         if data.get('permalink'):
             title_link = ': <' + data.get('permalink') + '|' + title + '>'
+        else:
+            title_link = ': <' + data.get('link') + '|' + title + '>'
+
         data = '*' + desc + '*: ' + type_action + title_link
 
         payload = {'username': username,
