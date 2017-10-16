@@ -30,6 +30,8 @@ Here are the modifications of .env file you will need to make to be able to use 
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_evernote.jpg
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_evernote.png
     :target: https://evernote.com/
     :alt: Evernote

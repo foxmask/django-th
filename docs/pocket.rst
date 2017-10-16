@@ -24,6 +24,8 @@ The service keys
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pocket.jpg
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_pocket.png
     :target: https://getpocket.com/
     :alt: Pocket

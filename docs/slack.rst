@@ -13,6 +13,8 @@ this webhook can be defined from https://<your community>.slack.com/apps/manage/
 Configuration from the Admin panel
 ----------------------------------
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_slack.jpg
+http://127.0.0.1:8000/admin/django_th/servicesactivated/
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_slack.png
     :target: https://slack.com/
     :alt: Slack
