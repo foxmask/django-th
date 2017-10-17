@@ -29,10 +29,16 @@ class ServicesAdminForm(forms.ModelForm):
     """
     class Meta:
         model = ServicesActivated
-        exclude = ()
+        fields = '__all__'
 
-    status_values = ((0, 'Disabled'), (1, 'Enabled'))
-    status = forms.ChoiceField(status_values)
+    status_values = ((False, 'Disabled'), (True, 'Enabled'))
+    status = forms.ChoiceField(
+        choices=status_values,
+        label="Status",
+        initial='',
+        widget=forms.Select(),
+        required=True
+    )
     name = forms.ChoiceField(available_services())
 
     # todo : set the value of status when editing the object
