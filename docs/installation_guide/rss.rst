@@ -11,10 +11,10 @@ User Guide
 
 Activation of the service from the page http://127.0.0.1:8000/th/service/add/
 
-.. image:: https://github.com/foxmask/django-th/blob/master/docs/public_service_wallabag_add.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
-then in the form, select Rss in the dropdown box then press "Activate it"
+then in the form, select RSS in the dropdown box then press "Activate it"
 
 
 Installation Guide
@@ -23,5 +23,5 @@ Installation Guide
 Configuration from the Admin panel
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_rss.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/service_rss.png
     :alt: rss

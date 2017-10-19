@@ -12,7 +12,7 @@ User Guide
 
 Activation of the service from the page http://127.0.0.1:8000/th/service/add/
 
-.. image:: https://github.com/foxmask/django-th/blob/master/docs/public_service_wallabag_add.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
 then in the form, select Evernote in the dropdown box and press "Activate it"
@@ -46,6 +46,6 @@ Configuration from the Admin panel
 
 http://127.0.0.1:8000/admin/django_th/servicesactivated/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_evernote.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/service_evernote.png
     :target: https://evernote.com/
     :alt: Evernote
