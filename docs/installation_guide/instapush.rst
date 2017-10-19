@@ -6,55 +6,22 @@ Service Description:
 
 Notification service
 
+User Guide
+----------
 
-modifications of settings.py
-----------------------------
+Activation of the service from the page http://127.0.0.1:8000/th/service/add/
 
-uncomment the following line
+.. image:: https://github.com/foxmask/django-th/blob/master/docs/public_service_wallabag_add.png
+   :alt: My Activated Services
 
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        # 'th_instapsuh',
-    )
-
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_instapsuh',
-    )
-
-modifications of th_settings.py
--------------------------------
-
-uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_instapush.my_instapush.ServiceInstapush',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_instapush.my_instapush.ServiceInstapush',
-    )
+then in the form, select Instapush in the dropdown box then in the form, just fill the user token, then press "Activate it"
 
 
-creation of the table of the services
--------------------------------------
+Installation Guide
+------------------
 
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
-
+Requesting a key
+~~~~~~~~~~~~~~~~
 
 Configuration from the Admin panel
 ----------------------------------

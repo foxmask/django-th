@@ -1,3 +1,5 @@
+.. _installation:
+
 ============
 Installation
 ============
@@ -14,7 +16,7 @@ We just create a virtualenv with python 3.6 (or 3.5)
     python3.6 -m venv myproject
     cd $_
     source bin/activate
-    
+
 then you can continue with one of the two choice "From GitHub" or "From Pypi"
 
 
@@ -25,7 +27,7 @@ Installation from an existing project
 
     cd /to/the/path/of/my/existing/project
     source bin/activate   # (if you have a virtualenv)
- 
+
 then you can continue with one of the two choice "From GitHub" or "From Pypi"
 
 
@@ -122,3 +124,7 @@ Pandoc is also needed of the system, that you can install on a Debian/Ubuntu sys
 * for twitter support `twython <https://github.com/ryanmcgrath/twython>`_
 * for wallabag support `wallabag_api <https://pypi.python.org/pypi/wallabag_api>`_
 
+Advice
+------
+
+If you plan to setup Trigger Happy for you and a group of friends, I suggest you to install https://www.intenct.nl/projects/django-allauth/

@@ -6,87 +6,22 @@ Service Description:
 
 Service that grabs RSS all around the web or creates also RSS from other services
 
-modifications of settings.py
-----------------------------
+User Guide
+----------
 
-1) INSTALLED_APPS:
+Activation of the service from the page http://127.0.0.1:8000/th/service/add/
 
-add or uncomment the following line
+.. image:: https://github.com/foxmask/django-th/blob/master/docs/public_service_wallabag_add.png
+   :alt: My Activated Services
 
-.. code-block:: python
+then in the form, select Rss in the dropdown box then press "Activate it"
 
-    INSTALLED_APPS = (
-        # 'th_rss',
-    )
 
-to get
-
-.. code-block:: python
-
-    INSTALLED_APPS = (
-        'th_rss',
-    )
-
-2) Cache:
-
-After the default cache add:
-
-.. code-block:: python
-
-    CACHES = {
-        'default':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/',
-            'TIMEOUT': 600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
-        },
-        # RSS Cache
-        'th_rss':
-        {
-            'TIMEOUT': 500,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/5",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-
-modifications of th_settings.py
--------------------------------
-
-1) TH_SERVICES
-
-uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_rss.my_rss.ServiceRss',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_rss.my_rss.ServiceRss',
-    )
-
-creation of the table of the services
--------------------------------------
-
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
-
+Installation Guide
+------------------
 
 Configuration from the Admin panel
-----------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/service_rss.png
     :alt: rss

@@ -76,7 +76,6 @@ The Installation Guide
 ----------------------
 
 .. toctree::
-  :maxdepth: 2
 
    installation_guide/quickstart
    installation_guide/installation
@@ -92,7 +91,6 @@ The User Guide
 --------------
 
 .. toctree::
-  :maxdepth: 2
 
    user_guide/index
 
@@ -100,6 +98,5 @@ The Administration Guide
 ------------------------
 
 .. toctree::
-  :maxdepth: 2
 
    admin_guide/index

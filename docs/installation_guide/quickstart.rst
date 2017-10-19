@@ -1,3 +1,5 @@
+.. _quickstart:
+
 ==========
 Quickstart
 ==========
@@ -19,7 +21,7 @@ or
 
     yum install redis
 
-for installing redis on macosx: 
+for installing redis on macosx:
 
 .. code-block:: bash
 

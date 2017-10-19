@@ -1,3 +1,5 @@
+.. _configuration:
+
 =============
 Configuration
 =============
@@ -118,7 +120,7 @@ comment the line of the service you do not need, by adding a # before the single
 setup .env file
 ---------------
 
-if you do not have any .env file in your project folder, then copy the django_th/env.sample to .env 
+if you do not have any .env file in your project folder, then copy the django_th/env.sample to .env
 
 if you do have an existing .env file, copy the content of django_th/env.sample into it
 
@@ -134,21 +136,21 @@ then the parameters are the following
     DJANGO_TH_FIRE=True
     DJANGO_TH_DIGEST_EVENT=False
     DJANGO_TH_SHARING_MEDIA=True
-    
+
     TH_EVERNOTE_SANDBOX=False
     TH_EVERNOTE_CONSUMER_KEY=
     TH_EVERNOTE_CONSUMER_SECRET=
-    
+
     TH_GITHUB_USERNAME=
     TH_GITHUB_PASSWORD=
     TH_GITHUB_CONSUMER_KEY=
     TH_GITHUB_CONSUMER_SECRET=
-    
+
     TH_POCKET_CONSUMER_KEY=
 
     TH_PUSHBULLET_CLIENT_ID=
     TH_PUSHBULLET_CLIENT_SECRET=
-    
+
     TH_TODOIST_CLIENT_ID=
     TH_TODOIST_CLIENT_SECRET=
 
