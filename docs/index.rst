@@ -72,25 +72,34 @@ And so on.
    :alt: Trigger Happy Architecture
 
 
+The Installation Guide
+----------------------
 
 .. toctree::
-   :maxdepth: 2
+  :maxdepth: 2
 
-   quickstart
-   installation
-   configuration
-   running
-   crontab
-   usage
-   services
-   migration
+   installation_guide/quickstart
+   installation_guide/installation
+   installation_guide/configuration
+   installation_guide/running
+   installation_guide/crontab
+   installation_guide/usage
+   installation_guide/services
+   installation_guide/migration
 
 
+The User Guide
+--------------
 
-Indices and tables
-==================
+.. toctree::
+  :maxdepth: 2
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
+   user_guide/index
 
+The Administration Guide
+------------------------
+
+.. toctree::
+  :maxdepth: 2
+
+   admin_guide/index
