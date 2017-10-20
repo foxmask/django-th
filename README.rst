@@ -55,7 +55,7 @@ The possibilities are too numerous to name all of them, but with that project yo
 
 And last but not least, as this is your project, all the credentials you used to give to IFTTT and consorts, are now safe in your hands.
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/th_esb.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/th_esb.png
    :alt: Trigger Happy Architecture
 
 
