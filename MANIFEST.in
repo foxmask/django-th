@@ -9,6 +9,10 @@ recursive-include th_evernote *.html
 recursive-include th_evernote/templates *
 recursive-include th_evernote/migrations *
 
+recursive-include th_github *.html
+recursive-include th_github/templates *
+recursive-include th_github/migrations *
+
 recursive-include th_instapush *.html
 recursive-include th_instapush/templates *
 recursive-include th_instapush/migrations *
@@ -29,8 +33,20 @@ recursive-include th_pushbullet *.html
 recursive-include th_pushbullet/templates *
 recursive-include th_pushbullet/migrations *
 
+recursive-include th_reddit *.html
+recursive-include th_reddit/templates *
+recursive-include th_reddit/migrations *
+
 recursive-include th_rss *.html
 recursive-include th_rss/templates *
+
+recursive-include th_slack *.html
+recursive-include th_slack/templates *
+recursive-include th_slack/migrations *
+
+recursive-include th_taiga *.html
+recursive-include th_taiga/templates *
+recursive-include th_taiga/migrations *
 
 recursive-include th_todoist *.html
 recursive-include th_todoist/templates *
@@ -39,6 +55,10 @@ recursive-include th_todoist/migrations *
 recursive-include th_trello *.html
 recursive-include th_trello/templates *
 recursive-include th_trello/migrations *
+
+recursive-include th_tumblr *.html
+recursive-include th_tumblr/templates *
+recursive-include th_tumblr/migrations *
 
 recursive-include th_twitter *.html
 recursive-include th_twitter/templates *

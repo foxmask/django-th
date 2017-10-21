@@ -69,6 +69,7 @@ Here are the services that will follow almost the same previous path
    pelican
    pocket
    pushbullet
+   reddit
    rss
    slack
    taiga
