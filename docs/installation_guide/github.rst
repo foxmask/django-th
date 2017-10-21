@@ -6,17 +6,37 @@ Service Description:
 
 Powerful collaboration, code review, and code management for open source and private projects. Public projects are always free.
 
-
 User Guide
 ----------
 
-Activation of the service from the page http://127.0.0.1:8000/th/service/add/
+Activation of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+From the page http://127.0.0.1:8000/th/service/add/
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
 then in the form, select Github in the dropdown box and press "Activate it"
 
+Defining a trigger
+~~~~~~~~~~~~~~~~~~
+
+with Github as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/github_consumer_step3.png
+    :alt: github step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/github_consumer_step4.png
+    :alt: github step 4
+
+with Github as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/github_provider_step1.png
+    :alt: github step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/github_provider_step2.png
+    :alt: github step 2
 
 Installation Guide
 ------------------

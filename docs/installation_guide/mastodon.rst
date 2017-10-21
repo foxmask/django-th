@@ -9,7 +9,10 @@ Your self-hosted, globally interconnected microblogging community
 User Guide
 ----------
 
-Activation of the service from the page http://127.0.0.1:8000/th/service/add/
+Activation of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+From the page http://127.0.0.1:8000/th/service/add/
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
@@ -24,6 +27,27 @@ then in the form, select Mastodon in the dropdown box, and fill all the fields w
 
 Then press "Activate it"
 
+
+Defining a trigger
+~~~~~~~~~~~~~~~~~~
+
+with Mastodon as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step3.png
+    :alt: mastodon step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step4.png
+    :alt: mastodon step 4
+
+with Mastodon as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step1.png
+    :alt: mastodon step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step2.png
+    :alt: mastodon step 2
+
+if you tick the "fav" checkbox, this will allow you to "save" the toot to another service, for example to Wallabag, to be read later.
 
 Installation Guide
 ------------------

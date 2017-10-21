@@ -9,13 +9,36 @@ a Social Network
 User Guide
 ----------
 
-Activation of the service from the page http://127.0.0.1:8000/th/service/add/
+Activation of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+From the page http://127.0.0.1:8000/th/service/add/
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
 then in the form, select Twitter in the dropdown box and press "Activate it"
 
+Defining a trigger
+~~~~~~~~~~~~~~~~~~
+
+with Twitter as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/twitter_consumer_step3.png
+    :alt: twitter step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/twitter_consumer_step4.png
+    :alt: twitter step 4
+
+with Twitter as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/twitter_provider_step1.png
+    :alt: twitter step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/twitter_provider_step2.png
+    :alt: twitter step 2
+
+if you tick the "fav" checkbox, this will allow you to "save" the tweet to another service, for example to Wallabag, to be read later.
 
 Installation Guide
 ------------------

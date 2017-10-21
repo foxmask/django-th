@@ -11,13 +11,34 @@ Nota: to be able to work, this service requires that your host uses HTTPS
 User Guide
 ----------
 
-Activation of the service from the page http://127.0.0.1:8000/th/service/add/
+Activation of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+From the page http://127.0.0.1:8000/th/service/add/
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
 then in the form, select Todoist in the dropdown box and press "Activate it"
 
+Defining a trigger
+~~~~~~~~~~~~~~~~~~
+
+with Todoist as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/todoist_consumer_step3.png
+    :alt: todoist step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/todoist_consumer_step4.png
+    :alt: todoist step 4
+
+with Todoist as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/todoist_provider_step1.png
+    :alt: todoist step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/todoist_provider_step2.png
+    :alt: todoist step 2
 
 Installation Guide
 ------------------
