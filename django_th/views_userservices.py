@@ -89,7 +89,6 @@ class UserServiceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(UserServiceCreateView, self).get_context_data(**kwargs)
         context['services'] = len(activated_services(self.request.user))
-        context['digester'] = settings.DJANGO_TH.get('digest_event')
         return context
 
     @method_decorator(login_required)

@@ -21,7 +21,7 @@
                 {% if form.project.errors %}
                 <div class="col-sm-offset-1 col-sm-10 alert alert-danger" role="alert">{{ form.project.errors }}</div>
                 {% endif %}
-                <label for="id_tag" class="col-sm-2 control-label">{% trans "Project" %}</label>
+                <label for="id_project" class="col-sm-2 control-label">{% trans "Project" %}</label>
                 <div class="col-sm-10">{{ form.project }}</div>
             </div>
 
@@ -32,5 +32,5 @@
             </div>
         </fieldset>
         </form>
-    </div> 
+    </div>
 {% endblock %}
