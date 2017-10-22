@@ -50,6 +50,8 @@ Configuration from the Admin panel
 
 http://127.0.0.1:8000/admin/django_th/servicesactivated/
 
+Check "auth required", and "self hosted", even if you plan to use taiga.io
+
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/service_taiga.png
     :target: https://taiga.io/
     :alt: Taiga
