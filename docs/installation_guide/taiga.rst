@@ -21,7 +21,7 @@ From the page http://127.0.0.1:8000/th/service/add/
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
    :alt: My Activated Services
 
-then in the form, select Taiga in the dropdown box and press "Activate it"
+then in the form, select Taiga in the dropdown box, set the username and password, the host, and press "Activate it"
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
