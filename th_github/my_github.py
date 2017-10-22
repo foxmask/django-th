@@ -59,7 +59,7 @@ class ServiceGithub(ServicesMgr):
             token_key, token_secret = self.token.split('#TH#')
             self.gh = GitHub(token=token_key)
         else:
-            self.gh = GitHub(username=self.username, password=self.password)
+            self.gh = GitHub(self.username, self.password)
 
     def gh_footer(self, trigger, issue):
 
