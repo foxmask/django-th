@@ -35,6 +35,8 @@ Installation Guide
 Requesting a key
 ~~~~~~~~~~~~~~~~
 
+https://instapush.im/home/start/
+
 Configuration from the Admin panel
 ----------------------------------
 
