@@ -68,7 +68,7 @@ class UserServiceTest(MainTest):
                      'password': 'password',
                      'client_id': 'the_id',
                      'client_secret': 'the_secret'}
-        initial = {'user': self.user}
+        initial = {'user': self.user, 'name': 'ServiceRss'}
         # create a second service to be able to cover the "else" in
         # activated_services()
         user = self.user
@@ -79,7 +79,7 @@ class UserServiceTest(MainTest):
         form = UserServiceForm(data=data, initial=initial)
         self.assertTrue(form.is_valid())
         form.clean()
-        form.save(user=user)
+        form.save(user=user, service_name='ServiceRss')
         # form is not valid because auth +
         # self_host are true but username is missing
         form = UserServiceForm(data=data2, initial=initial)

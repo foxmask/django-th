@@ -1,40 +1,40 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load django_th_extras %}
 {% block title %}{% trans "My Services" %} - {{ user.username }}{% endblock %}
 {% block content %}
     <div class="col-md-12" id="trigger-content">
-        <h3>{% trans 'Modification of your service' %} {{ object.name|cut:'Service' }}</h3>
+        {% if action == 'edit' %}
+        <h3>{% trans 'Edition of the service' %} {{ service_name_alone }}</h3>
+        {% else %}
+        <h3>{% trans 'Adding of the service' %} {{ service_name_alone }}</h3>
+        {% endif %}
+        {%  if services == 0 %}
+        <div class="alert alert-warning">
+            You already have activated all the existing services.
+            <a href="{% url 'user_services' %}">Go back to your activated services</a>
+        </div>
+        {%  else  %}
         <form method="post" role="form" class="form-horizontal" action="">
         {% csrf_token %}
         <fieldset>
-        <legend>{% trans 'Set the parameters of your service' %}</legend>
         {{ form.non_field_errors }}
-            {% if digester %}
             <div class="form-group">
                 <div class="col-sm-12"><h4>Digest retention</h4></div>
                 <label class="col-sm-2 control-label" for="id_duration">{% trans 'Duration' %}</label>
                 <div class="col-sm-6">{{ form.duration }}</div>
                 <div class="col-sm-offset-2 col-sm-8">{{ form.duration.errors }}</div>
-                <div class="col-sm-12">{% trans 'Choose the duration of the retention for the digester of that service. After that duration, you will receive the complet bucket of the grabbed data to your email account' %}</div>
+                <div class="col-sm-12">{% trans 'Choose the duration of the retention for the digester of that service. After that duration, you will receive the complet bucket of the grabbed data to your email account. If you do not mind, leave None to disable that feature' %}</div>
             </div>
-            {% endif %}
+            {% if service_name == 'ServiceInstapush' %}
             <div class="form-group">
                 <div class="col-sm-12"><h4>Authentication</h4></div>
-            </div>
-            {%  if object.name == 'ServiceInstapush' %}
-            <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_token">{% trans 'User Token' %}</label>
                 <div class="col-sm-6">{{ form.token }}</div>
-                <div class="col-sm-offset-2 col-sm-8">Actually, this field is only mandatory for the Instapush service, otherwise the other services will go to the website of each service to get a new token it self</div>
                 <div class="col-sm-offset-2 col-sm-8">{{ form.token.errors }}</div>
             </div>
-            {%  endif %}
-
-            <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-8">if this is a self hosted service that required an authentication, then you should need to fill the
-            5 following fields :</div>
-            </div>
+            {% elif service_name in SERVICES_HOSTED_WITH_AUTH %}
             <div class="form-group">
                 <label class="col-sm-2 control-label" for="id_username">{% trans 'Username' %}</label>
                 <div class="col-sm-6">{{ form.username }}</div>
@@ -60,12 +60,19 @@
                 <div class="col-sm-6">{{ form.host }}</div>
                 <div class="col-sm-offset-2 col-sm-8">{{ form.host.errors }}</div>
             </div>
+            {% elif service_name in SERVICES_AUTH and action != 'edit' %}
+            <div class="form-group">
+                <label class="col-sm-2 control-label">{% trans 'A word' %}</label>
+                <div class="col-sm-6 text-info">When you will press <em>Activate it</em>, you will be redirected to your {{ service_name_alone }} account. Authorize the access of Trigger Happy, then you will go back here. <br/>That way, TriggerHappy will be connected to your account, and you will be able to send data to it. This connection can be removed when you want.</div>
+            </div>
+            {% endif %}
             <div class="form-actions">
                 <div class="col-sm-offset-2 col-sm-10">
-                    <button class="btn btn-primary">{% trans "Save it" %}</button>
+                    <button class="btn btn-primary">{% if action == 'edit' %}{% trans "Save it" %}{% else %}{% trans "Activate it" %}{% endif %}</button>
                 </div>
             </div>
         </fieldset>
         </form>
+        {%  endif  %}
     </div>
 {% endblock %}
