@@ -170,9 +170,3 @@ urlpatterns = [
 if settings.DJANGO_TH.get('fire'):
     urlpatterns += url(r'^th/trigger/fire/(?P<trigger_id>\d+)$',
                        fire_trigger, name="fire_trigger"),
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns = [
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    ] + urlpatterns
