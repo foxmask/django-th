@@ -12,7 +12,7 @@ to activate a service, you will need to follow those steps
 
 * Requesting a key to the Services
 * Adding the key to your .env file
-* Activating the service from http://127.0.0.1:8000/th/service/add/
+* Activating the service from http://127.0.0.1:8000/th/service/
 
 
 in details this gives us:
@@ -44,7 +44,7 @@ For example for Twitter:
 Activate the service
 ~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
 
 Disable an existing service from the admin panel

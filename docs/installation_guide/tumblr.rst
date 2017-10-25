@@ -12,23 +12,16 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select Tumblr in the dropdown box and press "Activate it"
+from the "Services available" part of the page, select Tumblr and press "Activate it"
+
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
-
-with Tumblr as consumer, when another service is used as a provider
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/tumblr_consumer_step3.png
-    :alt: tumblr step 3
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/tumblr_consumer_step4.png
-    :alt: tumblr step 4
 
 with Tumblr as provider, when another service is used as a consumer
 
@@ -37,6 +30,14 @@ with Tumblr as provider, when another service is used as a consumer
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/tumblr_provider_step2.png
     :alt: tumblr step 2
+
+with Tumblr as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/tumblr_consumer_step3.png
+    :alt: tumblr step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/tumblr_consumer_step4.png
+    :alt: tumblr step 4
 
 Installation Guide
 ------------------

@@ -69,7 +69,7 @@ def remove_href_prohibited_attr(element):
                 pass
             else:
                 element.removeAttribute("href")
-    except:
+    except (AttributeError, KeyError):
         pass
 
 

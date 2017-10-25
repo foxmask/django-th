@@ -12,15 +12,24 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select RSS in the dropdown box then press "Activate it"
+from the "Services available" part of the page, select RSS and press "Activate it"
+
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
+
+with RSS as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/rss_provider_step1.png
+    :alt: rss step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/rss_provider_step2.png
+    :alt: rss step 2
 
 with RSS as consumer, when another service is used as a provider
 
@@ -33,13 +42,6 @@ with RSS as consumer, when another service is used as a provider
 Yes RSS can be used as a consumer. That way, Trigger Happy will generate a RSS Feeds from the provider of your choice.
 Then you can access to the feeds by http://127.0.0.1:8000/th/myfeeds/. This can be useful for service that don't provide RSS or ATOM feeds like Twitter.
 
-with RSS as provider, when another service is used as a consumer
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/rss_provider_step1.png
-    :alt: rss step 1
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/rss_provider_step2.png
-    :alt: rss step 2
 
 Installation Guide
 ------------------

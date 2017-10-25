@@ -16,23 +16,15 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select Taiga in the dropdown box, set the username and password, the host, and press "Activate it"
+from the "Services available" part of the page, select Taiga, then set the username and password, the host, and press "Activate it"
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
-
-with Taiga as consumer, when another service is used as a provider
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/taiga_consumer_step3.png
-    :alt: taiga step 3
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/taiga_consumer_step4.png
-    :alt: taiga step 4
 
 with Taiga as provider, when another service is used as a consumer
 
@@ -41,6 +33,14 @@ with Taiga as provider, when another service is used as a consumer
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/taiga_provider_step2.png
     :alt: taiga step 2
+
+with Taiga as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/taiga_consumer_step3.png
+    :alt: taiga step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/taiga_consumer_step4.png
+    :alt: taiga step 4
 
 Installation Guide
 ------------------

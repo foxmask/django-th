@@ -14,15 +14,24 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select Pushbullet in the dropdown box and press "Activate it"
+from the "Services available" part of the page, select Pushbullet and press "Activate it"
+
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
+
+with Pushbullet as provider, when another service is used as a consumer
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/pushbullet_provider_step1.png
+    :alt: pushbullet step 1
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/pushbullet_provider_step2.png
+    :alt: pushbullet step 2
 
 with Pushbullet as consumer, when another service is used as a provider
 
@@ -32,13 +41,6 @@ with Pushbullet as consumer, when another service is used as a provider
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/pushbullet_consumer_step4.png
     :alt: pushbullet step 4
 
-with Pushbullet as provider, when another service is used as a consumer
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/pushbullet_provider_step1.png
-    :alt: pushbullet step 1
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/pushbullet_provider_step2.png
-    :alt: pushbullet step 2
 
 Installation Guide
 ------------------

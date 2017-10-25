@@ -2,15 +2,15 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'djangorestframework==3.6.4',
-    'Django==1.11.5',
-    'django-formtools==2.0',
+    'djangorestframework==3.7.1',
+    'Django==1.11.6',
+    'django-formtools==2.1',
     'arrow==0.10.0',
     'django-js-reverse==0.7.3',
     'django-redis==4.7.0',
     'requests-oauthlib==0.8.0',
     'pypandoc==1.3.3',
-    'flake8==3.3.0',
+    'flake8==3.5.0',
 ]
 
 extras_require_evernote = [
@@ -33,10 +33,10 @@ extras_require_pocket = [
     'pocket==0.3.6',
 ]
 extras_require_pushbullet = [
-    'pushbullet.py==0.10.0'
+    'pushbullet.py==0.11.0'
 ]
 extras_require_reddit = [
-    'praw==5.1.0'
+    'praw==5.2.0'
 ]
 extras_require_rss = [
     'feedparser==5.2.1',
@@ -52,7 +52,7 @@ extras_require_trello = [
     'pytz==2016.10',
 ]
 extras_require_tumblr = [
-    'PyTumblr==0.0.6',
+    'PyTumblr==0.0.7',
 ]
 extras_require_twitter = [
     'twython==3.6.0',

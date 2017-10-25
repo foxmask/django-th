@@ -27,7 +27,11 @@ Lexicon
 How to activate a service and fill the form
 -------------------------------------------
 
-From the page "My activated services" http://127.0.0.1:8000/th/service/ you have the list of the services you can use to get date or publish data.
+From the page "Services" http://127.0.0.1:8000/th/service/ you have the list of the services you can use to get date or publish data.
+
+The page is divided in two parts.
+
+One part: Activated Services, the ones that are already activated, the other part: Available Services, that you have not yet activated.
 
 To activate them, have a look at the page :ref:`Services list<services>` of each service that pleases you.
 

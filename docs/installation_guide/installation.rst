@@ -75,7 +75,7 @@ Requirements
 Commons requirements
 --------------------
 
-* Python 3.5.x or 3.6.x
+* `Python 3.6.x <https://python.org>`_
 * `Redis <https://redis.io/>`_
 * `DjangoRestFramework <https://pypi.python.org/pypi/Django/>`_
 * `Django <https://pypi.python.org/pypi/Django/>`_

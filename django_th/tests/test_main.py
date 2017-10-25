@@ -1,7 +1,7 @@
 # coding: utf-8
-from django.test import TestCase
-from django.contrib.auth.models import User
 from django_th.models import TriggerService, UserService, ServicesActivated
+from django.contrib.auth.models import User
+from django.test import TestCase
 from th_wallabag.models import Wallabag
 
 

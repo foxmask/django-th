@@ -8,117 +8,46 @@ a self hostable application for saving web pages
 
 .. image:: https://raw.githubusercontent.com/foxmask/wallabag_api/master/wallabag.png
 
-modifications of settings.py
-----------------------------
+User Guide
+----------
 
-add or uncomment the following lines
+Activation of the service
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code-block:: python
+From the page http://127.0.0.1:8000/th/service/
 
-    INSTALLED_APPS = (
-        # 'th_wallabag',
-    )
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-to get
+from the "Services available" part of the page, select Mastodon then fill all the fields with the information you can have from mastodon:
 
-1) INSTALLED_APPS:
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_settings.png
 
-.. code-block:: python
+* in Username ; put your wallabag username
+* in Password ; put your wallabag password
+* in Client ID ; put the "Client key"
+* in Client Secret ; put the "Client Secret"
+* in the Host ; put the host of the wallabag instance
 
-    INSTALLED_APPS = (
-        'th_wallabag',
-    )
+Then press "Activate it"
 
-2) Cache:
 
-After the default cache add:
+Installation Guide
+------------------
 
-.. code-block:: python
-
-    CACHES = {
-        'default':
-        {
-            'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-            'LOCATION': BASE_DIR + '/cache/',
-            'TIMEOUT': 600,
-            'OPTIONS': {
-                'MAX_ENTRIES': 1000
-            }
-        },
-        # Wallabag Cache
-        'th_wallabag':
-        {
-            'TIMEOUT': 500,
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/9",
-            "OPTIONS": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            }
-        },
-
-modifications of th_settings.py
--------------------------------
-
-1) TH_SERVICES
-
-add or uncomment the following line
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        # 'th_wallabag.my_wallabag.ServiceWallabag',
-    )
-
-to get
-
-.. code-block:: python
-
-    TH_SERVICES = (
-        'th_wallabag.my_wallabag.ServiceWallabag',
-    )
-
-4) The service keys
+Requesting a key
+~~~~~~~~~~~~~~~~
 
 Those will be required when activating the service for each user
 
 Have a look at https://github.com/foxmask/wallabag_api/blob/master/README.rst for more details about them
 
-creation of the table of the services
--------------------------------------
 
-enter the following command
-
-.. code-block:: bash
-
-    python manage.py migrate
-
-
-from the admin panel: activation of the service
-------------------------------------------------
+Configuration from the Admin panel
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 http://127.0.0.1:8000/admin/django_th/servicesactivated/
 
-
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-
-
-
-* Select "Wallabag",
-* Set the Status to "Enabled"
-* Check Auth Required: this will redirect the user (or you) to the Wallabag application which will request a token
-* Check Self Hosted: this will allow to enter the details about the service key mentioned at step 4
-* Provide a description
-
-from "My Activated Service" page
---------------------------------
-
-Now go to the page of "My Activated services" to enable it http://yourdomain.com/th/service/ by pressing the blue button
-"Activate a new service"
-
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_service_wallabag_add.png
-
-then fill the fields that are required with the parameters you got from step 4 earlier
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_service_wallabag_settings.png
-
+    :target: https://wallabag.org
+    :alt: Wallabag

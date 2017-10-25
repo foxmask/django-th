@@ -12,12 +12,12 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select Mastodon in the dropdown box, and fill all the fields with the information you can have from mastodon :
+from the "Services available" part of the page, select Mastodon then fill all the fields with the information you can have from mastodon:
 
 * in Nickname ; put your mastodon nickname
 * in Password ; put your mastodon password
@@ -31,14 +31,6 @@ Then press "Activate it"
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
 
-with Mastodon as consumer, when another service is used as a provider
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step3.png
-    :alt: mastodon step 3
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step4.png
-    :alt: mastodon step 4
-
 with Mastodon as provider, when another service is used as a consumer
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step1.png
@@ -46,6 +38,14 @@ with Mastodon as provider, when another service is used as a consumer
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step2.png
     :alt: mastodon step 2
+
+with Mastodon as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step3.png
+    :alt: mastodon step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step4.png
+    :alt: mastodon step 4
 
 if you tick the "fav" checkbox, this will allow you to "save" the toot to another service, for example to Wallabag, to be read later.
 

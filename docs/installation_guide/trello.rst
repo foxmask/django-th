@@ -12,23 +12,16 @@ User Guide
 Activation of the service
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-From the page http://127.0.0.1:8000/th/service/add/
+From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_service_wallabag_add.png
-   :alt: My Activated Services
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+   :alt: Services
 
-then in the form, select Trello in the dropdown box and press "Activate it"
+from the "Services available" part of the page, select Trello and press "Activate it"
+
 
 Defining a trigger
 ~~~~~~~~~~~~~~~~~~
-
-with Trello as consumer, when another service is used as a provider
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/trello_consumer_step3.png
-    :alt: trello step 3
-
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/trello_consumer_step4.png
-    :alt: trello step 4
 
 with Trello as provider, when another service is used as a consumer
 
@@ -37,6 +30,14 @@ with Trello as provider, when another service is used as a consumer
 
 .. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/trello_provider_step2.png
     :alt: trello step 2
+
+with Trello as consumer, when another service is used as a provider
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/trello_consumer_step3.png
+    :alt: trello step 3
+
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/trello_consumer_step4.png
+    :alt: trello step 4
 
 Installation Guide
 ------------------

@@ -4,9 +4,9 @@ ROOT_DIR = environ.Path(__file__) - 1
 APPS_DIR = ROOT_DIR.path('django_th')
 env = environ.Env()
 env_file = str(ROOT_DIR.path('.env'))
-print('Loading : {}'.format(env_file))
+# print('Loading : {}'.format(env_file))
 env.read_env(env_file)
-print('The .env file has been loaded. See settings.py for more information')
+# print('The .env file has been loaded. See settings.py for more information')
 
 DJANGO_TH = {
     # paginating

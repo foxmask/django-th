@@ -82,9 +82,6 @@ urlpatterns = [
     # * service
     # ****************************************
     url(r'^th/service/$', UserServiceListView.as_view(), name='user_services'),
-    url(r'^th/service/(?P<action>\w+)$',
-        UserServiceListView.as_view(),
-        name='user_services'),
     url(r'^th/service/add/(?P<service_name>\w+)$',
         UserServiceCreateView.as_view(),
         name='add_service'),

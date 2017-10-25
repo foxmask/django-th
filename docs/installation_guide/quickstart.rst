@@ -85,7 +85,7 @@ Go to activate the (at least) 2 services you plan to use:
 
 "Activated services" (http://127.0.0.1:8000/th/service/):
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/public_services_activated.png
+.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
 
 1rst Service
 
