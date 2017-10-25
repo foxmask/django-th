@@ -81,14 +81,15 @@ STATICFILES_FINDERS = (
     #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware'
 )
 
 ROOT_URLCONF = 'django_th.urls'
@@ -134,7 +135,12 @@ INSTALLED_APPS = (
     'th_tumblr',
     'th_twitter',
     'th_wallabag',
+
 )
+
+if DEBUG is True:
+    INSTALLED_APPS += ('debug_toolbar',)
+    INTERNAL_IPS = ['127.0.0.1', ]
 
 TEMPLATES = [
     {

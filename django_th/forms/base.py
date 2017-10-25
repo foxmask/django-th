@@ -32,21 +32,28 @@ class UserServiceForm(forms.ModelForm):
     """
         Form to deal with my own activated service
     """
+    def save(self, user=None, service_name=''):
+        """
 
-    def __init__(self, *args, **kwargs):
-        super(UserServiceForm, self).__init__(*args, **kwargs)
-        self.fields['token'] = forms.CharField(required=False)
-        self.fields['name'].choices = activated_services(self.initial['user'])
-        self.fields['name'].widget.attrs['class'] = 'form-control'
-
-    def save(self, user=None):
+        :param user:
+        :param service_name:
+        :return:
+        """
         self.myobject = super(UserServiceForm, self).save(commit=False)
         self.myobject.user = user
+        self.myobject.name = ServicesActivated.objects.get(
+            name=self.initial['name'])
         self.myobject.save()
 
     def clean(self):
+        """
+        check the content of each field
+        :return:
+        """
         cleaned_data = super(UserServiceForm, self).clean()
-        sa = ServicesActivated.objects.get(name=cleaned_data.get('name'))
+        sa = ServicesActivated.objects.get(name=self.initial['name'])
+        # set the name of the service, related to ServicesActivated model
+        cleaned_data['name'] = sa
         if sa.auth_required and sa.self_hosted:
             if cleaned_data.get('host') == '' or \
                cleaned_data.get('username') == '' or \
@@ -64,7 +71,7 @@ class UserServiceForm(forms.ModelForm):
             meta to add/override anything we need
         """
         model = UserService
-        exclude = ('user', 'counter_ok', 'counter_ko')
+        exclude = ('name', 'user', 'counter_ok', 'counter_ko')
         widgets = {
             'host': TextInput(attrs={'class': 'form-control'}),
             'username': TextInput(attrs={'class': 'form-control'}),
@@ -87,23 +94,3 @@ class LoginForm(forms.ModelForm):
             'password': PasswordInput(attrs={'placeholder': _('Password')}),
         }
         exclude = ()
-
-
-def activated_services(user):
-    """
-        get the activated services added from the administrator
-    """
-    all_datas = ()
-    data = ()
-    services = ServicesActivated.objects.filter(status=1)
-    for class_name in services:
-        # only display the services that are not already used
-        if UserService.objects.filter(name__exact=class_name.name,
-                                      user__exact=user):
-            continue
-        # 2nd array position contains the name of the service
-        else:
-            data = (class_name.name,
-                    class_name.name.rsplit('Service', 1)[1])
-            all_datas = (data,) + all_datas
-    return all_datas

@@ -51,7 +51,7 @@
                         {% endif %}
                     </li>
                     <li>
-                        <a href="{% url 'user_services' %}" title="{% trans 'List of your own activated services' %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Activated services</a>
+                        <a href="{% url 'user_services' %}" title="{% trans 'List of your services' %}"><span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;Services</a>
                     </li>
                     {% block filter_trigger %}
                         {% include "filter.html" with trigger_filter_by=trigger_filter_by %}

@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
@@ -9,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
 
 from django_th.models import UserService, ServicesActivated
-from django_th.forms.base import UserServiceForm, activated_services
+from django_th.forms.base import UserServiceForm
 from django_th.services import default_provider
 
 """
@@ -33,105 +34,6 @@ def renew_service(request, pk):
     return redirect(lets_auth(request))
 
 
-class UserServiceListView(ListView):
-    """
-        List of the services activated by the user
-    """
-    context_object_name = "services_list"
-    queryset = UserService.objects.all()
-    template_name = "services/services.html"
-
-    def get_queryset(self):
-        # get the Service of the connected user
-        if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user)
-        # otherwise return nothing
-        return UserService.objects.none()
-
-    def get_context_data(self, **kw):
-        context = super(UserServiceListView, self).get_context_data(**kw)
-        if self.request.user.is_authenticated():
-            activated_qs = ServicesActivated.objects.all()
-            service_list_available = UserService.objects.filter(
-                id__exact=None, name__in=activated_qs)
-            nb_user_service = UserService.objects.filter(
-                user=self.request.user).count()
-            nb_service = ServicesActivated.objects.all().count()
-            if nb_user_service == nb_service:
-                context['action'] = 'hide'
-            else:
-                context['action'] = 'display'
-
-            context['service_list_available'] = service_list_available
-
-            # get the activated services
-            """
-                Number of services activated
-            """
-            context['nb_services'] = nb_user_service
-
-            if self.kwargs:
-                context['sentence'] = _('Your service has been successfully ')
-                if self.kwargs.get('action') in ('renewed', 'deleted',
-                                                 'edited', 'added'):
-                    context['sentence'] += self.kwargs.get('action')
-
-        return context
-
-
-class UserServiceCreateView(CreateView):
-    """
-        Form to add a service
-    """
-    form_class = UserServiceForm
-    template_name = "services/add_service.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(UserServiceCreateView, self).get_context_data(**kwargs)
-        context['services'] = len(activated_services(self.request.user))
-        return context
-
-    @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
-
-    def form_valid(self, form):
-        name = form.cleaned_data.get('name').name
-        user = self.request.user
-        if UserService.objects.filter(name=name, user=user).exists():
-            from django.contrib import messages
-            messages.warning(self.request, 'Service %s already activated' %
-                             name.split('Service')[1])
-            return HttpResponseRedirect(reverse('user_services'))
-        else:
-            form.save(user=user)
-
-            sa = ServicesActivated.objects.get(
-                name=form.cleaned_data.get('name').name)
-            # let's build the 'call' of the auth method
-            # which own to a Service Class
-            if sa.auth_required:
-                # use the default_provider to get the object from the ServiceXXX
-                default_provider.load_services()
-                service_object = default_provider.get_service(
-                    str(form.cleaned_data.get('name').name))
-                # get the class object
-                lets_auth = getattr(service_object, 'auth')
-                # call the auth func from this class
-                # and redirect to the external service page
-                # to auth the application django-th to access to the user
-                # account details
-                return redirect(lets_auth(self.request))
-
-            return HttpResponseRedirect(reverse('user_services',
-                                                args=['added']))
-
-    def get_form_kwargs(self):
-        kwargs = super(UserServiceCreateView, self).get_form_kwargs()
-        kwargs['initial']['user'] = self.request.user
-        return kwargs
-
-
 class UserServiceMixin(object):
     """
         Mixin for UpdateView and DeleteView
@@ -151,22 +53,148 @@ class UserServiceMixin(object):
         return UserService.objects.none()
 
 
+class UserServiceListView(ListView):
+    """
+        List of the services activated by the user
+    """
+    context_object_name = "services_list"
+    queryset = UserService.objects.all()
+    template_name = "services/services.html"
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        return super(UserServiceListView, self).dispatch(*args, **kwargs)
+
+    def get_queryset(self):
+        # get the Service of the connected user
+        if self.request.user.is_authenticated():
+            return self.queryset.filter(user=self.request.user).\
+                order_by('name')
+        # otherwise return nothing
+        return UserService.objects.none()
+
+    def get_context_data(self, **kw):
+        context = super(UserServiceListView, self).get_context_data(**kw)
+        if self.request.user.is_authenticated():
+            service_list_remaining = ServicesActivated.objects.exclude(
+                name__in=self.queryset.values_list('name')).order_by('name')
+            context['service_list_remaining'] = service_list_remaining
+
+        return context
+
+
+class UserServiceCreateView(CreateView):
+    """
+        Form to add a service
+    """
+    form_class = UserServiceForm
+    template_name = "services/service_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(UserServiceCreateView, self).get_context_data(**kwargs)
+        context['service_name_alone'] = self.kwargs.get('service_name').rsplit(
+            'Service')[1]
+        context['service_name'] = self.kwargs.get('service_name')
+
+        context['SERVICES_AUTH'] = settings.SERVICES_AUTH
+        context['SERVICES_HOSTED_WITH_AUTH'] = \
+            settings.SERVICES_HOSTED_WITH_AUTH
+        context['SERVICES_NEUTRAL'] = settings.SERVICES_NEUTRAL
+        return context
+
+    @method_decorator(login_required)
+    def dispatch(self, *args, **kwargs):
+        name = self.kwargs.get('service_name')
+        user = self.request.user
+        if UserService.objects.filter(name=name, user=user).exists():
+            messages.warning(self.request, _('Service %s already activated') %
+                             name.split('Service')[1])
+            return HttpResponseRedirect(reverse('user_services'))
+        return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
+
+    def form_valid(self, form):
+        name = form.cleaned_data.get('name').name
+        user = self.request.user
+        form.save(user=user, service_name=self.kwargs.get('service_name'))
+
+        sa = ServicesActivated.objects.get(name=name)
+        # let's build the 'call' of the auth method
+        # which own to a Service Class
+        if sa.auth_required:
+            # use the default_provider to get the object from the ServiceXXX
+            default_provider.load_services()
+            service_object = default_provider.get_service(str(name))
+            # get the class object
+            lets_auth = getattr(service_object, 'auth')
+            # call the auth func from this class
+            # and redirect to the external service page
+            # to auth the application django-th to access to the user
+            # account details
+            return redirect(lets_auth(self.request))
+        messages.success(self.request, _('Service %s activated successfully') %
+                         name.split('Service')[1])
+        return HttpResponseRedirect(reverse('user_services'))
+
+    def get_form_kwargs(self):
+        kwargs = super(UserServiceCreateView, self).get_form_kwargs()
+        kwargs['initial']['user'] = self.request.user
+        kwargs['initial']['name'] = self.kwargs.get('service_name')
+        return kwargs
+
+
 class UserServiceUpdateView(UserServiceMixin, UpdateView):
     """
         Form to edit a service
     """
-    fields = ['username', 'password',
-              'client_secret', 'client_id', 'host',
-              'token', 'duration']
-    template_name = "services/edit_service.html"
+    form_class = UserServiceForm
+    template_name = "services/service_form.html"
 
     def get_success_url(self):
-        return reverse("user_services", args=["edited"])
+        return reverse("user_services")
 
     def get_context_data(self, **kwargs):
+        """
+        push data from settings and from the current object, in the current
+        context
+        :param kwargs:
+        :return:
+        """
         context = super(UserServiceUpdateView, self).get_context_data(**kwargs)
-        context['digester'] = settings.DJANGO_TH.get('digest_event')
+        context['service_name_alone'] = self.object.name.name.rsplit(
+            'Service')[1]
+        context['service_name'] = self.object.name.name
+
+        context['SERVICES_AUTH'] = settings.SERVICES_AUTH
+        context['SERVICES_HOSTED_WITH_AUTH'] = \
+            settings.SERVICES_HOSTED_WITH_AUTH
+        context['SERVICES_NEUTRAL'] = settings.SERVICES_NEUTRAL
+
+        context['action'] = 'edit'
         return context
+
+    def get_form_kwargs(self):
+        """
+        initialize default value that won't be displayed
+        :return:
+        """
+        kwargs = super(UserServiceUpdateView, self).get_form_kwargs()
+        kwargs['initial']['user'] = self.request.user
+        kwargs['initial']['name'] = self.object.name
+        return kwargs
+
+    def form_valid(self, form):
+        """
+        save the data
+        :param form:
+        :return:
+        """
+        # 'name' is injected in the clean() of the form line 56
+        name = form.cleaned_data.get('name').name
+        user = self.request.user
+        form.save(user=user, service_name=name)
+        messages.success(self.request, _('Service %s modified successfully') %
+                         name.split('Service')[1])
+        return HttpResponseRedirect(reverse('user_services'))
 
 
 class UserServiceDeleteView(UserServiceMixin, DeleteView):
@@ -177,4 +205,6 @@ class UserServiceDeleteView(UserServiceMixin, DeleteView):
     success_url = reverse_lazy("service_delete_thanks")
 
     def get_success_url(self):
-        return reverse("user_services", args=["deleted"])
+        messages.success(self.request, _('Service %s deleted successfully') %
+                         self.object.name.name.split('Service')[1])
+        return reverse("user_services")

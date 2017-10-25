@@ -112,3 +112,16 @@ TH_REDDIT_KEY = {
 }
 
 TH_PELICAN_AUTHOR = env.str('TH_PELICAN_AUTHOR', 'FoxMaSk')
+
+# list of services that require the auth of the service
+SERVICES_AUTH = ('ServiceEvernote', 'ServiceGithub', 'ServicePocket',
+                 'ServicePushbullet', 'ServiceReddit', 'ServiceSlack',
+                 'ServiceTaiga', 'ServiceTodoist', 'ServiceTrello',
+                 'ServiceTumblr', 'ServiceTwitter',
+                 )
+
+# list of services that require the auth (or not) of the service and are self hosted
+SERVICES_HOSTED_WITH_AUTH = ('ServiceMastodon', 'ServiceWallabag',)
+
+# list of services that require nothing
+SERVICES_NEUTRAL = ('ServicePelican', 'ServiceRss',)
