@@ -2,6 +2,7 @@
 import arrow
 
 from django.conf import settings
+from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from django_th.tests.test_main import MainTest, setup_view
@@ -9,7 +10,7 @@ import django_th
 
 from th_rss.forms import RssProviderForm
 from th_rss.models import Rss
-from th_rss.views import MyRssFeed
+from th_rss.views import MyRssFeed, MyRssFeeds
 
 import uuid
 
@@ -115,3 +116,23 @@ class TestMyRssFeed(RssTest):
         self.assertTrue('lang' in context)
         self.assertTrue('version' in context)
         self.assertTrue('uuid' in context)
+
+
+class MyRssFeedsListViewTestCase(MainTest):
+
+    def setUp(self):
+        super(MyRssFeedsListViewTestCase, self).setUp()
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+
+    def test_get(self):
+        template_name = "rss/my_feeds.html"
+        # Setup request and view.
+        request = RequestFactory().get(reverse('my_feeds'))
+        request.user = self.user
+        view = MyRssFeeds.as_view(template_name=template_name)
+        # Run.
+        response = view(request, user=request.user)
+        # Check.
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], template_name)

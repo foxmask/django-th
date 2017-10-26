@@ -139,3 +139,16 @@ class ServiceTrelloTest(TrelloTest):
                 se.save_data(self.trigger_id, **data)
             mock_save_data.assert_called_once_with()
         mock_save_data2.assert_called_once_with(t.board_name)
+
+    def test_save_data_no_title(self):
+        """
+           Test if the creation of the Trello object looks fine (no title)
+        """
+        self.create_trello()
+        data = {'link': '',
+                'title': '',
+                'content': ''}
+
+        se = ServiceTrello(self.token)
+        result = se.save_data(self.trigger_id, **data)
+        self.assertFalse(result)
