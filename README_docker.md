@@ -1,4 +1,4 @@
-# Docker for Trigger Happy
+# Docker for Trigger Happy
 
 This is very very early stage for docker support
 but this should do the trick until next time, based on https://docs.docker.com/engine/reference/commandline/build/ and https://docs.docker.com/compose/django/ and a bit of https://hub.docker.com/_/django/
@@ -19,6 +19,7 @@ docker-compose up
 
 ```
 docker-compose run web  python manage.py migrate --settings=django_th.settings_docker
+docker-compose run web  python manage.py initial_services --settings=django_th.settings_docker
 docker-compose run web  python manage.py createsuperuser --settings=django_th.settings_docker
 ```
 

@@ -128,3 +128,29 @@ Advice
 ------
 
 If you plan to setup Trigger Happy for you and a group of friends, I suggest you to install https://www.intenct.nl/projects/django-allauth/
+
+Database
+========
+
+bootstrap the database
+
+.. code-block:: bash
+
+    python manage.py migrate
+    python manage.py createsuperuser
+
+Load the initial services:
+
+.. code-block:: bash
+
+    python manage.py loaddata initial_services
+
+Start the application
+=====================
+
+.. code-block:: bash
+
+    python manage.py runserver &
+
+
+Now open your browser and go to http://127.0.0.1:8000/th/ to start using the application by logged in
