@@ -103,3 +103,12 @@ The Administration Guide
    :maxdepth: 2
 
    admin_guide/index
+
+
+The Docker Guide
+-----------------
+
+.. toctree::
+   :maxdepth: 2
+
+   docker_guide/index

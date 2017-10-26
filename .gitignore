@@ -20,3 +20,4 @@ build
 th_tox
 django_th/.env
 docs/_build
+htmlcov

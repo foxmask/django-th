@@ -1,4 +1,4 @@
-MASTER]
+[MASTER]
 load-plugins=pylint_common, pylint_django
 
 [FORMAT]
