@@ -1,17 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import unicode_literals
-from multiprocessing import Pool, TimeoutError
 # django
-from django.core.management.base import BaseCommand
 from django.conf import settings
-from logging import getLogger
+from django.core.management.base import BaseCommand
 from django.core.cache import caches
 # trigger happy
 from django_th.models import TriggerService
 from django_th.read import Read
 from django_th.publish import Pub
 
+from logging import getLogger
+from multiprocessing import Pool, TimeoutError
 # create logger
 logger = getLogger('django_th.trigger_happy')
 cache = caches['django_th']
@@ -48,4 +48,4 @@ class Command(BaseCommand):
 
                 cache.delete('django_th' + '_fire_trigger_' + str(trigger_id))
         except TimeoutError as e:
-            logger.warn(e)
+            logger.warning(e)

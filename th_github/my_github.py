@@ -1,16 +1,17 @@
 # coding: utf-8
-# github
-from github3 import GitHub
-
 # django classes
 from django.conf import settings
-from logging import getLogger
 from django.core.cache import caches
 from django.utils.translation import ugettext as _
 
 # django_th classes
-from django_th.services.services import ServicesMgr
 from django_th.models import update_result
+from django_th.services.services import ServicesMgr
+
+# github
+from github3 import GitHub
+
+from logging import getLogger
 from th_github.models import Github
 
 """

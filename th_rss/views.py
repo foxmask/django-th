@@ -1,12 +1,12 @@
 # coding: utf-8
-from django.views.generic import TemplateView, ListView
-from django.core.cache import caches
 from django.conf import settings
+from django.core.cache import caches
+from django.views.generic import TemplateView, ListView
+
+from django_th.models import TriggerService
+import django_th
 
 from th_rss.models import Rss
-from django_th.models import TriggerService
-
-import django_th
 
 
 class MyRssFeed(TemplateView):

@@ -1,12 +1,13 @@
 # coding: utf-8
 from django.conf import settings
 
+from django_th.tests.test_main import MainTest
+
 from th_taiga.models import Taiga
 from th_taiga.forms import TaigaProviderForm
 from th_taiga.my_taiga import ServiceTaiga
 
 from unittest.mock import patch
-from django_th.tests.test_main import MainTest
 
 
 class TaigaTest(MainTest):

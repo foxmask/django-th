@@ -5,10 +5,11 @@ from __future__ import absolute_import
 # django
 from django.conf import settings
 from django.core.cache import caches
-from logging import getLogger
 
 # trigger happy
 from django_th.my_services import MyService
+
+from logging import getLogger
 
 logger = getLogger('django_th.trigger_happy')
 

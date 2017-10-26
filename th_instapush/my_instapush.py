@@ -1,7 +1,8 @@
 # coding: utf-8
+from django_th.services.services import ServicesMgr
+
 from instapush import Instapush, App
 
-from django_th.services.services import ServicesMgr
 from th_instapush.models import Instapush as InstapushModel
 
 """

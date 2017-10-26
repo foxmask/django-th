@@ -1,14 +1,14 @@
-from django.shortcuts import render_to_response
-from formtools.wizard.views import SessionWizardView
+# coding: utf-8
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
 
 from django_th.models import TriggerService, UserService
 from django_th.forms.wizard import ConsumerForm
 from django_th.tools import get_service, class_for_name
 from django_th.services import default_provider
 
-
+from formtools.wizard.views import SessionWizardView
 """
    Part III : Service Wizard
 """

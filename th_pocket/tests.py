@@ -1,14 +1,17 @@
 # coding: utf-8
 import arrow
-from unittest.mock import patch
 import datetime
-from pocket import Pocket
 
 from django.conf import settings
-from th_pocket.models import Pocket as PocketModel
-from th_pocket.forms import PocketProviderForm, PocketConsumerForm
-from th_pocket.my_pocket import ServicePocket
 from django_th.tests.test_main import MainTest
+
+from pocket import Pocket
+
+from th_pocket.forms import PocketProviderForm, PocketConsumerForm
+from th_pocket.models import Pocket as PocketModel
+from th_pocket.my_pocket import ServicePocket
+
+from unittest.mock import patch
 
 
 class PocketTest(MainTest):

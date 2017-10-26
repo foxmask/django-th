@@ -1,13 +1,14 @@
+# coding: utf-8
 from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import CreateView, DeleteView, UpdateView
-from django.views.generic import ListView
 from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
+from django.views.generic import CreateView, DeleteView, UpdateView
+from django.views.generic import ListView
 
 from django_th.models import UserService, ServicesActivated
 from django_th.forms.base import UserServiceForm

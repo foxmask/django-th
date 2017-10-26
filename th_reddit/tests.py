@@ -5,9 +5,9 @@ from django.contrib.auth.models import User
 
 from django_th.models import TriggerService, UserService, ServicesActivated
 
+from th_reddit.forms import RedditProviderForm, RedditConsumerForm
 from th_reddit.models import Reddit
 from th_reddit.my_reddit import ServiceReddit
-from th_reddit.forms import RedditProviderForm, RedditConsumerForm
 
 
 class RedditTest(TestCase):

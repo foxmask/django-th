@@ -7,9 +7,9 @@ from django_th.models import ServicesActivated
 
 from mastodon import Mastodon as MastodonAPI
 
+from th_mastodon.forms import MastodonProviderForm, MastodonConsumerForm
 from th_mastodon.models import Mastodon
 from th_mastodon.my_mastodon import ServiceMastodon
-from th_mastodon.forms import MastodonProviderForm, MastodonConsumerForm
 
 from unittest.mock import patch
 

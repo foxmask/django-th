@@ -1,13 +1,13 @@
 # coding: utf-8
-from unittest.mock import patch
-from todoist.api import TodoistAPI
-
 from django.conf import settings
-
 from django_th.tests.test_main import MainTest
+
 from th_todoist.models import Todoist
 from th_todoist.forms import TodoistProviderForm, TodoistConsumerForm
 from th_todoist.my_todoist import ServiceTodoist
+
+from todoist.api import TodoistAPI
+from unittest.mock import patch
 
 
 class TodoistTest(MainTest):

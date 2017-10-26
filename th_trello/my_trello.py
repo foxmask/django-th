@@ -1,18 +1,16 @@
 # coding: utf-8
-# Trello API
-from trello import TrelloClient, ResourceUnavailable
-
 # django classes
 from django.conf import settings
-from django.utils.translation import ugettext as _
-from logging import getLogger
 from django.core.cache import caches
-
+from django.utils.translation import ugettext as _
 # django_th classes
 from django_th.apps import DjangoThConfig
-from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+from django_th.services.services import ServicesMgr
 
+from logging import getLogger
+# Trello API
+from trello import TrelloClient, ResourceUnavailable
 """
     handle process with Trello
     put the following in settings.py

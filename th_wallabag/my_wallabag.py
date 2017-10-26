@@ -1,20 +1,21 @@
 # coding: utf-8
 # add here the call of any native lib of python like datetime etc.
 import arrow
-import requests
-from requests import HTTPError
-# add the python API here if needed
-from wallabag_api.wallabag import Wallabag as Wall
 # django classes
 from django.core.urlresolvers import reverse
-from logging import getLogger
 from django.core.cache import caches
-
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.html_entities import HtmlEntities
 from django_th.models import UserService, ServicesActivated, update_result
+
+from logging import getLogger
+import requests
+from requests import HTTPError
+
 from th_wallabag.models import Wallabag
+# add the python API here if needed
+from wallabag_api.wallabag import Wallabag as Wall
 
 """
     handle process with wallabag

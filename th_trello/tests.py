@@ -1,7 +1,4 @@
 # coding: utf-8
-from unittest.mock import patch
-from trello import TrelloClient
-
 from django.conf import settings
 
 from django_th.tests.test_main import MainTest
@@ -9,6 +6,10 @@ from django_th.tests.test_main import MainTest
 from th_trello.models import Trello
 from th_trello.forms import TrelloProviderForm, TrelloConsumerForm
 from th_trello.my_trello import ServiceTrello
+
+from trello import TrelloClient
+
+from unittest.mock import patch
 
 
 class TrelloTest(MainTest):

@@ -3,9 +3,8 @@ from django.core.urlresolvers import reverse
 from django.test import RequestFactory
 
 from django_th.models import UserService
-from django_th.tests.test_views import setup_view
-from django_th.tests.test_main import MainTest
-from django_th.views_userservices import UserServiceListView
+from django_th.tests.test_main import MainTest, setup_view
+from django_th.views_userservices import UserServiceListView, UserServiceCreateView, UserServiceUpdateView
 
 
 class UserServiceListViewTestCase(MainTest):
@@ -35,61 +34,32 @@ class UserServiceListViewTestCase(MainTest):
         self.assertIn('service_list_remaining', context)
 
 
-"""
 class UserServiceCreateViewTestCase(MainTest):
 
-    def setUp(self):
-        super(UserServiceCreateViewTestCase, self).setUp()
-        # Every test needs access to the request factory.
-        self.factory = RequestFactory()
-
-    def test_context_data(self):
-        # Setup request and view
-        request = self.factory.get(reverse('add_service', args=['ServiceRss']))
+    def test_get(self):
+        template_name = 'services/service_form.html'
+        # Setup request and view.
+        request = RequestFactory().get('th/service/add/')
         request.user = self.user
-
-        view = UserServiceCreateView(
-            template_name='services/service_form.html',
-            form_class=UserServiceForm)
-
-        kwargs = dict()
-        kwargs['service_name'] = 'ServiceRss'
-
-        view = setup_view(view, request, **kwargs)
-        context = view.get_context_data()
-
-        self.assertIn('service_name_alone', context)
-        self.assertIn('service_name', context)
-        self.assertIn('SERVICES_AUTH', context)
-        self.assertIn('SERVICES_HOSTED_WITH_AUTH', context)
-        self.assertIn('SERVICES_NEUTRAL', context)
+        view = UserServiceCreateView.as_view(template_name=template_name)
+        # Run.
+        response = view(request, user=request.user, service_name="ServiceRss")
+        # Check.
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], template_name)
 
 
 class UserServiceUpdateViewTestCase(MainTest):
 
-    def setUp(self):
-        super(UserServiceUpdateViewTestCase, self).setUp()
-        # Every test needs access to the request factory.
-        self.factory = RequestFactory()
-
-    def test_context_data(self):
-        # Setup request and view
-        request = self.factory.get(reverse('edit_service', args=[1]))
+    def test_get(self):
+        template_name = 'services/service_form.html'
+        t = self.create_triggerservice()
+        # Setup request and view.
+        request = RequestFactory().get('th/service/edit/')
         request.user = self.user
-
-        view = UserServiceUpdateView(
-            template_name='services/service_form.html',
-            form_class=UserServiceForm)
-
-        kwargs = dict()
-        kwargs['pk'] = 1
-
-        view = setup_view(view, request, **kwargs)
-        context = view.get_context_data()
-
-        self.assertIn('service_name_alone', context)
-        self.assertIn('service_name', context)
-        self.assertIn('SERVICES_AUTH', context)
-        self.assertIn('SERVICES_HOSTED_WITH_AUTH', context)
-        self.assertIn('SERVICES_NEUTRAL', context)
-"""
+        view = UserServiceUpdateView.as_view(template_name=template_name)
+        # Run.
+        response = view(request, user=request.user, pk=t.id)
+        # Check.
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], template_name)

@@ -1,13 +1,13 @@
 # coding: utf-8
-from pytumblr import TumblrRestClient
 # django classes
 from django.conf import settings
 from django.core.cache import caches
+# django_th classes
+from django_th.services.services import ServicesMgr
 
 from logging import getLogger
 
-# django_th classes
-from django_th.services.services import ServicesMgr
+from pytumblr import TumblrRestClient
 
 """
     handle process with tumblr

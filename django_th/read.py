@@ -4,7 +4,6 @@ from __future__ import absolute_import
 
 import arrow
 # django
-from logging import getLogger
 from django.conf import settings
 from django.utils.timezone import now
 
@@ -12,6 +11,8 @@ from django.utils.timezone import now
 from django_th.services import default_provider
 from django_th.models import TriggerService
 from django_th.tools import warn_user_and_admin
+
+from logging import getLogger
 
 logger = getLogger('django_th.trigger_happy')
 

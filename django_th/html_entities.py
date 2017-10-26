@@ -1,6 +1,6 @@
 # coding: utf-8
-import re
 import html.entities as htmlentities
+import re
 
 
 class HtmlEntities:

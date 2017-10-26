@@ -1,13 +1,12 @@
 # coding: utf-8
-from taiga import TaigaAPI
-
 # django classes
-from logging import getLogger
 from django.core.cache import caches
-
 # django_th classes
-from django_th.services.services import ServicesMgr
 from django_th.models import UserService
+from django_th.services.services import ServicesMgr
+
+from logging import getLogger
+from taiga import TaigaAPI
 from th_taiga.models import Taiga
 
 logger = getLogger('django_th.trigger_happy')

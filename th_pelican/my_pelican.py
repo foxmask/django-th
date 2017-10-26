@@ -1,16 +1,13 @@
 # coding: utf-8
 import arrow
-
-from slugify import slugify
-
 # django classes
 from django.conf import settings
-from logging import getLogger
-
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.tools import to_datetime
 
+from logging import getLogger
+from slugify import slugify
 """
     TH_SERVICES = (
         ...

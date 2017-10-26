@@ -2,10 +2,11 @@
 from django.conf import settings
 from django.core.cache import caches
 
+from django_th.tests.test_main import MainTest
+
 from th_twitter.models import Twitter
 from th_twitter.forms import TwitterProviderForm, TwitterConsumerForm
 from th_twitter.my_twitter import ServiceTwitter
-from django_th.tests.test_main import MainTest
 
 from twython import Twython
 from unittest.mock import patch

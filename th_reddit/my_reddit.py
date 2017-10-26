@@ -5,11 +5,12 @@ import arrow
 from django.conf import settings
 from django.core.cache import caches
 from django.core.urlresolvers import reverse
-from logging import getLogger
 
 # django_th classes
-from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+from django_th.services.services import ServicesMgr
+
+from logging import getLogger
 
 from praw import Reddit as RedditApi
 

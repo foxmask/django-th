@@ -1,13 +1,11 @@
 # coding: utf-8
 import arrow
-# TodoistAPI
-from todoist.api import TodoistAPI
-
 # django classes
 from django.conf import settings
-from logging import getLogger
 from django.core.cache import caches
-
+from logging import getLogger
+# TodoistAPI
+from todoist.api import TodoistAPI
 # django_th classes
 from django_th.services.services import ServicesMgr
 

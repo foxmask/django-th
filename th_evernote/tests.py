@@ -1,18 +1,22 @@
 # coding: utf-8
-from unittest.mock import patch
-
 from django.conf import settings
 from django.core.cache import caches
 
 from django_th.tests.test_main import MainTest
+
+from evernote.api.client import EvernoteClient
+
 from th_evernote.models import Evernote
 from th_evernote.forms import EvernoteProviderForm, EvernoteConsumerForm
 from th_evernote.my_evernote import ServiceEvernote
 from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.sanitize import sanitize
-from evernote.api.client import EvernoteClient
+
+from unittest.mock import patch
+
 try:
     from unittest import mock
+
 except ImportError:
     import mock
 

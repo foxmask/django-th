@@ -1,6 +1,6 @@
 # coding: utf-8
-from django.conf import settings
 from collections import OrderedDict
+from django.conf import settings
 
 
 class ServiceProvider(OrderedDict):

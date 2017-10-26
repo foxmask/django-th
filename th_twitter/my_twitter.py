@@ -1,21 +1,20 @@
 # coding: utf-8
 import arrow
-
-# Twitter lib
-from twython import Twython, TwythonAuthError, TwythonRateLimitError
-
 # django classes
 from django.conf import settings
 from django.utils import html
 from django.utils.translation import ugettext as _
 from django.core.cache import caches
-
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
-from th_twitter.models import Twitter
 
 from logging import getLogger
+
+from th_twitter.models import Twitter
+# Twitter lib
+from twython import Twython, TwythonAuthError, TwythonRateLimitError
+
 
 """
     handle process with twitter

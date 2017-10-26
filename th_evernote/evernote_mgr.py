@@ -1,15 +1,15 @@
 # coding: utf-8
+from django.core.cache import caches
+from django.utils.translation import ugettext as _
+
+from django_th.models import update_result
+
 import evernote.edam.type.ttypes as Types
 from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
 from evernote.edam.error.ttypes import EDAMErrorCode
 from evernote.edam.notestore import NoteStore
 
-from django.utils.translation import ugettext as _
 from logging import getLogger
-from django.core.cache import caches
-
-from django_th.models import update_result
-
 logger = getLogger('django_th.trigger_happy')
 cache = caches['django_th']
 

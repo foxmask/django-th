@@ -18,8 +18,8 @@ from evernote.edam.error.ttypes import EDAMErrorCode
 
 from logging import getLogger
 
-from th_evernote.models import Evernote
 from th_evernote.evernote_mgr import EvernoteMgr
+from th_evernote.models import Evernote
 from th_evernote.sanitize import sanitize
 
 """

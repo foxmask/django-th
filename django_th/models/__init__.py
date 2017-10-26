@@ -10,10 +10,10 @@ from django.dispatch import receiver
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
-from logging import getLogger
-
 from django_th.signals import digest_event
 from django_th.tools import warn_user_and_admin
+
+from logging import getLogger
 
 logger = getLogger('django_th.trigger_happy')
 

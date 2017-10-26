@@ -1,11 +1,13 @@
 # coding: utf-8
-from unittest.mock import patch
-from instapush import App
 from django_th.tests.test_main import MainTest
+
+from instapush import App
 
 from th_instapush.models import Instapush as InstapushModel
 from th_instapush.forms import InstapushConsumerForm
 from th_instapush.my_instapush import ServiceInstapush
+
+from unittest.mock import patch
 
 
 class InstapushTest(MainTest):

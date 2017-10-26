@@ -1,8 +1,5 @@
 # coding: utf-8
 import arrow
-from logging import getLogger
-
-from mastodon import Mastodon as MastodonAPI
 
 # django classes
 from django.conf import settings
@@ -12,9 +9,14 @@ from django.utils import html
 from django.utils.translation import ugettext as _
 
 # django_th classes
-from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+from django_th.services.services import ServicesMgr
 from django_th.tools import download_image
+
+from logging import getLogger
+
+from mastodon import Mastodon as MastodonAPI
+
 from th_mastodon.models import Mastodon
 
 import re

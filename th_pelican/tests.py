@@ -2,8 +2,9 @@
 from django.conf import settings
 
 from django_th.tests.test_main import MainTest
-from th_pelican.models import Pelican
+
 from th_pelican.forms import PelicanProviderForm, PelicanConsumerForm
+from th_pelican.models import Pelican
 from th_pelican.my_pelican import ServicePelican
 
 

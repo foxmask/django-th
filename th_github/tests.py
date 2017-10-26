@@ -1,14 +1,15 @@
 # coding: utf-8
-from unittest.mock import patch, PropertyMock
-from github3 import GitHub
-
 from django.conf import settings
 from django.core.cache import caches
+from django_th.tests.test_main import MainTest
+
+from github3 import GitHub
 
 from th_github.models import Github
 from th_github.forms import GithubProviderForm, GithubConsumerForm
 from th_github.my_github import ServiceGithub
-from django_th.tests.test_main import MainTest
+
+from unittest.mock import patch, PropertyMock
 
 cache = caches['django_th']
 

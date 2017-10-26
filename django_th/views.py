@@ -3,19 +3,16 @@ from __future__ import unicode_literals
 
 from django.core.cache import caches
 from django.conf import settings
-
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
-from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 from django.db.models import Q
+from django.http import HttpResponseRedirect
 from django.utils.decorators import method_decorator
-
 from django.urls import reverse, reverse_lazy
+from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 
 # trigger_happy
-from django_th.models import TriggerService, UserService
-
 from django_th.forms.base import TriggerServiceForm
+from django_th.models import TriggerService, UserService
 from django_th.views_fbv import can_modify_trigger
 
 import logging

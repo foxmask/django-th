@@ -1,13 +1,15 @@
 # coding: utf-8
-import requests
-
 # django classes
-from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import TriggerService
+
+from logging import getLogger
+
+import requests
+
 from th_slack.models import Slack
 
 logger = getLogger('django_th.trigger_happy')

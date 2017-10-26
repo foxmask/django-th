@@ -6,12 +6,12 @@ import arrow
 
 # django
 from django.conf import settings
-from logging import getLogger
 
 # trigger happy
 from django_th.services import default_provider
 from django_th.models import TriggerService, update_result
 
+from logging import getLogger
 
 logger = getLogger('django_th.trigger_happy')
 

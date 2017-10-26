@@ -1,13 +1,15 @@
 # coding: utf-8
 from django.conf import settings
 
-from th_slack.models import Slack
+from django_th.tests.test_main import MainTest
+
+import requests
+
 from th_slack.forms import SlackConsumerForm
+from th_slack.models import Slack
 from th_slack.my_slack import ServiceSlack
 
-from django_th.tests.test_main import MainTest
 from unittest.mock import patch
-import requests
 
 
 class SlackTest(MainTest):

@@ -1,18 +1,17 @@
 # coding: utf-8
 import arrow
-
-# pocket API
-from pocket import Pocket, AuthException, RateLimitException
-
 # django classes
 from django.conf import settings
-from logging import getLogger
 from django.core.cache import caches
 
 # django_th classes
+from django_th.html_entities import HtmlEntities
 from django_th.models import update_result, UserService
 from django_th.services.services import ServicesMgr
-from django_th.html_entities import HtmlEntities
+
+from logging import getLogger
+# pocket API
+from pocket import Pocket, AuthException, RateLimitException
 
 """
     handle process with pocket

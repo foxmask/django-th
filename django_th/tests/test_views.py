@@ -4,11 +4,11 @@ from django.test import RequestFactory, Client
 
 from django_th.models import TriggerService
 from django_th.views import TriggerEditedTemplateView
-from django_th.views import TriggerDeletedTemplateView, TriggerListView
+from django_th.views import TriggerDeletedTemplateView, TriggerListView, TriggerUpdateView
 from django_th.views_fbv import can_modify_trigger, trigger_on_off, \
     trigger_edit, trigger_switch_all_to, list_services, \
     service_related_triggers_switch_to, fire_trigger
-from django_th.tests.test_main import MainTest, setup_view
+from django_th.tests.test_main import MainTest
 
 from th_rss.models import Rss
 
@@ -55,38 +55,33 @@ class TriggerListViewTestCase(MainTest):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
 
-    def test_context_data(self):
-        """
-        TriggerListView.get_context_data() sets
-        'triggers_enabled', 'triggers_disabled', 'services_activated'
-        in context.
-        """
-        # Setup name.
-        triggers_enabled = triggers_disabled = services_activated = 0
-        queryset = TriggerService.objects.all()
-
+    def test_get(self):
+        template = "home.html"
         # Setup request and view.
-        request = self.factory.get('/')
+        request = RequestFactory().get('th/')
         request.user = self.user
-
-        view = TriggerListView(
-            template_name='home.html', object_list=queryset)
-        view = setup_view(view, request)
+        view = TriggerListView.as_view(template_name=template)
         # Run.
-        if request.user.is_authenticated():
-            triggers_enabled = 3
-            triggers_disabled = 1
-            services_activated = 5
-
-        context = view.get_context_data()
-        context['nb_triggers'] = {
-            'enabled': triggers_enabled, 'disabled': triggers_disabled}
-        context['nb_services'] = services_activated
-
+        response = view(request, user=request.user)
         # Check.
-        self.assertEqual(context['nb_triggers']['enabled'], triggers_enabled)
-        self.assertEqual(context['nb_triggers']['disabled'], triggers_disabled)
-        self.assertEqual(context['nb_services'], services_activated)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], "home.html")
+
+
+class TriggerUpdateViewTestCase(MainTest):
+
+    def test_get(self):
+        template_name = "triggers/edit_description_trigger.html"
+        t = self.create_triggerservice()
+        # Setup request and view.
+        request = RequestFactory().get('th/trigger/edit/')
+        request.user = self.user
+        view = TriggerUpdateView.as_view(template_name=template_name)
+        # Run.
+        response = view(request, user=request.user, pk=t.id)
+        # Check.
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.template_name[0], template_name)
 
 
 class ViewFunction(MainTest):

@@ -1,16 +1,17 @@
 # coding: utf-8
-import uuid
 import arrow
 
 from django.conf import settings
 from django.test import RequestFactory
 
-from th_rss.models import Rss
+from django_th.tests.test_main import MainTest, setup_view
+import django_th
+
 from th_rss.forms import RssProviderForm
+from th_rss.models import Rss
 from th_rss.views import MyRssFeed
 
-import django_th
-from django_th.tests.test_main import MainTest, setup_view
+import uuid
 
 
 class RssTest(MainTest):

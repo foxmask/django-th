@@ -1,13 +1,16 @@
 # coding: utf-8
-from django.test import TestCase
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.test import TestCase
+
 from django_th.models import TriggerService, UserService, ServicesActivated
+
+from pytumblr import TumblrRestClient
+
 from th_tumblr.models import Tumblr
 from th_tumblr.my_tumblr import ServiceTumblr
 from th_tumblr.forms import TumblrProviderForm, TumblrConsumerForm
 
-from pytumblr import TumblrRestClient
 from unittest.mock import patch
 
 

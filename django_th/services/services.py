@@ -1,11 +1,8 @@
 # coding: utf-8
-# Using OAuth1Session
-from requests_oauthlib import OAuth1Session, OAuth2Session
-
 # django stuff
+from django.conf import settings
 from django.core.cache import caches
 from django.core.urlresolvers import reverse
-from django.conf import settings
 
 try:
     from django.apps import apps
@@ -18,6 +15,8 @@ from django_th import signals
 from django_th.models import UserService, ServicesActivated, TriggerService
 from django_th.publishing_limit import PublishingLimit
 from django_th.html_entities import HtmlEntities
+# Using OAuth(12)Session
+from requests_oauthlib import OAuth1Session, OAuth2Session
 
 
 class ServicesMgr(object):
