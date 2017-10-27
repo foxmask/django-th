@@ -2,18 +2,19 @@
 from __future__ import unicode_literals
 import arrow
 # django
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth import logout
 from django.core.cache import caches
 from django.core import management
-from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth import logout
-from django.utils.translation import ugettext as _
 from django.http import HttpResponseRedirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.utils.translation import ugettext as _
 from django.urls import reverse
 
 # django_th
 from django_th.tools import get_service
-from django_th.models import TriggerService, ServicesActivated
+from django_th.models import TriggerService, ServicesActivated, UserService
 
 cache = caches['django_th']
 
@@ -133,6 +134,9 @@ def service_related_triggers_switch_to(request, user_service_id, switch):
         status=status)
     TriggerService.objects.filter(consumer__id=user_service_id).update(
         status=status)
+
+    service = UserService.objects.get(id=user_service_id).name.name.split('Service')[1]
+    messages.warning(request, _('All triggers of %s are now %s') % (service, switch))
 
     return HttpResponseRedirect(reverse('user_services'))
 

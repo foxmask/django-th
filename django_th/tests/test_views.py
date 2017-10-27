@@ -1,8 +1,10 @@
 # coding: utf-8
+import django.contrib.messages
 from django.core.cache import caches
+from django.shortcuts import reverse
 from django.test import RequestFactory, Client
 
-from django_th.models import TriggerService
+from django_th.models import TriggerService, UserService
 from django_th.views import TriggerEditedTemplateView
 from django_th.views import TriggerDeletedTemplateView, TriggerListView, TriggerUpdateView
 from django_th.views_fbv import can_modify_trigger, trigger_on_off, \
@@ -14,6 +16,7 @@ from th_rss.models import Rss
 
 import unittest
 import uuid
+from unittest.mock import patch
 
 cache = caches['django_th']
 
@@ -122,13 +125,21 @@ class ViewFunction(MainTest):
         response = fire_trigger(self.request, 1)
         self.assertTrue(response.status_code, 200)
 
-    def test_service_related_triggers_switch_to(self):
-        user_service_id = 1
-        response = service_related_triggers_switch_to(self.request,
+    @patch.object(django.contrib.messages, 'warning')
+    def test_service_related_triggers_switch_to(self, mock):
+        request = RequestFactory().get(reverse('delete_service'))
+
+        trigger = self.create_triggerservice()
+        user_service_id = UserService.objects.get(id=trigger.consumer.id).id
+
+        response = service_related_triggers_switch_to(request,
                                                       user_service_id, 'off')
+        mock.assert_called()
         self.assertEqual(response.status_code, 302)
-        response = service_related_triggers_switch_to(self.request,
+
+        response = service_related_triggers_switch_to(request,
                                                       user_service_id, 'on')
+        mock.assert_called()
         self.assertEqual(response.status_code, 302)
 
     def test_trigger_switch_all_to(self):

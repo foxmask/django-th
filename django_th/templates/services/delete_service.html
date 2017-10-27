@@ -5,9 +5,12 @@
 {% block title %}{% trans "My Services" %} - {{ user.username }}{% endblock %}
 {% block content %}
     <div class="col-md-12" id="trigger-content">
-        <h3>{% trans 'Deletion of your service' %}</h3>
+        <h3><span class="glyphicon glyphicon-trash"></span> {% trans 'Deletion of your service' %} {{ userservice.name|service_readable }}</h3>
         <div class="alert alert-danger">
-            {% trans "Are your sure you want to remove this service ?" %} : <span class="label label-danger">{{ userservice.name|service_readable }}</span>
+            {% blocktrans %}
+                Are you sure you want to remove this service ?<br/><br/>
+                <span class="glyphicon glyphicon-warning-sign icon-white"></span> Be careful, If you reply <span class="label label-danger">Yes</span>, all the related triggers will be deleted too
+            {% endblocktrans %}
         </div>
         <form method="post" role="form" class="form-horizontal" action="">
         {% csrf_token %}
