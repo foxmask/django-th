@@ -47,7 +47,7 @@
 Trigger Happy
 =============
 
-With this steamer bridge, automate the exchanges of the data between the applications and services you use on the web.
+Automate the exchanges of the data between the applications and services you use on the web.
 
 Make Twitter talk to Mastodon, make Github talk to Mattermost, store your favorite tweets by creating notes in Evernote, follow RSS feeds and post each news in Wallabag, Pocket or Evernote.
 
