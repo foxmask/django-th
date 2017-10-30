@@ -46,7 +46,7 @@ Trigger Happy: Steamer Bridge for your internet services
 Description:
 ------------
 
-`Trigger Happy` is a free software that provides a steamer bridge to automatically share data between popular services you use on the web.
+`Trigger Happy` is a free software that provides a "bus" to automatically share data between popular services you use on the web.
 
 The goal of this project is to be independent from any other solution like IFTTT, CloudWork or others.
 
