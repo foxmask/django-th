@@ -1,7 +1,7 @@
 .. Trigger Happy documentation master file, created by foxmask
 
-Trigger Happy: Steamer Bridge for your internet services
-========================================================
+Trigger Happy: The bus 🚌 for your internet services
+====================================================
 
 .. image:: https://travis-ci.org/foxmask/django-th.svg?branch=master
     :target: https://travis-ci.org/foxmask/django-th
