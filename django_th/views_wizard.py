@@ -1,7 +1,9 @@
 # coding: utf-8
+from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
+from django.utils.decorators import method_decorator
 
 from django_th.models import TriggerService, UserService
 from django_th.forms.wizard import ConsumerForm
@@ -14,6 +16,7 @@ from formtools.wizard.views import SessionWizardView
 """
 
 
+@method_decorator(login_required, name='dispatch')
 class UserServiceWizard(SessionWizardView):
 
     def get_template_names(self):
