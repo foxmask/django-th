@@ -3,7 +3,6 @@ from django.test import TestCase
 from django.test import RequestFactory
 
 from django_th.forms.base import TriggerServiceForm
-from django_th.forms.base import UserServiceForm
 from django_th.models import TriggerService, Digest
 from django_th.models import UserService, ServicesActivated, update_result
 from django_th.services.services import ServicesMgr
@@ -49,42 +48,6 @@ class UserServiceTest(MainTest):
         self.assertEqual(u.show(), "User Service %s %s %s" % (u.user, u.token,
                                                               u.name))
         self.assertEqual(u.__str__(), u.name.name)
-
-    def test_valid_form(self):
-        u = self.create_userservice()
-        data = {'user': u.user, 'name': u.name, 'token': ''}
-        if u.name.auth_required and u.name.self_hosted:
-            data = {'user': u.user, 'name': u.name, 'token': u.token,
-                    'host': 'http://localhost/',
-                    'username': 'johndoe',
-                    'password': 'password',
-                    'client_id': 'the_id',
-                    'client_secret': 'the_secret',
-                    'duration': 'd',
-                    }
-            data2 = {'user': u.user, 'name': u.name, 'token': u.token,
-                     'host': 'http://localhost/',
-                     'username': '',
-                     'password': 'password',
-                     'client_id': 'the_id',
-                     'client_secret': 'the_secret'}
-        initial = {'user': self.user, 'name': 'ServiceRss'}
-        # create a second service to be able to cover the "else" in
-        # activated_services()
-        user = self.user
-        ServicesActivated.objects.create(name='ServiceRss',
-                                         status=True,
-                                         auth_required=True,
-                                         description='Service Rss')
-        form = UserServiceForm(data=data, initial=initial)
-        self.assertTrue(form.is_valid())
-        form.clean()
-        form.save(user=user, service_name='ServiceRss')
-        # form is not valid because auth +
-        # self_host are true but username is missing
-        form = UserServiceForm(data=data2, initial=initial)
-        self.assertFalse(form.is_valid())
-        form.clean()
 
 
 class ServicesActivatedTest(TestCase):

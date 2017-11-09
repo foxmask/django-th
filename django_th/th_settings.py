@@ -119,6 +119,8 @@ SERVICES_AUTH = ('ServiceEvernote', 'ServiceGithub', 'ServicePocket',
                  'ServiceTaiga', 'ServiceTodoist', 'ServiceTrello',
                  'ServiceTumblr', 'ServiceTwitter',
                  )
+# list of services that just use a token
+SERVICES_WITH_TOKEN = ('ServiceInstapush',)
 
 # list of services that require the auth (or not) of the service and are self hosted
 SERVICES_HOSTED_WITH_AUTH = ('ServiceMastodon', 'ServiceWallabag',)

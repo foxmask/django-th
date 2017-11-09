@@ -42,8 +42,7 @@ class UserServiceForm(forms.ModelForm):
         """
         self.myobject = super(UserServiceForm, self).save(commit=False)
         self.myobject.user = user
-        self.myobject.name = ServicesActivated.objects.get(
-            name=self.initial['name'])
+        self.myobject.name = ServicesActivated.objects.get(name=self.initial['name'])
         self.myobject.save()
 
     def clean(self):
@@ -61,8 +60,7 @@ class UserServiceForm(forms.ModelForm):
                cleaned_data.get('password') == '' or \
                cleaned_data.get('client_id') == '' or \
                cleaned_data.get('client_secret') == '':
-                self.add_error(
-                    'username', 'All the five fields are altogether mandatory')
+                self.add_error('username', 'All the five fields are altogether mandatory')
             elif cleaned_data.get('host').endswith('/'):
                 cleaned_data['host'] = cleaned_data['host'][:-1]
 

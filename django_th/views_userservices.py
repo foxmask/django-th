@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
@@ -93,9 +93,13 @@ class UserServiceCreateView(CreateView):
 
     def get_context_data(self, **kwargs):
         context = super(UserServiceCreateView, self).get_context_data(**kwargs)
-        context['service_name_alone'] = self.kwargs.get('service_name').rsplit(
-            'Service')[1]
-        context['service_name'] = self.kwargs.get('service_name')
+        service_name = self.kwargs.get('service_name')
+        services = settings.SERVICES_AUTH + settings.SERVICES_HOSTED_WITH_AUTH + \
+            settings.SERVICES_NEUTRAL + settings.SERVICES_WITH_TOKEN
+        if service_name not in services:
+            raise Http404("Service does not exist")
+        context['service_name_alone'] = service_name.rsplit('Service')[1]
+        context['service_name'] = service_name
 
         context['SERVICES_AUTH'] = settings.SERVICES_AUTH
         context['SERVICES_HOSTED_WITH_AUTH'] = \

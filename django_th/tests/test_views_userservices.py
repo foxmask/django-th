@@ -1,8 +1,11 @@
 # coding: utf-8
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import User
 from django.test import RequestFactory
 
-from django_th.models import UserService
+
+from django_th.forms.base import UserServiceForm
+from django_th.models import UserService, ServicesActivated
 from django_th.tests.test_main import MainTest, setup_view
 from django_th.views_userservices import UserServiceListView, UserServiceCreateView, UserServiceUpdateView
 
@@ -36,6 +39,14 @@ class UserServiceListViewTestCase(MainTest):
 
 class UserServiceCreateViewTestCase(MainTest):
 
+    def setUp(self):
+        try:
+            self.user = User.objects.get(username='john')
+        except User.DoesNotExist:
+            self.user = User.objects.create_user(
+                username='john', email='john@doe.info', password='doe')
+        ServicesActivated.objects.create(name='ServiceRss', status=True, auth_required=False, description='Service RSS')
+
     def test_get(self):
         template_name = 'services/service_form.html'
         # Setup request and view.
@@ -47,6 +58,16 @@ class UserServiceCreateViewTestCase(MainTest):
         # Check.
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.template_name[0], template_name)
+
+    def test_valid_form(self):
+        data = {'duration': 'n'}
+        form = UserServiceForm(data=data, initial={'user': self.user, 'name': 'ServiceRss'})
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_form(self):
+        data = {'duration': 'x'}
+        form = UserServiceForm(data=data, initial={'user': self.user, 'name': 'ServiceRss'})
+        self.assertFalse(form.is_valid())
 
 
 class UserServiceUpdateViewTestCase(MainTest):
