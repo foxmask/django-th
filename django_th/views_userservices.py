@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.utils.decorators import method_decorator
@@ -48,8 +48,7 @@ class UserServiceMixin(object):
     def get_queryset(self):
         # get the Service of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user,
-                                        id=self.kwargs.get('pk'))
+            return self.queryset.filter(user=self.request.user, id=self.kwargs.get('pk'))
         # otherwise return nothing
         return UserService.objects.none()
 
@@ -69,16 +68,15 @@ class UserServiceListView(ListView):
     def get_queryset(self):
         # get the Service of the connected user
         if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user).\
-                order_by('name')
+            return self.queryset.filter(user=self.request.user).order_by('name')
         # otherwise return nothing
         return UserService.objects.none()
 
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
         if self.request.user.is_authenticated():
-            service_list_remaining = ServicesActivated.objects.exclude(
-                name__in=self.queryset.values_list('name')).order_by('name')
+            service_list_remaining = ServicesActivated.objects.exclude(name__in=self.queryset.values_list('name')
+                                                                       ).order_by('name')
             context['service_list_remaining'] = service_list_remaining
 
         return context
@@ -94,16 +92,11 @@ class UserServiceCreateView(CreateView):
     def get_context_data(self, **kwargs):
         context = super(UserServiceCreateView, self).get_context_data(**kwargs)
         service_name = self.kwargs.get('service_name')
-        services = settings.SERVICES_AUTH + settings.SERVICES_HOSTED_WITH_AUTH + \
-            settings.SERVICES_NEUTRAL + settings.SERVICES_WITH_TOKEN
-        if service_name not in services:
-            raise Http404("Service does not exist")
+        get_object_or_404(ServicesActivated, name=service_name)
         context['service_name_alone'] = service_name.rsplit('Service')[1]
         context['service_name'] = service_name
-
         context['SERVICES_AUTH'] = settings.SERVICES_AUTH
-        context['SERVICES_HOSTED_WITH_AUTH'] = \
-            settings.SERVICES_HOSTED_WITH_AUTH
+        context['SERVICES_HOSTED_WITH_AUTH'] = settings.SERVICES_HOSTED_WITH_AUTH
         context['SERVICES_NEUTRAL'] = settings.SERVICES_NEUTRAL
         return context
 
@@ -112,8 +105,7 @@ class UserServiceCreateView(CreateView):
         name = self.kwargs.get('service_name')
         user = self.request.user
         if UserService.objects.filter(name=name, user=user).exists():
-            messages.warning(self.request, _('Service %s already activated') %
-                             name.split('Service')[1])
+            messages.warning(self.request, _('Service %s already activated') % name.split('Service')[1])
             return HttpResponseRedirect(reverse('user_services'))
         return super(UserServiceCreateView, self).dispatch(*args, **kwargs)
 
@@ -136,8 +128,7 @@ class UserServiceCreateView(CreateView):
             # to auth the application django-th to access to the user
             # account details
             return redirect(lets_auth(self.request))
-        messages.success(self.request, _('Service %s activated successfully') %
-                         name.split('Service')[1])
+        messages.success(self.request, _('Service %s activated successfully') % name.split('Service')[1])
         return HttpResponseRedirect(reverse('user_services'))
 
     def get_form_kwargs(self):
@@ -165,13 +156,10 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
         :return:
         """
         context = super(UserServiceUpdateView, self).get_context_data(**kwargs)
-        context['service_name_alone'] = self.object.name.name.rsplit(
-            'Service')[1]
+        context['service_name_alone'] = self.object.name.name.rsplit('Service')[1]
         context['service_name'] = self.object.name.name
-
         context['SERVICES_AUTH'] = settings.SERVICES_AUTH
-        context['SERVICES_HOSTED_WITH_AUTH'] = \
-            settings.SERVICES_HOSTED_WITH_AUTH
+        context['SERVICES_HOSTED_WITH_AUTH'] = settings.SERVICES_HOSTED_WITH_AUTH
         context['SERVICES_NEUTRAL'] = settings.SERVICES_NEUTRAL
 
         context['action'] = 'edit'
@@ -197,8 +185,7 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
         name = form.cleaned_data.get('name').name
         user = self.request.user
         form.save(user=user, service_name=name)
-        messages.success(self.request, _('Service %s modified successfully') %
-                         name.split('Service')[1])
+        messages.success(self.request, _('Service %s modified successfully') % name.split('Service')[1])
         return HttpResponseRedirect(reverse('user_services'))
 
 
