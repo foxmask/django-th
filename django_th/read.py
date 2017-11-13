@@ -39,11 +39,9 @@ class Read(object):
         """
         failed = service.provider_failed + 1
         if failed > settings.DJANGO_TH.get('failed_tries', 10):
-            TriggerService.objects.filter(id=service.id).\
-                update(date_result=now(), status=False)
+            TriggerService.objects.filter(id=service.id).update(date_result=now(), status=False)
         else:
-            TriggerService.objects.filter(id=service.id).\
-                update(date_result=now(), provider_failed=failed)
+            TriggerService.objects.filter(id=service.id).update(date_result=now(), provider_failed=failed)
 
         warn_user_and_admin('provider', service)
 
@@ -53,24 +51,19 @@ class Read(object):
            :param service: service object to read
            :type service: object
         """
-        now = arrow.utcnow().to(settings.TIME_ZONE).format(
-            'YYYY-MM-DD HH:mm:ssZZ')
+        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
         # counting the new data to store to display them in the log
         # provider - the service that offer data
         provider_token = service.provider.token
         default_provider.load_services()
-        service_provider = default_provider.get_service(
-            str(service.provider.name.name))
+        service_provider = default_provider.get_service(str(service.provider.name.name))
         # check if the service has already been triggered
         # if date_triggered is None, then it's the first run
         # so it will be set to "now"
-        date_triggered = service.date_triggered if service.date_triggered \
-            else now
+        date_triggered = service.date_triggered if service.date_triggered else now
         # 1) get the data from the provider service
         # get a timestamp of the last triggered of the service
-        kwargs = {'token': provider_token,
-                  'trigger_id': service.id,
-                  'date_triggered': date_triggered}
+        kwargs = {'token': provider_token, 'trigger_id': service.id, 'date_triggered': date_triggered}
         data = self.provider(service_provider, **kwargs)
 
         if len(data) > 0:

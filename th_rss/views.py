@@ -54,7 +54,7 @@ class MyRssFeeds(ListView):
 
     def get_queryset(self):
         # connected ?
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             # get the Trigger that are MINE and where the CONSUMER is
             # the ServiceRss
             triggers = self.queryset.filter(user=self.request.user,

@@ -17,8 +17,7 @@ logger = getLogger('django_th.trigger_happy')
 
 class Command(BaseCommand):
 
-    help = 'Trigger all the services and '\
-           'publish the data coming from the cache'
+    help = 'Trigger all the services and publish the data coming from the cache'
 
     def handle(self, *args, **options):
         """

@@ -47,7 +47,7 @@ class UserServiceMixin(object):
 
     def get_queryset(self):
         # get the Service of the connected user
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return self.queryset.filter(user=self.request.user, id=self.kwargs.get('pk'))
         # otherwise return nothing
         return UserService.objects.none()
@@ -67,16 +67,16 @@ class UserServiceListView(ListView):
 
     def get_queryset(self):
         # get the Service of the connected user
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             return self.queryset.filter(user=self.request.user).order_by('name')
         # otherwise return nothing
         return UserService.objects.none()
 
     def get_context_data(self, **kw):
         context = super(UserServiceListView, self).get_context_data(**kw)
-        if self.request.user.is_authenticated():
-            service_list_remaining = ServicesActivated.objects.exclude(name__in=self.queryset.values_list('name')
-                                                                       ).order_by('name')
+        if self.request.user.is_authenticated:
+            service_list_remaining = ServicesActivated.objects.exclude(
+                name__in=self.queryset.values_list('name').filter(user=self.request.user).order_by('name'))
             context['service_list_remaining'] = service_list_remaining
 
         return context
@@ -197,6 +197,5 @@ class UserServiceDeleteView(UserServiceMixin, DeleteView):
     success_url = reverse_lazy("service_delete_thanks")
 
     def get_success_url(self):
-        messages.success(self.request, _('Service %s deleted successfully') %
-                         self.object.name.name.split('Service')[1])
+        messages.success(self.request, _('Service %s deleted successfully') % self.object.name.name.split('Service')[1])
         return reverse("user_services")

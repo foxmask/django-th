@@ -26,7 +26,7 @@ def can_modify_trigger(request, provider, consumer):
         return False
     else:
         from django.contrib import messages
-        messages.warning(request, 'You cant modify a disabled trigger')
+        messages.warning(request, 'You can not modify a disabled trigger')
         return True
 
 
@@ -48,8 +48,7 @@ def trigger_on_off(request, trigger_id):
         :return render
         :rtype HttpResponse
     """
-    now = arrow.utcnow().to(settings.TIME_ZONE).format(
-        'YYYY-MM-DD HH:mm:ssZZ')
+    now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
     trigger = get_object_or_404(TriggerService, pk=trigger_id)
     if trigger.status:
         title = 'disabled'
@@ -93,17 +92,14 @@ def fire_trigger(request, trigger_id):
         trigger = TriggerService.objects.get(id=trigger_id)
         kwargs = {'trigger': trigger}
     else:
-        now = arrow.utcnow().to(settings.TIME_ZONE).format(
-            'YYYY-MM-DD HH:mm:ssZZ')
+        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
 
         cache.set('django_th' + '_fire_trigger_' + str(trigger_id), '*')
         management.call_command('read_n_pub', trigger_id=trigger_id)
 
         trigger = TriggerService.objects.get(id=trigger_id)
-        date_result = arrow.get(trigger.date_result).to(settings.TIME_ZONE)\
-            .format('YYYY-MM-DD HH:mm:ssZZ')
-        date_triggered = arrow.get(trigger.date_triggered).\
-            to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
+        date_result = arrow.get(trigger.date_result).to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
+        date_triggered = arrow.get(trigger.date_triggered).to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
 
         if date_result < date_triggered and date_triggered > now:
             date = '*'
@@ -130,10 +126,8 @@ def service_related_triggers_switch_to(request, user_service_id, switch):
     if switch == 'off':
         status = False
 
-    TriggerService.objects.filter(provider__id=user_service_id).update(
-        status=status)
-    TriggerService.objects.filter(consumer__id=user_service_id).update(
-        status=status)
+    TriggerService.objects.filter(provider__id=user_service_id).update(status=status)
+    TriggerService.objects.filter(consumer__id=user_service_id).update(status=status)
 
     service = UserService.objects.get(id=user_service_id).name.name.split('Service')[1]
     messages.warning(request, _('All triggers of %s are now %s') % (service, switch))
@@ -154,8 +148,7 @@ def trigger_switch_all_to(request, switch):
     if switch == 'off':
         status = False
     if status:
-        TriggerService.objects.filter(user=request.user).update(
-            status=status, date_triggered=now)
+        TriggerService.objects.filter(user=request.user).update(status=status, date_triggered=now)
     else:
         TriggerService.objects.filter(user=request.user).update(status=status)
 
@@ -176,8 +169,7 @@ def list_services(request, step):
     if step == '0':
         services = ServicesActivated.objects.filter(status=1)
     elif step == '3':
-        services = ServicesActivated.objects.filter(status=1,
-                                                    id__iexact=request.id)
+        services = ServicesActivated.objects.filter(status=1, id__iexact=request.id)
     for class_name in services:
         all_datas.append({class_name: class_name.name.rsplit('Service', 1)[1]})
 
@@ -205,9 +197,7 @@ def trigger_edit(request, trigger_id, edit_what):
     # get the trigger object
     service = TriggerService.objects.get(id=trigger_id)
 
-    if can_modify_trigger(request,
-                          service.provider.name.status,
-                          service.consumer.name.status):
+    if can_modify_trigger(request, service.provider.name.status, service.consumer.name.status):
         return HttpResponseRedirect(reverse('base'))
 
     if edit_what == 'Consumer':
@@ -226,8 +216,7 @@ def trigger_edit(request, trigger_id, edit_what):
     template = service_name.lower() + '/edit_' + edit_what.lower() + ".html"
 
     if request.method == 'POST':
-        form = get_service(my_service, 'forms', form_name)(
-            request.POST, instance=data)
+        form = get_service(my_service, 'forms', form_name)(request.POST, instance=data)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect(reverse('trigger_edit_thanks'))

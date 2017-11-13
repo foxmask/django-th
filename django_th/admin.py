@@ -46,8 +46,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
         else:
             defaults.update({'form': self.view_form, })
         defaults.update(args)
-        return super(ServicesManagedAdmin, self).get_form(request, obj,
-                                                          **defaults)
+        return super(ServicesManagedAdmin, self).get_form(request, obj, **defaults)
 
 
 class NameListFilter(admin.SimpleListFilter):
@@ -56,9 +55,8 @@ class NameListFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         if request.GET.get('user__id__exact'):
-            user_set = set([s.name.name for s in UserService.objects
-                           .filter(user_id__exact=int(request.GET.get(
-                                'user__id__exact')))])
+            user_set = set([s.name.name for s in UserService.objects.filter(user_id__exact=int(request.GET.get(
+                'user__id__exact')))])
         else:
             user_set = set([s.name.name for s in UserService.objects.all()])
         return [(i, i) for i in user_set]

@@ -69,8 +69,7 @@ class UserServiceWizard(SessionWizardView):
         elif step == '2':
             step0_data = self.get_cleaned_data_for_step('0')
             form = ConsumerForm(
-                data, initial={'provider': step0_data.get('provider'),
-                               'user': self.request.user})
+                data, initial={'provider': step0_data.get('provider'), 'user': self.request.user})
 
         elif step == '3':
 
@@ -103,15 +102,11 @@ class UserServiceWizard(SessionWizardView):
             data = form.cleaned_data
             # get the service we selected at step 0 : provider
             if i == 0:
-                trigger_provider = UserService.objects.get(
-                    name=data.get('provider'),
-                    user=self.request.user.id)
+                trigger_provider = UserService.objects.get(name=data.get('provider'), user=self.request.user.id)
                 model_provider = get_service(data.get('provider'), 'models')
             # get the service we selected at step 2 : consumer
             elif i == 2:
-                trigger_consumer = UserService.objects.get(
-                    name=data.get('consumer'),
-                    user=self.request.user.id)
+                trigger_consumer = UserService.objects.get(name=data.get('consumer'), user=self.request.user.id)
                 model_consumer = get_service(data.get('consumer'), 'models')
             # get the description we gave for the trigger
             elif i == 4:
@@ -119,10 +114,8 @@ class UserServiceWizard(SessionWizardView):
             i += 1
 
         # save the trigger
-        trigger = TriggerService(
-            provider=trigger_provider, consumer=trigger_consumer,
-            user=self.request.user, status=True,
-            description=trigger_description)
+        trigger = TriggerService(provider=trigger_provider, consumer=trigger_consumer, user=self.request.user,
+                                 status=True, description=trigger_description)
         trigger.save()
 
         model_fields = {}

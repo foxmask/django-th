@@ -12,11 +12,7 @@ class MyService(object):
     @staticmethod
     def full_name(package):
         service_name = package.split('_')[1]
-        return ''.join((package,
-                        ".my_",
-                        service_name,
-                        ".Service",
-                        service_name.title()))
+        return ''.join((package, ".my_", service_name, ".Service", service_name.title()))
 
     @staticmethod
     def module_name(package):

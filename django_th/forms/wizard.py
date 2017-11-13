@@ -25,8 +25,7 @@ class ServiceChoiceForm(forms.Form):
             services = services.exclude(name__exact=provider)
 
         for class_name in services:
-            data = (class_name.name,
-                    class_name.name.name.rsplit('Service', 1)[1])
+            data = (class_name.name, class_name.name.name.rsplit('Service', 1)[1])
             choices.append(data)
 
         return choices
@@ -41,9 +40,7 @@ class ProviderForm(ServiceChoiceForm):
 
     def __init__(self, *args, **kwargs):
         super(ProviderForm, self).__init__(*args, **kwargs)
-        self.fields['provider'].choices = self.activated_services(
-            user=self.initial['user']
-        )
+        self.fields['provider'].choices = self.activated_services(user=self.initial['user'])
         self.fields['provider'].widget.attrs['class'] = 'form-control'
 
 
@@ -71,8 +68,7 @@ class ServicesDescriptionForm(forms.Form):
         Set some HTML class to the Service form
     """
     description = forms.CharField(
-        widget=forms.TextInput(attrs={'placeholder':
-                                      _('A description for your new service')})
+        widget=forms.TextInput(attrs={'placeholder': _('A description for your new service')})
     )
 
 

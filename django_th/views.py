@@ -47,12 +47,11 @@ class TriggerListView(ListView):
         # by default, sort by date_created
         ordered_by = (str('-date_triggered'), )
         # get the Trigger of the connected user
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             # if the user selected a filter, get its ID
             if self.kwargs.get('trigger_filtered_by'):
-                filtered_by = UserService.objects.filter(
-                    user=self.request.user,
-                    name=self.kwargs.get('trigger_filtered_by'))[0].id
+                filtered_by = UserService.objects.filter(user=self.request.user,
+                                                         name=self.kwargs.get('trigger_filtered_by'))[0].id
 
             if self.kwargs.get('trigger_ordered_by'):
                 """
@@ -65,9 +64,8 @@ class TriggerListView(ListView):
 
             # no filter selected
             if filtered_by is None:
-                return self.queryset.filter(user=self.request.user).order_by(
-                    *ordered_by).select_related('consumer__name',
-                                                'provider__name')
+                return self.queryset.filter(user=self.request.user).order_by(*ordered_by).select_related(
+                    'consumer__name', 'provider__name')
 
             # filter selected : display all related triggers
             else:
@@ -75,9 +73,8 @@ class TriggerListView(ListView):
                 # 1) get trigger of the connected user AND
                 # 2) get the triggers where the provider OR the consumer match
                 # the selected service
-                return self.queryset.filter(user=self.request.user).filter(
-                    Q(provider=filtered_by) |
-                    Q(consumer=filtered_by)).order_by(
+                return self.queryset.filter(user=self.request.user).filter(Q(provider=filtered_by) |
+                                                                           Q(consumer=filtered_by)).order_by(
                     *ordered_by).select_related('consumer__name',
                                                 'provider__name')
         # otherwise return nothing when user is not connected
@@ -108,7 +105,7 @@ class TriggerListView(ListView):
         else:
             page_link = reverse('home')
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             # get the enabled triggers
             triggers_enabled = TriggerService.objects.filter(
                 user=self.request.user, status=1).count()
@@ -154,9 +151,8 @@ class TriggerServiceMixin(object):
 
     def get_queryset(self):
         # get the trigger of the connected user
-        if self.request.user.is_authenticated():
-            return self.queryset.filter(user=self.request.user,
-                                        id=self.kwargs.get('pk'))
+        if self.request.user.is_authenticated:
+            return self.queryset.filter(user=self.request.user, id=self.kwargs.get('pk'))
         # otherwise return nothing
         return TriggerService.objects.none()
 
@@ -176,14 +172,11 @@ class TriggerUpdateView(TriggerServiceMixin, UpdateView):
         # Go through keyword arguments, and either save their values to our
         # instance, or raise an error.
         self.object = self.get_object()
-        status = can_modify_trigger(self.request,
-                                    self.object.provider.name.status,
-                                    self.object.consumer.name.status)
+        status = can_modify_trigger(self.request, self.object.provider.name.status, self.object.consumer.name.status)
         if status:
             return HttpResponseRedirect(reverse('base'))
         else:
-            return super(TriggerUpdateView, self).get(
-                self.request, *args, **kwargs)
+            return super(TriggerUpdateView, self).get(self.request, *args, **kwargs)
 
 
 class TriggerEditedTemplateView(TemplateView):

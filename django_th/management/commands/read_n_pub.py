@@ -22,8 +22,7 @@ class Command(BaseCommand):
     help = 'Fire only ONE trigger'
 
     def add_arguments(self, parser):
-        parser.add_argument('--trigger_id', dest='trigger_id',
-                            help='the trigger id to fire')
+        parser.add_argument('--trigger_id', dest='trigger_id', help='the trigger id to fire')
 
     def handle(self, *args, **options):
         """

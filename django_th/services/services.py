@@ -133,9 +133,7 @@ class ServicesMgr(object):
         cache = caches['django_th']
         cache_data = cache.get(kwargs.get('cache_stack') + '_' +
                                kwargs.get('trigger_id'))
-        return PublishingLimit.get_data(kwargs.get('cache_stack'),
-                                        cache_data,
-                                        int(kwargs.get('trigger_id')))
+        return PublishingLimit.get_data(kwargs.get('cache_stack'), cache_data, int(kwargs.get('trigger_id')))
 
     def save_data(self, trigger_id, **data):
         """
@@ -157,9 +155,7 @@ class ServicesMgr(object):
         if data.get('output_format'):
             # pandoc to convert tools
             import pypandoc
-            content = pypandoc.convert(content,
-                                       str(data.get('output_format')),
-                                       format='html')
+            content = pypandoc.convert(content, str(data.get('output_format')), format='html')
         return title, content
 
     def auth(self, request):
@@ -182,8 +178,7 @@ class ServicesMgr(object):
         """
         service = self.service.split('Service')[1].lower()
         return_to = '{service}_callback'.format(service=service)
-        return '%s://%s%s' % (request.scheme, request.get_host(),
-                              reverse(return_to))
+        return '%s://%s%s' % (request.scheme, request.get_host(), reverse(return_to))
 
     def callback(self, request, **kwargs):
         """
@@ -202,9 +197,7 @@ class ServicesMgr(object):
 
         service_name = ServicesActivated.objects.get(name=self.service)
 
-        UserService.objects.filter(user=request.user,
-                                   name=service_name
-                                   ).update(token=token)
+        UserService.objects.filter(user=request.user, name=service_name).update(token=token)
         back = self.service.split('Service')[1].lower()
         back_to = '{back_to}/callback.html'.format(back_to=back)
         return back_to
@@ -231,8 +224,7 @@ class ServicesMgr(object):
         if type(access_token) == str:
             token = access_token
         else:
-            token = '#TH#'.join((access_token.get('oauth_token'),
-                                 access_token.get('oauth_token_secret')))
+            token = '#TH#'.join((access_token.get('oauth_token'), access_token.get('oauth_token_secret')))
         return token
 
     def callback_oauth2(self, request):
@@ -243,9 +235,7 @@ class ServicesMgr(object):
         """
         callback_url = self.callback_url(request)
 
-        oauth = OAuth2Session(client_id=self.consumer_key,
-                              redirect_uri=callback_url,
-                              scope=self.scope)
+        oauth = OAuth2Session(client_id=self.consumer_key, redirect_uri=callback_url, scope=self.scope)
         request_token = oauth.fetch_token(self.REQ_TOKEN,
                                           code=request.GET.get('code', ''),
                                           authorization_response=callback_url,
@@ -259,20 +249,16 @@ class ServicesMgr(object):
            request the token to the external service
         """
         if self.oauth == 'oauth1':
-            oauth = OAuth1Session(self.consumer_key,
-                                  client_secret=self.consumer_secret)
+            oauth = OAuth1Session(self.consumer_key, client_secret=self.consumer_secret)
             request_token = oauth.fetch_request_token(self.REQ_TOKEN)
             # Save the request token information for later
             request.session['oauth_token'] = request_token['oauth_token']
-            request.session['oauth_token_secret'] = request_token[
-                'oauth_token_secret']
+            request.session['oauth_token_secret'] = request_token['oauth_token_secret']
 
             return request_token
         else:
             callback_url = self.callback_url(request)
-            oauth = OAuth2Session(client_id=self.consumer_key,
-                                  redirect_uri=callback_url,
-                                  scope=self.scope)
+            oauth = OAuth2Session(client_id=self.consumer_key, redirect_uri=callback_url, scope=self.scope)
             authorization_url, state = oauth.authorization_url(self.AUTH_URL)
             return authorization_url
 
@@ -305,10 +291,8 @@ class ServicesMgr(object):
         :param pk:
         :return:
         """
-        TriggerService.objects.filter(consumer__name__id=pk).update(
-            consumer_failed=0, provider_failed=0)
-        TriggerService.objects.filter(provider__name__id=pk).update(
-            consumer_failed=0, provider_failed=0)
+        TriggerService.objects.filter(consumer__name__id=pk).update(consumer_failed=0, provider_failed=0)
+        TriggerService.objects.filter(provider__name__id=pk).update(consumer_failed=0, provider_failed=0)
 
     def send_digest_event(self, trigger_id, title, link=''):
         """

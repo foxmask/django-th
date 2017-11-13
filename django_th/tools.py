@@ -1,11 +1,12 @@
 # coding: utf-8
 import arrow
 import datetime
-import importlib
-import time
 
 from django.conf import settings
 from django.core.mail import send_mail, mail_admins
+
+import importlib
+import time
 
 
 """
@@ -73,14 +74,11 @@ def to_datetime(data):
     my_date_time = None
 
     if 'published_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.get('published_parsed')))
+        my_date_time = datetime.datetime.utcfromtimestamp(time.mktime(data.get('published_parsed')))
     elif 'created_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.get('created_parsed')))
+        my_date_time = datetime.datetime.utcfromtimestamp(time.mktime(data.get('created_parsed')))
     elif 'updated_parsed' in data:
-        my_date_time = datetime.datetime.utcfromtimestamp(
-            time.mktime(data.get('updated_parsed')))
+        my_date_time = datetime.datetime.utcfromtimestamp(time.mktime(data.get('updated_parsed')))
     elif 'my_date' in data:
         my_date_time = arrow.get(data['my_date'])
 
@@ -102,18 +100,11 @@ def warn_user_and_admin(consumer_provider, service):
            'Try to renew it to refresh the token to try to fix the issue'. \
         format(service.description, service_name)
     # for enduser
-    send_mail(title,
-              body,
-              from_mail,
-              [service.user.email],
-              fail_silently=False)
+    send_mail(title, body, from_mail, [service.user.email], fail_silently=False)
     # for admins
     body = 'The trigger "{}" has been disabled due to an issue with "{}". ' \
-           'User {}\'s trigger'.format(service.description, service_name,
-                                       service.user.email)
-    mail_admins(title,
-                body,
-                fail_silently=False)
+           'User {}\'s trigger'.format(service.description, service_name, service.user.email)
+    mail_admins(title, body, fail_silently=False)
 
 
 def download_image(url):

@@ -4,8 +4,7 @@ from django.forms import TextInput, PasswordInput
 from django.utils.translation import ugettext_lazy as _
 
 # trigger happy
-from django_th.models import User, UserService, \
-    ServicesActivated, TriggerService
+from django_th.models import User, UserService, ServicesActivated, TriggerService
 
 
 class TriggerServiceForm(forms.ModelForm):

@@ -22,18 +22,13 @@ class Command(BaseCommand):
         now = arrow.utcnow().to(settings.TIME_ZONE)
         now = now.date()
 
-        digest = Digest.objects.filter(date_end=str(now)).order_by('user',
-                                                                   'date_end')
+        digest = Digest.objects.filter(date_end=str(now)).order_by('user', 'date_end')
         users = digest.distinct('user')
 
         subject = 'Your digester'
 
-        msg_plain = render_to_string('digest/email.txt',
-                                     {'digest': digest,
-                                      'subject': subject})
-        msg_html = render_to_string('digest/email.html',
-                                    {'digest': digest,
-                                     'subject': subject})
+        msg_plain = render_to_string('digest/email.txt', {'digest': digest, 'subject': subject})
+        msg_html = render_to_string('digest/email.html', {'digest': digest, 'subject': subject})
         message = msg_plain
         from_email = settings.ADMINS
         recipient_list = ()

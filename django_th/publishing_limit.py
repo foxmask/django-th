@@ -39,8 +39,7 @@ class PublishingLimit(object):
                 # or just a set of them
                 if cache_data is not None and len(cache_data) > limit:
                     for data in cache_data[limit:]:
-                        service_str = ''.join((service, '_',
-                                               str(trigger_id)))
+                        service_str = ''.join((service, '_', str(trigger_id)))
                         # put that data in a version 2 of the cache
                         cache.set(service_str, data, version=2)
                         # delete data from cache version=1

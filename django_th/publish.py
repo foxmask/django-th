@@ -28,8 +28,7 @@ class Pub(object):
             update the date when occurs the trigger
             :param service: service object to update
         """
-        now = arrow.utcnow().to(settings.TIME_ZONE).format(
-            'YYYY-MM-DD HH:mm:ssZZ')
+        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
         TriggerService.objects.filter(id=service.id).update(date_triggered=now,
                                                             consumer_failed=0,
                                                             provider_failed=0,
@@ -55,7 +54,7 @@ class Pub(object):
             else:
                 msg = "{} AN ERROR OCCURS ".format(service)
                 update_result(service.id, msg=msg, status=status)
-                logger.warn(msg)
+                logger.warning(msg)
         else:
             logger.debug("{} nothing new ".format(service))
 
@@ -69,8 +68,7 @@ class Pub(object):
             str(service.provider.name.name))
 
         # 1) get the data from the provider service
-        module_name = 'th_' + \
-                      service.provider.name.name.split('Service')[1].lower()
+        module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
         kwargs = {'trigger_id': str(service.id), 'cache_stack': module_name}
         return getattr(service_provider, 'process_data')(**kwargs)
 
@@ -87,8 +85,7 @@ class Pub(object):
         service_consumer = default_provider.get_service(
             str(service.consumer.name.name))
         kwargs = {'user': service.user}
-        getattr(service_consumer, '__init__')(service.consumer.token,
-                                              **kwargs)
+        getattr(service_consumer, '__init__')(service.consumer.token, **kwargs)
         instance = getattr(service_consumer, 'save_data')
 
         # 2) for each one

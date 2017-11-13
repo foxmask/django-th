@@ -17,8 +17,7 @@ logger = getLogger('django_th.trigger_happy')
 
 class Command(BaseCommand):
 
-    help = 'Trigger all the services '\
-        'and put them in cache'
+    help = 'Trigger all the services and put them in cache'
 
     def handle(self, *args, **options):
         """
