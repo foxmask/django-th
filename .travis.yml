@@ -18,6 +18,6 @@ deploy:
   provider: pypi
   user: foxmask
   password:
-    secure: GrdpuGe7/ALgyOKM8AGfZVKD9j2c/33eR0x7aP5UOCoWt1scAP935BQkyS3IQMminxDEUIYYcT7sVnQql+NYup3eebotPrTQPahsoI/jbYvYWkf9U0M0lGRZJFy6y75T8AMz65ywj0tvlZIh4HPPggtwdaDzS76c49XImvL/4L0=
+    secure: WIXep4jx43v39WyW2/Q47KmXJ6iP2DsZl6ArbkI2x1XpPQrncI/YZN54RJdXW1AJA8z76+jWvLhFHfpQaBnz6e98ThrDnYayjrkp0SNPURB2aKFxkmtYjF+rC9onP4rm9nDCxt6NHAm+Y0eKKRyFlhRPSyVI7qkSp77GY3TOlEc=
   on:
     tags: true

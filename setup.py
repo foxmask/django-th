@@ -2,15 +2,14 @@ from setuptools import setup, find_packages
 from django_th import __version__ as version
 
 install_requires = [
-    'djangorestframework==3.7.1',
-    'Django==1.11.6',
+    'djangorestframework==3.7.3',
+    'Django==1.11.7',
     'django-formtools==2.1',
     'arrow==0.10.0',
     'django-js-reverse==0.7.3',
-    'django-redis==4.7.0',
+    'django-redis==4.8.0',
     'requests-oauthlib==0.8.0',
     'pypandoc==1.3.3',
-    'flake8==3.5.0',
 ]
 
 extras_require_evernote = [
@@ -45,11 +44,11 @@ extras_require_taiga = [
     'python-taiga==0.8.6',
 ]
 extras_require_todoist = [
-    'todoist-python==7.0.15',
+    'todoist-python==7.0.17',
 ]
 extras_require_trello = [
     'py-trello==0.9.0',
-    'pytz==2016.10',
+    'pytz==2017.3',
 ]
 extras_require_tumblr = [
     'PyTumblr==0.0.7',
