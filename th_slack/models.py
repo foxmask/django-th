@@ -12,7 +12,7 @@ class Slack(Services):
     slack_token = models.CharField(max_length=2000, blank=True, null=True)
     team_id = models.CharField(max_length=100, blank=True, null=True)
     channel = models.CharField(max_length=100, blank=True, null=True)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_slack'

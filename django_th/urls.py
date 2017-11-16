@@ -1,5 +1,7 @@
 from django.conf.urls import include, url
 from django.conf import settings
+from django.contrib import admin
+from django.urls import path
 
 from django_th.forms.wizard import DummyForm, ProviderForm, ConsumerForm, ServicesDescriptionForm
 
@@ -12,18 +14,17 @@ from django_th.views_userservices import UserServiceListView, UserServiceCreateV
 from django_th.views_userservices import UserServiceDeleteView, renew_service
 from django_th.views_wizard import UserServiceWizard, finalcallback
 
-from django_js_reverse.views import urls_js
-
-
-from django.contrib import admin
-admin.autodiscover()
+# from django_js_reverse.views import urls_js
+# from django.contrib import admin
+# admin.autodiscover()
 
 urlpatterns = [
-    url(r'^jsreverse/$', urls_js, name='js_reverse'),
+    # url(r'^jsreverse/$', urls_js, name='js_reverse'),
     # ****************************************
     # admin module
     # ****************************************
-    url(r'^admin/', include(admin.site.urls)),
+    path('admin/', admin.site.urls),
+    # url(r'^admin/', include(admin.site.urls), ),
     # ****************************************
     # auth module
     # ****************************************

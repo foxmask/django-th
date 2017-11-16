@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('since_id', models.IntegerField(null=True, blank=True)),
                 ('max_id', models.IntegerField(null=True, blank=True)),
                 ('count', models.IntegerField(null=True, blank=True)),
-                ('trigger', models.ForeignKey(to='django_th.TriggerService')),
+                ('trigger', models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'django_th_twitter',

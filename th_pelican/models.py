@@ -14,7 +14,7 @@ class Pelican(Services):
     tags = models.CharField(max_length=200, blank=True)
     category = models.CharField(max_length=200, blank=True)
     path = models.CharField(max_length=255)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_pelican'

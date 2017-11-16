@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(max_length=255)),
                 ('blogname', models.CharField(max_length=80)),
                 ('tag', models.CharField(blank=True, max_length=80)),
-                ('trigger', models.ForeignKey(to='django_th.TriggerService')),
+                ('trigger', models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'django_th_tumblr',

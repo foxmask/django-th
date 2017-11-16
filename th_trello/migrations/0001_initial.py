@@ -22,7 +22,7 @@ class Migration(migrations.Migration):
                 ('list_name', models.CharField(max_length=80)),
                 ('card_title', models.CharField(max_length=80)),
                 ('card_description', models.CharField(max_length=80, blank=True)),
-                ('trigger', models.ForeignKey(to='django_th.TriggerService')),
+                ('trigger', models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE)),
             ],
             options={
                 'db_table': 'django_th_trello',

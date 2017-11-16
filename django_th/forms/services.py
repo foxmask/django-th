@@ -39,6 +39,6 @@ class ServicesAdminForm(forms.ModelForm):
         widget=forms.Select(),
         required=True
     )
-    name = forms.ChoiceField(available_services())
+    name = forms.ChoiceField(choices=available_services())
 
     # todo : set the value of status when editing the object
