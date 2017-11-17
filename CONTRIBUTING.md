@@ -1,25 +1,41 @@
 # CONTRIBUTING
 
+Creating a new issue for a bug report
+-------------------------------------
+
+:bug: If you think you've spotted a bug, fill an [issue](https://github.com/foxmask/django-th/issues/new) and give as many details as possible by starting with that informations: 
+
+* Version of the project you use
+* How you installed it (with `pip install django_th` or `git clone https://github.com/foxmask/django-th/`)
+* Python version: 
+* Django version: 
+* RDBMS version: 
+* OS version: 
+* Dedicated server (Yes / No):
+
+
 New Feature
 -----------
 
-:bulb: open an [issue](https://github.com/foxmask/django-th/issues/new
-) to request this feature, thus we will check if it matches the spirit of the project.
+:bulb: If you want ot see a new feature included to the project, then open an [issue](https://github.com/foxmask/django-th/issues/new) to request this feature, thus we will check if it matches the spirit of the project.
 
 
 New Module
 ----------
 
-You have an idea for a new module ? let's go !
+You have an idea for a new module ? 
 
-To Create one, [I made this project](https://github.com/foxmask/django-th-ansible) which allow to build a new module from scratch.
-Just launch `ansible` with the parameters you setup in the file `site.yml` and 80% of the code of the module will be done. 
+If you have skill with Python/Django :
+
+To Create a new module, [I made this project](https://github.com/foxmask/django-th-ansible) which allow to build a new module from scratch. Just launch `ansible` with the parameters you setup in the file `site.yml` and 80% of the code of the module will be done. 
+
+If you don't have skill or don't plan to contribute, just open an issue as explain ealier
 
 
 Bug Fixing
 ----------
 
-:bug: You can pick [one of the issue](https://github.com/foxmask/django-th/issues). The sort order can be priority, issues that remain to be closed for a given milestone, or issues tagged as "bug".
+:bug: You can pick up [one of the issue](https://github.com/foxmask/django-th/issues). The sort order can be priority, issues that remain to be closed for a given milestone, or issues tagged as "bug".
 
 
 Development
