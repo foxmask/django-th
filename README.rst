@@ -13,6 +13,11 @@
     :alt: Code Climate
 
 
+.. image:: https://api.codeclimate.com/v1/badges/38248f257ac2a363bb73/test_coverage
+   :target: https://codeclimate.com/github/foxmask/django-th/test_coverage
+   :alt: Test Coverage
+
+
 .. image:: https://coveralls.io/repos/github/foxmask/django-th/badge.svg
    :target: https://coveralls.io/github/foxmask/django-th
    :alt: Test Coverage
