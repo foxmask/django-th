@@ -40,45 +40,31 @@ class MastodonTest(MainTest):
     def test_mastodon(self):
         m = self.create_masto()
         self.assertTrue(isinstance(m, Mastodon))
-        self.assertEqual(m.show(), "My Mastodon %s %s" %
-                         (m.timeline, m.trigger))
+        self.assertEqual(m.show(), "My Mastodon %s %s" % (m.timeline, m.trigger))
         self.assertEqual(m.__str__(), "{}".format(m.timeline))
 
     """
         Form
     """
     # provider
-
     def test_valid_provider_form(self):
         m = self.create_masto()
-        data = {'tooter': m.tooter,
-                'timeline': m.timeline,
-                'tag': m.tag,
-                'fav': m.fav}
-        form = MastodonProviderForm(data=data)
+        form = MastodonProviderForm(data={'tooter': m.tooter, 'timeline': m.timeline, 'tag': m.tag, 'fav': m.fav})
         self.assertTrue(form.is_valid())
 
     def test_invalid_provider_form(self):
-        form = MastodonProviderForm(data={'tooter': '',
-                                          'timeline': '',
-                                          'tag': '', 'fav': ''})
+        form = MastodonProviderForm(data={'tooter': '', 'timeline': '', 'tag': '', 'fav': ''})
         self.assertFalse(form.is_valid())
 
     # consumer
     def test_valid_consumer_form(self):
         m = self.create_masto()
-        data = {'tooter': m.tooter,
-                'timeline': m.timeline,
-                'tag': m.tag,
-                'fav': m.fav}
-        form = MastodonConsumerForm(data=data)
+        form = MastodonConsumerForm(data={'tooter': m.tooter, 'timeline': m.timeline, 'tag': m.tag, 'fav': m.fav})
         self.assertTrue(form.is_valid())
 
     def test_invalid_consumer_form(self):
         # when a field is empty the clean() function set it as None
-        form = MastodonConsumerForm(data={'tooter': '',
-                                          'timeline': '',
-                                          'tag': '', 'fav': False})
+        form = MastodonConsumerForm(data={'tooter': '', 'timeline': '', 'tag': '', 'fav': False})
         self.assertFalse(form.is_valid())
 
 

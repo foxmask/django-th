@@ -4,6 +4,7 @@ import hashlib
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
+from django_th.api.consumer import save_data
 from django_th.models import TriggerService
 from django_th.services import default_provider
 
@@ -72,7 +73,6 @@ class Issue(TaigaDomain):
         """
 
         :param taiga_obj: taiga object
-        :param action: craete/change/delete
         :param data: data to return
         :return: data
         """
@@ -84,7 +84,6 @@ class Issue(TaigaDomain):
         """
 
         :param taiga_obj: taiga object
-        :param action: craete/change/delete
         :param data: data to return
         :return: data
         """
@@ -96,7 +95,6 @@ class Issue(TaigaDomain):
         """
 
         :param taiga_obj: taiga object
-        :param action: craete/change/delete
         :param data: data to return
         :return: data
         """
@@ -277,7 +275,6 @@ def consumer(trigger_id, data):
         str(service.consumer.name.name))
     kwargs = {'user': service.user}
 
-    data = data_filter(trigger_id, **data)
     if len(data) > 0:
 
         getattr(service_consumer, '__init__')(service.consumer.token,
@@ -297,7 +294,8 @@ def taiga(request, trigger_id, key):
     signature = request.META.get('HTTP_X_TAIGA_WEBHOOK_SIGNATURE')
     # check that the data are ok with the provided signature
     if verify_signature(request._request.body, key, signature):
-        status = consumer(trigger_id, request.data)
+        data = data_filter(trigger_id, **request.data)
+        status = save_data(trigger_id, data)
         if status:
             return Response({"message": "Success"})
         else:

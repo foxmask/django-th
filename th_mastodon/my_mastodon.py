@@ -11,7 +11,7 @@ from django.utils.translation import ugettext as _
 # django_th classes
 from django_th.models import update_result, UserService
 from django_th.services.services import ServicesMgr
-from django_th.tools import download_image
+from django_th.tools import download_image, get_tags
 
 from logging import getLogger
 
@@ -91,12 +91,10 @@ class ServiceMastodon(ServicesMgr):
             return search, statuses
 
         if self.token is not None:
-            kw = {'app_label': 'th_mastodon', 'model_name': 'Mastodon',
-                  'trigger_id': trigger_id}
+            kw = {'app_label': 'th_mastodon', 'model_name': 'Mastodon', 'trigger_id': trigger_id}
             toot_obj = super(ServiceMastodon, self).read_data(**kw)
 
-            us = UserService.objects.get(token=self.token,
-                                         name='ServiceMastodon')
+            us = UserService.objects.get(token=self.token, name='ServiceMastodon')
             try:
                 toot_api = MastodonAPI(
                     client_id=us.client_id,
@@ -159,31 +157,30 @@ class ServiceMastodon(ServicesMgr):
 
     def save_data(self, trigger_id, **data):
         """
-            get the data from the service
+            let's save the data
 
-            :param trigger_id: id of the trigger
-            :params data, dict
-            :rtype: dict
+            :param trigger_id: trigger ID from which to save data
+            :param data: the data to check to be used and save
+            :type trigger_id: int
+            :type data:  dict
+            :return: the status of the save statement
+            :rtype: boolean
         """
-        title, content = super(ServiceMastodon, self).save_data(
-            trigger_id, **data)
+        title, content = super(ServiceMastodon, self).save_data(trigger_id, **data)
 
         # check if we have a 'good' title
         if self.title_or_content(title):
 
-            content = str("{title} {link}").format(title=title,
-                                                   link=data.get('link'))
-            content += self.get_tags(trigger_id)
+            content = str("{title} {link}").format(title=title, link=data.get('link'))
+            content += get_tags(Mastodon, trigger_id)
         # if not then use the content
         else:
             content += " " + data.get('link')
-            content += " " + self.get_tags(trigger_id)
+            content += " " + get_tags(Mastodon, trigger_id)
 
         content = self.set_mastodon_content(content)
 
-        us = UserService.objects.get(user=self.user,
-                                     token=self.token,
-                                     name='ServiceMastodon')
+        us = UserService.objects.get(user=self.user, token=self.token, name='ServiceMastodon')
 
         try:
             toot_api = MastodonAPI(
@@ -215,28 +212,6 @@ class ServiceMastodon(ServicesMgr):
             status = False
             update_result(trigger_id, msg=inst, status=status)
         return status
-
-    def get_tags(self, trigger_id):
-        """
-        get the tags if any
-        :param trigger_id: the id of the related trigger
-        :return: tags string
-        """
-
-        # get the Mastodon data of this trigger
-        trigger = Mastodon.objects.get(trigger_id=trigger_id)
-
-        tags = ''
-
-        if trigger.tag is not None:
-            # is there several tag ?
-            tags = ["#" + tag.strip() for tag in trigger.tag.split(',')
-                    ] if ',' in trigger.tag else "#" + trigger.tag
-
-            tags = str(','.join(tags)) if isinstance(tags, list) else tags
-            tags = ' ' + tags
-
-        return tags
 
     def title_or_content(self, title):
         """

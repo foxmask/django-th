@@ -10,6 +10,9 @@ from evernote.edam.error.ttypes import EDAMErrorCode
 from evernote.edam.notestore import NoteStore
 
 from logging import getLogger
+
+from th_evernote.evernote_exception import error
+
 logger = getLogger('django_th.trigger_happy')
 cache = caches['django_th']
 
@@ -118,25 +121,13 @@ class EvernoteMgr(object):
             logger.debug(sentence)
             return True
         except EDAMSystemException as e:
-            if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                sentence = "Rate limit reached {code} " \
-                           "Retry your request in {msg} seconds".format(
-                            code=e.errorCode, msg=e.rateLimitDuration)
-                logger.warn(sentence)
-                # put again in cache the data that could not be
-                # published in Evernote yet
-                cache.set('th_evernote_' + str(trigger_id), data, version=2)
-                update_result(trigger_id, msg=sentence, status=True)
-                return True
-            else:
-                logger.critical(e)
-                return False
+            return error(trigger_id, data, e)
         except EDAMUserException as e:
             if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
                 sentence = "Data ignored due to validation" \
                            " error : err {code} {msg}".format(
                             code=e.errorCode, msg=e.parameter)
-                logger.warn(sentence)
+                logger.warning(sentence)
                 update_result(trigger_id, msg=sentence, status=True)
                 return True
         except Exception as e:

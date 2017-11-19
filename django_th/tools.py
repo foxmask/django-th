@@ -124,3 +124,21 @@ def download_image(url):
             if chunk:
                 f.write(chunk)
     return local_filename
+
+
+def get_tags(model, trigger_id):
+    """
+    get the tags if any
+    :param trigger_id: the id of the related trigger
+    :return: tags string
+    """
+    # get the data of this trigger
+    trigger = model.objects.get(trigger_id=trigger_id)
+
+    tags = ''
+    if len(trigger.tag) > 0:
+        # is there several tag ?
+        tags = ["#" + tag.strip() for tag in trigger.tag.split(',')] if ',' in trigger.tag else "#" + trigger.tag
+        tags = str(','.join(tags)) if isinstance(tags, list) else tags
+        tags = ' ' + tags
+    return tags

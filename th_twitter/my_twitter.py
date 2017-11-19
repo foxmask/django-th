@@ -8,6 +8,7 @@ from django.core.cache import caches
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
+from django_th.tools import get_tags
 
 from logging import getLogger
 
@@ -224,19 +225,15 @@ class ServiceTwitter(ServicesMgr):
         """
         status = False
         # set the title and content of the data
-        title, content = super(ServiceTwitter, self).save_data(
-            trigger_id, **data)
+        title, content = super(ServiceTwitter, self).save_data(trigger_id, **data)
 
         if data.get('link') and len(data.get('link')) > 0:
             # remove html tag if any
             content = html.strip_tags(content)
 
             if self.title_or_content(title):
-
-                content = str("{title} {link}").format(
-                    title=title, link=data.get('link'))
-
-                content += self.get_tags(trigger_id)
+                content = str("{title} {link}").format(title=title, link=data.get('link'))
+                content += get_tags(Twitter, trigger_id)
             else:
                 content = self.set_twitter_content(content)
 
@@ -248,28 +245,6 @@ class ServiceTwitter(ServicesMgr):
                 update_result(trigger_id, msg=inst, status=False)
                 status = False
         return status
-
-    def get_tags(self, trigger_id):
-        """
-        get the tags if any
-        :param trigger_id: the id of the related trigger
-        :return: tags string
-        """
-
-        # get the Twitter data of this trigger
-        trigger = Twitter.objects.get(trigger_id=trigger_id)
-
-        tags = ''
-
-        if len(trigger.tag) > 0:
-            # is there several tag ?
-            tags = ["#" + tag.strip() for tag in trigger.tag.split(',')
-                    ] if ',' in trigger.tag else "#" + trigger.tag
-
-            tags = str(','.join(tags)) if isinstance(tags, list) else tags
-            tags = ' ' + tags
-
-        return tags
 
     def auth(self, request):
         """
@@ -335,4 +310,4 @@ class ServiceTwitter(ServicesMgr):
         """
         content = html.strip_tags(content)
 
-        return content[:140] if len(content) > 140 else content
+        return content[:280] if len(content) > 280 else content

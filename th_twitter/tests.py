@@ -54,23 +54,19 @@ class TwitterTest(MainTest):
         Form
     """
     # provider
-
     def test_valid_provider_form(self):
         t = self.create_twitter()
-        data = {'screen': t.screen, 'tag': t.tag, 'fav': t.fav}
-        form = TwitterProviderForm(data=data)
+        form = TwitterProviderForm(data={'screen': t.screen, 'tag': t.tag, 'fav': t.fav})
         self.assertTrue(form.is_valid())
 
     def test_invalid_provider_form(self):
-        form = TwitterProviderForm(data={'screen': '', 'tag': '',
-                                         'fav': False})
+        form = TwitterProviderForm(data={'screen': '', 'tag': '', 'fav': ''})
         self.assertFalse(form.is_valid())
 
     # consumer
     def test_valid_consumer_form(self):
         t = self.create_twitter()
-        data = {'screen': t.screen, 'tag': t.tag, 'fav': t.fav}
-        form = TwitterConsumerForm(data=data)
+        form = TwitterConsumerForm(data={'screen': t.screen, 'tag': t.tag, 'fav': t.fav})
         self.assertTrue(form.is_valid())
 
     def test_invalid_consumer_form(self):
@@ -117,8 +113,7 @@ class ServiceTwitterTest(TwitterTest):
 
     @patch.object(Twython, 'search')
     def test_read_data_tag(self, mock1):
-        search = {'count': 100, 'result_type': 'recent', 'since_id': 1,
-                  'q': 'foobar'}
+        search = {'count': 100, 'result_type': 'recent', 'since_id': 1, 'q': 'foobar'}
         t = self.create_twitter(tag='foobar', screen='johndoe', fav=False)
         kwargs = dict({'date_triggered': '2013-05-11 13:23:58+00:00',
                        'model_name': 'Twitter',
@@ -183,8 +178,7 @@ class ServiceTwitterTest(TwitterTest):
         oauth_token_secret = 'secret'
         oauth_verifier = 'verifier'
         se = ServiceTwitter(self.token)
-        se.get_access_token(oauth_token, oauth_token_secret,
-                            oauth_verifier)
+        se.get_access_token(oauth_token, oauth_token_secret, oauth_verifier)
         mock1.assert_called_with(oauth_verifier)
 
     def test_auth(self):

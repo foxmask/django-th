@@ -14,10 +14,10 @@ import evernote
 from evernote.api.client import EvernoteClient
 import evernote.edam.type.ttypes as Types
 from evernote.edam.error.ttypes import EDAMSystemException, EDAMUserException
-from evernote.edam.error.ttypes import EDAMErrorCode
 
 from logging import getLogger
 
+from th_evernote.evernote_exception import error
 from th_evernote.evernote_mgr import EvernoteMgr
 from th_evernote.models import Evernote
 from th_evernote.sanitize import sanitize
@@ -193,23 +193,7 @@ class ServiceEvernote(ServicesMgr):
             note_store = self.client.get_note_store()
             return note_store
         except EDAMSystemException as e:
-            # rate limit reach have to wait 1 hour !
-            if e.errorCode == EDAMErrorCode.RATE_LIMIT_REACHED:
-                sentence = "Rate limit reached {code}\n" \
-                            "Retry your request in {msg} seconds\n" \
-                            "Data set to cache again until" \
-                            " limit reached".format(code=e.errorCode,
-                                                    msg=e.rateLimitDuration)
-                logger.warning(sentence)
-                cache.set('th_evernote_' + str(trigger_id),
-                          data,
-                          version=2)
-                update_result(trigger_id, msg=sentence, status=True)
-                return True
-            else:
-                logger.critical(e)
-                update_result(trigger_id, msg=e, status=False)
-                return False
+            return error(trigger_id, data, e)
         except Exception as e:
             logger.critical(e)
             update_result(trigger_id, msg=e, status=False)
