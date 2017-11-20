@@ -67,9 +67,8 @@ class ServicesMgr(object):
         """
         content = ''
         if data.get(which_content):
-            if type(data.get(which_content)) is list or\
-               type(data.get(which_content)) is tuple or\
-               type(data.get(which_content)) is dict:
+            if type(data.get(which_content)) is list or type(data.get(which_content)) is tuple or type(data.get(
+                    which_content)) is dict:
                 if 'value' in data.get(which_content)[0]:
                     content = data.get(which_content)[0].value
             else:
@@ -90,9 +89,7 @@ class ServicesMgr(object):
             :type data: dict
             :rtype: string
         """
-        title = (data.get('title') if data.get('title') else data.get('link'))
-
-        return title
+        return data.get('title') if data.get('title') else data.get('link')
 
     def set_content(self, data):
         """
@@ -131,8 +128,7 @@ class ServicesMgr(object):
             :type kwargs: dict
         """
         cache = caches['django_th']
-        cache_data = cache.get(kwargs.get('cache_stack') + '_' +
-                               kwargs.get('trigger_id'))
+        cache_data = cache.get(kwargs.get('cache_stack') + '_' + kwargs.get('trigger_id'))
         return PublishingLimit.get_data(kwargs.get('cache_stack'), cache_data, int(kwargs.get('trigger_id')))
 
     def save_data(self, trigger_id, **data):
@@ -165,9 +161,7 @@ class ServicesMgr(object):
             :type request: dict
             :rtype: dict
         """
-        request_token = self.get_request_token(request)
-
-        return request_token
+        return self.get_request_token(request)
 
     def callback_url(self, request):
         """
@@ -211,13 +205,8 @@ class ServicesMgr(object):
             :type kwargs: dict
             :rtype: string
         """
-        if kwargs.get('access_token') == '' \
-           or kwargs.get('access_token') is None:
-            access_token = self.get_access_token(
-                request.session['oauth_token'],
-                request.session['oauth_token_secret'],
-                request.GET.get('oauth_verifier', '')
-            )
+        if kwargs.get('access_token') == '' or kwargs.get('access_token') is None:
+            access_token = self.get_access_token(request.session['oauth_token'], request.GET.get('oauth_verifier', ''))
         else:
             access_token = kwargs.get('access_token')
 
@@ -262,8 +251,7 @@ class ServicesMgr(object):
             authorization_url, state = oauth.authorization_url(self.AUTH_URL)
             return authorization_url
 
-    def get_access_token(self, oauth_token, oauth_token_secret,
-                         oauth_verifier):
+    def get_access_token(self, oauth_token, oauth_token_secret, oauth_verifier):
         """
            get the access token
             the url to go back after the external service call
@@ -303,12 +291,9 @@ class ServicesMgr(object):
         :return:
         """
         if settings.DJANGO_TH.get('digest_event'):
-
             t = TriggerService.objects.get(id=trigger_id)
 
             if t.provider.duration != 'n':
-
-                kwargs = {'user': t.user, 'title': title,
-                          'link': link, 'duration': t.provider.duration}
+                kwargs = {'user': t.user, 'title': title, 'link': link, 'duration': t.provider.duration}
 
                 signals.digest_event.send(sender=t.provider.name, **kwargs)

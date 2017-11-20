@@ -4,6 +4,7 @@ import datetime
 
 from django.conf import settings
 from django.core.mail import send_mail, mail_admins
+from django.utils import html
 
 import importlib
 import time
@@ -142,3 +143,15 @@ def get_tags(model, trigger_id):
         tags = str(','.join(tags)) if isinstance(tags, list) else tags
         tags = ' ' + tags
     return tags
+
+
+def limit_content(content, limit):
+    """
+
+    :param content: the content
+    :param limit: limit of the content
+    :return: content resized or not
+    """
+    content = html.strip_tags(content)
+
+    return content[:limit] if len(content) > limit else content

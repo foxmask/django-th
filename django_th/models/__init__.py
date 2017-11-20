@@ -155,30 +155,36 @@ def update_result(trigger_id, msg, status):
     :param status: status of the handling of the current trigger
     :return:
     """
+    service = TriggerService.objects.get(id=trigger_id)
     # if status is True, reset *_failed counter
     if status:
-        service = TriggerService.objects.get(id=trigger_id)
-
-        TriggerService.objects.filter(id=trigger_id).update(result=msg, date_result=now(), provider_failed=0,
-                                                            consumer_failed=0, counter_ok=service.counter_ok + 1)
-        UserService.objects.filter(user=service.user, name=service.consumer.name).update(
-            counter_ok=service.counter_ok + 1)
+        provider_failed = 0
+        consumer_failed = 0
+        counter_ok = service.counter_ok + 1
+        counter_ko = service.counter_ko
     # otherwise, add 1 to the consumer_failed
     else:
-        service = TriggerService.objects.get(id=trigger_id)
-        failed = service.consumer_failed + 1
+        provider_failed = service.provider_failed
+        consumer_failed = service.consumer_failed + 1
+        counter_ok = service.counter_ko
+        counter_ko = service.counter_ko + 1
 
-        UserService.objects.filter(user=service.user, name=service.consumer.name).update(
-            counter_ko=service.counter_ko + 1)
-
-        if failed > settings.DJANGO_TH.get('failed_tries', 5):
-            TriggerService.objects.filter(id=trigger_id).update(result=msg, date_result=now(), status=False,
-                                                                counter_ko=service.counter_ko + 1)
-        else:
-            TriggerService.objects.filter(id=trigger_id).update(result=msg, date_result=now(), consumer_failed=failed,
-                                                                counter_ko=service.counter_ko + 1)
+        status = False if consumer_failed > settings.DJANGO_TH.get('failed_tries', 5) else True
 
         warn_user_and_admin('consumer', service)
+
+    TriggerService.objects.filter(id=trigger_id).update(
+        result=msg,
+        date_result=now(),
+        provider_failed=provider_failed,
+        consumer_failed=consumer_failed,
+        counter_ok=counter_ok,
+        counter_ko=counter_ko,
+        status=status)
+
+    UserService.objects.filter(user=service.user, name=service.consumer.name).update(
+        counter_ok=counter_ok,
+        counter_ko=counter_ko)
 
 
 def th_create_user_profile(sender, instance, created, **kwargs):
@@ -186,22 +192,18 @@ def th_create_user_profile(sender, instance, created, **kwargs):
     # need any third party auth
     user = instance
     if user.last_login is None:
-        services = ('ServiceRss', 'ServicePelican', )
-        for service in services:
-            if any(service in s for s in settings.TH_SERVICES):
-                try:
-                    sa = ServicesActivated.objects.get(name=service)
-                    UserService.objects.get_or_create(user=user, name=sa)
-                except ObjectDoesNotExist:
-                    logger.debug("A new user %s has been connected but %s "
-                                 "could not be added to his services because "
-                                 "the service is present in TH_SERVICES but not"
-                                 " activated from the Admin Panel" %
-                                 (user, service))
+        for service in settings.SERVICES_NEUTRAL:
+            try:
+                sa = ServicesActivated.objects.get(name=service)
+                UserService.objects.get_or_create(user=user, name=sa)
+            except ObjectDoesNotExist:
+                logger.debug("A new user %s has been connected but %s "
+                             "could not be added to his services because "
+                             "the service is present in th_settings.py file but not"
+                             " activated from the Admin Panel" % (user, service))
 
 
-post_save.connect(th_create_user_profile, sender=User,
-                  dispatch_uid="create_user_profile")
+post_save.connect(th_create_user_profile, sender=User, dispatch_uid="create_user_profile")
 
 
 @receiver(digest_event)

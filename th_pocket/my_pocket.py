@@ -74,10 +74,8 @@ class ServicePocket(ServicesMgr):
     def read_data(self, **kwargs):
         """
             get the data from the service
-            as the pocket service does not have any date
-            in its API linked to the note,
-            add the triggered date to the dict data
-            thus the service will be triggered when data will be found
+            As the pocket service does not have any date in its API linked to the note,
+            add the triggered date to the dict data thus the service will be triggered when data will be found
 
             :param kwargs: contain keyword args : trigger_id at least
             :type kwargs: dict
@@ -102,9 +100,7 @@ class ServicePocket(ServicesMgr):
                         content = my_pocket['excerpt']
                     elif my_pocket.get('given_title'):
                         content = my_pocket['given_title']
-                    my_date = arrow.get(str(date_triggered),
-                                        'YYYY-MM-DD HH:mm:ss')\
-                        .to(settings.TIME_ZONE)
+                    my_date = arrow.get(str(date_triggered), 'YYYY-MM-DD HH:mm:ss').to(settings.TIME_ZONE)
                     data.append({'my_date': str(my_date),
                                  'tag': '',
                                  'link': my_pocket['given_url'],
@@ -112,9 +108,7 @@ class ServicePocket(ServicesMgr):
                                  'content': content,
                                  'tweet_id': 0})
                     # digester
-                    self.send_digest_event(trigger_id,
-                                           my_pocket['given_title'],
-                                           my_pocket['given_url'])
+                    self.send_digest_event(trigger_id, my_pocket['given_title'], my_pocket['given_url'])
                 cache.set('th_pocket_' + str(trigger_id), data)
 
         return data
@@ -144,8 +138,7 @@ class ServicePocket(ServicesMgr):
                                             title=title,
                                             tags=(trigger.tag.lower()))
             else:
-                msg = "no link provided for trigger ID {}," \
-                      " so we ignore it".format(trigger_id)
+                msg = "no link provided for trigger ID {}, so we ignore it".format(trigger_id)
                 logger.warning(msg)
                 update_result(trigger_id, msg=msg, status=True)
                 status = True
@@ -165,16 +158,11 @@ class ServicePocket(ServicesMgr):
         """
         callback_url = self.callback_url(request)
 
-        request_token = Pocket.get_request_token(
-            consumer_key=self.consumer_key,
-            redirect_uri=callback_url)
-
+        request_token = Pocket.get_request_token(consumer_key=self.consumer_key, redirect_uri=callback_url)
         # Save the request token information for later
         request.session['request_token'] = request_token
-
         # URL to redirect user to, to authorize your app
-        auth_url = Pocket.get_auth_url(
-            code=request_token, redirect_uri=callback_url)
+        auth_url = Pocket.get_auth_url(code=request_token, redirect_uri=callback_url)
 
         return auth_url
 
@@ -185,10 +173,6 @@ class ServicePocket(ServicesMgr):
             :return: callback url
             :rtype: string , path to the template
         """
-        access_token = Pocket.get_access_token(
-            consumer_key=self.consumer_key,
-            code=request.session['request_token'])
-
+        access_token = Pocket.get_access_token(consumer_key=self.consumer_key, code=request.session['request_token'])
         kwargs = {'access_token': access_token}
-
         return super(ServicePocket, self).callback(request, **kwargs)

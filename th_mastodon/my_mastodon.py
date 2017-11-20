@@ -5,13 +5,12 @@ import arrow
 from django.conf import settings
 from django.core.cache import caches
 from django.shortcuts import reverse
-from django.utils import html
 from django.utils.translation import ugettext as _
 
 # django_th classes
 from django_th.models import update_result, UserService
 from django_th.services.services import ServicesMgr
-from django_th.tools import download_image, get_tags
+from django_th.tools import download_image, get_tags, limit_content
 
 from logging import getLogger
 
@@ -167,28 +166,19 @@ class ServiceMastodon(ServicesMgr):
             :rtype: boolean
         """
         title, content = super(ServiceMastodon, self).save_data(trigger_id, **data)
-
         # check if we have a 'good' title
         if self.title_or_content(title):
-
             content = str("{title} {link}").format(title=title, link=data.get('link'))
             content += get_tags(Mastodon, trigger_id)
         # if not then use the content
         else:
-            content += " " + data.get('link')
-            content += " " + get_tags(Mastodon, trigger_id)
-
+            content += " " + data.get('link') + " " + get_tags(Mastodon, trigger_id)
         content = self.set_mastodon_content(content)
 
         us = UserService.objects.get(user=self.user, token=self.token, name='ServiceMastodon')
-
         try:
-            toot_api = MastodonAPI(
-                    client_id=us.client_id,
-                    client_secret=us.client_secret,
-                    access_token=self.token,
-                    api_base_url=us.host
-            )
+            toot_api = MastodonAPI(client_id=us.client_id, client_secret=us.client_secret, access_token=self.token,
+                                   api_base_url=us.host)
         except ValueError as e:
             logger.error(e)
             status = False
@@ -203,7 +193,6 @@ class ServiceMastodon(ServicesMgr):
                     # upload the media first
                     media_ids = toot_api.media_post(media_file=media)
                     media_ids = [media_ids]
-
             toot_api.status_post(content, media_ids=media_ids)
 
             status = True
@@ -251,9 +240,7 @@ class ServiceMastodon(ServicesMgr):
         :param content:
         :return:
         """
-        content = html.strip_tags(content)
-
-        return content[:560] if len(content) > 560 else content
+        return limit_content(content, 560)
 
     def auth(self, request):
         """

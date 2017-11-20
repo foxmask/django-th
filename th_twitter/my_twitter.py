@@ -8,7 +8,7 @@ from django.core.cache import caches
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.models import update_result, UserService
-from django_th.tools import get_tags
+from django_th.tools import get_tags, limit_content
 
 from logging import getLogger
 
@@ -92,12 +92,9 @@ class ServiceTwitter(ServicesMgr):
 
             """
                 explanations about statuses :
-                when we want to track the tweet of a screen
-                statuses contain all of them
-                when we want to track all the tweet matching a tag
-                statuses contain statuses + metadata array
-                this is why we need to do
-                statuses = statuses['statuses']
+                when we want to track the tweet of a screen 'statuses' contain all of them
+                when we want to track all the tweet matching a tag 'statuses' contain statuses + metadata array
+                this is why we need to do statuses = statuses['statuses']
                 to be able to handle the result as for screen_name
             """
 
@@ -139,9 +136,7 @@ class ServiceTwitter(ServicesMgr):
             return count, search, statuses
 
         if self.token is not None:
-            kw = {'app_label': 'th_twitter',
-                  'model_name': 'Twitter',
-                  'trigger_id': trigger_id}
+            kw = {'app_label': 'th_twitter', 'model_name': 'Twitter', 'trigger_id': trigger_id}
             twitter_obj = super(ServiceTwitter, self).read_data(**kw)
 
             # https://dev.twitter.com/rest/public/timelines
@@ -174,28 +169,22 @@ class ServiceTwitter(ServicesMgr):
                         screen_name = s['user']['screen_name']
                         # get the text of the tweet + url to this one
                         if twitter_obj.fav:
-                            url = twitter_fav_url.format(screen_name,
-                                                         s['id_str'])
+                            url = twitter_fav_url.format(screen_name, s['id_str'])
                             title = _('Tweet Fav from @{}'.format(screen_name))
                         else:
-                            url = twitter_status_url.format(screen_name,
-                                                            s['id_str'])
+                            url = twitter_status_url.format(screen_name, s['id_str'])
                             title = _('Tweet from @{}'.format(screen_name))
                         # Wed Aug 29 17:12:58 +0000 2012
-                        my_date = arrow.get(s['created_at'],
-                                            'ddd MMM DD HH:mm:ss Z YYYY')
+                        my_date = arrow.get(s['created_at'], 'ddd MMM DD HH:mm:ss Z YYYY')
                         published = arrow.get(my_date).to(settings.TIME_ZONE)
-                        if date_triggered is not None and \
-                           published is not None and \
-                           now >= published >= date_triggered:
+                        if date_triggered is not None and published is not None and now >= published >= date_triggered:
                             if s.get('extended_entities'):
                                 # get a media
                                 extended_entities = s['extended_entities']
                                 if extended_entities.get('media'):
                                     medias = extended_entities.get('media')
                                     for media in medias:
-                                        text = s['text'] + ' ' + \
-                                               media.get('media_url_https')
+                                        text = s['text'] + ' ' + media.get('media_url_https')
                             else:
                                 text = s['text']
 
@@ -308,6 +297,4 @@ class ServiceTwitter(ServicesMgr):
         :param content:
         :return:
         """
-        content = html.strip_tags(content)
-
-        return content[:280] if len(content) > 280 else content
+        return limit_content(content, 280)

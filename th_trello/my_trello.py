@@ -9,6 +9,9 @@ from django_th.models import update_result, UserService
 from django_th.services.services import ServicesMgr
 
 from logging import getLogger
+
+from th_trello.models import Trello
+
 # Trello API
 from trello import TrelloClient, ResourceUnavailable
 """
@@ -91,12 +94,8 @@ class ServiceTrello(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        from th_trello.models import Trello
-
         data['output_format'] = 'md'
-        title, content = super(ServiceTrello, self).save_data(trigger_id,
-                                                              **data)
-
+        title, content = super(ServiceTrello, self).save_data(trigger_id, **data)
         if len(title):
             # get the data of this trigger
             t = Trello.objects.get(trigger_id=trigger_id)
@@ -134,7 +133,6 @@ class ServiceTrello(ServicesMgr):
                 # create it
                 if my_list == '':
                     my_list = my_board.add_list(t.list_name)
-
             else:
                 # 2 if board_id and/or list_id does not exist, create it/them
                 my_board = self.trello_instance.add_board(t.board_name)
@@ -150,8 +148,7 @@ class ServiceTrello(ServicesMgr):
             logger.debug(sentence)
             status = True
         else:
-            sentence = "no token or link provided for trigger ID " \
-                       "{}".format(trigger_id)
+            sentence = "no token or link provided for trigger ID {}".format(trigger_id)
             update_result(trigger_id, msg=sentence, status=False)
             status = False
 
@@ -167,15 +164,10 @@ class ServiceTrello(ServicesMgr):
             provided_by = _('Provided by')
             provided_from = _('from')
             footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
-
             description = trigger.trigger.description
-            footer = footer_from.format(
-                provided_by, description, provided_from,
-                data.get('link'), data.get('link'))
-
+            footer = footer_from.format(provided_by, description, provided_from, data.get('link'), data.get('link'))
             import pypandoc
             footer = pypandoc.convert(footer, 'md', format='html')
-
         return footer
 
     def auth(self, request):
