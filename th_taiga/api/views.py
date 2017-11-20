@@ -5,8 +5,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from django_th.api.consumer import save_data
-from django_th.models import TriggerService
-from django_th.services import default_provider
 
 from th_taiga.models import Taiga
 
