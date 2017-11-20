@@ -70,20 +70,11 @@ class ServiceRss(ServicesMgr):
             # entry.*_parsed may be None when the date in a RSS Feed is invalid
             # so will have the "now" date as default
             published = self._get_published(entry)
+            published = now if published == '' else arrow.get(str(published)).to(settings.TIME_ZONE)
 
-            if published == '':
-                published = now
-            else:
-                published = arrow.get(str(published)).to(settings.TIME_ZONE)
-
-            date_triggered = arrow.get(
-                str(date_triggered)).to(settings.TIME_ZONE)
-
-            if date_triggered is not None and\
-               published is not None and\
-               now >= published >= date_triggered:
+            date_triggered = arrow.get(str(date_triggered)).to(settings.TIME_ZONE)
+            if date_triggered is not None and published is not None and now >= published >= date_triggered:
                 my_feeds.append(entry)
-
                 # digester
                 self.send_digest_event(trigger_id, entry.title, entry.link)
 

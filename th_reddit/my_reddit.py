@@ -76,10 +76,8 @@ class ServiceReddit(ServicesMgr):
         for submission in submissions:
             title = 'From Reddit ' + submission.title
             created = arrow.get(submission.created)
-            if created > date_triggered and submission.selftext is not None \
-                    and trigger.share_link:
-                body = submission.selftext if submission.selftext \
-                    else submission.url
+            if created > date_triggered and submission.selftext is not None and trigger.share_link:
+                body = submission.selftext if submission.selftext else submission.url
                 data.append({'title': title, 'content': body})
                 self.send_digest_event(trigger_id, title, '')
 
@@ -99,22 +97,17 @@ class ServiceReddit(ServicesMgr):
         # convert the format to be released in Markdown
         status = False
         data['output_format'] = 'md'
-        title, content = super(ServiceReddit, self).save_data(trigger_id,
-                                                              **data)
+        title, content = super(ServiceReddit, self).save_data(trigger_id, **data)
         if self.token:
-
             trigger = Reddit.objects.get(trigger_id=trigger_id)
             if trigger.share_link:
-                status = self.reddit.subreddit(trigger.subreddit)\
-                    .submit(title=title, url=content)
+                status = self.reddit.subreddit(trigger.subreddit).submit(title=title, url=content)
             else:
-                status = self.reddit.subreddit(trigger.subreddit)\
-                    .submit(title=title, selftext=content)
+                status = self.reddit.subreddit(trigger.subreddit).submit(title=title, selftext=content)
             sentence = str('reddit submission {} created').format(title)
             logger.debug(sentence)
         else:
-            msg = "no token or link provided for trigger " \
-                  "ID {} ".format(trigger_id)
+            msg = "no token or link provided for trigger ID {} ".format(trigger_id)
             logger.critical(msg)
             update_result(trigger_id, msg=msg, status=False)
         return status
@@ -125,14 +118,12 @@ class ServiceReddit(ServicesMgr):
         :param request:
         :return:
         """
-        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(),
-                                      reverse("reddit_callback"))
+        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(), reverse("reddit_callback"))
         reddit = RedditApi(client_id=self.consumer_key,
                            client_secret=self.consumer_secret,
                            redirect_uri=redirect_uri,
                            user_agent=self.user_agent)
-        auth_url = reddit.auth.url(['identity', 'read', 'submit', 'save'],
-                                   'redirect_uri')
+        auth_url = reddit.auth.url(['identity', 'read', 'submit', 'save'], 'redirect_uri')
         return auth_url
 
     def callback(self, request, **kwargs):
@@ -146,17 +137,12 @@ class ServiceReddit(ServicesMgr):
             :rtype: string
         """
         code = request.GET.get('code', '')
-        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(),
-                                      reverse("reddit_callback"))
+        redirect_uri = '%s://%s%s' % (request.scheme, request.get_host(), reverse("reddit_callback"))
         reddit = RedditApi(client_id=self.consumer_key,
                            client_secret=self.consumer_secret,
                            redirect_uri=redirect_uri,
                            user_agent=self.user_agent)
-
         token = reddit.auth.authorize(code)
 
-        UserService.objects.filter(user=request.user,
-                                   name='ServiceReddit'
-                                   ).update(token=token)
-
+        UserService.objects.filter(user=request.user, name='ServiceReddit').update(token=token)
         return 'reddit/callback.html'

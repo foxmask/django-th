@@ -74,10 +74,8 @@ class ServicePushbullet(ServicesMgr):
             title = 'From Pushbullet'
             created = arrow.get(p.get('created'))
             if created > date_triggered and p.get('type') == trigger.type and\
-                (p.get('sender_email') == p.get('receiver_email') or
-                 p.get('sender_email') is None):
-                title = title + ' Channel' if p.get('channel_iden') and \
-                                              p.get('title') is None else title
+               (p.get('sender_email') == p.get('receiver_email') or p.get('sender_email') is None):
+                title = title + ' Channel' if p.get('channel_iden') and p.get('title') is None else title
                 # if sender_email and receiver_email are the same ;
                 # that means that "I" made a note or something
                 # if sender_email is None, then "an API" does the post
@@ -85,9 +83,7 @@ class ServicePushbullet(ServicesMgr):
                 body = p.get('body')
                 data.append({'title': title, 'content': body})
                 # digester
-                self.send_digest_event(trigger_id,
-                                       title,
-                                       '')
+                self.send_digest_event(trigger_id, title, '')
 
         cache.set('th_pushbullet_' + str(trigger_id), data)
         return data
@@ -102,16 +98,13 @@ class ServicePushbullet(ServicesMgr):
             :return: the status of the save statement
             :rtype: boolean
         """
-        title, content = super(ServicePushbullet, self).save_data(trigger_id,
-                                                                  **data)
-
+        title, content = super(ServicePushbullet, self).save_data(trigger_id, **data)
         if self.token:
             trigger = Pushbullet.objects.get(trigger_id=trigger_id)
             if trigger.type == 'note':
                 status = self.pushb.push_note(title=title, body=content)
             elif trigger.type == 'link':
-                status = self.pushb.push_link(title=title, body=content,
-                                              url=data.get('link'))
+                status = self.pushb.push_link(title=title, body=content, url=data.get('link'))
                 sentence = str('pushbullet {} created').format(title)
                 logger.debug(sentence)
             else:
@@ -121,8 +114,7 @@ class ServicePushbullet(ServicesMgr):
                 update_result(trigger_id, msg=msg, status=False)
                 status = False
         else:
-            msg = "no token or link provided for trigger " \
-                  "ID {} ".format(trigger_id)
+            msg = "no token or link provided for trigger ID {} ".format(trigger_id)
             logger.critical(msg)
             update_result(trigger_id, msg=msg, status=False)
             status = False

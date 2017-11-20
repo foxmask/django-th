@@ -149,14 +149,11 @@ class ServiceWallabag(ServicesMgr):
             wall = self.wall()
             if wall is not False:
                 try:
-                    wall.post_entries(url=data.get('link').encode(),
-                                      title=title,
-                                      tags=(tags.lower()))
+                    wall.post_entries(url=data.get('link').encode(), title=title, tags=(tags.lower()))
                     logger.debug('wallabag {} created'.format(data.get('link')))
                     status = True
                 except Exception as e:
-                    logger.critical('issue with something else that a token'
-                                    ' link ? : {}'.format(data.get('link')))
+                    logger.critical('issue with something else that a token link ? : {}'.format(data.get('link')))
                     logger.critical(e)
                     update_result(self.trigger_id, msg=e, status=False)
                     status = False

@@ -66,6 +66,9 @@ class ServiceTumblr(ServicesMgr):
         """
         trigger_id = kwargs.get('trigger_id')
         data = list()
+        kwargs['model_name'] = 'Tumblr'
+        kwargs['app_label'] = 'th_tumblr'
+        super(ServiceTumblr, self).read_data(**kwargs)
         cache.set('th_tumblr_' + str(trigger_id), data)
         return data
 
@@ -81,8 +84,7 @@ class ServiceTumblr(ServicesMgr):
         """
         from th_tumblr.models import Tumblr
 
-        title, content = super(ServiceTumblr, self).save_data(trigger_id,
-                                                              **data)
+        title, content = super(ServiceTumblr, self).save_data(trigger_id, **data)
 
         # get the data of this trigger
         trigger = Tumblr.objects.get(trigger_id=trigger_id)

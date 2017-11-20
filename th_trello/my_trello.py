@@ -80,6 +80,9 @@ class ServiceTrello(ServicesMgr):
         """
         trigger_id = kwargs.get('trigger_id')
         data = list()
+        kwargs['model_name'] = 'Trello'
+        kwargs['app_label'] = 'th_trello'
+        super(ServiceTrello, self).read_data(**kwargs)
         cache.set('th_trello_' + str(trigger_id), data)
         return data
 
@@ -125,27 +128,22 @@ class ServiceTrello(ServicesMgr):
                 for list_in_board in lists:
                     # search the name of the list we set in the form
                     if t.list_name == list_in_board.name:
-                        # return the (trello) list object
-                        # to be able to add card at step 3
+                        # return the (trello) list object to be able to add card at step 3
                         my_list = my_board.get_list(list_in_board.id)
                         break
-                # we didnt find the list in that board
-                # create it
+                # we didnt find the list in that board -> create it
                 if my_list == '':
                     my_list = my_board.add_list(t.list_name)
             else:
                 # 2 if board_id and/or list_id does not exist, create it/them
                 my_board = self.trello_instance.add_board(t.board_name)
-                # add the list that didnt exists and
-                # return a (trello) list object
+                # add the list that didn't exists and return a (trello) list object
                 my_list = my_board.add_list(t.list_name)
 
             # 3 create the card
-            # create the Trello card
             my_list.add_card(title, content)
 
-            sentence = str('trello {} created').format(data['link'])
-            logger.debug(sentence)
+            logger.debug(str('trello {} created').format(data['link']))
             status = True
         else:
             sentence = "no token or link provided for trigger ID {}".format(trigger_id)

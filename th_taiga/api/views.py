@@ -269,7 +269,5 @@ def taiga(request, trigger_id, key):
     if verify_signature(request._request.body, key, signature):
         data = data_filter(trigger_id, **request.data)
         status = save_data(trigger_id, data)
-        if status:
-            return Response({"message": "Success"})
-        else:
-            return Response({"message": "Failed!"})
+        return Response({"message": "Success"}) if status else Response({"message": "Failed!"})
+    Response({"message": "Bad request"})

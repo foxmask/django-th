@@ -67,8 +67,7 @@ class ServicesMgr(object):
         """
         content = ''
         if data.get(which_content):
-            if type(data.get(which_content)) is list or type(data.get(which_content)) is tuple or type(data.get(
-                    which_content)) is dict:
+            if not isinstance(data.get(which_content), str):
                 if 'value' in data.get(which_content)[0]:
                     content = data.get(which_content)[0].value
             else:

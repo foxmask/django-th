@@ -55,18 +55,12 @@ class EvernoteMgr(object):
         tag_id = []
         listtags = note_store.listTags()
         # cut the string by piece of tag with comma
-        if ',' in my_tags:
-            for my_tag in my_tags.split(','):
-                for tag in listtags:
-                    # remove space before and after
-                    # thus we keep "foo bar"
-                    # but not " foo bar" nor "foo bar "
-                    if tag.name.lower() == my_tag.lower().lstrip().rstrip():
-                        tag_id.append(tag.guid)
-                        break
-        else:
+        for my_tag in my_tags.split(','):
             for tag in listtags:
-                if tag.name.lower() == my_tags.lower():
+                # remove space before and after
+                # thus we keep "foo bar"
+                # but not " foo bar" nor "foo bar "
+                if tag.name.lower() == my_tag.lower().lstrip().rstrip():
                     tag_id.append(tag.guid)
                     break
 
@@ -82,16 +76,8 @@ class EvernoteMgr(object):
             :return: array of the tag to create
         """
         new_tag = Types.Tag()
-        if ',' in my_tags:
-            for my_tag in my_tags.split(','):
-                new_tag.name = my_tag
-                note_tag_id = EvernoteMgr.create_tag(note_store, new_tag)
-                if note_tag_id is not False:
-                    tag_id.append(note_tag_id)
-                else:
-                    return False
-        elif my_tags:
-            new_tag.name = my_tags
+        for my_tag in my_tags.split(','):
+            new_tag.name = my_tag
             note_tag_id = EvernoteMgr.create_tag(note_store, new_tag)
             if note_tag_id is not False:
                 tag_id.append(note_tag_id)
@@ -124,9 +110,8 @@ class EvernoteMgr(object):
             return error(trigger_id, data, e)
         except EDAMUserException as e:
             if e.errorCode == EDAMErrorCode.ENML_VALIDATION:
-                sentence = "Data ignored due to validation" \
-                           " error : err {code} {msg}".format(
-                            code=e.errorCode, msg=e.parameter)
+                sentence = "Data ignored due to validation error : err {code} {msg}".format(code=e.errorCode,
+                                                                                            msg=e.parameter)
                 logger.warning(sentence)
                 update_result(trigger_id, msg=sentence, status=True)
                 return True
@@ -157,8 +142,7 @@ class EvernoteMgr(object):
             preparing the hearder of Evernote
         """
         return '<?xml version="1.0" encoding="UTF-8"?>' \
-               '<!DOCTYPE en-note SYSTEM ' \
-               '"http://xml.evernote.com/pub/enml2.dtd">\n'
+               '<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">\n'
 
     @staticmethod
     def set_note_attribute(data):
@@ -201,6 +185,10 @@ class EvernoteMgr(object):
 
     @staticmethod
     def set_evernote_spec():
+        """
+            set the spec of the notes
+        :return: spec
+        """
         spec = NoteStore.NotesMetadataResultSpec()
         spec.includeTitle = True
         spec.includeAttributes = True

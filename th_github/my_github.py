@@ -12,6 +12,7 @@ from django_th.services.services import ServicesMgr
 from github3 import GitHub
 
 from logging import getLogger
+import pypandoc
 from th_github.models import Github
 
 """
@@ -64,15 +65,13 @@ class ServiceGithub(ServicesMgr):
 
     def gh_footer(self, trigger, issue):
 
-        link = 'https://github.com/{0}/{1}/issues/{2}'.format(
-            trigger.repo, trigger.project, issue.id)
+        link = 'https://github.com/{0}/{1}/issues/{2}'.format(trigger.repo, trigger.project, issue.id)
 
         provided_by = _('Provided by')
         provided_from = _('from')
         footer_from = "<br/><br/>{} <em>{}</em> {} <a href='{}'>{}</a>"
 
-        return footer_from.format(provided_by, trigger.trigger.description,
-                                  provided_from, link, link)
+        return footer_from.format(provided_by, trigger.trigger.description, provided_from, link, link)
 
     def read_data(self, **kwargs):
         """
@@ -89,29 +88,20 @@ class ServiceGithub(ServicesMgr):
             # then we can create an issue
             if self.gh.ratelimit_remaining > 1:
 
-                import pypandoc
-
                 trigger = Github.objects.get(trigger_id=trigger_id)
-                issues = self.gh.issues_on(trigger.repo,
-                                           trigger.project,
-                                           since=date_triggered)
+                issues = self.gh.issues_on(trigger.repo, trigger.project, since=date_triggered)
 
                 for issue in issues:
-
                     content = pypandoc.convert(issue.body, 'md', format='html')
                     content += self.gh_footer(trigger, issue)
-
                     data.append({'title': issue.title, 'content': content})
                     # digester
-                    self.send_digest_event(trigger_id,
-                                           issue.title,
-                                           '')
+                    self.send_digest_event(trigger_id, issue.title, '')
                 cache.set('th_github_' + str(trigger_id), data)
             else:
                 # rate limit reach, do nothing right now
                 logger.warning("Rate limit reached")
-                update_result(trigger_id, msg="Rate limit reached",
-                              status=True)
+                update_result(trigger_id, msg="Rate limit reached", status=True)
         else:
             logger.critical("no token provided")
             update_result(trigger_id, msg="No token provided", status=True)
@@ -139,15 +129,11 @@ class ServiceGithub(ServicesMgr):
             if limit > 1:
                 # repo goes to "owner"
                 # project goes to "repository"
-                r = self.gh.create_issue(trigger.repo,
-                                         trigger.project,
-                                         title,
-                                         body)
+                r = self.gh.create_issue(trigger.repo, trigger.project, title, body)
             else:
                 # rate limit reach
-                logger.warn("Rate limit reached")
-                update_result(trigger_id, msg="Rate limit reached",
-                              status=True)
+                logger.warning("Rate limit reached")
+                update_result(trigger_id, msg="Rate limit reached", status=True)
                 # put again in cache the data that could not be
                 # published in Github yet
                 cache.set('th_github_' + str(trigger_id), data, version=2)
@@ -156,8 +142,7 @@ class ServiceGithub(ServicesMgr):
             logger.debug(sentence)
             status = True
         else:
-            sentence = "no token or link provided for " \
-                       "trigger ID {} ".format(trigger_id)
+            sentence = "no token or link provided for trigger ID {} ".format(trigger_id)
             logger.critical(sentence)
             update_result(trigger_id, msg=sentence, status=False)
             status = False

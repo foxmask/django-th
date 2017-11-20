@@ -64,8 +64,7 @@ class Pub(object):
             :param service:
             :return: data
         """
-        service_provider = default_provider.get_service(
-            str(service.provider.name.name))
+        service_provider = default_provider.get_service(str(service.provider.name.name))
 
         # 1) get the data from the provider service
         module_name = 'th_' + service.provider.name.name.split('Service')[1].lower()
@@ -82,8 +81,7 @@ class Pub(object):
             :return: status
         """
         # consumer - the service which uses the data
-        service_consumer = default_provider.get_service(
-            str(service.consumer.name.name))
+        service_consumer = default_provider.get_service(str(service.consumer.name.name))
         kwargs = {'user': service.user}
         getattr(service_consumer, '__init__')(service.consumer.token, **kwargs)
         instance = getattr(service_consumer, 'save_data')

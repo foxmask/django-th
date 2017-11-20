@@ -11,13 +11,10 @@ from th_slack.models import Slack
 def slack(request):
     data = {}
     # check that the data are ok with the provided signature
-    slack = Slack.objects.filter(slack_token=request.data['token'],
-                                 team_id=request.data['team_id']).get()
+    slack = Slack.objects.filter(slack_token=request.data['token'], team_id=request.data['team_id']).get()
     if slack:
         data['title'] = 'From Slack #{}'.format(request.data['channel_name'])
         data['content'] = request.data['text']
         status = save_data(slack.trigger_id, data)
-        if status:
-            return Response({"message": "Success"})
-        else:
-            return Response({"message": "Bad request"})
+        return Response({"message": "Success"}) if status else Response({"message": "Bad request"})
+    return Response({"message": "Bad request"})

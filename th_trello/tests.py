@@ -92,7 +92,7 @@ class TrelloModelAndFormTest(TrelloTest):
     def test_read_data(self):
         r = self.create_trello()
         from th_trello.my_trello import ServiceTrello
-        kwargs = {'trigger_id': r.trigger_id}
+        kwargs = {'model_name': 'Trello',  'app_label': 'th_trello', 'trigger_id': r.trigger_id}
         t = ServiceTrello()
         t.read_data(**kwargs)
         data = list()
@@ -115,11 +115,13 @@ class ServiceTrelloTest(TrelloTest):
         """
            Test if the reading of the Trello object looks fine
         """
-        self.create_trello()
-        data = {'link': 'http://foo.bar/some/thing/else/what/else',
+        r = self.create_trello()
+        data = {'model_name': 'Trello',
+                'app_label': 'th_trello',
+                'trigger_id': r.trigger_id,
+                'link': 'http://foo.bar/some/thing/else/what/else',
                 'title': 'what else',
                 'content': 'foobar'}
-
         se = ServiceTrello(self.token)
         data = se.read_data(**data)
         self.assertIsInstance(data, list)
