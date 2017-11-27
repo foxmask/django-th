@@ -15,6 +15,8 @@ from django_th import signals
 from django_th.models import UserService, ServicesActivated, TriggerService
 from django_th.publishing_limit import PublishingLimit
 from django_th.html_entities import HtmlEntities
+
+import feedparser
 # Using OAuth(12)Session
 from requests_oauthlib import OAuth1Session, OAuth2Session
 
@@ -67,17 +69,13 @@ class ServicesMgr(object):
         """
         content = ''
         if data.get(which_content):
-            if not isinstance(data.get(which_content), str):
+            if isinstance(data.get(which_content), feedparser.FeedParserDict):
+                content = data.get(which_content)['value']
+            elif not isinstance(data.get(which_content), str):
                 if 'value' in data.get(which_content)[0]:
                     content = data.get(which_content)[0].value
             else:
-                if type(data.get(which_content)) is str:
-                    content = data.get(which_content)
-                else:
-                    # if not str or list or tuple
-                    # or dict it could be feedparser.FeedParserDict
-                    # so get the item value
-                    content = data.get(which_content)['value']
+                content = data.get(which_content)
         return content
 
     @staticmethod

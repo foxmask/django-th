@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 from __future__ import unicode_literals
+from concurrent.futures import ThreadPoolExecutor
 # django
 from django.conf import settings
 from django.core.management.base import BaseCommand
@@ -10,7 +11,6 @@ from django_th.models import TriggerService
 from django_th.read import Read
 
 from logging import getLogger
-from multiprocessing import Pool, TimeoutError
 # create logger
 logger = getLogger('django_th.trigger_happy')
 
@@ -34,10 +34,8 @@ class Command(BaseCommand):
             provider__name__status=True,
             consumer__name__status=True,
         ).select_related('consumer__name', 'provider__name')
-        try:
-            with Pool(processes=settings.DJANGO_TH.get('processes')) as pool:
-                r = Read()
-                result = pool.map_async(r.reading, trigger)
-                result.get(timeout=60)
-        except TimeoutError as e:
-            logger.warning(e)
+
+        with ThreadPoolExecutor(max_workers=settings.DJANGO_TH.get('processes')) as executor:
+            r = Read()
+            for t in trigger:
+                executor.submit(r.reading, t)
