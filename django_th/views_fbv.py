@@ -225,5 +225,8 @@ def trigger_edit(request, trigger_id, edit_what):
 
     context = {'description': service.description,
                'edit_what': edit_what,
-               'data': data}
+               'data': data,
+               'is_secure': request.is_secure(),
+               'host': request.get_host()}
+
     return render(request, template, {'form': form, 'context': context})
