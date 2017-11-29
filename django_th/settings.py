@@ -2,23 +2,31 @@
 import os
 from django.core.urlresolvers import reverse_lazy
 
-DEBUG = True  # set to False when using in production
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+import environ
+
+ROOT_DIR = environ.Path(__file__) - 1
+APPS_DIR = ROOT_DIR.path('django_th')
+
+env = environ.Env()
+env_file = str(ROOT_DIR.path('.env'))
+# print('Loading : {}'.format(env_file))
+env.read_env(env_file)
+# print('The .env file has been loaded. See settings.py for more information')
+
+DEBUG = env.bool('DEBUG', default=False),  # set to False when using in production
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['127.0.0.1', 'localhost'])
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-
 DATABASES = {
     'default': {
-        # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR + '/trigger_happy.sqlite3',
-        # Or path to database file if using sqlite3.
-        'USER': '',  # Not used with sqlite3.
-        'PASSWORD': '',  # Not used with sqlite3.
-        'HOST': '',  # Set to empty string for localhost. Not used with sqlite3
-        'PORT': '',  # Set to empty string for default. Not used with sqlite3.
+        'ENGINE': env.str('DB_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': env.str('DB_NAME', default=BASE_DIR + '/trigger_happy.sqlite3'),
+        'USER': env.str('DB_USER', default=''),
+        'PASSWORD': env.str('DB_PASSWORD', default=''),
+        'HOST': env.str('DB_HOST', default=''),
+        'PORT': env.str('DB_PORT', default=''),
     },
     'TEST': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -30,22 +38,22 @@ DATABASES = {
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
 # although not all choices may be available on all operating systems.
 # In a Windows environment this must be set to your system time zone.
-TIME_ZONE = 'Europe/Paris'
+TIME_ZONE = env.str('TIME_ZONE', default='Europe/Paris')
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = env.str('LANGUAGE_CODE', default='en')
 
 # If you set this to False, Django will make some optimizations so as not
 # to load the internationalization machinery.
-USE_I18N = True
+USE_I18N = env.bool('USE_I18N', default=True)
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale.
-USE_L10N = True
+USE_L10N = env.bool('USE_L10N', default=True)
 
 # If you set this to False, Django will not use timezone-aware datetimes.
-USE_TZ = True
+USE_TZ = env.bool('USE_TZ', default=True)
 
 # Absolute filesystem path to the directory that will hold user-uploaded files.
 # Example: "/home/media/media.lawrence.com/media/"
@@ -229,7 +237,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/12",
+        "LOCATION": "redis://localhost:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 5000,
@@ -239,7 +247,7 @@ CACHES = {
     {
         'TIMEOUT': 3600,
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://localhost:6379/13",
+        "LOCATION": "redis://localhost:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
             "MAX_ENTRIES": 5000,
@@ -247,22 +255,8 @@ CACHES = {
     },
 }
 
-# dedicated TriggerHappy settings
-try:
-    from .th_settings import *
-except ImportError:
-    raise ImportError("you should create a th_settings.py with "
-                      "everything related to TriggerHappy, see th_settings_sample.py")
-
-
-SECRET_KEY = 'to be defined :P'
+SECRET_KEY = env.str('SECRET_KEY', default='to be defined :P')
 
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
 TEST_RUNNER_WHITELIST = ('oauth2_provider', 'corsheaders')
-
-# local settings management
-try:
-    from .local_settings import *
-except ImportError:
-    pass
