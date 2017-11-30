@@ -30,7 +30,7 @@ def remove_prohibited_elements(document_element):
         "ilayer", "input", "isindex", "label", "layer", "legend", "link",
         "marquee", "menu", "meta", "noframes", "noscript", "object",
         "optgroup", "option", "param", "plaintext", "script", "select",
-        "style", "textarea", "xml", 'wbr', 'figure', 'canvas']
+        "style", "textarea", "xml", 'wbr', 'figure', 'canvas', 'aside']
     for tag_name in prohibited_tag_names:
         remove_prohibited_element(tag_name, document_element)
 
