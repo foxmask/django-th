@@ -48,7 +48,7 @@ def remove_prohibited_element(tag_name, document_element):
 def filter_term(att):
     if att.startswith("on") or att.startswith("data-") or \
        att in ["id", "class", "accesskey", "data", "dynsrc", "tabindex", "srcset",
-               "frame", "rules", "width", "trbidi", "imageanchor", "sizes"]:
+               "frame", "rules", "width", "trbidi", "imageanchor", "sizes", "property"]:
         return True
 
 
