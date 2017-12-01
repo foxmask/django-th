@@ -10,6 +10,7 @@ install_requires = [
     'django-redis==4.8.0',
     'requests-oauthlib==0.8.0',
     'pypandoc==1.3.3',
+    'django-environ==0.4.4',
 ]
 
 extras_require_evernote = [
