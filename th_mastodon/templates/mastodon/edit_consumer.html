@@ -30,7 +30,7 @@
                 {% if form.screen.errors %}
                 <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.screen.errors }}</div>
                 {% endif %}
-                <label for="id_tooter" class="col-sm-2 control-label">{% trans "Tooter" %}</label>
+                <label for="id_tooter" class="col-sm-2 control-label">{% trans "Mastodon Username" %}</label>
                 <div class="col-sm-6">{{ form.tooter }}</div>
                 <div class="col-sm-offset-2 col-sm-6">{% trans "Put the name of a user (@user@masto.tld) you want to get his Toots" %}</div>
             </div>
@@ -40,7 +40,7 @@
                 {% endif %}
                 <label for="id_fav" class="col-sm-2 control-label">{% trans "Save the favorites" %}</label>
                 <div class="col-sm-6">{{ form.fav }}</div>
-                <div class="col-sm-offset-2 col-sm-6">{% trans "Save the favorite of the 'Tooter' you filled above" %}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Save the Username's favorites of you filled above" %}</div>
             </div>
 
             <div class="form-group form-actions">
