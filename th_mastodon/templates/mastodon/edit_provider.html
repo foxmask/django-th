@@ -30,9 +30,9 @@
                 {% if form.screen.errors %}
                 <div class="col-sm-offset-1 col-sm-6 alert alert-danger" role="alert">{{ form.screen.errors }}</div>
                 {% endif %}
-                <label for="id_tooter" class="col-sm-2 control-label">{% trans "Tooter" %}</label>
+                <label for="id_tooter" class="col-sm-2 control-label">{% trans "Mastodon Username" %}</label>
                 <div class="col-sm-6">{{ form.tooter }}</div>
-                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the name of a user you want to get his Toots.<br/><i>user@domain.tld</i> for a remote user or just <i>user</i>  if you search local toots of this user" %}</div>
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put the name of a user (@user@masto.tld) you want to get his Toots" %}</div>
             </div>
             <div class="form-group{% if form.fav.errors %} has-error{% endif %}">
                 {% if form.fav.errors %}

@@ -36,8 +36,15 @@
             </div>
             {% elif service_name in SERVICES_HOSTED_WITH_AUTH %}
             <div class="form-group">
+                {% if service_name == 'ServiceMastodon' %}
+                <label class="col-sm-2 control-label" for="id_username">{% trans 'Mastodon Username' %}</label>
+                {% else %}
                 <label class="col-sm-2 control-label" for="id_username">{% trans 'Username' %}</label>
+                {% endif %}
                 <div class="col-sm-6">{{ form.username }}</div>
+                {% if service_name == 'ServiceMastodon' %}
+                <div class="col-sm-offset-2 col-sm-6">{% trans "Put your email you connect with" %}</div>
+                {% endif %}
                 <div class="col-sm-offset-2 col-sm-8">{{ form.username.errors }}</div>
             </div>
             <div class="form-group">

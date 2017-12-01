@@ -18,7 +18,8 @@ class MastodonForm(forms.ModelForm):
 
         widgets = {
             'tag': TextInput(attrs={'class': 'form-control'}),
-            'tooter': TextInput(attrs={'class': 'form-control'}),
+            'tooter': TextInput(attrs={'placeholder': '@username@mastodo.tld',
+                                       'class': 'form-control'}),
         }
 
     def clean(self):
