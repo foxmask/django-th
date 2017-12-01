@@ -31,7 +31,7 @@ class ServiceRss(ServicesMgr):
         :param entry:
         :return:
         """
-        published = ''
+        published = None
         if hasattr(entry, 'published_parsed'):
             if entry.published_parsed is not None:
                 published = datetime.datetime.utcfromtimestamp(time.mktime(entry.published_parsed))
@@ -70,8 +70,8 @@ class ServiceRss(ServicesMgr):
             # entry.*_parsed may be None when the date in a RSS Feed is invalid
             # so will have the "now" date as default
             published = self._get_published(entry)
-            published = now if published == '' else arrow.get(str(published)).to(settings.TIME_ZONE)
-
+            if published:
+                published = arrow.get(str(published)).to(settings.TIME_ZONE)
             date_triggered = arrow.get(str(date_triggered)).to(settings.TIME_ZONE)
             if date_triggered is not None and published is not None and now >= published >= date_triggered:
                 my_feeds.append(entry)
