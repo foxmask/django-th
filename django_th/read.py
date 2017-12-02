@@ -1,12 +1,9 @@
 # coding: utf-8
 from __future__ import unicode_literals
 from __future__ import absolute_import
-
-import arrow
 # django
 from django.conf import settings
 from django.utils.timezone import now
-
 # trigger happy
 from django_th.services import default_provider
 from django_th.models import TriggerService
@@ -51,18 +48,13 @@ class Read(object):
            :param service: service object to read
            :type service: object
         """
-        now = arrow.utcnow().to(settings.TIME_ZONE).format('YYYY-MM-DD HH:mm:ssZZ')
-        # counting the new data to store to display them in the log
-        # provider - the service that offer data
+        # counting the new data to store to display them in the log provider - the service that offer data
         provider_token = service.provider.token
         default_provider.load_services()
         service_provider = default_provider.get_service(str(service.provider.name.name))
-        # check if the service has already been triggered
-        # if date_triggered is None, then it's the first run
-        # so it will be set to "now"
-        date_triggered = service.date_triggered if service.date_triggered else now
-        # 1) get the data from the provider service
-        # get a timestamp of the last triggered of the service
+        date_triggered = service.date_triggered if service.date_triggered else service.date_created
+
+        # get the data from the provider service
         kwargs = {'token': provider_token, 'trigger_id': service.id, 'date_triggered': date_triggered}
         data = self.provider(service_provider, **kwargs)
 
