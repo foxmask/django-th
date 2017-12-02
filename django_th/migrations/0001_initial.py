@@ -54,28 +54,29 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', auto_created=True, serialize=False, primary_key=True)),
                 ('token', models.CharField(max_length=255)),
-                ('name', models.ForeignKey(to_field='name', to='django_th.ServicesActivated', related_name='+')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('name', models.ForeignKey(to_field='name', to='django_th.ServicesActivated', related_name='+',
+                                           on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
         ),
         migrations.AddField(
             model_name='triggerservice',
             name='consumer',
-            field=models.ForeignKey(blank=True, related_name='+', to='django_th.UserService'),
+            field=models.ForeignKey(blank=True, related_name='+', to='django_th.UserService', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='triggerservice',
             name='provider',
-            field=models.ForeignKey(blank=True, related_name='+', to='django_th.UserService'),
+            field=models.ForeignKey(blank=True, related_name='+', to='django_th.UserService', on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='triggerservice',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE),
         ),
         migrations.AddField(
             model_name='rss',
             name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
+            field=models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE),
         ),
     ]

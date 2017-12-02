@@ -45,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='taiga',
             name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
+            field=models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE),
         ),
     ]
 

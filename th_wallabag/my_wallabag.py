@@ -2,8 +2,8 @@
 # add here the call of any native lib of python like datetime etc.
 import arrow
 # django classes
-from django.core.urlresolvers import reverse
 from django.core.cache import caches
+from django.urls import reverse
 # django_th classes
 from django_th.services.services import ServicesMgr
 from django_th.html_entities import HtmlEntities

@@ -1,6 +1,6 @@
 # Django settings for django_th project.
 import os
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 
 import environ
 
@@ -94,7 +94,7 @@ MIDDLEWARE = (
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    # 'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
@@ -122,7 +122,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'formtools',
-    'django_js_reverse',
+    # 'django_js_reverse',
     'rest_framework',
     'django_th',
     'th_rss',

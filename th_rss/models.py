@@ -11,7 +11,7 @@ class Rss(Services):
     """
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     url = models.URLField(max_length=255)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'django_th'

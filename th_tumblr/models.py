@@ -11,7 +11,7 @@ class Tumblr(Services):
     """
     blogname = models.CharField(max_length=80)
     tag = models.CharField(max_length=80, blank=True)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_tumblr'

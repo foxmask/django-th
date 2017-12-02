@@ -62,9 +62,9 @@ class UserService(models.Model):
         (NONE, _('None'))
     )
 
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     token = models.CharField(max_length=255, blank=True)
-    name = models.ForeignKey(ServicesActivated, to_field='name', related_name='+')
+    name = models.ForeignKey(ServicesActivated, to_field='name', related_name='+', on_delete=models.CASCADE)
     username = models.CharField(_('username'), max_length=255, default='', blank=True)
     password = models.CharField(_('password'), max_length=128, default='', blank=True)
     host = models.URLField(_('host'), default='', blank=True)
@@ -90,10 +90,10 @@ class TriggerService(models.Model):
     """
         TriggerService
     """
-    provider = models.ForeignKey(UserService, related_name='+', blank=True)
-    consumer = models.ForeignKey(UserService, related_name='+', blank=True)
+    provider = models.ForeignKey(UserService, related_name='+', blank=True, on_delete=models.CASCADE)
+    consumer = models.ForeignKey(UserService, related_name='+', blank=True, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     date_created = models.DateField(auto_now_add=True)
     date_triggered = models.DateTimeField(null=True)
     status = models.BooleanField(default=False)
@@ -126,7 +126,7 @@ class Digest(models.Model):
     """
     Digest service to store the data from other service
     """
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     title = models.CharField(max_length=600)
     link = models.URLField()
     duration = models.CharField(max_length=1)

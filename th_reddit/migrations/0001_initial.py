@@ -24,7 +24,8 @@ class Migration(migrations.Migration):
                 ('description', models.CharField(max_length=255)),
                 ('subreddit', models.CharField(max_length=80)),
                 ('share_link', models.BooleanField(default=False)),
-                ('trigger', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='django_th.TriggerService')),
+                ('trigger', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE,
+                                              to='django_th.TriggerService')),
             ],
             options={
                 'db_table': 'django_th_reddit',

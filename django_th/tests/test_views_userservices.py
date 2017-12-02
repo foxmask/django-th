@@ -1,8 +1,7 @@
 # coding: utf-8
-from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.test import RequestFactory
-
+from django.urls import reverse
 
 from django_th.forms.base import UserServiceForm
 from django_th.models import UserService, ServicesActivated

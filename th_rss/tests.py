@@ -2,7 +2,7 @@
 import arrow
 
 from django.conf import settings
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.test import RequestFactory
 
 from django_th.tests.test_main import MainTest, setup_view

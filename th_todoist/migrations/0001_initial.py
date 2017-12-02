@@ -26,6 +26,6 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='todoist',
             name='trigger',
-            field=models.ForeignKey(to='django_th.TriggerService'),
+            field=models.ForeignKey(to='django_th.TriggerService', on_delete=models.CASCADE),
         ),
     ]

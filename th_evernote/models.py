@@ -14,7 +14,7 @@ class Evernote(Services):
     notebook = models.CharField(max_length=80)
     title = models.CharField(max_length=80)
     text = models.TextField()
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_evernote'

@@ -36,7 +36,7 @@ class Taiga(Services):
     notify_wikipage_change = models.BooleanField(default=True)
     notify_wikipage_delete = models.BooleanField(default=True)
 
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_taiga'

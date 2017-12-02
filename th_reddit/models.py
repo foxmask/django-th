@@ -14,7 +14,7 @@ class Reddit(Services):
     # but keep at least this one
     subreddit = models.CharField(max_length=80)
     share_link = models.BooleanField(default=False)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_reddit'

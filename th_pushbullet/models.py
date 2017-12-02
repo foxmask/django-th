@@ -13,7 +13,7 @@ class Pushbullet(Services):
     device = models.CharField(max_length=80, blank=True)
     email = models.EmailField(max_length=255, blank=True)
     channel_tag = models.CharField(max_length=80, blank=True)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_pushbullet'

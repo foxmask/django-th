@@ -3,7 +3,7 @@ from django_th import __version__ as version
 
 install_requires = [
     'djangorestframework==3.7.3',
-    'Django==1.11.7',
+    'Django==2.0rc1',
     'django-formtools==2.1',
     'arrow==0.10.0',
     'django-js-reverse==0.7.3',

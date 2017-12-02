@@ -9,7 +9,7 @@ class Todoist(Services):
     """
         todoist model to be adapted for the new service
     """
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_todoist'

@@ -14,7 +14,7 @@ class Github(Services):
     # but keep at least this one
     repo = models.CharField(max_length=80)  # owner
     project = models.CharField(max_length=80)  # repo
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_github'

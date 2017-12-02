@@ -21,7 +21,7 @@ class Mastodon(Services):
     since_id = models.BigIntegerField(null=True, blank=True)
     max_id = models.BigIntegerField(null=True, blank=True)
     count = models.IntegerField(null=True, blank=True)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_mastodon'

@@ -15,7 +15,7 @@ class Instapush(Services):
     app_secret = models.CharField(max_length=255)
     event_name = models.CharField(max_length=255)
     tracker_name = models.CharField(max_length=80)
-    trigger = models.ForeignKey(TriggerService)
+    trigger = models.ForeignKey(TriggerService, on_delete=models.CASCADE)
 
     class Meta:
         app_label = 'th_instapush'

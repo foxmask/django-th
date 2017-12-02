@@ -4,7 +4,7 @@ import arrow
 # django classes
 from django.conf import settings
 from django.core.cache import caches
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 # django_th classes
 from django_th.models import update_result, UserService
