@@ -4,7 +4,7 @@
 $(document).on("click","a.btn.btn-md.btn-default", function () {
     triggerId = $(this).attr('data')
     var request = $.ajax({
-        url: Urls.fire_trigger(triggerId),
+        url: '/th/trigger/fire/' + triggerId,
         type: 'get',
         dataType: 'html',
         success: showResponse,
@@ -17,7 +17,7 @@ $(document).on("click","a.btn.btn-md.btn-default", function () {
 $(document).on("click","a.btn.btn-md.btn-primary, a.btn.btn-md.btn-success", function () {
     triggerId = $(this).attr('data')
     var request = $.ajax({
-        url: Urls.trigger_on_off(triggerId),
+        url: '/th/trigger/onoff/' + triggerId,
         type: 'get',
         dataType: 'html',
         success: showResponse,
