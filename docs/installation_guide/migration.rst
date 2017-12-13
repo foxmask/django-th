@@ -149,7 +149,7 @@ with the last
 you will see this message:
 
 
-.. code-block:: bash
+.. code-block:: python
 
     Running migrations:
       No migrations to apply.
