@@ -1,6 +1,7 @@
 # coding: utf-8
 import re
 from tidylib import tidy_document
+from xml.parsers.expat import ExpatError
 from xml.dom.minidom import parseString
 
 
@@ -11,13 +12,16 @@ def sanitize(html):
     document, errors = tidy_document(
         html, options={"output-xhtml": 1, "force-output": 1})
 
-    parsed_dom = parseString(document)
-    document_element = parsed_dom.documentElement
-    remove_prohibited_elements(document_element)
-    remove_prohibited_attributes(document_element)
-    body = document_element.getElementsByTagName("body")[0]
-    body.tagName = "en-note"
-    return body.toxml()
+    try:
+        parsed_dom = parseString(document)
+        document_element = parsed_dom.documentElement
+        remove_prohibited_elements(document_element)
+        remove_prohibited_attributes(document_element)
+        body = document_element.getElementsByTagName("body")[0]
+        body.tagName = "en-note"
+        return body.toxml()
+    except ExpatError:
+        return ''
 
 
 def remove_prohibited_elements(document_element):
