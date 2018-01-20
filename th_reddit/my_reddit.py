@@ -70,13 +70,14 @@ class ServiceReddit(ServicesMgr):
         """
         trigger_id = kwargs.get('trigger_id')
         trigger = Reddit.objects.get(trigger_id=trigger_id)
-        date_triggered = kwargs.get('date_triggered')
+        date_triggered = arrow.get(kwargs.get('date_triggered'))
         data = list()
-        submissions = self.reddit.subreddit(trigger.subreddit).top('all')
+        submissions = self.reddit.subreddit(trigger.subreddit).top('day')
         for submission in submissions:
             title = 'From Reddit ' + submission.title
-            created = arrow.get(submission.created)
-            if created > date_triggered and submission.selftext is not None and trigger.share_link:
+            created = arrow.get(submission.created).to(settings.TIME_ZONE)
+            if date_triggered is not None and created is not None \
+                and created >= date_triggered and not submission.is_self and trigger.share_link:
                 body = submission.selftext if submission.selftext else submission.url
                 data.append({'title': title, 'content': body})
                 self.send_digest_event(trigger_id, title, '')
