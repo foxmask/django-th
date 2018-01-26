@@ -77,7 +77,7 @@ class ServiceReddit(ServicesMgr):
             title = 'From Reddit ' + submission.title
             created = arrow.get(submission.created).to(settings.TIME_ZONE)
             if date_triggered is not None and created is not None \
-                and created >= date_triggered and not submission.is_self and trigger.share_link:
+               and created >= date_triggered and not submission.is_self and trigger.share_link:
                 body = submission.selftext if submission.selftext else submission.url
                 data.append({'title': title, 'content': body})
                 self.send_digest_event(trigger_id, title, '')
