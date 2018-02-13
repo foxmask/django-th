@@ -203,7 +203,8 @@ class ServicesMgr(object):
             :rtype: string
         """
         if kwargs.get('access_token') == '' or kwargs.get('access_token') is None:
-            access_token = self.get_access_token(request.session['oauth_token'], request.GET.get('oauth_verifier', ''))
+            access_token = self.get_access_token(request.session['oauth_token'], request.session.get('oauth_token', ''), 
+                                                 request.GET.get('oauth_verifier', ''))
         else:
             access_token = kwargs.get('access_token')
 
