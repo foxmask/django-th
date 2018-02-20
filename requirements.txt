@@ -1,7 +1,7 @@
-arrow==0.12.0
+arrow==0.12.1
 awesome-slugify==1.6.5
-djangorestframework==3.7.7
-Django==2.0.1
+djangorestframework>=3.7.7,<4.0
+Django>=2.0,<3.0
 django-environ==0.4.4
 django-filter==1.1.0
 django-formtools==2.1
@@ -11,13 +11,13 @@ evernote3==1.25.12
 feedparser==5.2.1
 github3.py==1.0.0a4
 instapush==0.1.2
-Mastodon.py==1.2.1
+Mastodon.py==1.2.2
 pocket==0.3.6
 praw==5.3.0
 pushbullet.py==0.11.0
-py-trello==0.9.0
+py-trello==0.10.0
 pypandoc==1.4
-python-taiga==0.8.6
+python-taiga==0.9.0
 pytidylib==0.3.2
 # -e git://github.com/dianakhuang/pytumblr.git@diana/python-3-support#egg=pytumblr
 PyTumblr==0.0.7
