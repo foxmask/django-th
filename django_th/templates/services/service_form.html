@@ -10,6 +10,15 @@
         {% else %}
         <h3>{% trans 'Adding of the service' %} {{ service_name_alone }}</h3>
         {% endif %}
+          {% if messages %}
+          <div class="alert alert-warning" role="alert">
+              <ul class="messages">
+                  {% for message in messages %}
+                  <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                  {% endfor %}
+              </ul>
+          </div>
+          {% endif %}
         {%  if services == 0 %}
         <div class="alert alert-warning">
             You already have activated all the existing services.

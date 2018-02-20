@@ -15,6 +15,8 @@ from django_th.tools import download_image, get_tags, limit_content
 from logging import getLogger
 
 from mastodon import Mastodon as MastodonAPI
+from mastodon.Mastodon import MastodonIllegalArgumentError
+
 
 from th_mastodon.models import Mastodon
 
@@ -299,3 +301,27 @@ class ServiceMastodon(ServicesMgr):
             :rtype: string
         """
         return 'mastodon/callback.html'
+
+    def check(self, request, user):
+        """
+        check if the service is well configured
+        :return: Boolean
+        """
+        redirect_uris = '%s://%s%s' % (request.scheme, request.get_host(), reverse('mastodon_callback'))
+        us = UserService.objects.get(user=user,
+                                     name='ServiceMastodon')
+        client_id, client_secret = MastodonAPI.create_app(
+            client_name="TriggerHappy", api_base_url=us.host,
+            redirect_uris=redirect_uris)
+
+        # get the token by logging in
+        mastodon = MastodonAPI(
+            client_id=client_id,
+            client_secret=client_secret,
+            api_base_url=us.host
+        )
+        try:
+            mastodon.log_in(username=us.username, password=us.password)
+            return True
+        except MastodonIllegalArgumentError as e:
+            return e

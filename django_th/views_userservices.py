@@ -181,12 +181,29 @@ class UserServiceUpdateView(UserServiceMixin, UpdateView):
         :param form:
         :return:
         """
+        valid = True
         # 'name' is injected in the clean() of the form line 56
         name = form.cleaned_data.get('name').name
         user = self.request.user
         form.save(user=user, service_name=name)
-        messages.success(self.request, _('Service %s modified successfully') % name.split('Service')[1])
-        return HttpResponseRedirect(reverse('user_services'))
+
+        sa = ServicesActivated.objects.get(name=name)
+        if sa.auth_required and sa.self_hosted:
+            # trigger the checking of the service
+            from django_th.services import default_provider
+            default_provider.load_services()
+            service_provider = default_provider.get_service(name)
+            result = service_provider.check(self.request, user)
+            if result is not True:
+                # the call of the API failed due to an error which is in the result string
+                # return by the call of the API
+                form.add_error('host', result)
+                messages.error(self.request, result)
+                return redirect('edit_service', pk=self.kwargs.get(self.pk_url_kwarg))
+
+        if valid:
+            messages.success(self.request, _('Service %s modified successfully') % name.split('Service')[1])
+            return HttpResponseRedirect(reverse('user_services'))
 
 
 class UserServiceDeleteView(UserServiceMixin, DeleteView):
