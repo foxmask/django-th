@@ -91,8 +91,8 @@ setup(
     maintainer='FoxMaSk',
     author_email='foxmask@trigger-happy.eu',
     maintainer_email='foxmask@trigger-happy.eu',
-    url='https://github.com/foxmask/django-th',
-    download_url="https://github.com/foxmask/django-th/"
+    url='https://github.com/push-things/django-th',
+    download_url="https://github.com/push-things/django-th/"
                  "archive/trigger-happy-" + version + ".zip",
     packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
