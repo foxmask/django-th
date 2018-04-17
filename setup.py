@@ -85,8 +85,8 @@ extras_require_all = \
 setup(
     name='django_th',
     version=version,
-    description='Trigger Happy - take the control of your data '
-                'with this bridge between your internet services',
+    description='The bus for your internet services',
+    long_description='take the control of your data with this bus between your internet services',
     author='FoxMaSk',
     maintainer='FoxMaSk',
     author_email='foxmask@trigger-happy.eu',
