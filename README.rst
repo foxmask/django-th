@@ -4,18 +4,13 @@
 
 
 .. image:: http://img.shields.io/pypi/v/django-th.svg
-    :target: https://pypi.python.org/pypi/django-th/
+    :target: https://pypi.org/pypi/django-th/
     :alt: Latest version
 
 
-.. image:: https://codeclimate.com/github/foxmask/django-th/badges/gpa.svg
-    :target: https://codeclimate.com/github/foxmask/django-th
+.. image:: https://codeclimate.com/github/push-things/django-th/badges/gpa.svg
+    :target: https://codeclimate.com/github/push-things/django-th
     :alt: Code Climate
-
-
-.. image:: https://api.codeclimate.com/v1/badges/38248f257ac2a363bb73/test_coverage
-   :target: https://codeclimate.com/github/foxmask/django-th/test_coverage
-   :alt: Test Coverage
 
 
 .. image:: https://coveralls.io/repos/github/push-things/django-th/badge.svg
@@ -34,12 +29,12 @@
 
 
 .. image:: http://img.shields.io/badge/python-3.6-orange.svg
-    :target: https://pypi.python.org/pypi/django-th/
+    :target: https://pypi.org/pypi/django-th/
     :alt: Python version supported
 
 
 .. image:: http://img.shields.io/badge/license-BSD-blue.svg
-    :target: https://pypi.python.org/pypi/django-th/
+    :target: https://pypi.org/pypi/django-th/
     :alt: License
 
 
@@ -73,12 +68,12 @@ The minimum requirements are the following:
 * `Redis <https://redis.io/>`_
 * `Django <https://www.djangoproject.com/>`_
 * `DjangoRestFramework <http://www.django-rest-framework.org/>`_
-* `Django-formtools <https://pypi.python.org/pypi/django-formtools>`_
-* `Django-js-reverse <https://pypi.python.org/pypi/django-js-reverse>`_
-* `Django-Redis <https://pypi.python.org/pypi/django-redis/>`_
-* `Pypandoc <https://pypi.python.org/pypi/pypandoc/>`_
-* `Requests-oAuthlib <https://pypi.python.org/pypi/requests-oauthlib/>`_
-* `Arrow <https://pypi.python.org/pypi/arrow>`_
+* `Django-formtools <https://pypi.org/pypi/django-formtools>`_
+* `Django-js-reverse <https://pypi.org/pypi/django-js-reverse>`_
+* `Django-Redis <https://pypi.org/pypi/django-redis/>`_
+* `Pypandoc <https://pypi.org/pypi/pypandoc/>`_
+* `Requests-oAuthlib <https://pypi.org/pypi/requests-oauthlib/>`_
+* `Arrow <https://pypi.org/pypi/arrow>`_
 
 Installation
 ============
