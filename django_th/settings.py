@@ -122,7 +122,7 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
     'formtools',
-    # 'django_js_reverse',
+    'django_js_reverse',
     'rest_framework',
     'django_th',
     'th_rss',

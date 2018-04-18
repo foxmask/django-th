@@ -8,7 +8,7 @@ install_requires = [
     'django-formtools==2.1',
     'arrow==0.12.1',
     'django-js-reverse==0.8.1',
-    'django-redis==4.8.0',
+    'django-redis==4.9.0',
     'requests-oauthlib==0.8.0',
     'pypandoc==1.4',
     'django-environ==0.4.4',
@@ -20,9 +20,6 @@ extras_require_evernote = [
 ]
 extras_require_github = [
     'github3.py==1.0.0a4',
-]
-extras_require_instapush = [
-    'instapush==0.1.2'
 ]
 extras_require_mastodon = [
     'Mastodon.py==1.2.2',
@@ -59,7 +56,7 @@ extras_require_twitter = [
     'twython==3.6.0',
 ]
 extras_require_wallabag = [
-    'wallabag_api==1.1.0',
+    'wallabag_api==1.1.3',
 ]
 
 extras_require_min = extras_require_rss + extras_require_wallabag
@@ -67,7 +64,6 @@ extras_require_min = extras_require_rss + extras_require_wallabag
 extras_require_all = \
     extras_require_evernote\
     + extras_require_github\
-    + extras_require_instapush\
     + extras_require_mastodon\
     + extras_require_pelican\
     + extras_require_pocket\
@@ -92,8 +88,7 @@ setup(
     author_email='foxmask@trigger-happy.eu',
     maintainer_email='foxmask@trigger-happy.eu',
     url='https://github.com/push-things/django-th',
-    download_url="https://github.com/push-things/django-th/"
-                 "archive/trigger-happy-" + version + ".zip",
+    download_url="https://github.com/push-things/django-th/archive/trigger-happy-" + version + ".zip",
     packages=find_packages(exclude=['django_th/local_settings']),
     classifiers=[
         'Development Status :: 5 - Production/Stable',
@@ -116,7 +111,6 @@ setup(
         'all': extras_require_all,
         'evernote': extras_require_evernote,
         'github': extras_require_github,
-        'instapush': extras_require_instapush,
         'mastodon': extras_require_mastodon,
         'pelican': extras_require_pelican,
         'pocket': extras_require_pocket,

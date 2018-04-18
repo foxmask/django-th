@@ -55,7 +55,7 @@ urlpatterns = [
     # ****************************************
     # * service
     # ****************************************
-    path('th/service/', UserServiceListView.as_view(), name='user_services'),
+    path('th/services/', UserServiceListView.as_view(), name='user_services'),
     url(r'^th/service/add/(?P<service_name>\w+)$', UserServiceCreateView.as_view(), name='add_service'),
     url(r'^th/service/edit/(?P<pk>\d+)$', UserServiceUpdateView.as_view(), name='edit_service'),
     url(r'^th/service/delete/(?P<pk>\d+)$', UserServiceDeleteView.as_view(), name='delete_service'),

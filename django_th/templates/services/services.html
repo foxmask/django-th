@@ -10,13 +10,13 @@
         {% if user.is_authenticated %}
             <h2>My Services</h2>
             {% if messages %}
-            <div class="alert alert-success" role="alert">
+            {% for message in messages %}
+            <div class="alert alert-{% if message.tags == 'error'%}danger{% else %}success{% endif %}" role="alert">
                 <ul class="messages">
-                    {% for message in messages %}
                     <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    {% endfor %}
                 </ul>
             </div>
+            {% endfor %}
             {% endif %}
             {% if services_list %}
                 <div class="row">

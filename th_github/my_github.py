@@ -1,7 +1,9 @@
 # coding: utf-8
 # django classes
 from django.conf import settings
+from django.contrib import messages
 from django.core.cache import caches
+from django.urls import reverse
 from django.utils.translation import ugettext as _
 
 # django_th classes
@@ -10,6 +12,7 @@ from django_th.services.services import ServicesMgr
 
 # github
 from github3 import GitHub
+from github3.exceptions import AuthenticationFailed
 
 from logging import getLogger
 import pypandoc
@@ -156,15 +159,20 @@ class ServiceGithub(ServicesMgr):
             :return: callback url
             :rtype: string that contains the url to redirect after auth
         """
-        auth = self.gh.authorize(self.username,
-                                 self.password,
-                                 self.scope,
-                                 '',
-                                 '',
-                                 self.consumer_key,
-                                 self.consumer_secret)
-        request.session['oauth_token'] = auth.token
-        request.session['oauth_id'] = auth.id
+        try:
+            auth = self.gh.authorize(self.username,
+                                     self.password,
+                                     self.scope,
+                                     '',
+                                     '',
+                                     self.consumer_key,
+                                     self.consumer_secret)
+            request.session['oauth_token'] = auth.token
+            request.session['oauth_id'] = auth.id
+        except AuthenticationFailed as e:
+            messages.add_message(request, messages.ERROR, message="GITHUB RENEW FAILED : Reason {}".format(e))
+            return reverse('user_services')
+
         return self.callback_url(request)
 
     def callback(self, request, **kwargs):
