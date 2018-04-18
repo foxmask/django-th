@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
 from django_th.forms.services import ServicesAdminForm
 from django_th.models import ServicesActivated
@@ -17,8 +19,7 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(
-            request, "%s successfully marked as enabled." % message_bit)
+        self.message_user(request, "%s successfully marked as enabled." % message_bit)
 
     def make_status_disable(self, request, queryset):
         rows_updated = queryset.update(status=False)
@@ -27,13 +28,11 @@ class ServicesManagedAdmin(admin.ModelAdmin):
             message_bit = "1 service was"
         else:
             message_bit = "%s services were" % rows_updated
-        self.message_user(
-            request, "%s successfully marked as disabled." % message_bit)
+        self.message_user(request, "%s successfully marked as disabled." % message_bit)
 
     make_status_enable.short_description = "Status Enable"
     make_status_disable.short_description = "Status Disable"
-    list_display = ('name', 'description', 'status',
-                    'auth_required', 'self_hosted')
+    list_display = ('name', 'description', 'status', 'auth_required', 'self_hosted')
 
     actions = [make_status_enable, make_status_disable]
     add_form = ServicesAdminForm
@@ -109,15 +108,16 @@ class TriggerServiceAdmin(admin.ModelAdmin):
     """
         get the list of the User Service
     """
-    list_display = ('user', 'provider', 'consumer', 'description',
-                    'date_created', 'date_triggered', 'status')
+    list_display = ('user', 'provider', 'consumer', 'description', 'date_created', 'date_triggered', 'status')
     list_filter = [
-        ('user', admin.RelatedOnlyFieldListFilter),
-        ProviderServiceListFilter,
-        ComsumerServiceListFilter,
-        'status'
+        ('user', admin.RelatedOnlyFieldListFilter), ProviderServiceListFilter, ComsumerServiceListFilter, 'status'
     ]
 
+
+UserAdmin.list_display = ('email', 'first_name', 'last_name',  'date_joined',  'last_login', 'is_active', 'is_staff')
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
 
 admin.site.register(ServicesActivated, ServicesManagedAdmin)
 admin.site.register(UserService, UserServiceAdmin)
