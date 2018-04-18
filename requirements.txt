@@ -10,7 +10,6 @@ django-redis==4.8.0
 evernote3==1.25.12
 feedparser==5.2.1
 github3.py==1.0.0a4
-instapush==0.1.2
 Mastodon.py==1.2.2
 pocket==0.3.6
 praw==5.3.0

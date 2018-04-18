@@ -38,7 +38,6 @@ class TriggerSettingsTestCase(unittest.TestCase):
         th_service = (
             'th_evernote.my_evernote.ServiceEvernote',
             'th_github.my_github.ServiceGithub',
-            'th_instapush.my_instapush.ServiceInstapush',
             'th_mastodon.my_mastodon.ServiceMastodon',
             'th_pelican.my_pelican.ServicePelican',
             'th_pocket.my_pocket.ServicePocket',

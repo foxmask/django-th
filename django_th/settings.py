@@ -129,7 +129,6 @@ INSTALLED_APPS = (
     # uncomment the lines to enable the service you need
     'th_evernote',
     'th_github',
-    'th_instapush',
     'th_mastodon',
     'th_pelican',
     'th_pocket',
