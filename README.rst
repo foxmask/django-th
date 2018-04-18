@@ -4,7 +4,7 @@
 
 
 .. image:: http://img.shields.io/pypi/v/django-th.svg
-    :target: https://pypi.org/pypi/django-th/
+    :target: https://pypi.org/project/django_th/
     :alt: Latest version
 
 
