@@ -137,7 +137,7 @@ def get_tags(model, trigger_id):
     trigger = model.objects.get(trigger_id=trigger_id)
 
     tags = ''
-    if len(trigger.tag) > 0:
+    if trigger.tag:
         # is there several tag ?
         tags = ["#" + tag.strip() for tag in trigger.tag.split(',')]
         tags = str(','.join(tags)) if isinstance(tags, list) else tags
