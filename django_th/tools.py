@@ -87,6 +87,12 @@ def to_datetime(data):
 
 
 def warn_user_and_admin(consumer_provider, service):
+    """
+
+    :param consumer_provider: the consumer or provider
+    :param service: the service
+    :return:
+    """
 
     from_mail = settings.DEFAULT_FROM_EMAIL
 
@@ -130,6 +136,7 @@ def download_image(url):
 def get_tags(model, trigger_id):
     """
     get the tags if any
+    :param model: the model object to request
     :param trigger_id: the id of the related trigger
     :return: tags string
     """
