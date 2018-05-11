@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load django_th_extras %}
+
+{% block title %}{% trans "Profile" %} - Trigger Happy{% endblock %}
+
+{% block content %}
+<div class="col-lg-offset-2 col-md-offset-2 col-lg-10 col-md-10">
+  <h2 class="page-header"><span class="glyphicon glyphicon-user"> {% trans "My Profile" %}</span></h2>
+  <div class="col-lg-10 col-md-10">
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane fade in active" id="server">
+        <table class='table table-hover table-bordered table-striped'>
+          <caption>{% trans "Profile Details" %}</caption>
+          <thead>
+          <tr>
+            <th>{% trans "First name" %}</th>
+            <th>{% trans "Last name" %}</th>
+            <th>{% trans "Email" %}</th>
+            <th>{% trans "Last connection" %}</th>
+            <th>{% trans "Created" %}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+            <td>{{ object.first_name }}</td>
+            <td>{{ object.last_name }}</td>
+            <td>{{ object.email }}</td>
+            <td>{{ object.last_login }}</td>
+            <td>{{ object.date_joined }}</td>
+          </tr>
+          </tbody>
+        </table>
+        </div>
+        <div class="col-lg-2 col-md-2"><a href="{% url 'edit_me' %}"><span class="glyphicon glyphicon-edit btn btn-primary"> {% trans "Edit" %}</span></a></div>
+        <div class="col-lg-2 col-md-2"><a href="{% url 'password_change' %}"><span class="glyphicon glyphicon-lock btn btn-primary"> {% trans "Change password" %}</span></a></div>
+      </div>
+  </div>
+</div>
+{% endblock %}

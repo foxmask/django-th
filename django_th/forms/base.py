@@ -94,3 +94,15 @@ class LoginForm(forms.ModelForm):
             'password': PasswordInput(attrs={'placeholder': _('Password')}),
         }
         exclude = ()
+
+
+class MeForm(forms.ModelForm):
+
+    """
+        form to edit its profile
+    """
+
+    class Meta:
+
+        model = User
+        fields = ['email', 'first_name', 'last_name']

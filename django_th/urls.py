@@ -1,12 +1,13 @@
 from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib import admin
+from django.contrib.auth.views import password_change, password_change_done
 from django.urls import path
 
 from django_th.forms.wizard import DummyForm, ProviderForm, ConsumerForm, ServicesDescriptionForm
 
-from django_th.views import TriggerListView, TriggerDeleteView, TriggerUpdateView, TriggerEditedTemplateView
-from django_th.views import TriggerDeletedTemplateView
+from django_th.views import TriggerListView, TriggerDeleteView, TriggerUpdateView, TriggerEditedTemplateView, MeUpdate
+from django_th.views import TriggerDeletedTemplateView, me
 from django_th.views_fbv import logout_view, trigger_switch_all_to, trigger_edit, trigger_on_off, fire_trigger
 from django_th.views_fbv import service_related_triggers_switch_to
 
@@ -24,8 +25,18 @@ urlpatterns = [
     # ****************************************
     path('admin/', admin.site.urls),
     # ****************************************
+    # profil
+    # ****************************************
+    path(r'me/', me, name='me'),
+    path(r'me/edit/', MeUpdate.as_view(), name='edit_me'),
+    # ****************************************
     # auth module
     # ****************************************
+    url(r'^auth/password_change/$', password_change,
+        {'template_name': 'auth/change_password.html'}),
+    url(r'^auth/password_change/done/$', password_change_done,
+        {'template_name': 'auth/password_change_done.html'}),
+
     path('auth/', include('django.contrib.auth.urls')),
     # ****************************************
     # customized logout action

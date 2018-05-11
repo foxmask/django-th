@@ -1,17 +1,20 @@
 # coding: utf-8
 from __future__ import unicode_literals
 
-from django.core.cache import caches
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import caches
 from django.db.models import Q
 from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.utils.decorators import method_decorator
 from django.urls import reverse, reverse_lazy
 from django.views.generic import TemplateView, UpdateView, ListView, DeleteView
 
 # trigger_happy
-from django_th.forms.base import TriggerServiceForm
+from django_th.forms.base import TriggerServiceForm, MeForm
 from django_th.models import TriggerService, UserService
 from django_th.views_fbv import can_modify_trigger
 
@@ -19,6 +22,28 @@ import logging
 # Get an instance of a logger
 logger = logging.getLogger(__name__)
 cache = caches['django_th']
+
+
+class MeUpdate(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = MeForm
+    template_name = 'edit_me.html'
+    success_url = '/me'
+
+    def get_object(self, queryset=None):
+        """
+        get only the data of the current user
+        :param queryset:
+        :return:
+        """
+        obj = User.objects.get(id=self.request.user.id)
+        return obj
+
+
+@login_required()
+def me(request):
+    return render(request, 'me.html', {'object': request.user})
+
 
 """
    Part I : Triggers
