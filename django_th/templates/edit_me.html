@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load django_th_extras %}
+
+{% block title %}{% trans "Profile" %} - Trigger Happy{% endblock %}
+
+{% block content %}
+<div class="col-lg-offset-2 col-md-offset-2 col-lg-10 col-md-10">
+  <h1 class="page-header"><span class="glyphicon glyphicon-user"> {% trans "My Profile" %}</span></h1>
+  <div class="col-lg-10 col-md-10">
+
+    <form role="form" method="post" class="form-horizontal">{% csrf_token %}
+      {% if form.errors %}
+      <div class="alert alert-danger" role="alert">
+        {% if form.errors.items %}You should fix the error(s) below {% endif  %}
+      </div>
+      {% endif %}
+
+      <div class="tab-content">
+          <div role="tabpanel" class="tab-pane fade in active" id="server">
+          <table class='table table-hover table-bordered table-striped'>
+            <caption>{% trans "Profile Details" %}</caption>
+            <thead>
+            <tr>
+            <th>{% trans "First name" %}</th>
+            <th>{% trans "Last name" %}</th>
+            <th>{% trans "Email" %}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>
+                {{ form.first_name }}
+              </td>
+              <td>
+                {{ form.last_name }}
+              </td>
+              <td>
+                {{ form.email }}
+              </td>
+            </tr>
+            {% if form.first_name.errors or form.last_name.errors or form.email.errors %}
+            <tr>
+              <td class="alert alert-danger">{% if form.first_name.errors %}{{ form.first_name.errors }}{% endif %}</td>
+              <td class="alert alert-danger">{% if form.last_name.errors %}{{ form.first_name.errors }}{% endif %}</td>
+              <td class="alert alert-danger">{% if form.email.errors %}{{ form.email.errors }}{% endif %}</td>
+            </tr>
+            {% endif %}
+            </tbody>
+          </table>
+          </div>
+      </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <input type="submit" class="btn btn-primary"  value="{% trans "Save" %}" />
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
+{% endblock %}
