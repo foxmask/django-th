@@ -36,7 +36,7 @@ Installation From GitHub
 
 .. code-block:: bash
 
-    git clone https://github.com/foxmask/django-th.git
+    git clone https://github.com/push-things/django-th.git
 
 then continue by installing :
 

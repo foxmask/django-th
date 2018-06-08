@@ -14,7 +14,7 @@ Activation of the service
 
 From the page http://127.0.0.1:8000/th/service/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/public_services.png
    :alt: Services
 
 from the "Services available" part of the page, select Mastodon then fill all the fields with the information you can have from mastodon:
@@ -33,18 +33,18 @@ Defining a trigger
 
 with Mastodon as provider, when another service is used as a consumer
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step1.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/mastodon_provider_step1.png
     :alt: mastodon step 1
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_provider_step2.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/mastodon_provider_step2.png
     :alt: mastodon step 2
 
 with Mastodon as consumer, when another service is used as a provider
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step3.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/mastodon_consumer_step3.png
     :alt: mastodon step 3
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/mastodon_consumer_step4.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/mastodon_consumer_step4.png
     :alt: mastodon step 4
 
 if you tick the "fav" checkbox, this will allow you to "save" the toot to another service, for example to Wallabag, to be read later.
@@ -63,6 +63,6 @@ Configuration from the Admin panel
 
 http://127.0.0.1:8000/admin/django_th/servicesactivated/
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/service_mastodon.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/service_mastodon.png
     :target: https://joinmastodon.org/
     :alt: Mastdoon
