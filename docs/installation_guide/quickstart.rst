@@ -47,7 +47,7 @@ We install Trigger-Happy from Pypi
 
 .. code-block:: bash
 
-    git clone https://github.com/foxmask/django-th.git
+    git clone https://github.com/push-things/django-th.git
     cd django-th
     pip install -e .
 
@@ -85,7 +85,7 @@ Go to activate the (at least) 2 services you plan to use:
 
 "Activated services" (http://127.0.0.1:8000/th/service/):
 
-.. image:: https://raw.githubusercontent.com/foxmask/django-th/master/docs/installation_guide/public_services.png
+.. image:: https://raw.githubusercontent.com/push-things/django-th/master/docs/installation_guide/public_services.png
 
 1rst Service
 
