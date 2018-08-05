@@ -2,7 +2,7 @@
 import django.contrib.messages
 from django.core.cache import caches
 from django.shortcuts import reverse
-from django.test import RequestFactory, Client
+from django.test import RequestFactory
 
 from django_th.models import TriggerService, UserService
 from django_th.views import TriggerEditedTemplateView
@@ -98,10 +98,6 @@ class ViewFunction(MainTest):
                                             consumer='ServiceTwitter'))
         # self.assertTrue(can_modify_trigger(request, consumer='', provider=''))
 
-    def test_logout(self):
-        c = Client()
-        c.logout()
-
     def test_trigger_on_off(self):
         t = self.create_triggerservice()
         response = trigger_on_off(request=self.request, trigger_id=t.id)
@@ -114,7 +110,7 @@ class ViewFunction(MainTest):
     def test_fire_trigger(self):
         service = self.create_triggerservice()
         name = 'TriggerHappy RSS'
-        url = 'https://blog.trigger-happy.eu/feeds/all.rss.xml'
+        url = 'https://foxmask.net/feeds/all.rss.xml'
         status = True
         Rss.objects.create(uuid=uuid.uuid4(), url=url, name=name,
                            trigger=service, status=status)

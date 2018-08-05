@@ -42,7 +42,7 @@ class ToolsTest(TestCase):
         self.assertTrue(type(date), type(datetime))
 
     def test_download_image(self):
-        url = 'https://foxmask.trigger-happy.eu/static/ouaf.jpg'
+        url = 'https://foxmask.net/static/ouaf.jpg'
         local_filename = download_image(url)
         self.assertTrue(type(str), local_filename)
 

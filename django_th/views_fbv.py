@@ -4,7 +4,6 @@ import arrow
 # django
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import logout
 from django.core.cache import caches
 from django.core import management
 from django.http import HttpResponseRedirect
@@ -28,14 +27,6 @@ def can_modify_trigger(request, provider, consumer):
         from django.contrib import messages
         messages.warning(request, 'You can not modify a disabled trigger')
         return True
-
-
-def logout_view(request):
-    """
-        logout the user then redirect him to the home page
-    """
-    logout(request)
-    return HttpResponseRedirect(reverse('base'))
 
 
 def trigger_on_off(request, trigger_id):

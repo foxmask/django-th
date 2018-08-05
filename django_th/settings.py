@@ -259,3 +259,5 @@ SECRET_KEY = env.str('SECRET_KEY', default='to be defined :P')
 TEST_RUNNER = 'django_th.runner.DiscoverRunnerTriggerHappy'
 # Unit Test are buggy for this app ; so do not make them
 TEST_RUNNER_WHITELIST = ('oauth2_provider', 'corsheaders')
+
+LOGOUT_REDIRECT_URL = '/th/'

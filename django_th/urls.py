@@ -1,14 +1,14 @@
 from django.conf.urls import include, url
 from django.conf import settings
 from django.contrib import admin
-from django.contrib.auth.views import password_change, password_change_done
+from django.contrib.auth import views as auth_views
 from django.urls import path
 
 from django_th.forms.wizard import DummyForm, ProviderForm, ConsumerForm, ServicesDescriptionForm
 
 from django_th.views import TriggerListView, TriggerDeleteView, TriggerUpdateView, TriggerEditedTemplateView, MeUpdate
 from django_th.views import TriggerDeletedTemplateView, me
-from django_th.views_fbv import logout_view, trigger_switch_all_to, trigger_edit, trigger_on_off, fire_trigger
+from django_th.views_fbv import trigger_switch_all_to, trigger_edit, trigger_on_off, fire_trigger
 from django_th.views_fbv import service_related_triggers_switch_to
 
 from django_th.views_userservices import UserServiceListView, UserServiceCreateView, UserServiceUpdateView
@@ -29,19 +29,19 @@ urlpatterns = [
     # ****************************************
     path(r'me/', me, name='me'),
     path(r'me/edit/', MeUpdate.as_view(), name='edit_me'),
+
     # ****************************************
     # auth module
     # ****************************************
-    url(r'^auth/password_change/$', password_change,
-        {'template_name': 'auth/change_password.html'}),
-    url(r'^auth/password_change/done/$', password_change_done,
-        {'template_name': 'auth/password_change_done.html'}),
-
+    path(
+        'auth/password_change/',
+        auth_views.PasswordChangeView.as_view(template_name='auth/change_password.html'),
+    ),
+    path(
+        'auth/password_change/done/',
+        auth_views.PasswordChangeDoneView.as_view(template_name='auth/password_change_done.html'),
+    ),
     path('auth/', include('django.contrib.auth.urls')),
-    # ****************************************
-    # customized logout action
-    # ****************************************
-    path('logout/', logout_view, name='logout'),
 
     # ****************************************
     # trigger happy module
