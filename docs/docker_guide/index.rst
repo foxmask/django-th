@@ -36,7 +36,7 @@ This is necessary the first time, after building the docker image done above.
 .. code-block:: bash
 
     docker-compose run web  python manage.py migrate --settings=django_th.settings_docker
-    docker-compose run web  python manage.py initial_services --settings=django_th.settings_docker
+    docker-compose run web  python manage.py loaddata initial_services --settings=django_th.settings_docker
     docker-compose run web  python manage.py createsuperuser --settings=django_th.settings_docker
 
 This is necessary only when a new release of Trigger Happy is done
