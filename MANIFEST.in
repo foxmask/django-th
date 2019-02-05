@@ -13,6 +13,10 @@ recursive-include th_github *.html
 recursive-include th_github/templates *
 recursive-include th_github/migrations *
 
+recursive-include th_joplin *.html
+recursive-include th_joplin/templates *
+recursive-include th_joplin/migrations *
+
 recursive-include th_mastodon *.html
 recursive-include th_mastodon/templates *
 recursive-include th_mastodon/migrations *

@@ -103,8 +103,8 @@ class ServiceWallabag(ServicesMgr):
             if len(data) > 0:
                 cache.set('th_wallabag_' + str(self.trigger_id), data)
         except Exception as e:
-                logger.critical(e)
-                update_result(self.trigger_id, msg=e, status=False)
+            logger.critical(e)
+            update_result(self.trigger_id, msg=e, status=False)
         return data
 
     def wall(self):

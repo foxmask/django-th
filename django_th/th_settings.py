@@ -31,6 +31,7 @@ TH_SERVICES = (
     # uncomment the lines to enable the service you need
     'th_evernote.my_evernote.ServiceEvernote',
     'th_github.my_github.ServiceGithub',
+    'th_joplin.my_joplin.ServiceJoplin',
     'th_mastodon.my_mastodon.ServiceMastodon',
     'th_pelican.my_pelican.ServicePelican',
     'th_pocket.my_pocket.ServicePocket',
@@ -118,3 +119,7 @@ SERVICES_HOSTED_WITH_AUTH = ('ServiceMastodon', 'ServiceWallabag',)
 
 # list of services that require nothing
 SERVICES_NEUTRAL = ('ServicePelican', 'ServiceRss',)
+
+# get those information from the menu "Tools > Webclipper options"
+TH_JOPLIN_WEBCLIPPER = env.str('TH_JOPLIN_WEBCLIPPER', default='http://127.0.0.1:4881')
+TH_JOPLIN_TOKEN = env.str('TH_JOPLIN_TOKEN')

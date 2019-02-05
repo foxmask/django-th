@@ -227,10 +227,10 @@ class ServiceMastodon(ServicesMgr):
         if 'https://t.co' in content:
             content = re.sub(r'https://t.co/(\w+)', '', content)
         if 'https://pbs.twimg.com/media/' in content:
-            m = re.search('https://pbs.twimg.com/media/([\w\-_]+).jpg', content)
+            m = re.search('https://pbs.twimg.com/media/([\w\-_]+).jpg', content)  # NOQA
             url = 'https://pbs.twimg.com/media/{}.jpg'.format(m.group(1))
             local_file = download_image(url)
-            content = re.sub(r'https://pbs.twimg.com/media/([\w\-_]+).jpg', '',
+            content = re.sub(r'https://pbs.twimg.com/media/([\w\-_]+).jpg', '',  # NOQA
                              content)
 
             return content, local_file

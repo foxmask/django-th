@@ -21,6 +21,9 @@ extras_require_evernote = [
 extras_require_github = [
     'github3.py==1.0.0a4',
 ]
+extras_require_joplin = [
+    'joplin-api==1.2.2',
+]
 extras_require_mastodon = [
     'Mastodon.py==1.2.2',
 ]

@@ -10,6 +10,7 @@ django-redis
 evernote3==1.25.12
 feedparser
 github3.py
+joplin-api==1.2.2
 Mastodon.py
 pocket
 praw
