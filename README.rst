@@ -64,7 +64,7 @@ Requirements
 
 The minimum requirements are the following:
 
-* `Python 3.6.x <https://python.org/>`_
+* `Python 3.6+ <https://python.org/>`_
 * `Redis <https://redis.io/>`_
 * `Django <https://www.djangoproject.com/>`_
 * `DjangoRestFramework <http://www.django-rest-framework.org/>`_
