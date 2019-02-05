@@ -122,4 +122,4 @@ SERVICES_NEUTRAL = ('ServicePelican', 'ServiceRss',)
 
 # get those information from the menu "Tools > Webclipper options"
 TH_JOPLIN_WEBCLIPPER = env.str('TH_JOPLIN_WEBCLIPPER', default='http://127.0.0.1:4881')
-TH_JOPLIN_TOKEN = env.str('TH_JOPLIN_TOKEN', default='')
+TH_JOPLIN_TOKEN = env.str('TH_JOPLIN_TOKEN', default='ABCDE')
