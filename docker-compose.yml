@@ -3,7 +3,7 @@ services:
   redis:
     image: "redis:alpine"
   db:
-    image: postgres
+    image: "postgres:9.6-alpine"
   web:
     build: .
     command: python manage.py runserver 0.0.0.0:8000 --settings=django_th.settings_docker
