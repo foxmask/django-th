@@ -1,5 +1,5 @@
-FROM redis:3.2.6
-FROM postgres:9.6
+# FROM redis:3.2.6
+# FROM postgres:9.6
 FROM python:3.6
 MAINTAINER FoxMaSk
 ENV PYTHONUNBUFFERED 1
