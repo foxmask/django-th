@@ -66,7 +66,7 @@ The minimum requirements are the following:
 
 * `Python 3.6+ <https://python.org/>`_
 * `Redis <https://redis.io/>`_
-* `Django <https://www.djangoproject.com/>`_
+* `Django <https://www.djangoproject.com/>`_  **up to v 2.2, not 3.0**
 * `DjangoRestFramework <http://www.django-rest-framework.org/>`_
 * `Django-formtools <https://pypi.org/pypi/django-formtools>`_
 * `Django-js-reverse <https://pypi.org/pypi/django-js-reverse>`_
@@ -89,3 +89,12 @@ Documentation
 For installation and settings, see http://trigger-happy.readthedocs.org/
 
 
+
+Archiving the projet (5/1/2020)
+===============================
+
+I could try to migrate to **django 3.0**, but I don't use any of the supported services anymore, so I can't migrate to django 3.x
+
+The project use a lots of tricks to handle Form Tools Wizard, required to create triggers ;) And many many others ones to load service class automatically, use webhooks and so on.
+
+The **Furture** is now in `yeoboseyo <https://github.com/foxmask/yeoseyo>`_, a little "Trigger Happy" made with `starlette <https://starlette.io>`_ (and its projects ecosystem) 
